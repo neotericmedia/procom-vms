@@ -1,0 +1,66 @@
+<app-phx-panel>
+    <form *ngIf="inputFormGroup && currentProfile">
+        <app-contact-profile-details [readOnlyStorage]="readOnlyStorage" [inputFormGroup]="inputFormGroup">
+
+        </app-contact-profile-details>
+
+        <app-phx-panel headerTitle="Personal Info">
+            <form [formGroup]="inputFormGroup">
+                <phx-form-control name="SIN" [control]="inputFormGroup.controls.SIN" labelText="Social Insurance Number"
+                    [editable]="readOnlyStorage.IsEditable" maxlength="9" viewModeText="{{inputFormGroup.value.SIN}}">
+                    <input type="text" class="form-control" formControlName="SIN" />
+                </phx-form-control>
+                <phx-form-control [control]="inputFormGroup.controls.DateOfBirth" labelText="Date Of Birth" [editable]="readOnlyStorage.IsEditable"
+                    viewModeText="{{inputFormGroup.value.DateOfBirth | date:phxConstants.DateFormat.mediumDate}}">
+                    <app-phx-date-box [displayFormat]="phxConstants.DateFormat.MMM_dd_yyyy" [formControl]="inputFormGroup.controls.DateOfBirth"
+                        (onValueChanged)="datePickerCallback()" type="date"></app-phx-date-box>
+                </phx-form-control>
+            </form>
+        </app-phx-panel>
+
+        <app-contact-profile-payment-methods [inputFormGroup]="inputFormGroup" [isEditable]="areComplianceFieldsEditable"
+            [isProfileW2OrTempOrSP]="isProfileW2OrTempOrSP" [validateComplianceDraft]="validateComplianceDraft"
+            [readOnlyStorage]="readOnlyStorage">
+
+        </app-contact-profile-payment-methods>
+
+        <app-contact-payroll-setup [inputFormGroup]="inputFormGroup" [isComplianceFieldEditable]="areComplianceFieldsEditable"
+            [currentProfile]="currentProfile" [readOnlyStorage]="readOnlyStorage">
+
+        </app-contact-payroll-setup>
+
+        <app-contact-profile-benefit-setup [readOnlyStorage]="readOnlyStorage" [isEditable]="areComplianceFieldsEditable"
+            [profile]="currentProfile" [inputFormGroup]="inputFormGroup">
+
+        </app-contact-profile-benefit-setup>
+
+        <app-contact-profile-worker-eligibility [readOnlyStorage]="readOnlyStorage" [profile]="currentProfile"
+            [inputFormGroup]="inputFormGroup">
+
+        </app-contact-profile-worker-eligibility>
+
+        <div class="flex-row">
+            <div class="flex-row__child">
+                <app-contact-phonenumbers [readOnlyStorage]="readOnlyStorage" [inputFormGroup]="inputFormGroup"
+                    (outputEvent)="onOutputEvent()">
+
+                </app-contact-phonenumbers>
+            </div>
+            <div class="flex-row__child">
+                <app-contact-addresses [readOnlyStorage]="readOnlyStorage" [addDefaultAddress]="true" [inputFormGroup]="inputFormGroup"
+                    (outputEvent)="onOutputEvent()">
+
+                </app-contact-addresses>
+            </div>
+        </div>
+
+        <app-phx-panel headerTitle="User Profile Compliance Documents">
+            <app-compliance-document [entityTypeId]="phxConstants.EntityType.UserProfile" [entityId]="currentProfile.IdOriginal"
+                [entityName]="currentProfile.Contact.FullName" (complianceDocumentOutput)="onComplianceDocumentOutput($event)"
+                [referenceEntityLink]="refLink" [triggerToRefresh]="triggerComplianceDocumentRefresh">
+
+            </app-compliance-document>
+        </app-phx-panel>
+
+    </form>
+</app-phx-panel>

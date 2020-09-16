@@ -1,0 +1,32 @@
+﻿@using Procom.Phoenix.Web.Utility
+@model List<Procom.Phoenix.Web.Models.TemplateCacheModel>
+
+@foreach (var item in Model)
+{
+    try
+    {
+        <script type="text/ng-template" id="@item.TemplateId">
+            
+    @*
+            @{ Html.RenderAction("Index", "Template", new { mainArea = item.MainArea, secondaryArea = item.SecondaryArea, subArea = item.SubArea });  }
+            *@
+            @{
+                if (item.TemplatePath.IndexOf("TemplateCache") < 0)
+                {
+                    Html.RenderPartial(item.TemplatePath, new ViewDataDictionary());
+                }
+            }
+            
+            
+    
+        </script>
+    }
+    catch (Exception ex)
+    {
+        // If we are not able to pre-load every template in the system, we log the one that caused the error. 
+        // We dont want to prevent the entire site from loading, as the template that caused an issue may not be one that they need to use anyways
+        PhoenixLogger logger = PhoenixLogger.GetCurrentClassLogger();
+        logger.Error(String.Format("Unable to pre-load template. Template Id: {0}, Main Area: {1}, SubArea {2}, SecondaryArea: {3}",item.TemplateId,item.MainArea,item.SecondaryArea,item.SubArea),ex);
+    }
+  
+}

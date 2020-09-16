@@ -1,0 +1,42 @@
+<div class="capsuleWrap" *ngIf="timeSheetDetail && lineManagement" (click)="setEdit();$event.stopPropagation();"
+        [ngStyle]="style" dnd-draggable [dragData]="timeSheetDetail" 
+        [ngClass]="spotlightClass">
+    <div class="row"  *ngIf="timeSheet?.IsEditable || !timeSheet?.IsEditable">
+        <div class="col-xs-12">
+            <button class="btn-link btn-clear" *ngIf="timeSheet?.IsEditable" [disabled]="!timeSheet?.IsEditable || isTimeSheetSaving" (click)="delete();$event.stopPropagation();">
+                    <i class="material-icons clear">clear</i>
+            </button>
+            <div class="capsuleData">        
+                <div class="capsuleData-elipse" *ngIf="timeSheet.IsTimeSheetUsesProjects">
+                    <span *ngIf="projectName">{{ projectName }}</span>
+                    <span *ngIf="!projectName">---</span>
+                </div>
+                <div class="capsuleData-elipse">
+                    {{timeSheetDetail.RateTypeId | CodeValue:commonService.CodeValueGroups.RateType:'text'}}
+                </div>                                
+            </div>
+        </div>
+    </div>
+    <div class="row direct-row" *ngIf="timeSheetDetail.RateTypeId" [formGroup]="detailEditForm">
+        <div class="col-xs-12">
+            <div class="note-icon" (click)="setEdit();$event.stopPropagation();"><i class="material-icons" title="{{ timeSheetDetail.Note }}"  *ngIf="timeSheetDetail.Note">message</i></div>
+            <div class="text-right direct-wrap">                
+                <input      
+                    #directEntry  
+                    timeSheetUnit
+                    class="text-right form-control direct" 
+                    formControlName="unitAmount"   
+                    [control]="detailEditForm.controls['unitAmount']"
+                    type="number"
+                    [min]="unitInputProperties.min"
+                    [max]="unitInputProperties.max"
+                    [step]="unitInputProperties.step"
+                    (change)="setDetailProperty('UnitAmount',$event.target.value)"
+                    (click)="$event.stopPropagation();"
+                />                
+                <span class="unit">{{timeSheetDetail.RateUnitId | CodeValue:commonService.CodeValueGroups.RateUnit:'text' | slice:0:1}}</span>
+            </div>
+        </div>
+    </div>
+    <div class="direct-error" [hidden]="!detailEditForm.controls['unitAmount'].errors" >{{'common.generic.error' | phxTranslate | uppercase}}</div>
+</div>

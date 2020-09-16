@@ -1,0 +1,31 @@
+<div class="breadcrumbs " id="breadcrumbs">
+  <div class="page-title">
+      <span *ngFor="let decorator of pageTitleDecorators">
+          <i *ngIf="decorator.ShowIcon === true" 
+            class="material-icons page-icon" 
+            [ngClass]="{'iconMarginRight': decorator.ShowText === false}" 
+            [ngStyle]="{'backgroundColor': decorator.IconColor}">
+            {{decorator.Icon}}
+          </i>
+          <span *ngIf="decorator.ShowText === true" class="page-text">
+            {{decorator.Text}}
+          </span>
+          <i *ngIf="decorator.ShowText === true" 
+            class="material-icons breadcrumb-spacer">
+            keyboard_arrow_right
+          </i>
+      </span>
+  </div>
+  <div class="global-search hidden-xs">
+      <div class="input-group" title="Coming Soon">
+          <input type="text" class="form-control" placeholder="search...">
+          <span class="input-group-addon">
+              <i class="fontello-icon-search-5"></i>
+          </span>
+      </div>
+  </div>
+  <!-- <div class="page-help" *ngIf="helpShow" (click)="clickOnHelp()">
+      <i [ngClass]="helpIcon" class="opaci35"></i>
+      <span>{{helpTitle}}</span>
+  </div> -->
+</div>

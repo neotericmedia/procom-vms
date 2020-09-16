@@ -1,0 +1,160 @@
+.transaction-amount-summary-detail-summary .no-margin-left {
+    margin-left: 0;
+  }
+
+  .transaction-amount-summary-detail-summary .center {
+    text-align: center;
+  }
+
+  .transaction-amount-summary-detail-summary .right-text {
+    text-align: right;
+  }
+
+  .transaction-amount-summary-label-text {
+    margin-left: 3px;
+    font-weight: normal !important;
+    height: 26px;
+    vertical-align: bottom;
+  }
+
+  .transaction-amount-summary-label-text-no-checkbox {
+    font-weight: normal !important;
+    height: 26px;
+    vertical-align: bottom;
+  }
+
+  .transaction-amount-summary-checkbox-view {
+    position: relative;
+    height: 26px;
+    width: 26px;
+    border-radius: 50%;
+    transition: box-shadow 0.4s, border 0.4s;
+    border: solid 3px #f1f1f3;
+    box-shadow: 0 0 1px #f1f1f3;
+    cursor: pointer;
+    vertical-align: bottom;
+  }
+
+  .transaction-amount-summary-checkbox-view-red:after {
+    content: '\2718';
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    margin: auto;
+    color: red;
+    line-height: 1;
+    font-size: 18px;
+    text-align: center;
+    height: 26px;
+    width: 26px;
+    border-radius: 50%;
+    transition: box-shadow 0.4s, border 0.4s;
+    border: solid 3px #f1f1f3;
+    box-shadow: 0 0 1px #f1f1f3;
+    vertical-align: bottom;
+  }
+
+  .transaction-amount-summary-checkbox-view-green:after {
+    content: '\2714';
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    margin: auto;
+    color: green;
+    line-height: 1;
+    font-size: 18px;
+    text-align: center;
+    height: 26px;
+    width: 26px;
+    border-radius: 50%;
+    transition: box-shadow 0.4s, border 0.4s;
+    border: solid 3px #f1f1f3;
+    box-shadow: 0 0 1px #f1f1f3;
+    vertical-align: bottom;
+  }
+  /*http://www.fileformat.info/info/unicode/block/dingbats/images.htm*/
+
+  .transaction-amount-summary-table-first-col {
+    white-space: nowrap;
+  }
+
+  .transaction-amount-summary-table-body {
+    white-space: nowrap;
+  }
+
+  .transaction-amount-summary-checkbox {
+    display: none;
+  }
+
+  .transaction-amount-summary-checkbox + label {
+    position: relative;
+    height: 26px;
+    width: 26px;
+    border-radius: 50%;
+    transition: box-shadow 0.4s, border 0.4s;
+    border: solid 3px #f1f1f3;
+    box-shadow: 0 0 1px #f1f1f3;
+    cursor: pointer;
+    vertical-align: bottom;
+  }
+
+  .transaction-amount-summary-checkbox + label:after {
+    content: '\2714';
+    height: 1em;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    margin: auto;
+    color: green;
+    line-height: 1;
+    font-size: 18px;
+    text-align: center;
+  }
+
+  .transaction-amount-summary-checkbox + label:hover {
+    border: solid 3px green;
+    box-shadow: 0 0 1px green;
+  }
+
+  .transaction-amount-summary-checkbox:checked + label:after {
+    content: '\2718';
+    height: 1em;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    margin: auto;
+    color: red;
+    line-height: 1;
+    font-size: 18px;
+    text-align: center;
+  }
+
+  .transaction-amount-summary-checkbox:checked + label:hover {
+    border: solid 3px red;
+    box-shadow: 0 0 1px red;
+  }
+
+  .transaction-amount-summary-amount-strikethrough {
+    position: relative;
+  }
+
+  .transaction-amount-summary-amount-strikethrough:before {
+    position: absolute;
+    content: '';
+    left: 0;
+    top: 50%;
+    right: 0;
+    border-top: 1px solid;
+    border-color: inherit;
+    -webkit-transform: rotate(-5deg);
+    -moz-transform: rotate(-5deg);
+    -ms-transform: rotate(-5deg);
+    -o-transform: rotate(-5deg);
+    transform: rotate(-5deg);
+  }

@@ -1,0 +1,98 @@
+<div class="sales-pattern-details col-lg-12">
+  <div class="sales-pattern-entity-wrapper col-lg-12">
+    <div class="sales-pattern-header headstone">
+      <div class="row">
+        <div class="col-lg-4"></div>
+        <div class="col-lg-4">
+          <label class="control-label col-xs-12">ID</label>
+          <span class="col-xs-12">{{salesPatternId ? salesPatternId : 'N/A'}}</span>
+        </div>
+        <div class="col-lg-4">
+          <label class="control-label  col-xs-12">Status</label>
+          <span class="col-xs-12" [class.text-warning]="salesPatternId > 0">{{salesPattern?.SalesPatternStatusId | CodeValue:CodeValueGroups.CommissionRateHeaderStatus}}</span>
+        </div>
+      </div>
+    </div>
+    <div class="panel-body sales-pattern-body">
+      <div class="row">
+        <form class="form-horizontal" [formGroup]="form">
+          <phx-form-control [showValidationMessages]="false" [control]="form?.get('Description')" labelText="Description" [editable]="true"
+            viewModeText="{{salesPattern?.Description}}">
+            <div class="col-lg-7">
+              <input type="text" maxlength="65" class="form-control" formControlName="Description" />
+            </div>
+          </phx-form-control>
+          <phx-form-control [control]="form?.get('SalesPatternWithSupport')" labelText="Job Owner With Support?" [editable]="true">
+            <div class="col-lg-7">
+              <label class="radio-inline">
+                <input class="form-check-input" type="radio" (change)="onHasSupportChange(true)" formControlName="SalesPatternWithSupport"
+                  [value]="true" >Yes</label>
+              <label class="radio-inline">
+                <input class="form-check-input" type="radio" (change)="onHasSupportChange(false)" formControlName="SalesPatternWithSupport"
+                  [value]="false" >No</label>
+            </div>
+          </phx-form-control>
+          <div formArrayName="CommissionSalesPatternSupporters">
+            <div formGroupName="0">
+              <phx-form-control [control]="supporters?.at(0).get('UserProfileId')" labelText="Job Owner" [editable]="true">
+                <div class="col-lg-7">
+                  <app-phx-select-box [(items)]="jobOwners" textField="Name" (value)="onJobOwnerSupportChnage($event)" valueField="CommissionUserProfileId" formControlName="UserProfileId">
+                  </app-phx-select-box>
+                </div>
+              </phx-form-control>
+            </div>
+          </div>
+
+          <div *ngIf="previousHasSupportValue" formArrayName="CommissionSalesPatternSupporters">
+            <div *ngFor="let supporter of supporters.controls; let i = index;">
+              <div class="form-group sales-pattern-row" [formGroupName]="i">
+                <div *ngIf="i > 0 && commissionSupporters">
+                  <phx-form-control [control]="supporters?.at(i).get('UserProfileId')" labelText="Supporting Job Owner" [editable]="true">
+                    <div class="col-lg-7">
+                      <app-phx-select-box [(items)]="commissionSupporters[i]" [showClearButton]="true" (value)="onJobOwnerSupportChnage($event)"
+                       textField="Name" valueField="CommissionUserProfileId" formControlName="UserProfileId">
+                      </app-phx-select-box>
+                    </div>
+                    <div *ngIf="i > 1" style="padding: 0;">
+                      <div class="btn-toolbar pull-left">
+                        <button type="button" class="btn btn-default btn-material " (click)="removeSupporter(i)">
+                          <i class="material-icons">delete</i>
+                        </button>
+                      </div>
+                    </div>
+                  </phx-form-control>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-10">
+            <div class="btn-toolbar pull-right" [style.margin-right]="salesPattern.CommissionSalesPatternSupporters.length < 3 ? '138px' : '93px'">
+              <button type="button" class="btn btn-default btn-material" *ngIf="salesPattern.CommissionSalesPatternSupporters.length <= 5 && salesPattern['SalesPatternWithSupport']"
+                data-ng-show="true" (click)="addNewSupporter($event)">
+                <i class="material-icons">add</i>
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="panel-footer ">
+      <div class="row">
+        <div class="col-lg-6"></div>
+        <div class="col-lg-6">
+          <div class="pull-right">
+            <button type="button" class="btn btn-default" *ngIf="salesPattern?.SalesPatternStatusId === ApplicationConstants.CommissionRateHeaderStatus.Active" (click)="cancelAndDiscard($event)">Deactivate</button>
+            <button type="button" class="btn btn-default" (click)="cancel($event)">Cancel</button>
+            <button type="button" class="btn btn-primary" *ngIf="salesPattern?.SalesPatternStatusId !== ApplicationConstants.CommissionRateHeaderStatus.InActive"  (click)="save($event)" [disabled]="!validateSupporters() || !validateForm" >Save</button>
+            <button type="button" class="btn btn-primary" *ngIf="salesPattern?.SalesPatternStatusId == ApplicationConstants.CommissionRateHeaderStatus.InActive"  (click)="save($event)" [disabled]="!validateSupporters() || !validateForm" >Activate</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-12 panel-body" *ngIf="!validateSupporters()">
+      <div class="alert alert-danger">
+        <strong>Error:</strong>&nbsp;Duplicate supporters cannot be allowed
+      </div>
+    </div>
+  </div>
+</div>

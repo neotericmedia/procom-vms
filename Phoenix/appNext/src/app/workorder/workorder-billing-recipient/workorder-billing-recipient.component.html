@@ -1,0 +1,80 @@
+<div *ngIf="recipientIndex === 0">
+  <div class="form-group">
+    <phx-form-control labelText="Invoice Recipient" [control]="inputFormGroup.controls.UserProfileId"
+      [editable]="readOnlyStorage.IsEditable && checkPtFiledAccessibility('WorkOrderVersion.BillingInfoes.BillingInvoice.BillingRecipients','UserProfileId')"
+      viewModeText="{{inputFormGroup.controls.UserProfileId.value | lookupNoCache: html.commonLists.listProfilesForApproval:'Id':'Contact.FullName'}} - {{inputFormGroup.controls.UserProfileId.value}}">
+      <app-phx-select-box [items]="html.commonLists.listProfilesForApproval | filterSelectChoicesByUsage: billingRecipients: inputFormGroup.value: 'UserProfileId': 'Id': 'Contact.FullName': 'Contact.Id'"
+        textField="DisplayValue" valueField="Id" [formControl]="inputFormGroup.controls.UserProfileId" placeholder="-- select one --">
+      </app-phx-select-box>
+    </phx-form-control>
+  </div>
+  <div class="form-group">
+    <phx-form-control labelText="{{invoiceTypeId == phxConstants.InvoiceType.TimeSheet ? 'Delivery Strategy' : 'Invoice Strategy'}}"
+      [editable]="readOnlyStorage.IsEditable && checkPtFiledAccessibility('WorkOrderVersion.BillingInfoes.BillingInvoice.BillingRecipients','DeliveryMethodId')"
+      [control]="inputFormGroup.controls.DeliveryMethodId" viewModeText="{{inputFormGroup.controls.DeliveryMethodId.value | CodeValue:codeValueGroups.DeliveryMethod}}">
+      <app-phx-select-box [items]="html.codeValueLists.listDeliveryMethods" textField="text" valueField="id"
+        [formControl]="inputFormGroup.controls.DeliveryMethodId" placeholder="-- select one --">
+      </app-phx-select-box>
+    </phx-form-control>
+  </div>
+  <div class="form-group" *ngIf="inputFormGroup.controls.DeliveryMethodId.value===html.phxConstants.DeliveryMethod.InternalProfile">
+    <phx-form-control labelText="CC Delivery To" [editable]="readOnlyStorage.IsEditable && checkPtFiledAccessibility('WorkOrderVersion.BillingInfoes.BillingInvoice.BillingRecipients','DeliverToUserProfileId')"
+    [control]="inputFormGroup.controls.DeliverToUserProfileId"
+      viewModeText="{{inputFormGroup.controls.DeliverToUserProfileId.value | lookupNoCache: html.commonLists.listActiveUserProfile:'Id':'DisplayName'}}">
+      <app-phx-select-box [items]="html.commonLists.listActiveUserProfile" textField="DisplayText" valueField="Id"
+        [formControl]="inputFormGroup.controls.DeliverToUserProfileId" placeholder="-- select one --">
+      </app-phx-select-box>
+    </phx-form-control>
+  </div>
+</div>
+<div *ngIf="recipientIndex != 0" style="margin: 20px 0 0;">
+  <div class="form-group">
+    <div *ngIf="!inputFormGroup.controls.RecipientTypeId.value || inputFormGroup.controls.RecipientTypeId.value == 0">
+      <phx-form-control labelText="Recipient Type" [editable]="readOnlyStorage.IsEditable && checkPtFiledAccessibility('WorkOrderVersion.BillingInfoes.BillingInvoice.BillingRecipients','RecipientTypeId')"
+      [control]="inputFormGroup.controls.RecipientTypeId"
+        viewModeText="{{inputFormGroup.controls.RecipientTypeId.value | CodeValue:codeValueGroups.RecipientType}}">
+        <div class="col-md-10 padding-0">
+          <app-phx-select-box [items]="html.codeValueLists.listBillingRecipientTypes" textField="text" valueField="id"
+            [formControl]="inputFormGroup.controls.RecipientTypeId" placeholder="-- select one --">
+          </app-phx-select-box>
+        </div>
+      </phx-form-control>
+    </div>
+    <div>
+    </div>
+    <div *ngIf="inputFormGroup.controls.RecipientTypeId.value > 0">
+      <phx-form-control labelText="{{inputFormGroup.controls.RecipientTypeId.value | lookup:html.codeValueLists.listRecipientTypes}}" [control]="inputFormGroup.controls.UserProfileId"
+        [editable]="readOnlyStorage.IsEditable && checkPtFiledAccessibility('WorkOrderVersion.BillingInfoes.BillingInvoice.BillingRecipients','UserProfileId')"
+        viewModeText="{{inputFormGroup.controls.UserProfileId.value|lookupNoCache:html.commonLists.listProfilesForApproval:'Id':'Contact.FullName':'ContactId'}} ({{((inputFormGroup.controls.UserProfileId.value|lookupNoCache:html.commonLists.listProfilesForApproval:'Id':'ProfileTypeId')|CodeValue:codeValueGroups.ProfileType)}} - {{inputFormGroup.controls.UserProfileId.value}})">
+        <app-phx-select-box [items]="html.commonLists.listProfilesForApproval | filterSelectChoicesByUsage: billingRecipients: inputFormGroup.value: 'UserProfileId': 'Id': 'Contact.FullName': 'Contact.Id'"
+          textField="DisplayValue" valueField="Id" [formControl]="inputFormGroup.controls.UserProfileId" placeholder="-- select one --">
+        </app-phx-select-box>
+      </phx-form-control>
+    </div>
+  </div>
+  <div class="form-group">
+    <phx-form-control labelText="Delivery Strategy" [editable]="readOnlyStorage.IsEditable && checkPtFiledAccessibility('WorkOrderVersion.BillingInfoes.BillingInvoice.BillingRecipients','DeliveryMethodId')"
+    [control]="inputFormGroup.controls.DeliveryMethodId"
+      viewModeText="{{inputFormGroup.controls.DeliveryMethodId.value | CodeValue:codeValueGroups.DeliveryMethod}}">
+      <div class="col-md-10 padding-0">
+        <app-phx-select-box [items]="deliveryMethods" textField="text" valueField="id"
+          [formControl]="inputFormGroup.controls.DeliveryMethodId" placeholder="-- select one --">
+        </app-phx-select-box>
+      </div>
+      <div class="col-xs-1 pull-right padding-0">
+        <button type="button" class="btn btn-default btn-material pull-right" (click)="removeBillingRecipient(recipientIndex)">
+          <i class="material-icons">delete</i>
+        </button>
+      </div>
+    </phx-form-control>
+  </div>
+  <div class="form-group" *ngIf="inputFormGroup.controls.DeliveryMethodId.value===html.phxConstants.DeliveryMethod.InternalProfile">
+    <phx-form-control labelText="CC Delivery To" [editable]="readOnlyStorage.IsEditable && checkPtFiledAccessibility('WorkOrderVersion.BillingInfoes.BillingInvoice.BillingRecipients','DeliverToUserProfileId')"
+    [control]="inputFormGroup.controls.DeliverToUserProfileId"
+      viewModeText="{{inputFormGroup.controls.DeliverToUserProfileId.value | lookupNoCache: html.commonLists.listActiveUserProfile:'Id':'DisplayName'}}">
+      <app-phx-select-box [items]="html.commonLists.listActiveUserProfile" textField="DisplayName" valueField="Id"
+        [formControl]="inputFormGroup.controls.DeliverToUserProfileId" placeholder="-- select one --">
+      </app-phx-select-box>
+    </phx-form-control>
+  </div>
+</div>

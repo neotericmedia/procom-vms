@@ -1,0 +1,48 @@
+﻿<div class="modal-content" data-ng-form="formPaymentBatchDialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <span class="modal-title">Choose the Payment Transaction Garnishees to release</span>
+            <div class="btn pull-right paymentBatchClose" data-ng-click="cancel()"><i class="fontello-icon-cancel-circle"></i></div>
+        </div>
+        <div class="modal-body">
+            <div class="content-group form-horizontal">
+                <div class="form-group col-lg-12">
+                    <label for-property="DepositDate" for="DepositDate" data-model-property="data.DepositDate" class="col-lg-4 control-label label-to-right" data-original-title="" title="">Total Payment Amount:</label>
+                    <div class="col-lg-6">
+                        <label class="control-label">{{data.AmountTotal | currency: data.currency + " $"}}</label>
+                    </div>
+                </div>
+                <div class="form-group col-lg-12">
+                    <label for-property="DepositDate" for="DepositDate" data-model-property="data.DepositDate" class="col-lg-4 control-label label-to-right" data-original-title="" title="">Pay From:</label>
+                    <div class="col-lg-6">
+                        <label class="control-label">{{data.BankId | lookup:data.bankAccounts:'id':'text'}}</label>
+                    </div>
+                </div>
+                <div class="form-group col-lg-12">
+                    <label for-property="DepositDate" for="DepositDate" data-model-property="data.DepositDate" class="col-lg-4 control-label label-to-right" data-original-title="" title="">Tentative Batch Number:</label>
+                    <div class="col-lg-6">
+                        <label class="control-label">{{data.batchNo}}</label>
+                    </div>
+                </div>
+                <div class="row col-lg-12">
+                    <div class="col-lg-1"></div>
+                    <div class="col-lg-1">Count</div>
+                    <div class="col-lg-6">Payee Name</div>
+                    <div class="col-lg-4 label-to-right">Amount Total</div>
+                </div>
+                <div class="row col-lg-12" data-ng-repeat="paymentTransactionGarnisheesGroupedByGarnishee in data.PaymentTransactionGarnisheesGroupedByGarnisheeList">
+                    <div class="col-lg-1"><input data-ng-if="paymentTransactionGarnisheesGroupedByGarnishee.AmountTotal>0" type="checkbox" data-ng-model="paymentTransactionGarnisheesGroupedByGarnishee.IsValid" /></div>
+                    <div class="col-lg-1"><label class="control-label">{{paymentTransactionGarnisheesGroupedByGarnishee.TaskIds.length}}</label></div>
+                    <div class="col-lg-6"><label class="control-label">{{paymentTransactionGarnisheesGroupedByGarnishee.PayeeName}}</label></div>
+                    <div class="col-lg-4 label-to-right" data-ng-class="paymentTransactionGarnisheesGroupedByGarnishee.AmountTotal<=0?'text-danger':''">
+                    <label class="control-label">{{paymentTransactionGarnisheesGroupedByGarnishee.AmountTotal| currency: data.currency + " $"}}</label></div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" ng-click="create()" data-ng-if="!isNotifyEventsSet" data-ng-disabled="!formPaymentBatchDialog.$valid">Create</button>
+            <button type="button" class="btn btn-default" ng-click="cancel()" data-ng-if="!isNotifyEventsSet">Cancel</button>
+            <button type="button" class="btn btn-default" ng-click="cancel()" data-ng-if="isNotifyEventsSet">Ok</button>
+        </div>
+    </div>
+</div>

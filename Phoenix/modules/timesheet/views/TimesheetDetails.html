@@ -1,0 +1,503 @@
+﻿<div>
+    <show-busy-controlled associate="viewLoading"></show-busy-controlled>
+    <div class="timesheet-entry">
+        <div class="row ts-header" data-ng-hide="noTimesheets" style="margin:12px 0;">
+            <div class="col-lg-12">
+                <label class="workorders-label">Workorder:</label>
+                <div class="workorders-selection">
+                    <ui-select name="WorkorderId" data-ng-model="workOrderId" theme="select2" class="form-control" data-ng-change="workOrderChanged(workOrderId)">
+                        <ui-select-match placeholder="Select Work Order">{{$select.selected.Description}}</ui-select-match>
+                        <ui-select-choices repeat="item.WorkOrderId as item in uniqueWorkOrders | uiSelectChoicesFilter: $select.search: 'Description': 'WorkOrderId'">
+                            <span data-ng-bind-html="item.Description | highlight: $select.search"></span>
+                        </ui-select-choices>
+                    </ui-select>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="ts-print-header" style="margin-top:2%">
+        <div class="col-lg-12">
+            <table class="fc fc-border-separate col-lg-12">
+                <tbody>
+                    <tr>
+                        <td class="col-lg-2 ts-brief-header-td">
+                            <span class="to-uppercase ts-brief-header-sp">ID</span>
+                        </td>
+                        <td class="col-lg-2 ts-brief-header-td">
+                            <span class="to-uppercase ts-brief-header-sp">Work Order</span>
+                        </td>
+                        <td class="col-lg-4 ts-brief-header-td">
+                            <span class="to-uppercase ts-brief-header-sp">Client</span>
+                        </td>
+                        <td class="col-lg-4 ts-brief-header-td">
+                            <span class="to-uppercase ts-brief-header-sp">Worker</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-lg-2 ts-brief-header-td">
+                            <span>{{timesheet.Id}}</span>
+                        </td>
+                        <td class="col-lg-2 ts-brief-header-td">
+                            <span>{{timesheet.WorkOrderNumberFull}}</span>
+                        </td>
+                        <td class="col-lg-4 ts-brief-header-td">
+                            <span>{{timesheet.ClientName}}</span>
+                        </td>
+                        <td class="col-lg-4 ts-brief-header-td">
+                            <span>{{timesheet.WorkerFirstName}}&nbsp;{{timesheet.WorkerLastName}}</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="timesheet-entry">
+        <div class="row ts-details ">
+            <div class="col-lg-2" ng-if="timesheet.TimeSheetTypeId == ApplicationConstants.TimeSheetType.Manual">
+                <div class="ts-datepicker">
+                    <div data-ng-if="timesheets && timesheets.length">
+                        <div timesheet-calendar-navigation ng-model="dateModel.date" selected-id="dateModel.selectedId" min-date="dateModel.entity.minDate"
+                             max-date="dateModel.entity.maxDate" timesheets="dateModel.entity" timesheet-displayed="dateModel.entity.timesheetDisplayed"
+                             change-timesheet="changeTimesheet(timesheetId)"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-7" ng-if="timesheet.TimeSheetTypeId == ApplicationConstants.TimeSheetType.Manual">
+                <div data-ng-form="entityForm">
+                    <div class="row ts-details">
+                        <div class="row pull-left" style="width:80%;">
+                            <div class="ts-navigation">
+                                <div>
+                                    <div class="btn-group" style="width:100%;margin-left:5%">
+                                        <button type="button" class="btn btn-default" title="First" data-ng-disabled="back" ng-click="go('first')" style="width:10%"> << </button>
+                                        <button type="button" class="btn btn-default" title="Previous" data-ng-disabled="back" ng-click="go('prev')" style="width:10%"> < </button>
+                                        <button type="button" class="btn btn-default" data-ng-disabled="true" style="width:60%"> {{timesheet.StartDate|date:ApplicationConstants.formatDate}} - {{timesheet.EndDate|date:ApplicationConstants.formatDate}} </button>
+                                        <button type="button" class="btn btn-default" title="Next" data-ng-disabled="forth" ng-click="go('next')" style="width:10%"> > </button>
+                                        <button type="button" class="btn btn-default" title="Last" data-ng-disabled="forth" ng-click="go('last')" style="width:10%"> >> </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row pull-right" style="width:20%;">
+                            <a print-preview="timesheetPrint" type="button" style="margin-left:20%" class="print-hidden-alt">Print</a>
+                        </div>
+                    </div>
+                    <div class="ts-calendar">
+                        <table class="fc fc-border-separate" data-ng-mouseleave="tsTableBlurred()">
+                            <thead>
+                                <tr class="fc-header">
+                                    <th class="fc-day-header fc-sun">Sun</th>
+                                    <th class="fc-day-header fc-mon">Mon</th>
+                                    <th class="fc-day-header fc-tue">Tue</th>
+                                    <th class="fc-day-header fc-wed">Wed</th>
+                                    <th class="fc-day-header fc-thu">Thu</th>
+                                    <th class="fc-day-header fc-fri">Fri</th>
+                                    <th class="fc-day-header fc-sat">Sat</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="fc-week" data-ng-repeat="week in timesheet.weeklyDetails().weeks">
+                                    <td data-ng-repeat="item in week.details" data-ng-class="itemClass(item)" data-date="{{item.Date|date:ApplicationConstants.formatDateSorting}}">
+                                        <div>
+                                            <div class="fc-day-number">{{item.Date | date:'MMM d'}}</div>
+                                            <div class="fc-day-content">
+                                                <input type="text" class="hours print-hide" data-ng-init="item.UnitAmount=(item.UnitAmount==0) ? '' : item.UnitAmount" data-ng-model="item.UnitAmount"
+                                                       data-ng-if="timesheet.hasAccess('ModifyTimesheetDetails') && !item.isReadonly && !notimesheets && item.RateUnitId != ApplicationConstants.RateUnit.Day"
+                                                       data-float-between-input="{from:0.01, to:24, decimalplaces:2, doesemptytozero:'false'}"
+                                                       data-ng-mouseover="tsCellFocused($event)" style="outline-color:grey;padding-right:3px;"
+                                                       oncopy="return false;" onpaste="return false;" />
+                                                <input type="text" class="hours print-hide" data-ng-init="item.UnitAmount=(item.UnitAmount==0) ? '' : item.UnitAmount" data-ng-model="item.UnitAmount"
+                                                       data-ng-if="timesheet.hasAccess('ModifyTimesheetDetails') && !item.isReadonly && !notimesheets && item.RateUnitId == ApplicationConstants.RateUnit.Day"
+                                                       data-float-between-input="{from:0.01, to:2, decimalplaces:2, doesemptytozero:'false'}"
+                                                       data-ng-mouseover="tsCellFocused($event)" style="outline-color:grey;padding-right:3px;"
+                                                       oncopy="return false;" onpaste="return false;" />
+                                                <div data-ng-model="item.UnitAmount" data-ng-if="timesheet.hasAccess('ModifyTimesheetDetails')" class="hours print-show"
+                                                     contenteditable="false">
+                                                </div>
+                                                <div data-ng-model="item.UnitAmount" data-ng-if="!timesheet.hasAccess('ModifyTimesheetDetails')" class="hours hours-readonly"
+                                                     contenteditable="false">
+                                                    &nbsp;
+                                                </div>
+                                                <div data-ng-if="item.isReadonly" class="void">&nbsp;</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr class="fc-footer">
+                                    <td>&nbsp;</td>
+                                    <td>&nbsp;</td>
+                                    <td>&nbsp;</td>
+                                    <td>&nbsp;</td>
+                                    <td class="fc-footer-details-left to-uppercase" style="text-align: center;">{{timesheet.totalAmountHeader}}</td>
+                                    <td colspan="2" class="fc-footer-details-right">{{totalHours() | number:2}}</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                    <div class="row panel-body print-hidden-alt" data-pt-validation-messages="model.validationMessages"></div>
+                    <div class="row mtl print-hidden-alt">
+                        <div class="col-lg-12">
+                            <div class="task-actions-timesheet">
+                                <div class="btn-toolbar task-results" ng-if="!workflow.runningStatus.IsRunning">
+                                    <div class="pull-right">
+                                        <div ng-if="isWorkerView()">
+                                            <button type="button" data-ng-disabled="workflow.runningStatus.IsRunning" data-ng-if="timesheet.hasAccess('SaveTimesheet')"
+                                                    class="btn btn-default" data-ng-click="save()">
+                                                Save
+                                            </button>
+                                            <button type="button" data-ng-disabled="workflow.runningStatus.IsRunning" data-ng-if="timesheet.hasAccess('SubmitTimesheet')"
+                                                    class="btn btn-primary" data-ng-click="submit()">
+                                                Submit
+                                            </button>
+                                        </div>
+
+                                        <button data-ng-repeat="action in timesheet.TaskSummary.WorkflowAvailableActions | orderBy:'DisplayButtonOrder' | filter: { IsActionButton: true }"
+                                                type="button" style="display:inline;" class="task-results btn pull-right" data-ng-class="buttonTaskResultClass(action.TaskResultId)"
+                                                data-ng-click="executeAction(action, ApplicationConstants.EntityType.TimeSheet, timesheet.Id)">
+                                            {{resultName(action.TaskResultId)}}
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-9" ng-if="timesheet.TimeSheetTypeId == ApplicationConstants.TimeSheetType.Imported">
+                <div class="row ts-details">
+                    <div class="row pull-left" style="width:90%;">
+                        <div class="ts-navigation">
+                            <div>
+                                <div class="btn-group" style="width:100%;margin-left:5%">
+                                    <button type="button" class="btn btn-default" title="First" data-ng-disabled="back" ng-click="go('first')" style="width:10%"> << </button>
+                                    <button type="button" class="btn btn-default" title="Previous" data-ng-disabled="back" ng-click="go('prev')" style="width:10%"> < </button>
+                                    <button type="button" class="btn btn-default" data-ng-disabled="true" style="width:60%"> {{timesheet.StartDate|date:ApplicationConstants.formatDate}} - {{timesheet.EndDate|date:ApplicationConstants.formatDate}} </button>
+                                    <button type="button" class="btn btn-default" title="Next" data-ng-disabled="forth" ng-click="go('next')" style="width:10%"> > </button>
+                                    <button type="button" class="btn btn-default" title="Last" data-ng-disabled="forth" ng-click="go('last')" style="width:10%"> >> </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="width:90%; margin-left: 3%; margin-right: 5%; margin-top: 3%">
+                    <div class="">
+                        <div class="contact-name">
+                            <!--<table class="table">-->
+                            <table class="table table-striped table-content table-hover" style="background-color: white;">
+                                <!--<thead class="my-thead">-->
+                                <thead style="background-color: #EAEAEA;">
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Rate Type</th>
+                                        <th>Unit</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr data-ng-repeat="item in timesheet.ImportedDetails">
+                                        <td><span class="po-td-text">{{::item.Id}}</span></td>
+                                        <td><span class="po-td-text">{{::item.RateTypeId | lookup : statusList.rateTypes}}</span></td>
+                                        <td><span class="po-td-text">{{::item.UnitAmount}} {{::item.RateUnitId | lookup : statusList.woRateUnits}}</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="ts-summary">
+                    <div class="panel-group" id="accordion">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a data-parent="#accordion" class="panel-header">
+                                        {{timesheet.totalAmountHeader}}
+                                        <span class="col-md-6 pull-right total-hours">{{totalHours() | currency:''}}</span>
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="details-panel" class="panel-collapse">
+                                <div class="panel-body form-horizontal">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label class="label-summary">Status</label>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <label class="label-summary-details">
+                                                {{timesheet.TimeSheetStatusId | lookup:statusList.timesheetStatusList}}
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label class="label-summary">Worker</label>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <label class="label-summary-details">{{timesheet.WorkerFirstName}} {{timesheet.WorkerLastName}}</label>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label class="label-summary">Description</label>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <label class="label-summary-details">{{timesheet.Description}}</label>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label class="label-summary">Approver</label>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <label class="label-summary-details">{{timesheet.ApproverName}}</label>
+                                        </div>
+                                    </div>
+                                    <div class="row" ng-if="timesheet.PONumber">
+                                        <div class="col-md-8">
+                                            <label class="label-summary">Units Remaining</label>
+                                        </div>
+                                    </div>
+                                    <div class="row" ng-if="timesheet.PONumber">
+                                        <div class="col-md-12">
+                                            <label class="label-summary-details">{{timesheet.POUnitsRemaining | number:2}} {{timesheet.RemainingUnit}}</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default" style="border-bottom:1px solid #ff9900;">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a data-toggle="collapse" data-target="#notes-panel" class="panel-header panel-header-link">
+                                        Notes&nbsp;
+                                        <span class="badge badge-success" data-ng-if="timesheet && timesheet.notesLength" style="margin-left:5.1em;">{{timesheet.notesLength}}</span>
+                                    </a>
+                                    <button type="button" class="btn btn-clouds pull-right" data-toggle="collapse" data-target="#comment-panel" data-ng-click="scrollDown()">View/Add</button>
+                                </h4>
+                            </div>
+                            <div id="notes-panel" class="panel-collapse collapse in" data-ng-if="timesheet" data-ng-show="total">
+                                <div class="panel-body form-horizontal">
+                                    <div class="row">
+                                        <div data-pt-notes-list="" data-entity-type-id="ApplicationConstants.EntityType.TimeSheet" data-entity-id="timesheet.Id"
+                                             data-note-count="timesheet.notesLength" data-note-total="total">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel-heading" style="border-top:3px solid #dddddd; margin-bottom:2px;">
+                                <h4 class="panel-title">
+                                    <a data-toggle="collapse" data-target="#attachments-panel" class="panel-header panel-header-link">
+                                        Attachments&nbsp;
+                                        <span class="badge badge-success" data-ng-if="timesheet.documentsLength>0" style="margin-left:0.1em;">{{timesheet.documentsLength}}</span>
+                                    </a>
+                                    <button type="button" class="btn btn-clouds pull-right" data-toggle="collapse" data-target="#documentUpload-timesheet" style="outline:0;width:85px;"
+                                            ng-show="CurrentProfile.ProfileTypeId !== ApplicationConstants.UserProfileType.Internal">
+                                        Add
+                                    </button>
+                                </h4>
+                            </div>
+                            <div id="attachments-panel" class="panel-collapse collapse in" data-ng-if="timesheet.documentsLength>0">
+                                <div class="panel-body form-horizontal">
+                                    <div class="document-list">
+                                        <div data-ng-repeat="document in timesheet.documents" class="panel-row">
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-md-10">
+                                                        <a class="label-document-list-link" type="button" data-ng-href="{{getPdfStreamByPublicId(document.PdfDocumentPublicId)}}"
+                                                           target="_blank" data-ng-if="document.PdfDocumentPublicId" title="View">{{document.Name}}</a>
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <div class="btn-toolbar pull-right" data-ng-if="model.entity.TimeSheetStatusId != ApplicationConstants.TimeSheet.Status.PendingReview && model.entity.TimeSheetStatusId != ApplicationConstants.TimeSheet.Status.Approved">
+                                                            <a type="button" class="document-delete" data-ng-click="documentDelete(document)" title="Delete"><i class="fontello-icon-trash"></i></a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12" data-ng-if="document.Description && document.Description.length>0">
+                                                    <label class="label-document-list-details">{{document.Description}}</label>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <label class="label-document-list">Uploaded by:</label>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <label class="label-document-list-details">{{document.UploadedByContactFirstName}} {{document.UploadedByContactLastName}}</label>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <label class="label-document-list-details">{{document.UploadedDatetime | date:ApplicationConstants.formatDateTimeHM}}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel-heading" style="border-top:3px solid #dddddd;margin-bottom:2px;">
+                                <h4 class="panel-title">
+                                    <a data-toggle="collapse" data-target="#workflow-panel" class="panel-header panel-header-link">
+                                        Workflow&nbsp;<span class="badge badge-success" data-ng-if="workflowHistoryLength>0" style="margin-left:1.9em;">{{workflowHistoryLength}}</span>
+                                    </a>
+                                    <button type="button" class="btn btn-clouds pull-right" data-toggle="collapse" data-target="#workflowHistory-panel" id="tsWfHistory"
+                                            style="outline:0;width:85px;" data-ng-click="workflowHistoryOnClick()">
+                                        View
+                                    </button>
+                                </h4>
+                            </div>
+                            <div id="workflow-panel" class="panel-collapse collapse in" data-ng-if="workflowLastItem.action">
+                                <div class="panel-body form-horizontal">
+                                    <div class="row">
+                                        <div class="workflow-list">
+                                            <div id="workflowList" style="width:80%;margin:0 5%;word-break:break-all">
+                                                <div class="form-group">
+                                                    <div class="col-md-12" style="color:#999999;">
+                                                        Action:
+                                                    </div>
+                                                    <div class="col-md-12" style="margin-bottom:5px;color:#000;font-weight:600">
+                                                        {{workflowLastItem.action || '-'}}
+                                                    </div>
+                                                    <div class="col-md-12" style="color:#999999;">
+                                                        Started:
+                                                    </div>
+                                                    <div class="col-md-12" style="margin-bottom:5px;color:#000;font-weight:600">
+                                                        {{(workflowLastItem.started | date:'MMM dd yyyy HH:mm') || '-'}}
+                                                    </div>
+                                                    <div class="col-md-12" style="color:#999999;">
+                                                        Completed:
+                                                    </div>
+                                                    <div class="col-md-12" style="margin-bottom:5px;color:#000;font-weight:600">
+                                                        {{(workflowLastItem.completed | date:'MMM dd yyyy HH:mm') || '-'}}
+                                                    </div>
+                                                    <div class="col-md-12" style="color:#999999;">
+                                                        Status:
+                                                    </div>
+                                                    <div class="col-md-12" style="margin-bottom:5px;color:#000;font-weight:600">
+                                                        {{workflowLastItem.status || '-'}}
+                                                    </div>
+                                                    <div class="col-md-12" style="color:#999999;">
+                                                        Current Approver:
+                                                    </div>
+                                                    <div class="col-md-12" style="margin-bottom:5px;color:#000;font-weight:600">
+                                                        {{workflowLastItem.approver || '-'}}
+                                                    </div>
+                                                    <div class="col-md-12" style="color:#999999;">
+                                                        Current Task:
+                                                    </div>
+                                                    <div class="col-md-12" style="margin-bottom:5px;color:#000;font-weight:600">
+                                                        {{workflowLastItem.task || '-'}}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="ts-print-footer">
+            <div class="col-lg-12" style="text-align: center;">
+                <table class="fc fc-border-separate">
+                    <tbody>
+                        <tr>
+                            <td colspan="2">
+                                <br />
+                                <br />
+                                <span class="consultant-signature">____________________________________________________</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <span>Consultant Signature</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <span style="font-size: 8px;">AS THE AUTHORIZED CLIENT REPRESENTATIVE, I HEREBY ACKNOWLEDGE THAT THE ABOVE MENTIONED CONSULTANT HAS WORKED THE NUMBER OF HOURS INDICATED, THAT I HAVE VERIFIED THE WORK AND THAT I AM SATISFIED WITH THE QUALITY THEREOF.    EN TANT QUE REPRÉSENTANT AUTORISÉ DU CLIENT, JE RECONNAIS PAR CECI QUE LE CONSEILLER MENTIONNÉ CI-DESSUS A TRAVAILLÉ LE D’HEURES INDIQUÉES, QUE J’AI VÉRIFIÉ LE TRAVAIL ET J’EN SUIS SATISFAIT DE LA QUALITÉ.</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <br />
+                                <br />
+                                <br />
+                                <span class="client-signature">____________________________________________________</span>
+                            </td>
+                            <td>
+                                <br />
+                                <br />
+                                <br />
+                                <span class="client-signature">____________________________________________________</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span>Client Signature</span>
+                            </td>
+                            <td>
+                                <span>Name and Title (PLEASE PRINT)</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div id="documentUpload-timesheet" class="panel-collapse collapse print-hidden">
+        <div data-pt-document-upload="" data-holder-id="documentUpload-timesheet" data-entity-type-id="ApplicationConstants.EntityType.TimeSheet"
+             data-entity-id="timesheet.Id" data-show-description-input="true" data-enable-image-resize="false" data-max-file-size="20971520"
+             data-accept-file-types="" data-limit-multi-file-uploads="15" data-func-callback-on-done="documentUploadCallbackOnDone"
+             data-header-text="Upload a supporting document to your timesheet" data-content-text1="Accepted file types: PNG, JPG, JPEG, TIF, BMP, PDF, DOC, DOCX"
+             data-content-text2="20 MB file size limit" data-suppress-document-types="[ApplicationConstants.DocumentTypes.TimesheetPrint]">
+        </div>
+    </div>
+    <div id="comment-panel" class="panel-collapse collapse print-hidden">
+        <div class="panel-body form-horizontal">
+            <div class="row">
+                <div class="file-upload">
+                    <div class="file-upload-modal-backdrop"></div>
+                    <div class="file-upload-modal-frontdrop">
+                        <div class="col-lg-12 header" style="padding-top: 10px; height: 50px;">
+                            Notes
+                            <div class="btn pull-right" data-ng-click="commentPanelClose()"><i class="fontello-icon-cancel-circle"></i></div>
+                        </div>
+                        <div data-pt-comment-utility-service="" data-entity-type-id="ApplicationConstants.EntityType.TimeSheet" data-entity-id="timesheet.Id"
+                             data-header-text="Add your notes here" data-func-get-notes-length="getNotesLength" style="height: 100%;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="workflowHistory-panel" class="panel-collapse collapse print-hidden">
+        <div class="panel-body form-horizontal">
+            <div class="row" data-ng-show="workflowHistoryEnable">
+                <div class="file-upload">
+                    <div class="file-upload-modal-backdrop"></div>
+                    <div class="file-upload-modal-frontdrop">
+                        <div class="col-lg-12 header" style="padding-top: 10px; height: 50px;">
+                            Workflow history
+                            <div class="btn pull-right" data-ng-click="workflowPanelClose()"><i class="fontello-icon-cancel-circle"></i></div>
+                        </div>
+                        <div style="text-align:center; font-size:24px;padding:10px 0;">
+                            View workflow history
+                        </div>
+                        <div style="padding:0 20%;">
+                            <app-phx-workflow-event-history [entity-type-id]="ApplicationConstants.EntityType.TimeSheet" [entity-id]="timesheet.Id" [approver-name]="timesheet.ApproverName"
+                                [func-get-history-length]="getWorkflowHistoryLength" [func-get-last-item]="getWorkflowLastItem">
+                            </app-phx-workflow-event-history >
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

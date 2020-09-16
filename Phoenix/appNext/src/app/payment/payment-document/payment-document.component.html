@@ -1,0 +1,15 @@
+<div class="payment-document-container">
+    <div class="form-group">
+        <div class="pull-right btn-group">
+            <button type="button" (click)="close()" class="btn btn-default btn-material btn-borderless">
+                <i class="material-icons">close</i>
+            </button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="payment-document-pdf-container" *ngIf="src">
+            <iframe #docFrame [src]="src" class="payment-pdf" [title]="'payment.document.documentIframeTitle' | phxTranslate" frameborder="1"
+                scrolling="auto" height="870" width="900"></iframe>
+        </div>
+    </div>
+</div>

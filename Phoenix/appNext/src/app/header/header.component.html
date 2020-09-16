@@ -1,0 +1,27 @@
+<div class="navbar navbar-inverse" id="navbar" style="z-index:998">
+  <script type="text/javascript">
+    try {
+      ace.settings.check('navbar', 'fixed');
+    } catch (e) {}
+  </script>
+
+  <div class="navbar-container" id="navbar-container" ng-style="isProduction?{}:{'background-color':'red'}">
+    <div class="row">
+      <div class="col-xs-2 col-sm-1 hidden-xxxl hidden-xxl hidden-xl hidden-lg hidden-md pull-left">
+        <a class="menu-toggler pull-left" id="menu-toggler" (click)="onSideMenuOpenChanged($event)">
+          <span class="menu-text">Open Menu</span>
+        </a>
+      </div>
+      <div class="col-xs-8 col-md-10 col-sm-10 navlogo">
+        <a class="navbar-brand" ui-sref="ngtwo.m({ p: 'activity-centre' })" ng-style="isProduction?{}:{'background-color':'red'}">
+          <img src="/assets/logo-flex-backoffice.png" alt="logo" />
+        </a>
+      </div>
+      <div class="col-xs-2 col-md-2 col-sm-1 pull-right">
+        <div class="navbar-header pull-right" role="navigation" id="leftMenu">
+          <app-top-nav-menu (menu-open-change)="onMenuOpenChange($event)"></app-top-nav-menu>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

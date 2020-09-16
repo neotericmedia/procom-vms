@@ -1,0 +1,27 @@
+﻿<div data-ng-form="formAlternateBills">
+    <div class="form-group">
+        <div class="col-xs-9">
+            <h4>Third Party Import</h4>
+        </div>
+    </div>
+    <div class="form-group">
+        <label data-for-property="UsesThirdPartyImport" for="UsesThirdPartyImport" data-model-property="scopeOrg.entity.OrganizationClientRoles[0].UsesThirdPartyImport" class="col-lg-3 control-label req-lab-right" data-original-title="" title="">Uses Third Party Import</label>
+        <div class="col-lg-7" style="position:relative;">
+            <pt-input-radio ng-model="scopeOrg.entity.OrganizationClientRoles[0].UsesThirdPartyImport" options="[{key:true,value:'Yes'},{key:false,value:'No'}]" template-type="input-radio" data-pt-field-view="scopeOrg.ptFieldViewConfigOnChangeStatusId" />
+        </div>
+    </div>
+    <div ng-if="scopeOrg.entity.OrganizationClientRoles[0].UsesThirdPartyImport" >
+        <div class="form-group">
+            <label data-for-property="IsBillSalesTaxAppliedOnExpenseImport" for="IsBillSalesTaxAppliedOnExpenseImport" data-model-property="scopeOrg.entity.OrganizationClientRoles[0].IsBillSalesTaxAppliedOnExpenseImport" class="col-lg-3 control-label req-lab-right" data-original-title="" title="">Add Bill Taxes for Expenses on Import</label>
+            <div class="col-lg-7" style="position:relative;">
+                <pt-input-radio ng-model="scopeOrg.entity.OrganizationClientRoles[0].IsBillSalesTaxAppliedOnExpenseImport" options="[{key:true,value:'Yes'},{key:false,value:'No'}]" template-type="input-radio" data-pt-field-view="scopeOrg.ptFieldViewConfigOnChangeStatusId" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label data-for-property="IsPaySalesTaxAppliedOnExpenseImport" for="IsPaySalesTaxAppliedOnExpenseImport" data-model-property="scopeOrg.entity.OrganizationClientRoles[0].IsPaySalesTaxAppliedOnExpenseImport" class="col-lg-3 control-label req-lab-right" data-original-title="" title="">Add Pay Taxes for Expenses on Import</label>
+            <div class="col-lg-7" style="position:relative;">
+                <pt-input-radio ng-model="scopeOrg.entity.OrganizationClientRoles[0].IsPaySalesTaxAppliedOnExpenseImport" options="[{key:true,value:'Yes'},{key:false,value:'No'}]" template-type="input-radio" data-pt-field-view="scopeOrg.ptFieldViewConfigOnChangeStatusId" />
+            </div>
+        </div>
+    </div>
+</div>

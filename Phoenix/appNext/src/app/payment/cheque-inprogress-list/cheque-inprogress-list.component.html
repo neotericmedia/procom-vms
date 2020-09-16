@@ -1,0 +1,30 @@
+<div class="row">
+    <app-phx-state-action-buttons [stateActions]="stateActions" [availableStateActions]="availableStateActions" [displayType]="'DROPDOWN'">
+    </app-phx-state-action-buttons>
+</div>
+<div class="row">
+  <app-phx-data-table #grid [configuration]="dataTableConfiguration" [dataSourceUrl]="'payment/cheque'" [dataSourceParams]='odataParams'
+    [columns]="columns" [exportFileName]="'cheques-inprogress'" [componentName]="'cheque-inprogress-list'" (selectionChanged)="onRowSelected($event)"
+    (masterRowExpanding)="onRowExpanding($event)" (responseReceived)="dataReceived($event)">
+    <div *dxTemplate="let item of 'detail'">
+      <div class="col col-xs-12" *ngIf="item.data.PayeeTypeId !== commonService.ApplicationConstants.PayeeType.GarnisheePayTo">
+        <app-payment-transaction (rowClick)="onPaymentTransactionRowClick($event)" [paymentId]="paymentId"> </app-payment-transaction>
+      </div>
+      <div class="col col-xs-12" *ngIf="item.data.PayeeTypeId === commonService.ApplicationConstants.PayeeType.GarnisheePayTo">
+        <app-payment-transaction-garnishee [paymentId]="paymentId"> </app-payment-transaction-garnishee>
+      </div>
+    </div>
+  </app-phx-data-table>
+</div>
+<div class="row total">
+  <span class="total-label">Selected Total: </span><span class="total-value">{{totalSelected | number : '1.2-2'}} {{currencyId | CodeValue:codeValueGroups.Currency:'code'}}</span>
+</div>
+<div class="row">
+    <app-phx-state-action-buttons [stateActions]="stateActions" [availableStateActions]="availableStateActions"></app-phx-state-action-buttons>
+</div>
+<app-cheque-workflow-comment-dialog #workflowDialog [subTitle]="dialogSubTitle" [action]="actionToExecute" (save)="dialogSaved($event)">
+</app-cheque-workflow-comment-dialog>
+<app-phx-slider [showSlider]="showSlider">
+  <app-payment-document [paymentTransactionId]="paymentTransactionId" (onClose)="showSlider = false">
+  </app-payment-document>
+</app-phx-slider>

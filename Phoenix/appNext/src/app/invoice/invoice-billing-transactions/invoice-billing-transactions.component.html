@@ -1,0 +1,26 @@
+<div class="row">
+  <div class="col-xs-12" *ngIf="invoice">
+    <app-phx-data-table [configuration]="dataTableConfiguration" [dataSource]="invoice.InvoiceBillingTransactions" [columns]="columns"
+      [summary]="summary" [exportFileName]="'InvoiceTransactions'" [componentName]="'InvoiceTransactions'" height="450" (contextMenuPreparing)="onContextMenuPreparing($event)">
+      <div *dxTemplate="let a of 'actionCellTemplate'">
+        <button class="btn btn-material" *ngIf="invoice && editable && invoice.BillingInvoicePresentationStyleId === BillingInvoicePresentationStyle.Consolidated"
+          (click)="removeTransactionFromInvoice(a.data)">
+          <i class="material-icons">clear</i>
+        </button>
+      </div>
+    </app-phx-data-table>
+  </div>
+
+</div>
+<div class="row">
+  <div class="col-xs-12 col-sm-6">
+    <div *ngIf="invoice && invoice.Total > 0">
+      <h4>{{invoiceModuleResourceKeys.transactions.totalAmountLabel| phxTranslate}}
+        <strong>{{invoice.Total | number:'1.2'}} {{invoice.CurrencyId | CodeValue:codeValueGroups.Currency:'code'}}</strong>
+      </h4>
+    </div>
+  </div>
+  <div class="col-xs-12 col-sm-6" *ngIf="invoice && editable && invoice.BillingInvoicePresentationStyleId === BillingInvoicePresentationStyle.Consolidated">
+    <button type="button" class="btn btn-default pull-right" (click)="addTransactionToInvoice()" [title]="invoiceModuleResourceKeys.transactions.addTransactionToInvoiceTitle| phxTranslate">{{invoiceModuleResourceKeys.transactions.addBtn| phxTranslate}}</button>
+  </div>
+</div>

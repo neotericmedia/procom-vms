@@ -1,0 +1,141 @@
+﻿<!--<div>
+    <div class="bookmark-input-menu">
+        <div ng-show="showAddingBookmark && _component.items.length == 0" class="bookmark-input-menu-inner-div">
+            <input class=" pull-left bookmark-input-menu-title bookmarkInput bookmark-input-title" type="text" ng-model="bookmarkCurrent.title" placeholder="Enter title for bookmark." maxlength="64" />
+            <button class="pull-left add-bookmark-icon bookmarkButtonStyle bookmarkButtonWhiteColor backgroundColorDarkBlue bookmarkIconAdd" ng-click="bookmarkAdd(bookmarkCurrent.title)">
+                <i class="material-icons md-24">add</i>
+            </button>
+        </div>
+        <h2 ng-show="_component.items == 0" class="bookmark-input-menu-none">You have no bookmarks</h2>
+    </div>
+</div>-->
+
+
+<div>
+    <div ng-show="_component.items.length > 0" class="bookmark-top-menu backgroundColorDarkerBlue">
+        <!--<button class="bookmarkButtonStyle backgroundColorDarkerBlue bookmarkIcons headerBookmarkIcons" ng-class="bookmarkButtonSelected" ng-show="_component.items != 0 && !stateMinimized && defaultLayout" ng-click="showAdd = !showAdd; showAddPreparation(); showEditAndDelete = false; showOrderOptions = false;">
+            <i ng-show="bookmarked === false" class="material-icons md-24">star_border</i>
+            <i ng-show="bookmarked === true" class="material-icons md-24">star</i>
+        </button>
+        <button class="bookmarkButtonStyle backgroundColorDarkerBlue bookmarkIcons headerBookmarkIcons" ng-show="_component.items != 0 && !stateMinimized && defaultLayout" ng-click="showEditAndDelete = !showEditAndDelete; showAdd = false; showOrderOptions = false;">
+            <i class="material-icons md-24">edit</i>
+        </button>
+        <button class="bookmarkButtonStyle backgroundColorDarkerBlue bookmarkIcons headerBookmarkIcons" ng-show="_component.items != 0 && !stateMinimized" ng-click="showOrderOptions = !showOrderOptions; showAdd = false; showEditAndDelete = false;">
+            <i class="material-icons md-24">list</i>
+        </button>-->
+        <button class="bookmarkButtonStyle bookmarkIcons headerBookmarkIcons" ng-class="showAdd === true ? 'bookmarkButtonSelected' : 'backgroundColorDarkerBlue bookmarkButtonWhiteColor'" ng-show="_component.items != 0 && !stateMinimized && defaultLayout" ng-click="showAdd = !showAdd; showAddPreparation(); showEditAndDelete = false; showOrderOptions = false;">
+            <i ng-show="bookmarked === false" class="material-icons md-24">star_border</i>
+            <i ng-show="bookmarked === true" class="material-icons md-24">star</i>
+        </button>
+        <button class="bookmarkButtonStyle bookmarkIcons bookmarkButtonWhiteColor headerBookmarkIcons" ng-class="showEditAndDelete == true ? 'bookmarkButtonSelected' : 'backgroundColorDarkerBlue bookmarkButtonWhiteColor'" ng-show="_component.items != 0 && !stateMinimized && defaultLayout" ng-click="showEditAndDelete = !showEditAndDelete; makeFirstOneActive(); showAdd = false;">
+            <i class="material-icons md-24">edit</i>
+        </button>
+        <button class="bookmarkButtonStyle bookmarkIcons bookmarkButtonWhiteColor headerBookmarkIcons" ng-class="showOrderOptions == true ? 'bookmarkButtonSelected' : 'backgroundColorDarkerBlue bookmarkButtonWhiteColor'" ng-show="_component.items != 0 && !stateMinimized" ng-click="showOrderOptions = !showOrderOptions; showAdd = false;">
+            <i class="material-icons md-24">list</i>
+        </button>
+    </div>
+
+
+    <div ng-show="showOrderOptions && !stateMinimized">
+        <div class="bookmark-order-menu backgroundColorDarkBlue">
+            <button class="bookmarkButtonStyle bookmarkButtonWhiteColor backgroundColorDarkBlue bookmarkFilterButtons"
+                    ng-class="orderByRepeatProperty == '-title' ? 'backgroundColorDarkerBlue' : 'backgroundColorDarkBlue'" ng-click="filterByTitle()">
+                {{ localization.titleLabel }}
+                <i ng-show="orderByRepeatProperty == '-title' && orderByRepeatReverse === true" class="material-icons md-18 pull-right bookmarkChevronStyling">keyboard_arrow_down</i>
+                <i ng-show="orderByRepeatProperty == '-title' && orderByRepeatReverse === false" class="material-icons md-18 pull-right bookmarkChevronStyling">keyboard_arrow_up</i>
+            </button>
+            <button class="bookmarkButtonStyle bookmarkButtonWhiteColor bookmarkFilterButtons"
+                    ng-class="orderByRepeatProperty == '-creationDate' ? 'backgroundColorDarkerBlue' : 'backgroundColorDarkBlue'" ng-click="filterByCreateDate()">
+                    {{ localization.dateLabel }}
+                <i ng-show="orderByRepeatProperty == '-creationDate' && orderByRepeatReverse === true" class="material-icons md-18 pull-right bookmarkChevronStyling">keyboard_arrow_down</i>
+                <i ng-show="orderByRepeatProperty == '-creationDate' && orderByRepeatReverse === false" class="material-icons md-18 pull-right bookmarkChevronStyling">keyboard_arrow_up</i>
+            </button>
+            <button class="bookmarkButtonStyle bookmarkButtonWhiteColor backgroundColorDarkBlue bookmarkFilterButtons"
+                    ng-class="orderByRepeatProperty == '-icon' ? 'backgroundColorDarkerBlue' : 'backgroundColorDarkBlue'" ng-click="filterByType()">
+                    {{ localization.typeLabel }}
+                <i ng-show="orderByRepeatProperty == '-icon' && orderByRepeatReverse === true" class="material-icons md-18 pull-right bookmarkChevronStyling">keyboard_arrow_down</i>
+                <i ng-show="orderByRepeatProperty == '-icon' && orderByRepeatReverse === false" class="material-icons md-18 pull-right bookmarkChevronStyling">keyboard_arrow_up</i>
+            </button>
+        </div>
+    </div>
+
+    <div ng-show="showAdd && !bookmarked">
+        <div class="bookmark-input-menu">
+            <div class="bookmark-input-menu-inner-div">
+                <input class="pull-left bookmark-input-menu-title bookmarkInput bookmark-input-title" type="text" ng-model="bookmarkCurrent.title" placeholder="Enter title for bookmark." maxlength="128" />
+                <button class="pull-right add-bookmark-icon bookmarkButtonStyle bookmarkButtonWhiteColor backgroundColorDarkBlue bookmarkIconAdd" ng-click="bookmarkAdd(bookmarkCurrent.title)">
+                    <i class="material-icons md-24">add</i>
+                </button>
+                <!--<input class="bookmark-input-menu-description" type="text" ng-model="bookmarkCurrent.description" placeholder="Enter description for bookmark." maxlength="64" />-->
+            </div>
+            <h2 ng-show="_component.items == 0" class="bookmark-input-menu-none">{{ localization.noBookmarksMessage }}</h2>
+        </div>
+    </div>
+
+    <!--
+    <div ng-show="bookmarkCurrent.title">
+        <div class="bookmark-input-menu">
+            <div class="bookmark-input-menu-inner-div">
+                <input class="bookmark-input-menu-title" type="text" ng-model="bookmarkCurrent.title" placeholder="Enter title for bookmark." ng-style="maxWidthStyle" maxlength="64" />
+                <button class="bookmark-details-menu" title="Update description/Title" ng-click="bookmarkUpdate(bookmarkCurrent)">
+                    <i class="material-icons md-24">sd_card</i>
+                </button>
+                <input class="bookmark-input-menu-description" type="text" ng-model="bookmarkCurrent.description" placeholder="Enter description for bookmark." maxlength="64" />
+            </div>
+        </div>
+    </div>-->
+
+    <ul class="nav nav-list bookmark-ul-menu backgroundColorDarkBlue" ng-if="defaultLayout">
+        <li ng-repeat="nitem in _component.items | orderBy:orderByRepeatProperty:orderByRepeatReverse" class="bookmarkDisplayInlineBoxImportant bookmark-ul-menu-li-wrapper col-sm-12" ng-mouseenter="nitem.showEditDeleteSaveMenu = true; makeFirstOneDeactive();" ng-mouseleave="nitem.showEditDeleteSaveMenu = false;">
+            <div class="bookmark-ul-menu-link-wrapper">
+                <a ng-show="!isFoundPathNameInUpdateList(nitem) || !showEditAndDelete" ng-click="redirection(nitem.pathName)" class="dropdown-toggle bookmark-ul-menu-link">
+                    <i ng-if="nitem.icon && orderByRepeatProperty === '-icon'" class="pull-left bookmarkDisplayInlineBox material-icons md-24 bookmark-icon">{{nitem.icon}}</i>
+                    <span class="menu-text">{{nitem.title}}</span>
+                </a>
+                <input ng-show="isFoundPathNameInUpdateList(nitem) && showEditAndDelete" class="bookmark-input-title bookmarkInput editBookmarkTitleInput" type="text" ng-model="nitem.tempValue" placeholder="Enter title for bookmark." ng-style="maxWidthStyle" ng-maxlength="128"/>
+                <div ng-show="(showEditAndDelete || isOpenDetails(nitem.pathName)) && (nitem.showEditDeleteSaveMenu || isFoundPathNameInUpdateList(nitem) || ($first && firstActiveNoLonger))" class="bookmarkDisplayInlineBox pull-right bookmark-ul-menu-buttons-wrapper">
+                    <button ng-show="!isFoundPathNameInUpdateList(nitem) && (nitem.showEditDeleteSaveMenu || ($first && firstActiveNoLonger))" ng-class="nitem.showEditDeleteSaveMenu === true ? 'backgroundColorDarkerBlue' : 'backgroundColorDarkBlue'" class="bookmark-details-menu bookmarkButtonStyleNoBorder bookmarkButtonWhiteColor bookmarkInsideIcons" title="{{ localization.editBookmarkTitleLabel }}" ng-click="updateBookmarkPrecursor(nitem);">
+                        <i class="material-icons md-24">edit</i>
+                    </button>
+                    <button ng-show="isFoundPathNameInUpdateList(nitem)" ng-class="nitem.showEditDeleteSaveMenu === true ? 'backgroundColorDarkerBlue' : 'backgroundColorDarkBlue'" class="bookmark-details-menu bookmarkButtonStyleNoBorder bookmarkButtonWhiteColor bookmarkInsideIcons" title="{{ localization.updateBookmarkTitleLabel }}" ng-click="bookmarkUpdate(nitem);">
+                        <i class="material-icons md-24">save</i>
+                    </button>
+                    <button ng-show="isFoundPathNameInUpdateList(nitem) || (nitem.showEditDeleteSaveMenu || ($first && firstActiveNoLonger))" ng-class="nitem.showEditDeleteSaveMenu === true ? 'backgroundColorDarkerBlue' : 'backgroundColorDarkBlue'" class="bookmark-details-menu bookmarkButtonStyleNoBorder bookmarkButtonWhiteColor bookmarkInsideIcons" title="{{ localization.deleteBookmarkLabel }}" ng-click="bookmarkDelete(nitem)">
+                        <i class="material-icons md-24">delete</i>
+                    </button>
+                </div>
+            </div>
+        </li>
+    </ul>
+</div>
+
+<!--When menu is minimized, hide the contents that would exceed past the menu-->
+<!--<div class="bookmark-input-menu" ng-if="eventName=='AddToFavourites'">
+    <div ng-show="showAddingBookmark || updateBookmarkForm" class="bookmark-input-menu-inner-div">
+        <input class="bookmark-input-menu-title" type="text" ng-model="bookmarkCurrent.title" placeholder="Enter title for bookmark." ng-style="maxWidthStyle" maxlength="64" />
+        <button ng-if="showAddingBookmark" ng-click="bookmarkAdd(bookmarkCurrent.title, bookmarkCurrent.description)">Add</button>
+        <button ng-if="updateBookmarkForm" ng-click="bookmarkUpdate(bookmarkCurrent.title, bookmarkCurrent.description)">Update</button>
+        <input class="bookmark-input-menu-description" type="text" ng-model="bookmarkCurrent.description" placeholder="Enter description for bookmark." maxlength="64" />
+    </div>
+    <h2 ng-show="_component.items == 0" class="bookmark-input-menu-none">You have no bookmarks</h2>
+</div>-->
+<!-- Below is the grouped menu -->
+<!--<ul ng-show="defaultLayout == false" class="nav nav-list bookmark-ul-menu">
+    <li ng-repeat="nitem in _component.itemsGrouped | orderBy:orderByRepeatProperty:orderByRepeatReverse">
+
+        <a ng-if="nitem.hasSubItems" href="javascript:void(0)" class="bookmark-folder-link dropdown-toggle" title="{{nitem.folderName}}" ng-click="itemClick(nitem)" id="{{nitem.code}}">
+            <i ng-if="nitem.icon" class="{{nitem.icon}}"></i>
+            <span class="menu-text"> {{nitem.folderName}}</span>
+            <b class="arrow icon-angle-down"></b>
+        </a>
+
+        <ul class="submenu">
+            <li ng-repeat="s1item in nitem.subItems">
+                <a ng-mouseenter="onMouseEnterBookmark(s1item.pathName)" ng-click="redirection(s1item.pathName)" title="{{s1item.description}}" class="bookmark-folder-inside-link">
+                    <i class="icon-double-angle-right"></i>
+                    {{s1item.title}}
+                </a>
+            </li>
+        </ul>
+    </li>
+</ul>-->

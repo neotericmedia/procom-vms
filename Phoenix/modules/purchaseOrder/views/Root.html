@@ -1,0 +1,98 @@
+﻿<div class="col-lg-12">
+    <div class="row" style="height: 35px;">
+        <div class="col col-lg-8">
+        </div>
+        <div class="col-lg-4">
+        </div>
+    </div>
+    <div class="row " data-ng-form="entityForm">
+        <div class="tab-content">
+            <div class="tabbable panel panel-tabbable">
+                <div class="tab-content" data-ng-if="model.entity.StatusId != null && model.entity.StatusId != ApplicationConstants.PurchaseOrderStatus.New">
+                    <div class="tab-pane active">
+                        <div class="panel">
+                            <div class="panel-heading headstone">
+                                <div class="row">
+                                    <div class="col-lg-4">
+                                        <span class="text-gray ">Client</span>
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <span class="text-gray ">Total Funds</span>
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <span class="text-gray ">Funds Committed</span>
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <span class="text-gray">Funds Spent</span>
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <span class="text-gray ">Status</span>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-4">
+                                        <p class="form-control-static" data-ng-if="model.entity.OrganizationId > 0">
+                                            <a data-ui-sref="org.edit.details({organizationId: model.entity.OrganizationId })">{{model.entity.OrganizationId | lookup:lists.listOrganizationClient:'Id':'DisplayName'}} - {{model.entity.OrganizationId}}</a>
+                                        </p>
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <span>{{model.entity.amountTotal()|currency}} {{model.entity.PurchaseOrderLines[0].CurrencyId | lookup:lists.currencyList:'id':'code'}}</span>
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <span>{{model.entity.amountCommitedTotal()|currency}} {{model.entity.PurchaseOrderLines[0].CurrencyId | lookup:lists.currencyList:'id':'code'}}</span>
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <span>{{model.entity.amountSpentTotal()|currency}} {{model.entity.PurchaseOrderLines[0].CurrencyId | lookup:lists.currencyList:'id':'code'}}</span>
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <span data-ng-class="model.entity.StatusId==ApplicationConstants.PurchaseOrderStatus.Active?'text-warning':''">{{model.entity.StatusId | lookup:lists.purchaseOrderStatuses}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tabbable">
+                    <ul class="nav nav-tabs">
+                        <li data-ng-class="{ active : $state.includes('purchaseorder.edit.details') } " data-ng-show="$state.includes('purchaseorder.edit')"><a data-ui-sref="purchaseorder.edit.details">Details</a></li>
+                        <li data-ng-class="{ active : $state.includes('purchaseorder.edit.workorders') } " data-ng-show="$state.includes('purchaseorder.edit')"><a data-ui-sref="purchaseorder.edit.workorders">Work Orders</a></li>
+                        <li data-ng-class="{ active : $state.includes('purchaseorder.edit.changehistory') } " data-ng-show="$state.includes('purchaseorder.edit')"><a data-ui-sref="purchaseorder.edit.changehistory">Change History</a></li>
+                        <li data-ng-class="{ active : $state.includes('purchaseorder.edit.documents') } " data-ng-show="$state.includes('purchaseorder.edit')"><a data-ui-sref="purchaseorder.edit.documents">Documents</a></li>
+
+                        <li data-ng-class="{ active : $state.includes('purchaseorder.create.details') } " data-ng-show="$state.includes('purchaseorder.create')"><a data-ui-sref="purchaseorder.create.details">Details</a></li>
+                        <li data-ng-class="{ active : $state.includes('purchaseorder.create.workorders') } " data-ng-show="$state.includes('purchaseorder.create')"><a data-ui-sref="purchaseorder.create.workorders">Work Orders</a></li>
+                    </ul>
+                </div>
+                <div class="tab-content">
+                    <div class="tab-pane active">
+                        <div class="panel">
+                            <div class="panel-body" data-ui-view="purchaseOrderActiveTabs" data-autoscroll="false"></div>
+                            <div class="panel-body" data-pt-validation-messages="model.ValidationMessages"></div>
+                            <div class="panel-footer">
+                                <div class="row">
+                                    <div class="col-lg-5">
+                                    </div>
+                                    <div class="col-lg-7">
+                                        <div class="pull-right">
+                                            <!--<button type="button" class="btn btn-info btn-prev" data-ng-click="tabNavigation('prev')" data-ng-disabled="$state.current.name=='purchaseorder.edit.details' || $state.current.name=='purchaseorder.create.details'"><i class="icon-arrow-left"></i>Prev</button>
+                                            <button type="button" class="btn btn-info btn-next" data-ng-click="tabNavigation('next')" data-ng-disabled="$state.current.name=='purchaseorder.edit.documents' || $state.current.name=='purchaseorder.create.workorders'">Next <i class="icon-arrow-right"></i></button>-->
+                                            <button type="button" class="btn btn-default" data-ng-click="actionButton.onClick.discard()" data-ng-show="actionButton.show.discard">Cancel and Discard</button>
+                                            <button type="button" class="btn btn-default" data-ng-click="actionButton.onClick.cancel()" data-ng-show="actionButton.show.cancel">Cancel</button>
+                                            <button type="button" class="btn btn-default" data-ng-click="save(model.entity)" data-ng-show="actionButton.show.save">Save</button>
+                                            <button type="button" class="btn btn-primary" data-ng-click="actionButton.onClick.edit()" data-ng-show="actionButton.show.edit">Edit</button>
+                                            <button type="button" class="btn btn-primary" data-ng-click="submit(model.entity)" data-ng-show="actionButton.show.submit" data-ng-disabled="!formValid.poDetails">Submit</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="slider-holder" data-ng-class="{ out: !$state.is('purchaseorder.edit.details.line') || !$state.is('purchaseorder.create.details.line'), in: $state.is('purchaseorder.edit.details.line') ||  $state.is('purchaseorder.create.details.line')}">
+    <div ui-view="purchaseOrderLine"></div>
+</div>

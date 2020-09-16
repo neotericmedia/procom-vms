@@ -1,0 +1,8 @@
+<app-phx-accordion-group [ngClass]="panelClass" [(isOpen)]="isOpen" [heading]="heading" [showToggle]="showToggle">
+   <div accordion-heading [ngClass]="headerClass">
+    <ng-content select="[accordion-heading]">
+    </ng-content>
+    <span *ngIf="badge" class="badge badge-warning" [ngClass]="badgeClass">{{badge}}</span>
+  </div> 
+  <ng-content></ng-content>
+</app-phx-accordion-group>

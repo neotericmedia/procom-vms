@@ -1,0 +1,226 @@
+<div class="navbar navbar-inverse" id="navbar" ng-if="!hideDash" style="z-index:998">
+    <!-- <script type="text/javascript">
+        try {
+            ace.settings.check('navbar', 'fixed');
+        } catch (e) { }
+    </script> -->
+
+    <div class="navbar-container" id="navbar-container" ng-style="isProduction?{}:{'background-color':'red'}">
+        <div class="row">
+            <div class="col-xs-2 col-sm-1 hidden-xxxl hidden-xxl hidden-xl hidden-lg hidden-md pull-left">
+                <a class="menu-toggler pull-left" id="menu-toggler" ng-if="!hideDash">
+                    <span class="menu-text">placeholder</span>
+                </a>
+            </div>
+            <div class="col-xs-8 col-md-10 col-sm-10 navlogo">
+                <a class="navbar-brand" ui-sref="ngtwo.m({ p: 'activity-centre' })" ng-style="isProduction?{}:{'background-color':'red'}">
+                    <img src="/assets/logo-flex-backoffice.png" alt="logo" />
+                </a>
+            </div>
+            <div class="col-xs-2 col-md-2 col-sm-1 pull-right">
+                <div class="navbar-header pull-right" role="navigation" id="leftMenu">
+                    <app-top-nav-menu (menu-open-change)="onMenuOpenChange($event)"></app-top-nav-menu>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="main-container">
+    <div class="main-container-inner">
+        <div class="sidebar menu-min" ng-model="selectedSideView" ng-if="!hideDash" ng-init="selectedSideView = 'Menu';" id="sidebar"
+            style="z-index: 101;">
+            <div class="sidebar-shortcuts" id="sidebar-shortcuts" style="z-index: 1;">
+
+                <div class="sidebar-shortcuts-large" id="sidebar-shortcuts-large" style="z-index: 1;">
+                    <button class="btn btn-cloud" title="{{localization.menuLabel | phxTranslate}}" ng-click="selectedSideView = 'Menu'">
+                        <i class="material-icons md-24">view_list</i>
+                    </button>
+                    <button class="btn btn-cloud" title="{{localization.editFavoritesLabel | phxTranslate}}" ng-click="selectedSideView === 'EditFavourites' ? selectedSideView = 'EditFavouritesA' : selectedSideView = 'EditFavourites'">
+                        <i ng-show="selectedSideView !== 'EditFavourites' && selectedSideView !== 'EditFavouritesA'" class="material-icons md-24">bookmark_border</i>
+                        <i ng-show="selectedSideView === 'EditFavourites' || selectedSideView === 'EditFavouritesA' || selectedsideview === 'specialCase'"
+                            class="material-icons md-24">bookmark</i>
+                        <!--<i class="material-icons md-24">bookmark</i>-->
+                    </button>
+                    <button class="btn btn-cloud" title="{{localization.addToFavoritesLabel | phxTranslate}}" ng-click="selectedSideView === 'AddToFavourites' ? selectedSideView = 'AddToFavouritesA' : selectedSideView = 'AddToFavourites'">
+                        <i class="material-icons md-24 shortcut-add-bookmark">star_border</i>
+                        <!--<i ng-show="isPageBookmarked || selectedsideview === 'specialCase'" class="material-icons md-24">star</i>-->
+                    </button>
+                </div>
+
+                <div class="sidebar-shortcuts-mini" id="sidebar-shortcuts-mini" style="margin-left: 3px;">
+                    <span ng-if="selectedSideView !== 'Menu'" class="btn btn-primary"></span>
+                    <span ng-if="selectedSideView === 'Menu'" class="btn btn-success"></span>
+
+                    <span ng-if="selectedSideView !== 'EditFavourites' && selectedSideView !== 'EditFavouritesA'" class="btn btn-primary"></span>
+                    <span ng-if="selectedSideView === 'EditFavourites' || selectedSideView === 'EditFavouritesA'" class="btn btn-success"></span>
+
+                    <span ng-if="selectedSideView !== 'AddToFavourites' && selectedSideView !== 'AddToFavouritesA'" class="btn btn-primary"></span>
+                    <span ng-if="selectedSideView === 'AddToFavourites' || selectedSideView === 'AddToFavouritesA'" class="btn btn-success"></span>
+                </div>
+            </div>
+            <!-- #sidebar-->
+            <!-- redirection menu -->
+            <div data-pt-main-side-menu="" ng-show="selectedSideView === 'Menu'" ng-if="!hideDash && window.navigation && window.navigation.Navigation"
+                data-ng-model="window.navigation.Navigation" style="z-index: 1;">
+            </div>
+
+            <!-- bookmark menu -->
+            <div ng-show="(!hideDash && window.navigation && window.navigation.Navigation) &&
+                      (selectedSideView === 'EditFavourites' || selectedSideView === 'EditFavouritesA' || selectedSideView === 'AddToFavourites' || selectedSideView === 'AddToFavouritesA')"
+                data-pt-bookmark-side-menu="" eventname="selectedSideView" isbookmarked="isPageBookmarked" style="z-index: 1;">
+            </div>
+        </div>
+
+        <div id="mainContentPage" class="main-content {{stateName}}">
+            <div class="breadcrumbs " id="breadcrumbs" ng-if="!hideDash">
+                <div class="page-title">
+                    <span data-ng-repeat="decorator in pageTitleDecorators">
+                        <i class="material-icons page-icon" data-ng-class='{iconMarginRight: decorator.ShowText === false}' ng-if="decorator.ShowIcon === true" ng-style="{backgroundColor: decorator.IconColor}">{{decorator.Icon}}</i>
+                        <span ng-show="decorator.ShowText === true" class="page-text">{{decorator.Text}}</span>
+                        <i ng-show="decorator.ShowText === true" class="material-icons breadcrumb-spacer">keyboard_arrow_right</i>
+                    </span>
+                </div>
+                <div class="global-search hidden-xs">
+                    <div class="input-group" title="Coming Soon">
+                        <input type="text" class="form-control" placeholder="search...">
+                        <span class="input-group-addon">
+                            <i class="fontello-icon-search-5"></i>
+                        </span>
+                    </div>
+                </div>
+                <div class="page-help" data-ng-click="clickOnHelp()" data-ng-if="helpShow">
+                    <i data-ng-class="helpIcon" class="opaci35"></i>
+                    <span data-ng-bind="helpTitle"></span>
+                </div>
+            </div>
+            <div class="page-content">
+                <div class="selectable" ng-show="$root.activateGlobalSpinner">
+                    <!--<div style="position:fixed" class="cg-busy cg-busy-backdrop cg-busy-backdrop-animation"></div>
+                    <div style="position:fixed" class="cg-busy cg-busy-animation">
+                        <div class="cg-busy-default-wrapper">
+                            <div class="cg-busy-default-sign">
+                                <div class="cg-busy-default-spinner">
+                                    <div class="bar1"></div>
+                                    <div class="bar2"></div>
+                                    <div class="bar3"></div>
+                                    <div class="bar4"></div>
+                                    <div class="bar5"></div>
+                                    <div class="bar6"></div>
+                                    <div class="bar7"></div>
+                                    <div class="bar8"></div>
+                                    <div class="bar9"></div>
+                                    <div class="bar10"></div>
+                                    <div class="bar11"></div>
+                                    <div class="bar12"></div>
+                                </div>
+                                <div class="cg-busy-default-text">Please wait...</div>
+                            </div>
+                            </div>
+                    </div>-->
+                    <style type="text/css">
+                        #loading-Overlay {
+                            position: fixed;
+                            /* Sit on top of the page content */
+                            width: 100%;
+                            /* Full width (cover the whole page) */
+                            height: 100%;
+                            /* Full height (cover the whole page) */
+                            top: 0;
+                            left: 0;
+                            right: 0;
+                            bottom: 0;
+                            padding: 0;
+                            margin: 0;
+                            background-color: rgba(53, 64, 81, 0.6);
+                            /* Black background with opacity */
+                            z-index: 999;
+                            /* Specify a stack order in case you're using a different order for other elements */
+                            cursor: pointer;
+                            /* Add a pointer on hover */
+                        }
+
+                        #loading-Animation-Container {
+                            width: 200px;
+                            margin: 5px auto;
+                            padding-top: 5px;
+                        }
+
+                        .loading-text {
+                            font-size: 1.2em;
+                            color: #fff;
+                        }
+
+                        .loading-text.loading-progress-text {
+                            font-size: 1.1em;
+                        }
+
+                        .sk-three-bounce {
+                            margin: 30px auto;
+                            width: 100px;
+                            text-align: center;
+                        }
+
+                        .sk-three-bounce .sk-child {
+                            width: 13px;
+                            height: 13px;
+                            background-color: #fff;
+                            border-radius: 100%;
+                            display: inline-block;
+                            -webkit-animation: sk-three-bounce 1.4s ease-in-out 0s infinite both;
+                            animation: sk-three-bounce 1.4s ease-in-out 0s infinite both;
+                        }
+
+                        .sk-three-bounce .sk-bounce1 {
+                            -webkit-animation-delay: -0.32s;
+                            animation-delay: -0.32s;
+                        }
+
+                        .sk-three-bounce .sk-bounce2 {
+                            -webkit-animation-delay: -0.16s;
+                            animation-delay: -0.16s;
+                        }
+
+                        @-webkit-keyframes sk-three-bounce {
+                            0%,
+                            80%,
+                            100% {
+                                -webkit-transform: scale(0);
+                                transform: scale(0);
+                            }
+
+                            40% {
+                                -webkit-transform: scale(1);
+                                transform: scale(1);
+                            }
+                        }
+
+                        @keyframes sk-three-bounce {
+                            0%,
+                            80%,
+                            100% {
+                                -webkit-transform: scale(0);
+                                transform: scale(0);
+                            }
+
+                            40% {
+                                -webkit-transform: scale(1);
+                                transform: scale(1);
+                            }
+                        }
+                    </style>
+                    <div id="loading-Overlay" class="sk-three-bounce">
+                        <div id="loading-Animation-Container">
+                            <div class="sk-child sk-bounce1"></div>
+                            <div class="sk-child sk-bounce2"></div>
+                            <div class="sk-child sk-bounce3"></div>
+                            <div class="loading-text loading-progress-text" data-ng-if="$root.globalSpinnerProgressText">{{ $root.globalSpinnerProgressText }}</div>
+                            <div class="loading-text">{{ 'common.generic.loadingText' | phxTranslate }}</div>
+                        </div>
+                    </div>
+                </div>
+                <div data-ui-view="" autoscroll="false"></div>
+                <app-root>ng2Root</app-root>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,27 @@
+<div *ngIf="invoiceGrouped?.length == 0" class="empty">
+  There are no invoices to clear.
+</div>
+
+<div class="app-accordion-container app-accordion-container-28">
+  <app-phx-accordion>
+    <app-phx-badged-accordion-group *ngFor="let btg of invoiceGrouped; let groupIndex = index" [badge]="btg.Count" [showToggle]="btg.Count > 0"
+      [isOpen]="groupIndex === 0 && btg.Count > 0">
+      <span accordion-heading>{{btg.OrganizationInternalLegalName}}</span>
+      <div class="app-accordion-level-two" *ngIf="btg.Count > 0">
+        <ng-template ngFor let-presentationStyle [ngForOf]="btg.BillingInvoicePresentationStyles">
+          <app-phx-accordion *ngIf="presentationStyle.Count > 0">
+            <div class="entityBlock">
+              <div (click)="goToRelease(btg.OrganizationIdInternal, presentationStyle.BillingInvoicePresentationStyleId)">
+                <div class="divRelease navWithLink app-accordion-level-two-item">
+                  <span>{{presentationStyle.BillingInvoicePresentationStyleId | CodeValue:codeValueGroups.BillingInvoicePresentationStyle}}</span>
+                  <span class="badge badge-warning Badge">{{presentationStyle.Count}}</span>
+                </div>
+              </div>
+            </div>
+          </app-phx-accordion>
+        </ng-template>
+      </div>
+
+    </app-phx-badged-accordion-group>
+  </app-phx-accordion>
+</div>

@@ -1,0 +1,128 @@
+﻿<div class="row vms-trn-main-div">
+    <show-busy-controlled associate="trn.viewLoading"></show-busy-controlled>
+    <div class="panel-body" style="padding: 0px;" data-pt-validation-messages="trn.ValidationMessages"></div>
+    <div class="vms-trn-header" data-ng-if="trn.clientOrganizations.length>0">
+        <div class="vms-client-main col-lg-4" data-ng-disabled="trn.viewLoading">
+            <div class="input-group select2-bootstrap-append vms-client-wrapper" id="vms-client-wrapper">
+                <ui-select name="SelectedClient" data-ng-model="trn.SelectedClient" data-ng-change="trn.clientChanged($select.selected)" theme="select2" class="form-control">
+                    <ui-select-match placeholder="Selectable Create Transaction">{{$select.selected.ClientOrgDisplayName}}</ui-select-match>
+                    <ui-select-choices repeat="client in trn.clientOrganizations | uiSelectChoicesFilter: $select.search: 'ClientOrgDisplayName'">
+                        <div id="vmsClientOrg{{client.OrganizationIdClient}}" class="vms-client-orgs" data-ng-class="{'vms-client-selected': client.OrganizationIdClient == trn.OrganizationIdClient }">
+                            <span data-ng-bind-html="client.ClientOrgDisplayName | highlight: $select.search"></span>
+                            <div style="display: inline-block;">
+                                <span class="badge badge-warning badge-trn">{{client.UnitedStatesSourceDeductionPreparedCount}}</span>
+                                <i class="pull-right vms-chevron icon-chevron-right" style="padding-top: 4px;"></i>
+                            </div>
+                        </div>
+                    </ui-select-choices>
+                </ui-select>
+                <span class="input-group-btn">
+                    <button tabindex="-1" data-ng-click="trn.clearClient()" class="btn btn-default btn-contact-drp"><i class="material-icons md-18">clear</i></button>
+                </span>
+            </div>
+        </div>
+    </div>
+    <div data-ng-if="trn.clientOrganizations.length==0" class="emptyVms">
+        <span>There are no VMS United States Source Deduction items to show</span>
+    </div>
+    <show-busy-controlled associate="trn.viewLoadingMixin"></show-busy-controlled>
+    <div class="col-lg-12 vms-trn-table-div">
+        <div class="smart-table-wrapper vms-trn-table" data-ng-show="trn.isUserSelected">
+            <div class="row">
+                <table data-st-table-struct='[{"stTableValue" : "trn.items"}, {"stPipeValue" : "trn.callServer"}, {"widthValues" : "[7, 6, 8, 8, 6, 6, 6, 6, 6]"}, {"stPaginationValue" : "trn.pageSize"}]'>
+                    <thead data-st-head="1600px">
+                        <tr>
+                            <th data-st-sort="ImportDate" data-st-sort-default="">Import Date</th>
+                            <th data-st-sort="PaymentTransactionNumber">Payment Transaction</th>
+                            <th data-st-sort="LastName">Last Name</th>
+                            <th data-st-sort="Date">Date</th>
+
+                            <th data-st-sort="GrossAmount" class="text-right">Gross</th>
+                            <th data-st-sort="MedicareAmount" class="text-right">Medicare</th>
+                            <th data-st-sort="SocialSecurityAmount" class="text-right">SocSect</th>
+                            <th data-st-sort="FudiAmount" class="text-right">Fudi</th>
+                            <th data-st-sort="SuiAmount" class="text-right">Sui</th>
+                            
+                            <th data-st-pen-name="Action">Action</th>
+                        </tr>
+                        <tr>
+                            <th>
+                                <input data-st-advanced-search="'ImportDate'"
+                                       data-st-as-operator-override="'le'"
+                                       close-on-date-selection="false" show-button-bar="false" show-weeks="false" class="input-sm form-control"
+                                       data-st-as-lazy-attributes="{'uib-datepicker' : ApplicationConstants.formatDate}"
+                                       data-st-as-height-override="400"
+                                       data-st-as-width-override="315" />
+                            </th>
+                            <th>
+                                <input data-st-advanced-search="'PaymentTransactionNumber'" placeholder=""
+                                       class="input-sm form-control" />
+                            </th>
+                            <th>
+                                <input data-st-advanced-search="'LastName'" placeholder=""
+                                       class="input-sm form-control" />
+                            </th>
+                            <th>
+                                <input data-st-advanced-search="'Date'"
+                                       data-st-as-operator-override="'le'"
+                                       close-on-date-selection="false" show-button-bar="false" show-weeks="false" class="input-sm form-control"
+                                       data-st-as-lazy-attributes="{'uib-datepicker' : ApplicationConstants.formatDate}"
+                                       data-st-as-height-override="400"
+                                       data-st-as-width-override="315" />
+                            </th>
+                            <th>
+                                <input data-st-advanced-search="{property: 'GrossAmount', ignoreQuotes: true, valueSuffix: 'M'}" placeholder=""
+                                       class="input-sm form-control numberType" data-safe-restrict-input="[^0123456789.]" />
+                            </th>
+                            <th>
+                                <input data-st-advanced-search="{property: 'MedicareAmount', ignoreQuotes: true, valueSuffix: 'M'}" placeholder=""
+                                       class="input-sm form-control numberType" data-safe-restrict-input="[^0123456789.]" />
+                            </th>
+                            <th>
+                                <input data-st-advanced-search="{property: 'SocialSecurityAmount', ignoreQuotes: true, valueSuffix: 'M'}" placeholder=""
+                                       class="input-sm form-control numberType" data-safe-restrict-input="[^0123456789.]" />
+                            </th>
+                            <th>
+                                <input data-st-advanced-search="{property: 'FudiAmount', ignoreQuotes: true, valueSuffix: 'M'}" placeholder=""
+                                       class="input-sm form-control numberType" data-safe-restrict-input="[^0123456789.]" />
+                            </th>
+                            <th>
+                                <input data-st-advanced-search="{property: 'SuiAmount', ignoreQuotes: true, valueSuffix: 'M'}" placeholder=""
+                                       class="input-sm form-control numberType" data-safe-restrict-input="[^0123456789.]" />
+                            </th>
+                            <th>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="vms-trn-table-body">
+                        <tr id="{{item.Id}}" class="vms-process-row st-selected" data-ng-repeat="item in trn.items" style="cursor:pointer">
+                            <td class="vms-trn-item" title="{{item.ImportDate | date:ApplicationConstants.formatDateComma}}"><span class="vms-trn-item-in">{{item.ImportDate| date:ApplicationConstants.formatDateComma}}</span></td>
+                            <td class="vms-trn-item" title="{{item.PaymentTransactionNumber}}"><span class="vms-trn-item-in">{{item.PaymentTransactionNumber}}</span></td>
+                            <td class="vms-trn-item" title="{{item.LastName}}"><span class="vms-trn-item-in">{{item.LastName}}</span></td>
+                            <td class="vms-trn-item" title="{{item.Date | date:ApplicationConstants.formatDateComma}}"><span class="vms-trn-item-in">{{item.Date| date:ApplicationConstants.formatDateComma}}</span></td>
+                            <td class="vms-trn-item text-right" title="{{item.GrossAmount | number : 2}}"><span class="vm><span class="vms-trn-item-in" style="left:initial">{{item.GrossAmount | number : 2}}</span></td>
+                            <td class="vms-trn-item text-right" title="{{item.MedicareAmount | number : 2}}"><span class="vms-trn-item-in" style="left:initial">{{item.MedicareAmount | number : 2}}</span></td>
+                            <td class="vms-trn-item text-right" title="{{item.SocialSecurityAmount | number : 2}}"><span class="vms-trn-item-in" style="left:initial">{{item.SocialSecurityAmount | number : 2}}</span></td>
+                            <td class="vms-trn-item text-right" title="{{item.FudiAmount | number : 2}}"><span class="vms><span class="vms-trn-item-in" style="left:initial">{{item.FudiAmount | number : 2}}</span></td>
+                            <td class="vms-trn-item text-right" title="{{item.SuiAmount | number : 2}}"><span class="vms-><span class="vms-trn-item-in" style="left:initial">{{item.SuiAmount | number : 2}}</span></td>
+                            <td class="vms-trn-item">
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-xs btn-warning vms-trn-conflict" data-ng-disabled="trn.viewLoading" data-ng-click="trn.sendToConflict(item, $event)" title="Send to Conflict">Send to Conflicts</button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="8">
+                                <span class="vmsTrnTotal">Total Count: {{trn.totalItemCount || 0}}; Items Loaded: {{ trn.items ? trn.items.length : 0}}</span>
+                                <button class="btn btn-primary pull-right btnVmsTrn" data-ng-click="trn.createTransaction()" data-ng-disabled="trn.vmsBatchArray.length===0 || trn.viewLoading" data-ng-show="trn.items.length>0">Create Transaction</button>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>

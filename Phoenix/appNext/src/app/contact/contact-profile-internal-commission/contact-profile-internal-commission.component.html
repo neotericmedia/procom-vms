@@ -1,0 +1,47 @@
+<app-phx-panel headerTitle="Profile Details">
+
+  <form [formGroup]="inputFormGroup" *ngIf="inputFormGroup" >
+
+    <phx-form-control name="IsCommissionEligible" [control]="inputFormGroup.controls.IsCommissionEligible" labelText="Is Commission Eligible"
+      [editable]="readOnlyStorage.IsEditable" viewModeText="{{inputFormGroup.value.IsCommissionEligible | boolToYesNo}}">
+      <label class="radio-inline">
+        <input class="form-check-input" type="radio" formControlName="IsCommissionEligible" [value]="true" >Yes</label>
+      <label class="radio-inline">
+        <input class="form-check-input" type="radio" formControlName="IsCommissionEligible" [value]="false" >No</label>
+    </phx-form-control>
+
+    <div *ngIf="inputFormGroup.value.IsCommissionEligible">
+
+      <phx-form-control [control]="inputFormGroup.controls.PayeeName" labelText="Payee Name"
+        [editable]="readOnlyStorage.IsEditable" viewModeText="{{inputFormGroup.controls.PayeeName.value}}">
+        <input type="text" class="form-control" formControlName="PayeeName" />
+      </phx-form-control>
+
+      <phx-form-control name="CommissionStructureTypeId" [control]="inputFormGroup.controls.CommissionStructureTypeId" labelText="Commission Build"
+        [editable]="readOnlyStorage.IsEditable" viewModeText="{{inputFormGroup?.value.CommissionStructureTypeId | CodeValue:codeValueGroups.CommissionStructureType}}">
+        <app-phx-select-box-code-value [groupName]="codeValueGroups.CommissionStructureType" sortByFieldName="text" 
+        [formControl]="inputFormGroup.controls.CommissionStructureTypeId">
+        </app-phx-select-box-code-value>
+      </phx-form-control>
+
+      <phx-form-control [control]="inputFormGroup.controls.IsIncorporated" labelText="Is Incorporated"
+        [editable]="readOnlyStorage.IsEditable" viewModeText="{{inputFormGroup.value.IsIncorporated | boolToYesNo}}">
+        <label class="radio-inline">
+          <input class="form-check-input" type="radio" formControlName="IsIncorporated" [value]="true">Yes</label>
+        <label class="radio-inline">
+          <input class="form-check-input" type="radio" (click)="onNotIncorporated($event)" formControlName="IsIncorporated"
+            [value]="false">No</label>
+      </phx-form-control>
+
+      <div class="form-group" *ngIf="inputFormGroup.value.IsIncorporated">
+        <app-contact-sales-taxes [inputFormGroup]="inputFormGroup"
+         [forInternalProfile]="true"
+         [readOnlyStorage]="readOnlyStorage" (outputEvent)="outputEvent">
+
+        </app-contact-sales-taxes>
+      </div>
+
+    </div>
+  </form>
+
+</app-phx-panel>

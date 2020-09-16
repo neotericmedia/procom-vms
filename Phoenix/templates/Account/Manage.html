@@ -1,0 +1,97 @@
+﻿<div class="panel-group panel-sections col-xl-5 col-lg-7">
+    <div class="panel">
+        <div class="panel-heading" ng-if="currentUser">
+            <h3>{{'account.manage.changeCultureHeader' | phxTranslate}}</h3>
+            <p>{{'account.manage.changeCultureDescription' | phxTranslate}}</p>
+            <p>
+                <span ng-if="currentCulture" ng-bind-html="'account.manage.currentCultureMessage' | phxTranslate : currentCulture"></span>
+                <span ng-if="!currentCulture">{{'account.manage.noCultureMessage' | phxTranslate}}</span>
+            </p>
+            <div class="btn-toolbar">
+                <button class="btn btn-default pull-right" ng-if="isInit && editModel == null" ng-click="setEdit(loginUserSettingsModel)">{{'common.generic.edit' | phxTranslate}}</button>
+            </div>
+        </div>
+        <div class="panel-collaspe" ng-if="editModel == loginUserSettingsModel">
+            <div class="panel-body">
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        <label for="CultureId" class="col-lg-4 text-right">
+                            {{'account.manage.preferredCultureLabel' | phxTranslate}}
+                        </label>
+                        <div class="col-lg-8 input-group select2-bootstrap-append">
+                            <ui-select name="CultureId" data-ng-model="loginUserSettingsModel.CultureId" theme="select2" class="form-control" required>
+                                <ui-select-match placeholder="-- {{'common.generic.select' | phxTranslate}} --">{{$select.selected.description}}</ui-select-match>
+                                <ui-select-choices repeat="item.id as item in cultureList | uiSelectChoicesFilter: $select.search: 'description'">
+                                    <span data-ng-bind-html="item.description | highlight: $select.search"></span>
+                                </ui-select-choices>
+                            </ui-select>
+                            <span class="input-group-btn">
+                                <button tabindex="-1" data-ng-click="loginUserSettingsModel.CultureId = undefined" class="btn btn-default btn-contact-drp"><i class="material-icons md-18">clear</i></button>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="form-group" data-pt-error-box="loginUserSettingsModel.BrokenRules"></div>
+                </div>
+            </div>
+            <div class="panel-footer">
+                <div class="row" style="padding-right: 8px">
+                    <div class="btn-toolbar pull-right">
+                        <button class="btn btn-primary pull-right" style="width: 120px;" data-ng-click="saveLoginUserSettings()">{{'common.generic.save' | phxTranslate}}</button>
+                        <button class="btn btn-default pull-right" style="width: 120px;" data-ng-click="cancel()">{{'common.generic.cancel' | phxTranslate}}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel">
+        <div class="panel-heading" ng-if="currentUser">
+            <h3>{{'account.manage.changePasswordHeader' | phxTranslate}}</h3>
+            <p ng-bind-html="'account.manage.loggedInMessage' | phxTranslate : currentUser != null ? currentUser.UserName : ''"></p>
+            <p>{{'account.manage.changePasswordDescription' | phxTranslate}}</p>
+            <div class="btn-toolbar">
+                <button class="btn btn-default pull-right" ng-if="isInit && editModel == null" ng-click="setEdit(changePasswordModel)">{{'common.generic.edit' | phxTranslate}}</button>
+            </div>
+        </div>
+        <div class="panel-collaspe" ng-if="editModel == changePasswordModel">
+            <form id="changePassword" novalidate>
+                <div class="panel-body">
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <label for="OldPassword" class="col-lg-4 text-right">{{'account.manage.currentPasswordLabel' | phxTranslate}}</label>
+                            <div class="col-lg-8">
+                                <input id="OldPassword" data-ng-model='changePasswordModel.OldPassword' class="form-control"
+                                        type="password" name='password' required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="NewPassword" class="col-lg-4 text-right">{{'account.manage.newPasswordLabel' | phxTranslate}}</label>
+                            <div class="col-lg-8">
+                                <input id="NewPassword" data-ng-model='changePasswordModel.NewPassword' class="form-control"
+                                        type="password" name='password' required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="ConfirmPassword" class="col-lg-4 text-right">{{'account.manage.confirmPasswordLabel' | phxTranslate}}</label>
+                            <div class="col-lg-8">
+                                <input id="ConfirmPassword" data-ng-model='changePasswordModel.ConfirmPassword' class="form-control"
+                                        type="password" name='password' required>
+                            </div>
+                        </div>
+
+                        <div class="form-group" data-pt-error-box="changePasswordModel.BrokenRules"></div>
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <div class="row" style="padding-right: 18px">
+                        <div class="btn-toolbar pull-right">
+                            <button type="submit" class="btn btn-primary pull-right" style="width: 120px;" data-ng-click="changePassword()">{{'common.generic.save' | phxTranslate}}</button>
+                            <button style="width: 120px;" class="btn btn-default pull-right" data-ng-click="cancel()">{{'common.generic.cancel' | phxTranslate}}</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

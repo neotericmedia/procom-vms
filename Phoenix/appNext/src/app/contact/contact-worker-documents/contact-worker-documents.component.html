@@ -1,0 +1,27 @@
+<div class="">
+  <div class="form-group col-lg-3 worker-profile-docs-header" *ngIf="(currentProfile.ProfileStatusId === html.phxConstants.ProfileStatus.Active ||
+   currentProfile.ProfileStatusId === html.phxConstants.ProfileStatus.PendingChange) && html.isWorkerProfile">
+    <label class="col-lg-9 control-label label-to-right">Source File(s)</label>
+    <div class="col-lg-3">
+      <button class="btn btn-default adj-doc-btn" (click)="onAddDocument($event)" title="Add a Document">Add</button>
+    </div>
+  </div>
+  <!-- *ngIf="currentProfile.IsDraft && html.isWorkerProfile" -->
+  <div class="form-group col-lg-9 worker-profile-docs-wrapper" >
+    <div class="worker-profile-docs-list" *ngFor="let document of html.workerDocuments; let i = index; trackBy:trackByFn">
+      <a class="worker-link-view" [ngClass]="{'view-mode-link' : !document.Description}" href="javascript:void(0);"
+        type="button" [href]="getPdfStreamByPublicId(document.PdfDocumentPublicId)" target="_blank" *ngIf="document.PublicId"
+        title="View">{{document.Name}}</a>
+      <a class="worker-link-delete" href="javascript:void(0);" (click)="documentDelete(document)" title="Delete">
+        <i class="fontello-icon-trash"></i>
+      </a>
+      <span class="worker-link-text" *ngIf="document.Description && document.Description.length > 0">{{document.Description}}</span>
+    </div>
+  </div>
+  <app-phx-document-file-upload #fileUpload [(configuration)]="html.fileUploadConfig" (onSuccessItem)="onDocumentUploadDone($event)"
+    [editable]="true" [docTypeList]="html.documentTypeSubList" [showAddButton]="false" [fileUploaderOptions]="html.fileUploaderOptions_DocumentMain"
+    (onCompleteAll)="documentUploadCallbackOnDone()"></app-phx-document-file-upload>
+</div>
+<!-- <div *ngIf="currentProfile.ProfileStatusId === html.phxConstants.ProfileStatus.Active && html.isWorkerProfile">
+  
+</div> -->

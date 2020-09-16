@@ -1,0 +1,57 @@
+<p>
+  <button *ngIf="hasAdministratorView" type="button" class="btn btn-default" (click)="changeToAdministratorView()">
+    {{ 'userGuide.labels.editButtonLabel' | phxTranslate }}</button>
+  <ng-container *ngFor="let userGuideHeader of userGuidesHeaders">
+    <app-user-guides-header [userGuidesHeader]="userGuideHeader" [showAdministrationView]="hasAdministratorView && showAdminsitratorView"
+      (uploadFile)="startUploadFile($event)" (deleteFile)="deleteFile($event)">
+    </app-user-guides-header>
+  </ng-container>
+  <app-phx-document-file-upload #uploader [showAddButton]="false" [(configuration)]="documentUploadConfiguration"
+    [getCustomDataModel]="getCustomDataModel" (onCompleteAll)="onUploadAllComplete()" [isDisabled]="!form.valid">
+    <div userGuidesExtraFields>
+      <form [formGroup]="form" *ngIf="form" class="form form-horizontal">
+        <div class="form-group material col-md-6">
+          <div>
+            <phx-form-control [control]="form.controls['fileName']" [labelText]="'userGuide.labels.fileNameLabel' | phxTranslate"
+              [editable]="true" [showValidationMessages]="true" [enableLabelAsterisk]="true">
+              <input class="form-control" formControlName="fileName" type="text" />
+            </phx-form-control>
+          </div>
+          <div>
+            <phx-form-control [control]="form.controls['description']" [labelText]="'userGuide.labels.descriptionLabel' | phxTranslate"
+              [showValidationMessages]="true">
+              <textarea class="form-control" type="text" formControlName="description" rows="5"></textarea>
+            </phx-form-control>
+          </div>
+        </div>
+        <div class="form-group material col-md-6">
+          <phx-form-control [formGroup]="form['controls']?.permissionsControl" [control]="form['controls']?.permissionsControl"
+            [editable]="true" [labelText]="'userGuide.labels.viewByLabel' | phxTranslate" [showValidationMessages]="true"
+            [enableLabelAsterisk]="true">
+            <label class="checkbox-inline">
+              <input type="checkbox" formControlName="internal" />
+              <i class="material-icons" (click)="checkInternal()">
+                {{permissions.Internal ? 'check_box' : 'check_box_outline_blank' }}
+              </i> {{'userGuide.labels.internalLabel' | phxTranslate}}
+            </label>
+            <label class="checkbox-inline">
+              <input type="checkbox" formControlName="organization" />
+              <i class="material-icons" (click)="checkOrganization()">
+                {{permissions.Organizational ? 'check_box' : 'check_box_outline_blank' }}
+              </i> {{'userGuide.labels.organizationalLabel' | phxTranslate}}
+            </label>
+            <label class="checkbox-inline">
+              <input type="checkbox" formControlName="worker" />
+              <i class="material-icons" (click)="checkWorker()">
+                {{permissions.Worker ? 'check_box' : 'check_box_outline_blank' }}
+              </i> {{'userGuide.labels.workerLabel' | phxTranslate}}
+            </label>
+          </phx-form-control>
+        </div>
+        <div class="col-xs-12">
+          <phx-form-control-validation [control]="form.controls" *ngIf="!form.controls.pristine"></phx-form-control-validation>
+        </div>
+      </form>
+    </div>
+  </app-phx-document-file-upload>
+</p>

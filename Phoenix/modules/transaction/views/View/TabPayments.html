@@ -1,0 +1,69 @@
+﻿<div class="form-horizontal trn-tab-invoice">
+    <div class="form-group">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <span class="h3 ">Gross Profit</span>
+                <span class="h3" data-ng-class="model.transactionCalculation.AmountSummary.Amount_GrossProfit>0 ? 'text-green' : 'text-red'">
+                    {{model.transactionCalculation.AmountSummary.Amount_GrossProfit|currency:model.transactionHeader.CurrencyCode + " $"}}
+                </span>
+            </div>
+        </div>
+        <div class="panel panel-heading">
+            <div class="col-lg-5">
+                <div class="col-sm-4 control-label form-group">
+                    <div class="text-gray text-center">Billing(s)</div>
+                    <div class="text-gray text-center">Pre Tax</div>
+                    <p class="h4 text-center">{{model.transactionCalculation.AmountSummary.Amount_BillsTotalPreTax|currency:model.transactionHeader.CurrencyCode + " $"}}</p>
+                </div>
+                <div class="col-sm-4 control-label form-group">
+                    <div class="text-gray text-center">Billing(s)</div>
+                    <div class="text-gray text-center">Sales Tax</div>
+                    <p class="h4 text-center">
+                        {{model.transactionCalculation.AmountSummary.Amount_BillsTotalSalesTax|currency:model.transactionHeader.CurrencyCode + " $"}}
+                    </p>
+                </div>
+                <div class="col-sm-4 control-label form-group">
+                    <div class="text-gray text-center">Billing(s)</div>
+                    <div class="text-gray text-center">Total</div>
+                    <p class="h4 text-center">
+                        {{model.transactionCalculation.AmountSummary.Amount_BillsTotalAll|currency:model.transactionHeader.CurrencyCode + " $"}}
+                    </p>
+                </div>
+            </div>
+            <div class="col-lg-7">
+                <div class="col-sm-3 control-label form-group">
+                    <div class="text-gray text-center">Payment(s)</div>
+                    <div class="text-gray text-center">Pre Tax</div>
+                    <p class="h4 text-center">
+                        {{model.transactionCalculation.AmountSummary.Amount_PayeesTotalPreTax|currency:model.transactionHeader.CurrencyCode + " $"}}
+                    </p>
+                </div>
+                <div class="col-sm-3 control-label form-group">
+                    <div class="text-gray text-center">Payment(s)</div>
+                    <div class="text-gray text-center">Sales Tax</div>
+                    <p class="h4 text-center">
+                        {{model.transactionCalculation.AmountSummary.Amount_PayeesTotalSalesTax|currency:model.transactionHeader.CurrencyCode + " $"}}
+                    </p>
+                </div>
+                <div class="col-sm-3 control-label form-group">
+                    <div class="text-gray text-center">Payment(s)</div>
+                    <div class="text-gray text-center">Deductions</div>
+                    <p class="h4 text-center">
+                        {{model.transactionCalculation.AmountSummary.Amount_PayeesTotalDeductionsAndAdvancesAndGarneshees|currency:model.transactionHeader.CurrencyCode + " $"}}
+                    </p>
+                </div>
+                <div class="col-sm-3 control-label form-group">
+                    <div class="text-gray text-center">Payment(s)</div>
+                    <div class="text-gray text-center">Total</div>
+                    <p class="h4 text-center">
+                        {{model.transactionCalculation.AmountSummary.Amount_PayeesTotalAll|currency:model.transactionHeader.CurrencyCode + " $"}}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>   
+    <app-transaction-payments [transaction-header-id]="model.transactionHeader.Id"></app-transaction-payments>
+</div>
+<div class="payment-report" data-ng-class="{ out: !$state.is('transaction.view.payments.report'), in: $state.is('transaction.view.payments.report')}">
+    <div ui-view="reportView"></div>
+</div>

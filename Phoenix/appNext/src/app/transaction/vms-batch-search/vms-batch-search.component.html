@@ -1,0 +1,15 @@
+<div class="vms-batch-search">
+    <app-phx-data-table [configuration]="dataTableConfiguration" [dataSourceUrl]="dataSourceUrl" [dataSourceParams]='odataParams'
+                        [columns]="columns" [exportFileName]="exportFileName" [componentName]="'VmsDocumentSearch'" (rowClick)="onRowClick($event)"
+                        (contextMenuOpenTab)="onContextMenuOpenTab($event)">
+        <div *dxTemplate="let d of 'viewVmsDocumentCellTemplate'">
+            <div class="btn-group">
+                <button type="button" class="btn btn-xs btn-clouds btn-row-action" title="View" (click)="viewDocument(d.data.DocumentId)"><i class="fontello-icon-eye-1"></i>&nbsp;</button>
+            </div>
+        </div>
+    </app-phx-data-table>
+    
+    <div class="vms-document-report" [ngClass]="{ out: !DocumentId, in: DocumentId}">
+     
+    </div>
+</div>

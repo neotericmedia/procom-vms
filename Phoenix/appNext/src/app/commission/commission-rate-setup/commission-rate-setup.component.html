@@ -1,0 +1,116 @@
+<div class="content-group form-horizontal" [formGroup]="commissionRateSetUpForm" style="height:100%;">
+  <div class="row">
+    <div class="col-lg-8">
+      <div class="row page-control" *ngIf="commissionUserProfileId>0">
+        <div class="col-lg-6">
+          <div class="col-lg-2">ID</div>
+          <div class="col-lg-6">Name</div>
+          <div class="col-lg-4">Status</div>
+        </div>
+        <div class="col-lg-6">
+        </div>
+      </div>
+      <div class="row page-control" *ngIf="commissionUserProfileId>0">
+        <div class="col-lg-6">
+                    <div class="col-lg-2">{{commissionUserProfileId}}</div>
+                    <div class="col-lg-6">{{commissionUserProfileFirstName}}
+                        {{commissionUserProfileLastName}}</div>
+                    <div class="col-lg-4">{{commissionUserProfileStatusName}}</div>
+                </div>
+                <div class="col-lg-6">
+                </div>
+      </div>
+      <div class="form-group col-lg-12" *ngIf="commissionUserProfileId==0">
+        <div class="select2-bootstrap-append">
+          <phx-form-control [control]="commissionRateSetUpForm.controls.CommissionUserProfileId" labelText="Internal User"
+            [editable]="true" viewModeText="{{commissionRateSetUpForm.controls.CommissionUserProfileId.value | lookupNoCache: commissionUserProfileName:'id':'text'}}">
+            <app-phx-select-box [formControl]="commissionRateSetUpForm.controls.CommissionUserProfileId" (valueChanged)="onChangeCommissionUserProfileId()"
+              [items]="commissionUserProfileName" textField="text" valueField="id" placeholder="-- select one --">
+            </app-phx-select-box>
+          </phx-form-control>
+        </div>
+      </div>
+      <div class="form-group col-lg-12">
+        <phx-form-control [control]="commissionRateSetUpForm.controls.commissionRoleId" labelText="Commission Role"
+          [editable]="true" viewModeText="{{commissionRateSetUpForm.controls.commissionRoleId.value | lookupNoCache: listCommissionRole:'id':'text'}}">
+          <app-phx-select-box [formControl]="commissionRateSetUpForm.controls.commissionRoleId" [items]="listCommissionRole"
+            (valueChanged)="onChangeCommissionRoleId()" textField="text" valueField="id" placeholder="-- select one --">
+          </app-phx-select-box>
+        </phx-form-control>
+      </div>
+      <div class="form-group col-lg-12">
+        <phx-form-control [control]="commissionRateSetUpForm.controls.commissionRateTypeId" labelText="Commission Rate Type"
+          [editable]="true" viewModeText="{{commissionRateSetUpForm.controls.commissionRateTypeId.value | lookupNoCache: listCommissionRateType:'id':'text'}}">
+          <app-phx-select-box [formControl]="commissionRateSetUpForm.controls.commissionRateTypeId" (valueChanged)="onChangeCommissionRateTypeId()"
+            [items]="listCommissionRateType" textField="text" valueField="id" placeholder="-- select one --">
+          </app-phx-select-box>
+        </phx-form-control>
+      </div>
+      <div class="form-group col-lg-12">
+        <phx-form-control [control]="commissionRateSetUpForm.controls.commissionTemplateId" labelText="Commission Template"
+          [editable]="true" viewModeText="{{commissionRateSetUpForm.controls.commissionTemplateId.value | lookupNoCache: listCommissionRateType:'id':'text'}}">
+          <app-phx-select-box [formControl]="commissionRateSetUpForm.controls.commissionTemplateId" [items]="listCommissionTemplates"
+            textField="Description" valueField="Id" placeholder="-- select one --">
+          </app-phx-select-box>
+        </phx-form-control>
+      </div>
+      <div class="col-lg-12">
+        <div class="duplicate-commission-warning" *ngIf="commissionRateSetUpForm.valid && duplicateCommissionRates.length > 0 && continueClicked">
+          <p>{{'commission.commissionRateSetup.existingFound' | phxTranslate}}</p>
+        </div>
+        <div class="duplicate-commission-warning" *ngIf="commissionRateSetUpForm.valid && duplicateCommissionRates.length === 0">
+          <p>{{'commission.commissionRateSetup.existingNotFound' | phxTranslate}}</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4">
+    </div>
+
+  </div>
+  <div class="row panel-footer">
+    <div class="col-lg-6"></div>
+    <div class="col-lg-6">
+      <div class="row">
+        <button type="button" class="pull-right btn btn-primary" (click)="onClickContinue()" *ngIf="!continueClicked"
+          [disabled]="!commissionRateSetUpForm.valid || checkingDuplicateCommissionRates">Continue</button>
+        <button type="button" class="pull-right btn btn-primary" (click)="onClickCreateNew()" *ngIf="continueClicked"
+          [disabled]="!commissionRateSetUpForm.valid || checkingDuplicateCommissionRates">Create
+          New</button>
+      </div>
+      <div class="row">
+        <div *ngIf="checkingDuplicateCommissionRates" class="pull-right text-right text-primary error-box">
+          <strong>Looking for matching commission rates...</strong>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row" *ngIf="continueClicked && commissionRateSetUpForm.valid && duplicateCommissionRates.length > 0">
+    <div class="col-lg-12 duplicate-commission-rate-table">
+      <div class="row bg-gray-strong duplicate-commission-rate-table-header">
+        <div class="col-xs-3 col-sm-1 text-black duplicate-commission-rate-table-cell">Rate</div>
+        <div class="col-xs-3 col-sm-2 text-black duplicate-commission-rate-table-cell">Description</div>
+        <div class="col-xs-3 col-sm-2 text-black duplicate-commission-rate-table-cell">Internal Org</div>
+        <div class="col-xs-3 col-sm-2 text-black duplicate-commission-rate-table-cell">Client Org</div>
+        <div class="clearfix visible-xs-block"></div>
+        <div class="col-xs-3 col-sm-2 text-black duplicate-commission-rate-table-cell">Line Of Business</div>
+        <div class="col-xs-3 col-sm-1 text-black duplicate-commission-rate-table-cell">Branch</div>
+        <div class="col-xs-3 col-sm-1 text-black duplicate-commission-rate-table-cell">Status</div>
+        <div class="col-xs-3 col-sm-1 text-black duplicate-commission-rate-table-cell">Action</div>
+      </div>
+      <div class="row" *ngFor="let rate of duplicateCommissionRates">
+        <div class="col-xs-3 col-sm-1 text-black duplicate-commission-rate-table-cell">{{rate.CommissionRateVersionPercentage}}%</div>
+        <div class="col-xs-3 col-sm-2 text-black duplicate-commission-rate-table-cell">{{rate.CommissionRateHeaderDescription}}</div>
+        <div class="col-xs-3 col-sm-2 text-black duplicate-commission-rate-table-cell">{{rate.CommissionRateRestrictionsForInternalOrganization}}</div>
+        <div class="col-xs-3 col-sm-2 text-black duplicate-commission-rate-table-cell">{{rate.CommissionRateRestrictionsForClientOrganization}}</div>
+        <div class="clearfix visible-xs-block"></div>
+        <div class="col-xs-3 col-sm-2 text-black duplicate-commission-rate-table-cell">{{rate.CommissionRateRestrictionsForLineOfBusiness}}</div>
+        <div class="col-xs-3 col-sm-1 text-black duplicate-commission-rate-table-cell">{{rate.CommissionRateRestrictionsForBranch}}</div>
+        <div class="col-xs-3 col-sm-1 text-black duplicate-commission-rate-table-cell">{{rate.CommissionRateHeaderStatus}}</div>
+        <div class="col-xs-3 col-sm-1 text-black duplicate-commission-rate-table-cell">
+          <a class="duplicate-commission-rate-table-action" (click)="openCommissionRate(rate)">Select</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

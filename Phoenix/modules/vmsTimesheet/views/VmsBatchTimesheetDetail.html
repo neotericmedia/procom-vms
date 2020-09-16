@@ -1,0 +1,140 @@
+﻿<div class="row" data-ng-init="vmsBatchTimesheetDetails.initialize(vmsBatchTimesheet)">
+    <div class="col-lg-12">
+        <div class="panel panel-internal panel-contact">
+            <div class="contact-name">
+                <h4>VMS Processed Record</h4>
+                <table class="table">
+                    <thead class="my-thead">
+                        <tr>
+                            <th>Import Date</th>
+                            <th>VMS Worker ID</th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Rate Type 1</th>
+                            <th class="text-right">Bill Rate</th>
+                            <th class="text-right">Rate Unit 1</th>
+                            <th>Rate Type 2</th>
+                            <th class="text-right">Bill Rate</th>
+                            <th class="text-right">Rate Unit 2</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                            <th class="text-right">Transaction Reference</th>
+                            <th>Reason</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style="cursor:pointer" data-ui-sref-tr="vms.timesheet.document.details({internalOrganizationId: vmsBatchTimesheetDetails.vmsBatchTimesheet.processedRecordDetails.OrganizationIdInternal, documentId: vmsBatchTimesheetDetails.vmsBatchTimesheet.processedRecordDetails.DocumentId})">
+                            <td>{{::vmsBatchTimesheetDetails.vmsBatchTimesheet.processedRecordDetails.ImportDate | date:ApplicationConstants.formatDateComma}}</td>
+                            <td>{{::vmsBatchTimesheetDetails.vmsBatchTimesheet.processedRecordDetails.VmsWorkOrderReference}}</td>
+                            <td>{{::vmsBatchTimesheetDetails.vmsBatchTimesheet.processedRecordDetails.FirstName}}</td>
+                            <td>{{::vmsBatchTimesheetDetails.vmsBatchTimesheet.processedRecordDetails.LastName}}</td>
+                            <td>{{::vmsBatchTimesheetDetails.vmsBatchTimesheet.processedRecordDetails.ImportedRecord.V1RateTypeId | lookup : vmsBatchTimesheetDetails.vmsBatchTimesheet.rateTypes}}</td>
+                            <td class="text-right">{{::vmsBatchTimesheetDetails.vmsBatchTimesheet.processedRecordDetails.ImportedRecord.V1BillRate | currency: '$'}}</td>
+                            <td class="text-right">{{::vmsBatchTimesheetDetails.vmsBatchTimesheet.processedRecordDetails.ImportedRecord.V1BillUnits}}</td>
+                            <td>{{::vmsBatchTimesheetDetails.vmsBatchTimesheet.processedRecordDetails.ImportedRecord.V2RateTypeId | lookup : vmsBatchTimesheetDetails.vmsBatchTimesheet.rateTypes}}</td>
+                            <td class="text-right">{{::vmsBatchTimesheetDetails.vmsBatchTimesheet.processedRecordDetails.ImportedRecord.V2BillRate | currency: '$'}}</td>
+                            <td class="text-right">{{::vmsBatchTimesheetDetails.vmsBatchTimesheet.processedRecordDetails.ImportedRecord.V2BillUnits}}</td>
+                            <td>{{::vmsBatchTimesheetDetails.vmsBatchTimesheet.processedRecordDetails.StartDate | date:ApplicationConstants.formatDateComma}}</td>
+                            <td>{{::vmsBatchTimesheetDetails.vmsBatchTimesheet.processedRecordDetails.EndDate | date:ApplicationConstants.formatDateComma}}</td>
+                            <td class="text-right">{{::vmsBatchTimesheetDetails.vmsBatchTimesheet.processedRecordDetails.InvoiceReference}}</td>
+                            <td ng-bind-html="::vmsBatchTimesheetDetails.vmsBatchTimesheet.processedRecordDetails.Reason || 'N/A'"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-12" ng-if="vmsBatchTimesheetDetails.vmsBatchTimesheet.processedRecordDetails.WorkOrders.length > 0">
+        <div class="panel panel-internal panel-contact">
+            <div class="contact-name">
+                <h4>Work Order Mapping</h4>
+                <table class="table">
+                    <thead class="my-thead">
+                        <tr>
+                            <th>Work Order</th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>VMS Worker ID</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                            <th>Rate Type 1</th>
+                            <th>Units 1</th>
+                            <th>Rate Type 2</th>
+                            <th>Units 2</th>
+                            <th>Work Order Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style="cursor:pointer" data-ui-sref-tr="workorder.edit.core({assignmentId: workOrder.AssignmentId, workOrderId: workOrder.WorkOrderId, workOrderVersionId: workOrder.WorkOrderVersionId})" data-ng-repeat="workOrder in vmsBatchTimesheetDetails.vmsBatchTimesheet.processedRecordDetails.WorkOrders">
+                            <td>{{::workOrder.AssignmentId}}.{{::workOrder.WorkOrderNumber}}</td>
+                            <td>{{::workOrder.FirstName}}</td>
+                            <td>{{::workOrder.LastName}}</td>
+                            <td class="text-right">{{::workOrder.VmsWorkOrderReference}}</td>
+                            <td>{{::workOrder.StartDate| date: ApplicationConstants.formatDate}}</td>
+                            <td>{{::workOrder.EndDate| date: ApplicationConstants.formatDate}}</td>
+                            <td>{{::workOrder.V1RateTypeId | lookup : vmsBatchTimesheetDetails.vmsBatchTimesheet.rateTypes}} - {{::workOrder.V1BillRate}}</td>
+                            <td class="text-right">{{::workOrder.V1BillUnits}}</td>
+                            <td>{{::workOrder.V2RateTypeId | lookup : vmsBatchTimesheetDetails.vmsBatchTimesheet.rateTypes}} - {{::workOrder.V2BillRate}}</td>
+                            <td class="text-right">{{::workOrder.V2BillUnits}}</td>
+                            <td>{{::workOrder.StatusId | lookup : vmsBatchTimesheetDetails.vmsBatchTimesheet.workOrderStatus}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-12" ng-if="vmsBatchTimesheetDetails.vmsBatchTimesheet.processedRecordDetails.Timesheet">
+        <div class="panel panel-internal panel-contact">
+            <div class="contact-name">
+                <h4>Timesheet</h4>
+                <table class="table">
+                    <thead class="my-thead">
+                        <tr>
+                            <th>Timesheet ID</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style="cursor:pointer" data-ui-sref-tr="timesheet.details({workOrderId: vmsBatchTimesheetDetails.vmsBatchTimesheet.processedRecordDetails.Timesheet.WorkOrderId, timesheetId: vmsBatchTimesheetDetails.vmsBatchTimesheet.processedRecordDetails.Timesheet.Id})">
+                            <td>{{::vmsBatchTimesheetDetails.vmsBatchTimesheet.processedRecordDetails.Timesheet.Id}}</td>
+                            <td>{{::vmsBatchTimesheetDetails.vmsBatchTimesheet.processedRecordDetails.Timesheet.StartDate| date: ApplicationConstants.formatDate}}</td>
+                            <td>{{::vmsBatchTimesheetDetails.vmsBatchTimesheet.processedRecordDetails.Timesheet.EndDate| date: ApplicationConstants.formatDate}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-12" ng-if="vmsBatchTimesheetDetails.vmsBatchTimesheet.processedRecordDetails.BillingTransaction">
+        <div class="panel panel-internal panel-contact">
+            <div class="contact-name">
+                <h4>Transaction</h4>
+                <table class="table">
+                    <thead class="my-thead">
+                        <tr>
+                            <th>Work Order</th>
+                            <th>Transaction No</th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style="cursor:pointer"
+                            ng-repeat="trn in vmsBatchTimesheetDetails.vmsBatchTimesheet.processedRecordDetails.BillingTransactions"
+                            data-ui-sref-tr="transaction.view.summary({transactionHeaderId: trn.TransactionHeaderId})">
+                            <td>{{trn.AssignmentId}}.{{trn.WorkOrderNumber}}</td>
+                            <td>{{trn.BillingTransactionNumber}}</td>
+                            <td>{{trn.FirstName}}</td>
+                            <td>{{trn.LastName}}</td>
+                            <td>{{trn.StartDate| date: ApplicationConstants.formatDate}}</td>
+                            <td>{{trn.EndDate| date: ApplicationConstants.formatDate}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

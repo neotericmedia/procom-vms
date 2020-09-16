@@ -1,0 +1,58 @@
+<div class="responsiveModal">
+  <div #datepickerModal="bs-modal" bsModal   class="modal fade" role="dialog" >
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button *ngIf="showBackButton" class="btn btn-link pull-left" (click)="onBack()">
+            <i class="material-icons">arrow_back</i>
+          </button>
+          <h4 class="modal-title">{{dataModel.Title}}</h4>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-xs-12 caption">
+              {{dataModel.Caption}}
+            </div>
+          </div>
+          <div class="row datepicker-container">
+              <div class="datepicker">
+                <!-- <datepicker 
+                  (selectionDone)="onSelection($event);" 
+                  [minDate]="dataModel.StartDate" 
+                  [maxDate]="dataModel.EndDate"
+                  [(ngModel)]="dataModel.SelectedDate" 
+                  [onlyCurrentMonth]="true" 
+                  [showWeeks]="false" 
+                  [dateDisabled]="dateDisabled" 
+                  [customClass]="getHighlightedDates">
+                </datepicker> -->
+                <dx-calendar
+                  (onValueChanged)="onSelection($event.value)"
+                  [min]="dataModel.StartDate"
+                  [max]="dataModel.EndDate"
+                  [(value)]="dataModel.SelectedDate"
+                  [firstDayOfWeek]="1"
+                >
+                  <span *dxTemplate="let cellData of 'cell'; let i = index"
+                    [ngClass]="{'highlight-day' : isHighlightedDate(cellData.date)}">
+                    <!-- TODO: onlyCurrentMonth: 
+                      - Hide dates outside of current month? (existing class = dx-calendar-other-month) 
+                      - Fix highlight-day styling, e.g. set dx-calendar-cell padding = 0,  give padding to template class
+                    -->
+                    {{cellData.text}}
+                  </span>
+              </dx-calendar>
+              </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <div class="row btn-row">
+            <div class="col-xs-12 text-center">
+              <button (click)="hideModal()" type="button" class="btn btn-link btn-default btn-cancel" data-dismiss="modal">{{ 'common.generic.cancel' | phxTranslate }}</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

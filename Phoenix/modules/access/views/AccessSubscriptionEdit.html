@@ -1,0 +1,254 @@
+﻿<script type="text/ng-template" id="myTooltipTemplate.html">
+    <div style="text-align:left;">
+        <p>Responsible means it will show up in your work queue on dashboard widgets and searches</p>
+        <p>Informed means that you will have access but pending work will not show on dashboard widgets</p>
+    </div>
+</script>
+<div data-ng-form="formSubscription" class="sub-user-details col-lg-12">
+    <div class="sub-user-entity-wrapper col-lg-10">
+		
+        
+        <div class="tabbable panel-tabbable">
+			<div class="panel">
+				<div class="panel-heading headstone">
+					<div class="row">
+						<div class="col-lg-1 col-md-1" title="{{edit.Subscription.Id }}">
+							<label class="control-label col-xs-12 ">ID</label>
+                            <span class="col-xs-12">{{edit.Subscription.SourceId || edit.Subscription.Id }}</span>
+						</div>
+						<div class="col-lg-5 col-md-5" title="{{edit.Subscription.UserProfileIdSubscriber ? edit.Subscription.UserProfileSubscriber : '-'}}">
+							<label class="control-label col-xs-12 ">Subscriber</label>
+							<span class=" col-xs-12 ">{{edit.Subscription.UserProfileIdSubscriber ? edit.Subscription.UserProfileSubscriber : '-'}}</span>
+						</div>
+						<div class="col-lg-4 col-md-4" title="{{edit.Subscription.AccessSubscriptionTypeId ? (edit.Subscription.AccessSubscriptionTypeId | lookup: edit.subscriptionTypes:'id':'text') : '-'}}">
+							<label class="control-label col-xs-12 ">Subscription Type</label>
+							<span class=" col-xs-12 ">{{edit.Subscription.AccessSubscriptionTypeId ? (edit.Subscription.AccessSubscriptionTypeId | lookup: edit.subscriptionTypes:'id':'text') : '-'}}</span>
+						</div>
+						<div class="col-lg-2 col-md-2" title="{{edit.Subscription.AccessSubscriptionStatusId | lookup: edit.subStatuses:'id':'text'}}">
+							<label class="control-label col-xs-12 ">Status</label>
+							<div class="col-xs-12 ">
+								<span>{{edit.Subscription.AccessSubscriptionStatusId | lookup: edit.subStatuses:'id':'text'}}</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+            <div class="tabbable">
+                <ul class="nav nav-tabs">
+                    <li data-ng-class="{ active : $state.is('access.subscription.edit')}">
+                        <a data-ng-if="edit.Subscription.AccessSubscriptionStatusId !== ApplicationConstants.AccessSubscriptionStatus.Draft" data-ng-click="edit.goUp()">Subscription</a>
+                        <a data-ng-if="edit.Subscription.AccessSubscriptionStatusId === ApplicationConstants.AccessSubscriptionStatus.Draft" href="javascript:void(0);">Subscription &nbsp;<i data-ng-if="(!formSubscription.$valid || (edit.IsDateValid === false))" class="material-icons md-18">warning</i></a>
+                    </li>                    
+                    <li data-ng-class="{ active : $state.is('access.subscription.edit.history')}">
+                        <a data-ui-sref=".history" data-ng-if="edit.Subscription.AccessSubscriptionStatusId === ApplicationConstants.AccessSubscriptionStatus.Active || edit.Subscription.AccessSubscriptionStatusId === ApplicationConstants.AccessSubscriptionStatus.PendingChange"><i class="fontello-icon-th-4"></i>History</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="tab-content">
+                <div class="tab-pane active">
+                    <div class="panel">
+                        <div data-ng-if="!edit.IsNotSubscriberPage">
+                            <div class="panel-body sub-user-body">
+                                <div class="row">
+                                    <div class="form-horizontal" role="form">
+                                        <div class="form-group sub-user-row">
+                                            <div class="form-group sub-user-row">
+                                                <label class="col-lg-2 control-label req-lab-right" for-property="UserProfileIdSubscriber" for="UserProfileIdSubscriber" data-model-property="edit.Subscription.UserProfileIdSubscriber">Subscriber</label>
+                                                <div class="col-lg-6">
+                                                    <div class="input-group select2-bootstrap-append">
+                                                        <ui-select name="UserProfileIdSubscriber" data-ng-model="edit.Subscription.UserProfileIdSubscriber" theme="select2" class="form-control" data-ng-required="true" data-pt-field-view="edit.ptFieldViewStatus"
+                                                                   data-pt-field-view-custom="{{edit.Subscription.UserProfileIdSubscriber | lookupnocache: edit.internalUsers:'Id':'Contact.FullName'}}" n ng-change="edit.subscriberChanged($select.selected)">
+                                                            <ui-select-match placeholder="-- Select One --">{{$select.selected.Contact.FullName}}</ui-select-match>
+                                                            <ui-select-choices repeat="item.Id as item in edit.internalUsers| uiSelectChoicesFilteredByUsage: $select.search: edit.subscribersList: edit.Subscription : 'UserProfileIdSubscriber':'Id': 'Contact.FullName'">
+                                                                <span data-ng-bind-html="item.Contact.FullName | highlight: $select.search"></span>
+                                                            </ui-select-choices>
+                                                        </ui-select>
+                                                        <span class="input-group-btn">
+                                                            <button tabindex="-1" data-ng-click="edit.subscriberCleaned()" class="btn btn-default btn-sub-user-drp"><i class="material-icons md-18">clear</i></button>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-4"></div>
+                                        </div>
+                                        <div class="form-group sub-user-row sub-user-radio2">
+                                            <label for-property="IsTimeRestricted" for="IsTimeRestricted" data-model-property="edit.Subscription.IsTimeRestricted" class="col-lg-2 control-label label-to-right req-lab-right sub-lbl-ext"><span class="adj-lbl-text">Subscription Time Period</span></label>
+                                            <div class="col-lg-6">
+                                                <pt-input-radio name="IsTimeRestricted"
+                                                                data-ng-click=""
+                                                                data-ng-required="false"
+                                                                data-template-type="input-radio"
+                                                                data-ng-model="edit.Subscription.IsTimeRestricted"
+                                                                data-options="[{ key: true, value: 'Limited' },{ key: false, value: 'On Going' }]"
+                                                                data-change-callback="edit.onChangeIsTimeRestricted"
+                                                                data-pt-field-view="edit.ptFieldViewStatus" />
+                                            </div>
+                                            <div class="col-lg-4"></div>
+                                        </div>
+                                        <div class="form-group sub-user-row" data-ng-if="edit.Subscription.IsTimeRestricted" style="padding: 0">
+                                            <label for-property="StartDate" for="StartDate" data-model-property="edit.Subscription.StartDate" ng-class="edit.IsDateValid ? 'req-lab-right-valid':'req-lab-right'" class="col-lg-2 control-label label-to-right sub-lbl-ext"><span class="sub-lbl-text">Start Date</span></label>
+                                            <div class="col-lg-3 sub-user-pkr">
+                                                <pt-date-picker name="StartDate" data-ng-model="edit.Subscription.StartDate" data-ng-change="edit.datePickerCallback()" data-ng-required="true" data-pt-field-view="edit.ptFieldViewStatus" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group sub-user-row" data-ng-if="edit.Subscription.IsTimeRestricted" style="padding: 0">
+                                            <label for-property="EndDate" for="EndDate" data-model-property="edit.Subscription.EndDate" ng-class="edit.IsDateValid ? 'req-lab-right-valid':'req-lab-right'" class="col-lg-2 control-label label-to-right sub-lbl-ext"><span class="sub-lbl-text">End Date</span></label>
+                                            <div class="col-lg-3 sub-user-pkr">
+                                                <pt-date-picker name="EndDate" data-ng-model="edit.Subscription.EndDate" data-ng-change="edit.datePickerCallback()" data-ng-required="true" data-pt-field-view="edit.ptFieldViewStatus" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group sub-user-row">
+                                            <h4 class="col-lg-12">Subscription Details</h4>
+                                        </div>
+                                        <div class="form-group sub-user-row">
+                                            <div>
+                                                <label class="col-lg-2 control-label req-lab-right" for-property="AccessSubscriptionTypeId" for="AccessSubscriptionTypeId" data-model-property="edit.Subscription.AccessSubscriptionTypeId">Subscription Type</label>
+                                                <div class="col-lg-6">
+                                                    <div class="input-group select2-bootstrap-append">
+                                                        <ui-select name="AccessSubscriptionTypeId" data-ng-model="edit.Subscription.AccessSubscriptionTypeId" theme="select2" class="form-control" data-ng-required="true" data-pt-field-view="edit.ptFieldViewStatus" ng-change="edit.subscriptionTypeChanged()">
+                                                            <ui-select-match placeholder="-- Select One --">{{$select.selected.text}}</ui-select-match>
+                                                            <ui-select-choices repeat="item.id as item in edit.subscriptionTypes | uiSelectChoicesFilter: $select.search: 'text'">
+                                                                <span data-ng-bind-html="item.text | highlight: $select.search"></span>
+                                                            </ui-select-choices>
+                                                        </ui-select>
+                                                        <span class="input-group-btn">
+                                                            <button tabindex="-1" data-ng-click="edit.subscriptionTypeCleared()" class="btn btn-default btn-sub-user-drp"><i class="material-icons md-18">clear</i></button>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-4"></div>
+                                        </div>
+                                        <div class="form-group sub-user-row" data-ng-if="edit.Subscription.AccessSubscriptionTypeId === ApplicationConstants.AccessSubscriptionType.Client">
+                                            <div class="form-group sub-user-row">
+                                                <label class="col-lg-2 control-label req-lab-right" for-property="OrganizationIdClient" for="OrganizationIdClient" data-model-property="edit.Subscription.OrganizationIdClient">Subscribe To</label>
+                                                <div class="col-lg-6">
+                                                    <div class="input-group select2-bootstrap-append">
+                                                        <ui-select name="OrganizationIdClient" data-ng-model="edit.Subscription.OrganizationIdClient" theme="select2" class="form-control" required data-pt-field-view="edit.ptFieldViewStatus"
+                                                                   data-pt-field-view-custom="{{edit.Subscription.OrganizationIdClient | lookupnocache: edit.clientOrganizations:'Id':'DisplayName'}}">
+                                                            <ui-select-match placeholder="-- Select One --">{{$select.selected.DisplayName}} - {{$select.selected.Id}}</ui-select-match>
+                                                            <ui-select-choices repeat="item.Id as item in  edit.clientOrganizations  | uiSelectChoicesFilter: $select.search: 'DisplayName': 'Id'">
+                                                                <span data-ng-bind-html="item.DisplayName | highlight: $select.search"></span>
+                                                            </ui-select-choices>
+                                                        </ui-select>
+                                                        <span class="input-group-btn">
+                                                            <button tabindex="-1" data-ng-click="edit.Subscription.OrganizationIdClient = undefined;" class="btn btn-default btn-sub-user-drp"><i class="material-icons md-18">clear</i></button>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-4"></div>
+                                        </div>
+                                        <div class="form-group sub-user-row" data-ng-if="edit.Subscription.AccessSubscriptionTypeId === ApplicationConstants.AccessSubscriptionType.Branch">
+                                            <label class="col-lg-2 control-label req-lab-right" for-property="InternalOrganizationDefinition1Id" for="InternalOrganizationDefinition1Id" data-model-property="edit.Subscription.InternalOrganizationDefinition1Id">Subscribe To</label>
+                                            <div class="col-lg-6">
+                                                <div class="input-group select2-bootstrap-append">
+                                                    <ui-select name="InternalOrganizationDefinition1Id" data-ng-model="edit.Subscription.InternalOrganizationDefinition1Id" theme="select2" class="form-control" data-ng-required="true" data-pt-field-view="edit.ptFieldViewStatus"
+                                                               data-pt-field-view-custom="{{edit.Subscription.InternalOrganizationDefinition1Id | lookupnocache: edit.branches:'id':'text'}}">
+                                                        <ui-select-match placeholder="-- Select One --">{{$select.selected.text}}</ui-select-match>
+                                                        <ui-select-choices repeat="item.id as item in edit.branches | uiSelectChoicesFilter: $select.search: 'text': 'Id'">
+                                                            <span data-ng-bind-html="item.text | highlight: $select.search"></span>
+                                                        </ui-select-choices>
+                                                    </ui-select>
+                                                    <span class="input-group-btn">
+                                                        <button tabindex="-1" data-ng-click="edit.Subscription.InternalOrganizationDefinition1Id = undefined;" class="btn btn-default btn-sub-user-drp"><i class="material-icons md-18">clear</i></button>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-4"></div>
+                                        </div>
+                                        <div class="form-group sub-user-row sub-user-select" data-ng-if="edit.isEditMode">
+                                            <label class="col-lg-2 control-label label-to-right">Restrictions</label>
+                                            <div class="col-lg-6">
+                                                <div class="btn-group">
+                                                    <button type="button" class="btn btn-clouds dropdown-toggle" data-toggle="dropdown">
+                                                        <span class="sub-user-crt">Add/Edit Restriction</span> <span class="caret ml payroll-btn-caret"></span>
+                                                    </button>
+                                                    <ul class="dropdown-menu bordered" data-ng-if="!edit.Subscription.AccessSubscriptionTypeId">
+                                                        <li class="sub-user-restr"><a href="javascript:;">Select restriction type</a></li>
+                                                    </ul>
+                                                    <ul class="dropdown-menu bordered" data-ng-if="edit.Subscription.AccessSubscriptionTypeId">
+                                                        <li class="sub-user-restr"><a data-ng-click="edit.addRestriction(ApplicationConstants.AccessSubscriptionRestrictionType.InternalOrganization)">Internal Company</a></li>
+                                                        <li class="sub-user-restr" data-ng-if="edit.Subscription.AccessSubscriptionTypeId !== ApplicationConstants.AccessSubscriptionType.Client"><a data-ng-click="edit.addRestriction(ApplicationConstants.AccessSubscriptionRestrictionType.ClientOrganization)">Client Company</a></li>
+                                                        <li class="sub-user-restr"><a data-ng-click="edit.addRestriction(ApplicationConstants.AccessSubscriptionRestrictionType.LineOfBusiness)">Line Of Business</a></li>
+                                                        <li class="sub-user-restr" data-ng-if="edit.Subscription.AccessSubscriptionTypeId !== ApplicationConstants.AccessSubscriptionType.Branch"><a data-ng-click="edit.addRestriction(ApplicationConstants.AccessSubscriptionRestrictionType.InternalOrganizationDefinition1)">Branch</a></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-4"></div>
+                                        </div>
+                                        <div class="col-lg-12" data-ng-if="edit.Subscription.AccessSubscriptionRestrictions.length>0">
+                                            <div class="row panel-heading">
+                                                <div class="col-xs-3 col-lg-offset-2" style="padding: 0"><label>Type</label></div>
+                                                <div class="col-xs-6 co-lg-6"><label>Restrictions</label></div>
+                                            </div>
+                                            <div class="panel-body">
+                                                <div class="row panel-row" data-ng-repeat="restrictionGroup in edit.subscriptionRestrictionsGrouped() | filter : edit.filterGroupBySubscriptionRestrictionTypeId">
+                                                    <div class="col-xs-3 col-lg-offset-2" style="padding-left: 5px" data-ng-if="edit.isEditMode" style="cursor:pointer;" data-ng-click="edit.addRestriction(restrictionGroup.CommissionRateRestrictionTypeId)">
+                                                        {{restrictionGroup.AccessSubscriptionRestrictionTypeId| lookup: edit.subRestrictionTypes }}
+                                                    </div>
+                                                    <div class="col-xs-3 col-lg-offset-2" style="padding-left: 5px" data-ng-if="!edit.isEditMode">
+                                                        {{restrictionGroup.AccessSubscriptionRestrictionTypeId| lookup: edit.subRestrictionTypes }}
+                                                    </div>
+                                                    <div class="col-xs-6 col-lg-6">
+                                                        <span data-ng-repeat="restriction in edit.Subscription.AccessSubscriptionRestrictions | filter:{ AccessSubscriptionRestrictionTypeId: restrictionGroup.AccessSubscriptionRestrictionTypeId }"><span data-ng-if="$index>0">, </span>{{restriction.Name}}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel-body" data-pt-validation-messages="edit.ValidationMessages" data-ng-if="edit.ValidationMessages.length>0"></div>
+                            <div class="panel-footer col-lg-12" data-ng-if="edit.Subscription.AvailableActions.length>0">
+                                <div class="row sub-user-footer-row">
+                                    <div class="col-lg-6"></div>
+                                    <div class="col-lg-6">
+                                        <div class="pull-right">
+                                            <div>
+                                                <span data-ng-repeat="item in edit.Subscription.AvailableActions | orderBy:'DisplayButtonOrder'">
+                                                    <button type="button" class="btn"
+                                                            data-ng-class="item.CommandName=='AccessSubscriptionSubmit'||item.CommandName=='AccessSubscriptionApprovalApprove'?'btn-primary':'btn-default'"
+                                                            data-ng-click="edit.actionButtonOnClick(item)"
+                                                            data-ng-disabled="item.CommandName=='AccessSubscriptionSubmit' && (!formSubscription.$valid || (edit.IsDateValid === false))">
+                                                        {{item.Name}}
+                                                    </button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="sub-user-history" data-ui-view="History" data-autoscroll="false"></div>
+                    </div>
+                </div>
+            </div>
+        </div>      
+    </div>
+    <div class="col-lg-2">
+        <div class="contact-versions">
+            <div class="contact-version-group">
+                <div class="contact-version-item" data-ng-class="{ 'active' : $state.params.accessSubscriptionId == edit.Subscription.Id  && !edit.Subscription.SourceId }" data-ng-click="edit.onVersionClick(edit.Subscription, true)">
+                    <div>
+                        <div><span class="small-text">Current Subscription</span></div>
+                        <span data-ng-if="!edit.Subscription.SourceId && !edit.Subscription.ChildId" data-ng-class="edit.Subscription.AccessSubscriptionStatusId === ApplicationConstants.AccessSubscriptionStatus.Active ? 'text-warning' : ''"><span class="small-text">Status:&nbsp;&nbsp;&nbsp;</span>{{edit.Subscription.AccessSubscriptionStatusId | lookup: edit.subStatuses:'id':'text' }}</span>
+                        <span data-ng-if="edit.Subscription.SourceId || edit.Subscription.ChildId"><span class="small-text">Status:&nbsp;&nbsp;&nbsp;</span>Pending Change</span>
+                    </div>
+                </div>
+                <div data-ng-if="edit.Subscription.SourceId" class="contact-version-item" data-ng-class="{ 'active' : $state.params.accessSubscriptionId == edit.Subscription.Id && edit.Subscription.SourceId }" data-ng-click="edit.onVersionClick(edit.Subscription, false)">
+                    <div>
+                        <div><span class="small-text">Proposed Change</span></div>
+                        <span><span class="small-text">Status:&nbsp;&nbsp;&nbsp;</span>{{edit.Subscription.AccessSubscriptionStatusId | lookup: edit.subStatuses:'id':'text' }}</span>
+                    </div>
+                </div>
+                <div data-ng-if="edit.Subscription.ChildId" class="contact-version-item" data-ng-class="{ 'active' : $state.params.accessSubscriptionId == edit.Subscription.Id && !edit.Subscription.ChildId }" data-ng-click="edit.onVersionClick(edit.Subscription, false)">
+                    <div>
+                        <div><span class="small-text">Proposed Change</span></div>
+                        <span><span class="small-text">Status:&nbsp;&nbsp;&nbsp;</span>{{edit.Subscription.ChildAccessSubscriptionStatusId | lookup: edit.subStatuses:'id':'text' }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

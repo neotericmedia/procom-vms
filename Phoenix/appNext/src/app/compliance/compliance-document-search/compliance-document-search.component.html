@@ -1,0 +1,11 @@
+<div class="col col-xs-12">
+  <div class="row">
+    <app-phx-data-table [configuration]="dataTableConfiguration" [dataSourceUrl]="'ComplianceDocument/getListComplianceDocuments'"
+      [columns]="columns" [exportFileName]="'compliance-document-search'" [componentName]="'ComplianceDocumentSearch'"
+      (rowClick)="onRowClick($event)" [height]="700">
+      <div *dxTemplate="let d of 'dateCellTemplate'">
+        <span>{{(d.value | date:commonService.ApplicationConstants.DateFormat.mediumDate) || ('common.generic.notApplicable' | phxTranslate)}}</span>
+      </div>
+    </app-phx-data-table>
+  </div>
+</div>

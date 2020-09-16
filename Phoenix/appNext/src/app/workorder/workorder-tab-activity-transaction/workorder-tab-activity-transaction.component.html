@@ -1,0 +1,103 @@
+<table class="table table-striped table-content table-hover ng-isolate-scope table-layout-fixed">
+  <thead>
+    <tr>
+      <th (click)="sortBy(html.workorderActivityTransactionColumnsKey.TransactionNumber)" style="width: 15%;"
+        [ngClass]="(html.tableState.sort.predicate === html.workorderActivityTransactionColumnsKey.TransactionNumber && sortNumber === 0) ? 'st-sort-ascent': (html.tableState.sort.predicate === html.workorderActivityTransactionColumnsKey.TransactionNumber && sortNumber === 1 ? 'st-sort-descent': '')">
+        TRANSACTION NUMBER
+      </th>
+      <th (click)="sortBy(html.workorderActivityTransactionColumnsKey.CreateDate)" style="width: 15%;"
+        [ngClass]="(html.tableState.sort.predicate === html.workorderActivityTransactionColumnsKey.CreateDate) ? (sortNumber === 0 ? 'st-sort-ascent':(sortNumber === 1 ? 'st-sort-descent': '')): ''">
+        CREATE DATE
+      </th>
+      <th (click)="sortBy(html.workorderActivityTransactionColumnsKey.StartDate)" style="width: 15%;"
+        [ngClass]="(html.tableState.sort.predicate === html.workorderActivityTransactionColumnsKey.StartDate) ? (sortNumber === 0 ? 'st-sort-ascent':(sortNumber === 1 ? 'st-sort-descent': '')): ''">
+        START DATE
+      </th>
+      <th (click)="sortBy(html.workorderActivityTransactionColumnsKey.EndDate)" style="width: 15%;"
+        [ngClass]="(html.tableState.sort.predicate ===html.workorderActivityTransactionColumnsKey.EndDate) ? (sortNumber === 0 ? 'st-sort-ascent':(sortNumber === 1 ? 'st-sort-descent': '')): ''">
+        END DATE
+      </th>
+      <th (click)="sortBy(html.workorderActivityTransactionColumnsKey.TotalBilling)" style="width: 15%;"
+        [ngClass]="(html.tableState.sort.predicate ===html.workorderActivityTransactionColumnsKey.TotalBilling) ? (sortNumber === 0 ? 'st-sort-ascent':(sortNumber === 1 ? 'st-sort-descent': '')): ''">
+        TOTAL BILLING(S)
+      </th>
+      <th (click)="sortBy(html.workorderActivityTransactionColumnsKey.TotalPayment)" style="width: 15%;"
+        [ngClass]="(html.tableState.sort.predicate ===html.workorderActivityTransactionColumnsKey.TotalPayment) ? (sortNumber === 0 ? 'st-sort-ascent':(sortNumber === 1 ? 'st-sort-descent': '')): ''">
+        TOTAL PAYMENT(S)
+      </th>
+      <th style="width: 10%;"></th>
+    </tr>
+    <tr>
+      <th style="width: 15%; overflow: visible;">
+        <app-phx-advance-filter [inputFilter]="inputFilterForTransactionNumber"
+          (onColumnClick)="onColumnClicked($event)" (onClose)="closeAllFilterPopup($event)" (onGo)="onGo($event)"
+          (onClear)="onClear($event)" [canShow]="html.filterSelectedStatus.isTransactionIdClicked"
+          [columnId]="this.html.workorderActivityTransactionColumnsKey.TransactionNumber">
+        </app-phx-advance-filter>
+      </th>
+      <th style="width: 15%; overflow: visible;">
+        <app-phx-advance-filter [inputFilter]="inputFilterForCreateDate" (onColumnClick)="onColumnClicked($event)"
+          (onClose)="closeAllFilterPopup($event)" (onGo)="onGo($event)" (onClear)="onClear($event)"
+          [canShow]="html.filterSelectedStatus.isCreateDateClicked"
+          [columnId]="this.html.workorderActivityTransactionColumnsKey.CreateDate">
+        </app-phx-advance-filter>
+      </th>
+      <th style="width: 15%; overflow: visible;">
+        <app-phx-advance-filter [inputFilter]="inputFilterForStartDate" (onColumnClick)="onColumnClicked($event)"
+          (onClose)="closeAllFilterPopup($event)" (onGo)="onGo($event)" (onClear)="onClear($event)"
+          [canShow]="html.filterSelectedStatus.isStartDateClicked"
+          [columnId]="this.html.workorderActivityTransactionColumnsKey.StartDate">
+        </app-phx-advance-filter>
+      </th>
+      <th style="width: 15%; overflow: visible;">
+        <app-phx-advance-filter [inputFilter]="inputFilterForEndDate" (onColumnClick)="onColumnClicked($event)"
+          (onClose)="closeAllFilterPopup($event)" (onGo)="onGo($event)" (onClear)="onClear($event)"
+          [canShow]="html.filterSelectedStatus.isEndDateClicked"
+          [columnId]="this.html.workorderActivityTransactionColumnsKey.EndDate">
+        </app-phx-advance-filter>
+      </th>
+      <th style="width: 15%; overflow: visible;">
+        <app-phx-advance-filter [inputFilter]="inputFilterForTotalBilling" (onColumnClick)="onColumnClicked($event)"
+          (onClose)="closeAllFilterPopup($event)" (onGo)="onGo($event)" (onClear)="onClear($event)"
+          [canShow]="html.filterSelectedStatus.isTotalBillingClicked"
+          [columnId]="this.html.workorderActivityTransactionColumnsKey.TotalBilling">
+        </app-phx-advance-filter>
+      </th>
+      <th style="width: 15%; overflow: visible;">
+        <app-phx-advance-filter [inputFilter]="inputFilterForTotalPayment" (onColumnClick)="onColumnClicked($event)"
+          (onClose)="closeAllFilterPopup($event)" (onGo)="onGo($event)" (onClear)="onClear($event)"
+          [canShow]="html.filterSelectedStatus.isTotalPaymentClicked"
+          [columnId]="this.html.workorderActivityTransactionColumnsKey.TotalPayment">
+        </app-phx-advance-filter>
+      </th>
+      <th style="width: 10%;"></th>
+    </tr>
+  </thead>
+  <tbody style="height: 272.6px;" infiniteScroll [infiniteScrollDistance]="html.scrollConfig.infiniteScrollDistance"
+    [scrollWindow]="html.scrollConfig.scrollWindow" [infiniteScrollThrottle]="html.scrollConfig.infiniteScrollThrottle"
+    (scrolled)="onScroll()" *ngIf="html.commonLists.transactionList.Items?.length > 0">
+    <tr *ngFor="let item of html.commonLists.transactionList.Items" class="ng-scope" (click)="openTransaction(item.Id)">
+      <td style="width: 15%;">{{item.TransactionNumber}}</td>
+      <td style="width: 15%;">{{item.TransactionDate | date: html.phxConstants.DateFormat.mediumDate}}
+      </td>
+      <td style="width: 15%;">{{item.StartDate | date: html.phxConstants.DateFormat.mediumDate}}</td>
+      <td style="width: 15%;">{{item.EndDate | date: html.phxConstants.DateFormat.mediumDate}}</td>
+      <td style="width: 15%;">{{item.TotalBill_display}}</td>
+      <td style="width: 15%;">{{item.TotalPay_display}}</td>
+      <td style="width: 10%;">
+        <button type="button" class="btn btn-xs" title="View">
+          <i class="material-icons md-18">remove_red_eye</i>
+        </button>
+      </td>
+    </tr>
+  </tbody>
+  <tfoot>
+    <tr>
+      <td colspan="4">
+        <span>Total Count: {{html.commonLists.transactionList.Count}}; Items Loaded: {{
+                            html.commonLists.transactionList.Items
+                            ? html.commonLists.transactionList.Items.length: 0}}</span>
+      </td>
+    </tr>
+  </tfoot>
+</table>

@@ -1,0 +1,237 @@
+@import "../../../styles.less";
+
+.selected {
+    background-color: #f2f2f2;
+}
+
+.test-card {
+    background-color: @brand-test;
+}
+
+.cardLink {
+    color: #333;
+    display: flex;
+    text-decoration: none;
+    .selectable & :hover {
+        app-activity-centre-card-field {
+            color: #0061d8;
+        }
+    }
+}
+
+.selectable {
+    &.selected {
+        .material-icons {
+            display: block;
+            color: #fff;
+            font-size: 1.8em;
+            top: 7px;
+            // IE 11 no top use margin-top: -3;
+            @media screen and (min-width: 550px) {
+                top: 9px;
+                // IE 11 no top use margin-top: -1;
+            }
+        }
+    }
+    &:hover {
+        @media screen and (min-width: 550px) {
+            .entityAbbreviation {
+            font-size: 0;
+            }
+        .profile-picture {
+            display: none;
+        }
+            .action-btn {
+                background-color: #fff;
+                // border-color: #666;
+                // box-shadow: 0 0 0 1px #fff !important;
+                &.img-border {
+                    border-color: #666;
+                }
+            }     
+            .material-icons {
+                display: block;
+            }
+        }
+    }
+    .material-icons {
+        display: none;
+        font-size: 1.3em;
+        margin: auto;
+        top: 12px;
+        // IE 11 no top use margin-top: 2;
+        position: relative;
+        color: #999;
+        // @media screen and (min-width: 550px) {
+        //     top: 12px;
+        // }
+        // transition: font-size ease-in-out 200ms;
+    }
+    // &.selected {
+    //     &:hover {  
+    //         // .material-icons {
+    //         //     display: none;
+    //         // }
+    //         .action-btn {
+    //             background-color: #666;
+    //             // border-color: #fff;
+    //             // box-shadow: 0 0 0 1px #666 !important;
+    //         }
+    //     }
+    // }
+    .action-wrap {
+        padding-bottom: 25px;
+        cursor: pointer;
+    }
+}
+.profile-picture{
+    width: 110%;
+    margin: auto;
+    margin-left: -5%;
+    font-size: 41px;
+    @media screen and (min-width: 550px) {
+        font-size: 45px;
+    }
+}
+.action-btn {
+    display: block;
+    width: 40px;
+    height: 40px;
+    line-height: 37px;
+    // font-weight: 700;
+    margin: 4px auto 0;
+    color: #fff;
+    background-color: #666;
+    border: 2px solid #666;
+    border-radius: 50%;
+    // box-shadow: 0 0 0 1px #666 !important;
+    text-align: center;
+    background-size: 0;
+    transition: background-size ease-in-out 200ms;
+    &.img-border {
+        border-color: transparent;
+        background-color: transparent;
+    }
+    @media screen and (min-width: 550px) {
+        width: 45px;
+        height: 45px;
+        line-height: 40px;
+        .entityAbbreviation {
+            font-size: 1.15em;
+        }
+    }
+    // transition: background-color ease-in 200ms;
+    // .selectable & {
+    //     &:hover {
+    //         .entityAbbreviation {
+    //             color: transparent;
+    //         }        
+    //         .material-icons {
+    //             display: block;
+    //         }
+    //     }
+    //     .material-icons {
+    //         display: none;
+    //         font-size: 1.3em;
+    //         margin: auto;
+    //         top: 10px;
+    //         position: relative;
+    //     }
+    // }
+    .selected.selectable & {
+        // background-color: #66F;
+        // background-image: url('data:image/svg+xml;utf-8,<svg xmlns="http://www.w3.org/2000/svg" fill="%23fff" height="24" viewBox="0 0 24 24" width="24">     <path d="M0 0h24v24H0z" fill="none"/>     <path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/> </svg>');
+        // background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' fill='%23fff' height='24' viewBox='0 0 24 24' width='24'%3e%3cpath d='M0 0h24v24H0z' fill='none'/%3e%3cpath d='M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z'/%3e%3c/svg%3e");
+        // background-image: url('data:image/svg+xml;utf-8,<svg xmlns="http://www.w3.org/2000/svg" fill="%23fff" height="24" viewBox="0 0 24 24" width="24">     <path d="M0 0h24v24H0z" fill="none"/>     <path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/> </svg>');
+        // background-size: 24px;
+        // background-repeat: no-repeat;
+        // background-position: center;
+        background-color: #666;
+        .entityAbbreviation {
+           font-size: 0;
+        }
+        .profile-picture {
+            display: none;
+        }
+        // &:hover {
+        //     .material-icons {
+        //         display: none;
+        //     }
+        // }
+    }
+    .material-icons {
+        display: none;
+    }
+}
+
+.card-row.row {
+    border-bottom: solid 1px #ccc;
+    padding-top: 16px;
+    padding-bottom: 12px;
+    transition: background-color ease-in 200ms;
+    &.selected {
+        background-color: #f2f2f2;
+    }
+}
+
+.data-primary {
+    margin-left: -10px;
+    font-size: 21px;
+    min-height: 31px;
+    color: #333;
+}
+
+.data-secondary {
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+}
+
+.data-tertiary {
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.sub {
+    font-size: 13px;
+}
+
+.font-weight-600 {
+    font-weight: 800;
+}
+
+.min-height {
+    min-height: 19px;
+}
+
+.ellipsis {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.dynamic-align {
+    text-align: right;
+}
+
+// @media screen and (max-width: 768px) {
+//     .dynamic-align {
+//         text-align: left;
+//     }
+// }
+
+@media screen and (max-width: 785px) {
+    .data-primary {
+        font-size: 1.125em;
+        line-height: 1.1em;
+        font-weight: 600;
+    }
+}
+
+@media screen and (min-width: 785px) and (max-width: 1200px) {
+    .data-primary {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        display: block;
+    }
+}

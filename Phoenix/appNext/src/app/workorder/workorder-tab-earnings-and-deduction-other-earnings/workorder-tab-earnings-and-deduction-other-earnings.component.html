@@ -1,0 +1,42 @@
+<div [formGroup]="inputFormGroup">
+  <div class="col-lg-4 text-right">
+    <phx-form-control-label [control]="inputFormGroup">Apply
+      {{inputFormGroup.controls.PaymentOtherEarningTypeId.value
+      | lookupNoCache:html.commonLists.paymentOtherEarningTypeList:'id':'text'}}</phx-form-control-label>
+  </div>
+  <div class="col-lg-8">
+    <div class="col-lg-6 no-padding">
+      <phx-form-control labelText="" [layoutType]="layoutType.InputOnly" [control]="inputFormGroup.controls.IsApplied"
+        [editable]="readOnlyStorage.IsEditable && checkPtFiledAccessibility('WorkOrderVersion.PaymentInfoes.PaymentOtherEarnings','IsApplied')"
+        viewModeText="{{inputFormGroup.value.IsApplied | boolToYesNo}}">
+        <label class="radio-inline">
+          <input class="form-check-input" type="radio" [value]="true" formControlName="IsApplied">Yes</label>
+        <label class="radio-inline">
+          <input class="form-check-input" type="radio" [value]="false" formControlName="IsApplied">No</label>
+      </phx-form-control>
+    </div>
+    <div class="col-lg-6 no-padding" *ngIf="inputFormGroup.controls.IsApplied.value">
+      <phx-form-control labelText="" [layoutType]="layoutType.InputOnly" [control]="inputFormGroup.controls.RatePercentage"
+        [editable]="readOnlyStorage.IsEditable && checkPtFiledAccessibility('WorkOrderVersion.PaymentInfoes.PaymentOtherEarnings','RatePercentage')"
+        viewModeText="{{inputFormGroup.value.RatePercentage / 100 | percent: '1.4-4'}}">
+        <div class="input-group">
+          <input [inputTextLimitWithDecimals]="percentageFilter" type="text" class="form-control ng-scope"
+            formControlName="RatePercentage" />
+          <span class="input-group-addon">%</span>
+        </div>
+      </phx-form-control>
+    </div>
+  </div>
+  <div class="form-group" *ngIf="inputFormGroup.controls.IsApplied.value &&
+      inputFormGroup.controls.PaymentOtherEarningTypeId.value === phxConstants.PaymentOtherEarningType.VacationPay">
+    <phx-form-control labelText="Accrue {{inputFormGroup.controls.PaymentOtherEarningTypeId.value | lookupNoCache:html.commonLists.paymentOtherEarningTypeList:'id':'text'}}"
+      [control]="inputFormGroup.controls.IsAccrued" viewModeText="{{inputFormGroup.controls.IsAccrued.value | boolToYesNo}}"
+      [editable]="readOnlyStorage.IsEditable && checkPtFiledAccessibility('WorkOrderVersion.PaymentInfoes.PaymentOtherEarnings','IsAccrued')">
+      <label class="radio-inline">
+        <input class="form-check-input" type="radio" [value]="true" formControlName="IsAccrued">Yes</label>
+      <label class="radio-inline">
+        <input class="form-check-input" type="radio" [value]="false" formControlName="IsAccrued">No</label>
+    </phx-form-control>
+  </div>
+</div>
+<app-phx-dialog #phxDialogComponent (onCallBack)="dialogAction_CallBackObButtonClick($event)" [config]="phxDialogComponentConfigModel"></app-phx-dialog>

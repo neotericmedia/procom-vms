@@ -1,0 +1,183 @@
+﻿@using Procom.Phoenix.Web.Utility
+<!DOCTYPE html>
+<!--[if lt IE 7 ]> <html class="ie6"> <![endif]-->
+<!--[if IE 7 ]>    <html class="ie7"> <![endif]-->
+<!--[if IE 8 ]>    <html class="ie8"> <![endif]-->
+<!--[if IE 9 ]>    <html class="ie9"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!-->
+<html lang="en">
+<!--<![endif]-->
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    @* Enable crawling of AJAX applications (http://code.google.com/web/ajaxcrawling/docs/specification.html) *@
+    <meta name="fragment" content="!" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+
+    <title>@ViewBag.Title</title>
+
+    <style>
+        .ng-cloak {
+            display: none !important;
+        }
+    </style>
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+        <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+        <script src="/Content/libs/selectivizr/selectivizr-min.js"></script>
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/flot/0.8.2/excanvas.min.js"></script>
+    <![endif]-->
+    @*<link href="/Content/libs/bootstrap-3/less/bootstrap.css" rel="stylesheet">
+        <link href="/Content/fonts/fontawesome/icons.less" rel="stylesheet">
+        <link href="/Content/less/main.css" rel="stylesheet">
+        <link href="/Content/libs/datepicker/css/angular-pickadate.css" rel="stylesheet"/>*@
+
+    @*<link href="~/Content/bootstrap.css" rel="stylesheet">*@
+    @{
+        var useGulp = true;
+        var runAppNext = true;
+        var isApp = Request.Url.PathAndQuery.Contains("app");
+    }
+    @if (useGulp)
+    {
+        @Html.InsertStylesheetsFromGulp(bundleName: "vendorStyles")
+        @Html.InsertStylesheetsFromGulp(bundleName: "customVendorStyles")
+        @Html.InsertStylesheetsFromGulp(bundleName: "stylesApplication")
+        @Html.InsertStylesheetsFromGulp(bundleName: "stylesApplicationPrint", media: "print")
+    }
+    else
+    {
+        <link href="/Content/libs/print-preview/css/print-preview.css" rel="stylesheet" />
+
+        @Styles.Render("~/css/select2")
+        @Styles.Render("~/css/bootstrap")
+        @Styles.Render("~/font/fontawesome")
+        @Styles.Render("~/css/main")
+        @Styles.Render("~/css/angular-datepicker")
+        @Styles.Render("~/css/angular-abn-tree")
+        @Styles.Render("~/css/angular-select")
+        @Styles.Render("~/css/angular-busy")
+        @Styles.Render("~/css/jquery-plugins")
+        @Styles.Render("~/css/jquery-file-upload")
+        @Styles.Render("~/font/fonts")
+        @Styles.Render("~/css/jquery-ui/base")
+
+
+
+
+        @*@Styles.Render("~/css/main")*@
+    }
+
+
+    @RenderSection("stylesheets", required: false)
+
+    <!-- Fav and touch icons -->
+    @Html.InsertReleaseConditionalHtml(debugString: "<link rel=\"shortcut icon\" href=\"/Content/images/ico/favicon.ico\">", releaseString: "<link rel=\"shortcut icon\" href=\"/release/assets/images/ico/favicon.ico\">")
+    @Html.InsertReleaseConditionalHtml(debugString: "<link rel=\"apple-touch-icon-precomposed\" sizes=\"144x144\" href=\"/Content/images/ico/apple-touch-icon-144-precomposed.png\">", releaseString: "<link rel=\"apple-touch-icon-precomposed\" sizes=\"144x144\" href=\"/release/assets/images/ico/apple-touch-icon-144-precomposed.png\">")
+    @Html.InsertReleaseConditionalHtml(debugString: "<link rel=\"apple-touch-icon-precomposed\" sizes=\"114x114\" href=\"/Content/images/ico/apple-touch-icon-114-precomposed.png\">", releaseString: "<link rel=\"apple-touch-icon-precomposed\" sizes=\"114x114\" href=\"/release/assets/images/ico/apple-touch-icon-114-precomposed.png\">")
+    @Html.InsertReleaseConditionalHtml(debugString: "<link rel=\"apple-touch-icon-precomposed\" sizes=\"72x72\" href=\"/Content/images/ico/apple-touch-icon-72-precomposed.png\">", releaseString: "<link rel=\"apple-touch-icon-precomposed\" sizes=\"72x72\" href=\"/release/assets/images/ico/apple-touch-icon-72-precomposed.png\">")
+    @Html.InsertReleaseConditionalHtml(debugString: "<link rel=\"apple-touch-icon-precomposed\" sizes=\"57x57\" href=\"/Content/images/ico/apple-touch-icon-57-precomposed.png\">", releaseString: "<link rel=\"apple-touch-icon-precomposed\" sizes=\"57x57\" href=\"/release/assets/images/ico/apple-touch-icon-57-precomposed.png\">")
+
+    @*<script src="http://cdnjs.cloudflare.com/ajax/libs/json2/20110223/json2.js"></script>*@
+
+    <script type="text/javascript">
+        if (!Array.prototype.indexOf) {
+            Array.prototype.indexOf = function (elt /*, from*/) {
+                var len = this.length >>> 0;
+
+                var from = Number(arguments[1]) || 0;
+                from = (from < 0)
+                     ? Math.ceil(from)
+                     : Math.floor(from);
+                if (from < 0)
+                    from += len;
+
+                for (; from < len; from++) {
+                    if (from in this &&
+                        this[from] === elt)
+                        return from;
+                }
+                return -1;
+            };
+        }
+    </script>
+
+    @if (runAppNext)
+    {
+        <script>
+            window.runAppNext = true;
+        </script>
+    }
+</head>
+
+<body @ViewBag.BodyAttributes>
+    <div class="navbar navbar-inverse" id="navbar" style="z-index:998">
+        <script type="text/javascript">
+            try {
+                ace.settings.check('navbar', 'fixed');
+            } catch (e) { }
+        </script>
+
+        <div class="navbar-container" id="navbar-container">
+            @RenderSection("headerBarLeft", required: false)
+
+            <div class="navbar-header pull-right" role="navigation">
+                @RenderSection("headerBar", required: false)
+            </div>
+        </div>
+    </div>
+
+    <div class="main-container">
+        @*<script type="text/javascript">
+                try {
+                    ace.settings.check('main-container', 'fixed');
+                } catch (e) { }
+            </script>*@
+        <div class="main-container-inner">
+            @RenderBody()
+        </div><!-- /.main-container-inner -->
+        @*<a id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse">
+                <i class="icon-double-angle-up icon-only bigger-110"></i>
+            </a>*@
+        @RenderSection("footer", required: false)
+    </div><!-- /.main-container -->
+    @if (useGulp)
+    {
+        @Html.InsertScriptsFromGulp(bundleName: "vendorScripts")
+        if (isApp)
+        {
+            @Html.InsertScriptsFromGulp(bundleName: "customVendorScripts")
+        }
+    }
+    else
+    {
+        @Scripts.Render("~/js/modernizr")
+
+        @*@Scripts.Render("~/js/valdr")*@
+        @Scripts.Render("~/js/jquery")
+        @* <script src="~/Scripts/bootstrap.js"></script>*@
+        @Scripts.Render("~/js/jquery-ui")
+        @Scripts.Render("~/js/system")
+        @Scripts.Render("~/js/bootstrap")
+        @Scripts.Render("~/js/plugins-custom")
+    }
+    @RenderSection("scripts", required: false)
+    @RenderSection("beforeend", required: false)
+    @if (!useGulp)
+    {
+        @Scripts.Render("~/js/phoenix-bootstrap")
+    }
+
+    @if (useGulp && isApp && runAppNext)
+    {
+        @Html.InsertScriptsFromGulp(bundleName: "appNext")
+    }
+</body>
+
+</html>

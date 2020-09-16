@@ -1,0 +1,96 @@
+﻿<div class="row page-control">
+    <div class="page-control-bar col-lg-12">
+        <div class="btn-toolbar">
+            <a href="javascript:;" type="button" class="btn btn-clouds" ui-sref="org.create()">New</a>
+        </div>
+    </div>
+</div>
+<div class="domain organization">
+    <div class="search">
+        <div class="smart-table-wrapper">
+            <div class="row" data-cg-busy="loadItemsPromise">
+                <table data-st-table-struct='[{"stTableValue" : "items"}, {"stPipeValue" : "callServer"}, {"widthValues" : "[10, 21, 12, 20, 17, 10, 10]"}, {"stPaginationValue" : "pageSize"}]'>
+                    <thead data-st-head="1000px">
+                        <tr>
+                            <th data-st-sort="Id" data-st-sort-default="reverse">ID</th>
+                            <th data-st-sort="DisplayName">Display Name </th>
+                            <th data-st-sort="Code">Org Code</th>
+                            <th data-st-sort="LegalName">Legal Name</th>
+                            <th data-st-pen-name="useODataExpressions">Roles</th>
+                            <th data-st-sort="OrganizationStatusId">Status</th>
+                            <th data-st-pen-name="Action">Action</th>
+                        </tr>
+                        <tr>
+                            <th>
+                                <input data-st-advanced-search="{property: 'Id', ignoreQuotes: true}" placeholder=""
+                                       class="input-sm form-control numberType" data-safe-restrict-input="[^0123456789]" />
+                            </th>
+                            <th>
+                                <input data-st-advanced-search="'DisplayName'" placeholder="" class="input-sm form-control" type="search" />
+                            </th>
+                            <th>
+                                <input data-st-advanced-search="'Code'" placeholder="" class="input-sm form-control" type="search" />
+                            </th>
+                            <th>
+                                <input data-st-advanced-search="'LegalName'" placeholder="" class="input-sm form-control" type="search" />
+                            </th>
+                            <th>
+                                <select data-st-as-width-override="185" data-st-advanced-search="{property:'AAAA', useODataExpressions : true, useSecondarySearch : true, switchSearchType : true}" class="input-sm form-control">
+                                    <option data-st-advanced-search-expression="IsOrganizationClientRole eq true">Client Role</option>
+                                    <option data-st-advanced-search-expression="IsOrganizationIndependentContractorRole eq true">Ind. Contractor Role</option>
+                                    <option data-st-advanced-search-expression="IsOrganizationLimitedLiabilityCompanyRole eq true">Limited Liability CompanyRole</option>
+                                    <option data-st-advanced-search-expression="IsOrganizationInternalRole eq true">Internal Role</option>
+                                    <option data-st-advanced-search-expression="IsOrganizationSubVendorRole eq true">Sub Vendor Role</option>
+                                    <option data-st-advanced-search-expression="IsOrganizationInternalRole eq false and IsOrganizationIndependentContractorRole eq false and IsOrganizationLimitedLiabilityCompanyRole eq false and IsOrganizationClientRole eq false">No Roles</option>
+                                </select>
+                            </th>
+                            <th>
+                                <select data-st-advanced-search="{property: 'OrganizationStatusId', ignoreQuotes: true}" class="input-sm form-control numberType">
+                                    <option value="'4'">Active</option>
+                                     <!--<option value="1">New</option>-->
+                                    <option value="'2'">Draft</option>
+                                    <option value="'3'">Pending Review</option>
+                                    <option value="'5'">Pending Change</option>
+                                    <!--<option value="6">Discard</option>
+                                    <option value="7">Duplicate Active</option>-->
+                                </select>
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr data-ng-repeat="item in items" data-ui-sref-tr="org.edit.details({organizationId: item.Id })">
+                            <!--data-st-select-row-in-array="item in items track by item.Id" data-st-select-mode="multiple" data-st-selection-obj="selectionObj"-->
+                            <td ng-bind="::item.Id"></td>
+                            <td ng-bind="::item.DisplayName"></td>
+                            <td ng-bind="::item.Code"></td>
+                            <td ng-bind="::item.LegalName"></td>
+                            <td>
+                                <i data-ng-if="item.IsOrganizationClientRole" class="icon icon-small icon-organization-client" title="Client"></i>
+                                <i data-ng-if="item.IsOrganizationIndependentContractorRole" class="icon icon-small icon-organization-independentcontractor" title="Independent Contractor"></i>
+                                <i data-ng-if="item.IsOrganizationLimitedLiabilityCompanyRole" class="icon icon-small icon-organization-limitedliabilitycompany" title="Limited Liability Company"></i>
+                                <i data-ng-if="item.IsOrganizationSubVendorRole" class="icon icon-small icon-organization-subvendor" title="Sub Vendor"></i>
+                                <i data-ng-if="item.IsOrganizationInternalRole" class="icon icon-small icon-organization-internal" title="Internal"></i>
+                            </td>
+                            <td>
+                                <span ng-bind="::item.OrganizationStatusId | lookup:lists.organizationStatusList"></span>
+                            </td>
+                            <td>
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-xs btn-clouds btn-row-action no-padding-bottom-right" data-action="view" title="View"><i class="fontello-icon-eye-1"></i>&nbsp;</button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="7">
+                                <span>Total Count: {{totalItemCount || 0}}; Items Loaded: {{ items ? items.length : 0}}</span>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

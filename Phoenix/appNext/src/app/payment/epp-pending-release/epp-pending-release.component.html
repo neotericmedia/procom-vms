@@ -1,0 +1,19 @@
+<div class="row">
+  <app-phx-data-table #grid [configuration]="dataTableConfiguration" dataSourceUrl="payment/chequeEPPPendingRelease" [dataSourceParams]="oDataParams"
+    [columns]="columns" exportFileName="epp-pending" componentName="epp-pending-release" (selectionChanged)="onSelectionChanged($event)">
+  </app-phx-data-table>
+</div>
+<div class="row toolbar">
+  <div class="col-md-6">
+    <div *ngIf="selectedRowKeys.length > 0">
+      <span>Number Of Selected Rows </span>
+      <strong>{{selectedRowKeys.length}}</strong>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="btn-toolbar pull-right">
+      <button type="button" class="btn btn-primary pull-right" [disabled]="selectedRowKeys.length === 0" (click)="processPendingEpp()"
+        title="Process">Process</button>
+    </div>
+  </div>
+</div>

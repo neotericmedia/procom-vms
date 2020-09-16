@@ -1,0 +1,224 @@
+.remove-padding-on-sides{
+    padding-left: 0px;
+}
+
+.remove-padding-on-right-side {
+    padding-right: 0px !important;
+}
+
+.vms-conflict-no-wovs{
+    color:red;
+    font-style:italic;
+    text-align: center;
+    font-size:16px;
+}    
+.vms-conflict-resolve-table-wrapper {
+        padding: 0px; 
+        // margin-top: -20px;
+
+        .vms-conflict-resolving-table {
+            
+            h4 {
+                position: relative;
+                left: 15px;
+                bottom: 5px;
+            }
+
+            .vms-child-table {
+                overflow-x: auto;
+                max-height: 210px;
+                padding-left: 5px;
+                min-height: 110px;
+
+                .vms-cell-discount {
+                    display: table-cell;
+                    padding: 10px;
+                    vertical-align: middle;
+
+                    &.vms-cell-chk {
+                        width: 3%;
+
+                        .bt-chk {
+                            height: 17px;
+                            width: 17px;
+                            position: relative;
+                            left: 10px;
+                        }
+                    }
+
+                    &.vms-cell-total {
+                        width: 6%;
+                        text-align: right;
+                        padding-right: 20px;
+                    }
+
+                    &.vms-cell-name {
+                        width: 12%;
+                    }
+
+                    &.vms-cell-date {
+                        width: 12%;
+                    }
+                }
+
+                .vms-cell-expense {
+                    display: table-cell;
+                    padding: 10px;
+                    vertical-align: middle;
+
+                    &.vms-cell-chk {
+                        width: 3%;
+
+                        .bt-chk {
+                            height: 17px;
+                            width: 17px;
+                            position: relative;
+                            left: 10px;
+                        }
+                    }
+
+                    &.vms-cell-wo {
+                        width: 16%;
+                    }
+
+                    &.vms-cell-name {
+                        width: 16%;
+                    }
+
+                    &.vms-cell-date {
+                        width: 16%;
+                    }
+                }
+
+                .vms-cell {
+                    display: table-cell;
+                    padding: 10px;
+                    vertical-align: middle;
+
+                    .input-group {
+                        position: static;
+                        /*top: -25px;*/
+                    }
+
+                    @media screen and (-webkit-min-device-pixel-ratio:0) {
+                        .input-group {
+                            position: static;
+                            /*top: 11px;*/
+                        }
+                    }
+
+                    @-moz-document url-prefix() {
+                        .input-group {
+                            position: static;
+                            /*top: 11px;*/
+                        }
+                    }
+
+                    &.vms-cell-chk {
+                        min-width: 40px;
+
+                        .wov-chk {
+                            height: 17px;
+                            width: 17px;
+                            position: relative;
+                            top: 3px;
+                            left: 10px;
+                        }
+                    }
+
+                    &.vms-cell-wo {
+                        min-width: 130px;
+                    }
+
+                    &.vms-cell-name {
+                        min-width: 140px;
+                    }
+
+                    &.vms-cell-date {
+                        min-width: 170px;
+                    }
+
+                    &.vms-cell-rate {
+                        min-width: 100px;
+                    }
+
+                    &.vms-cell-total {
+                        min-width: 100px;
+                    }
+                }
+
+                .vms-cell:last-child {
+                    padding-right: 20px;
+                }
+
+                .vms-child-table-header {
+                    display: table-row;
+                }
+
+                .vms-child-table-body {
+                    display: table-row;
+                }
+
+                .vms-control-txt {
+                    position: relative;
+                    /*top: 11px;*/
+                    height: 33px;
+                }
+
+                .vms-control-drp {
+                    position: relative;
+                    top: 0;
+                    right: 5px;
+
+                    select {
+                        height: 32px;
+                    }
+                }
+
+                .vms-cell-pkr {
+                    position: static;
+                    top: 3px;
+                }
+
+                @-moz-document url-prefix() {
+                    .vms-cell-pkr {
+                        position: static;
+                        top: 1px;
+                    }
+                }
+
+                @media screen and (-webkit-min-device-pixel-ratio:0) {
+                    .vms-control-txt {
+                        position: relative;
+                        top: 0;
+                    }
+
+                    .vms-control-drp {
+                        position: relative;
+                        top: 0;
+                        right: 5px;
+                    }
+
+                    .vms-cell-pkr {
+                        position: static;
+                        top: 1px;
+                    }
+                }
+
+                .vms-empty-na {
+                    padding-left: 5px;
+                }
+            }
+
+            .vms-child-table-footer {
+                margin-top: 10px;
+
+                .btnResolve {
+                    position: relative;
+                    top: 10px;
+                    width: 120px;
+                }
+            }
+        }
+    }
+ 

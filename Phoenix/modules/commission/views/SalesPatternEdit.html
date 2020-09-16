@@ -1,0 +1,122 @@
+﻿<div data-ng-form="formSalesPattern" class="sales-pattern-details col-lg-12">
+    <div class="sales-pattern-entity-wrapper col-lg-12">
+        <div class="sales-pattern-header headstone">
+            <div class="row">
+                <div class="col-lg-4"></div>
+                <div class="col-lg-4">
+                    <label class="control-label col-xs-12">ID</label>
+                    <span class="col-xs-12">{{edit.salesPattern.Id ? edit.salesPattern.Id : 'N/A'}}</span>
+                </div>
+                <div class="col-lg-4">
+                    <label class="control-label  col-xs-12">Status</label>
+                    <span class="col-xs-12" data-ng-class="{'text-warning': edit.salesPattern.Id > 0 }">{{edit.salesPattern.SalesPatternStatusId | lookup: edit.commissionStatuses}}</span>
+                </div>
+
+            </div>
+        </div>
+        <div class="panel-body sales-pattern-body">
+            <div class="row">
+                <div class="form-horizontal" role="form">
+                    <div class="form-group sales-pattern-row">
+                        <label class="col-lg-4 control-label req-lab-right" for-property="Description" for="Description" data-model-property="edit.salesPattern.Description"
+                            data-original-title="" title="">Description</label>
+                        <div class="col-lg-5">
+                            <input type="text" class="form-control" name="Description" ng-model="edit.salesPattern.Description" data-ng-minlength="3"
+                                data-ng-maxlength="64" data-ng-required="true">
+                        </div>
+                        <div class="col-lg-3"></div>
+                    </div>
+                    <div class="form-group sales-pattern-radio sales-pattern-row">
+                        <label class="col-lg-4 control-label req-lab-right" for-property="SalesPatternWithSupport" for="SalesPatternWithSupport"
+                            data-model-property="edit.salesPattern.SalesPatternWithSupport" data-original-title="" title="">Job Owner With Support?</label>
+                        <div class="col-lg-5">
+                            <pt-input-radio name="SalesPatternWithSupport" data-ng-click="edit.radioChanged()" data-options="[{ key: true, value: 'Yes' },{ key: false, value: 'No' }]"
+                                data-ng-required="false" data-template-type="input-radio" data-ng-model="edit.salesPattern.SalesPatternWithSupport"
+                            />
+                        </div>
+                        <div class="col-lg-3"></div>
+                    </div>
+                    <div class="form-group sales-pattern-row">
+                        <label class="col-lg-4 control-label req-lab-right" for-property="UserProfileId" for="UserProfileId" data-model-property="edit.JobOwner.UserProfileId"
+                            data-original-title="" title="">Job Owner</label>
+                        <div class="col-lg-5">
+                            <div class="input-group select2-bootstrap-append">
+                                <ui-select name="UserProfileId" data-ng-model="edit.JobOwner.UserProfileId" theme="select2" class="form-control" data-ng-required="true">
+                                    <ui-select-match placeholder="-- Select One --">{{$select.selected.Name}}</ui-select-match>
+                                    <ui-select-choices repeat="item.CommissionUserProfileId as item in edit.commissionOwners | uiSelectChoicesFilter: $select.search: 'Name': 'CommissionUserProfileId'">
+                                        <span data-ng-bind-html="item.Name | highlight: $select.search"></span>
+                                    </ui-select-choices>
+                                </ui-select>
+                                <span class="input-group-btn">
+                                    <button tabindex="-1" data-ng-click="edit.JobOwner.UserProfileId=undefined;" class="btn btn-default btn-sales-pattern-drp"><i class="material-icons md-18">clear</i></button>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-lg-3"></div>
+                    </div>
+                    <div data-ng-repeat="supporter in edit.salesPattern.CommissionSalesPatternSupporters" data-ng-if="edit.salesPattern.SalesPatternWithSupport">
+                        <div class="form-group sales-pattern-row">
+                            <label class="col-lg-4 control-label req-lab-right" for-property="SupporterUserProfileId" for="SupporterUserProfileId" data-model-property="supporter.UserProfileId"
+                                data-original-title="" title="">Supporting Job Owner</label>
+                            <div class="col-lg-5">
+                                <div ng-if="$first"> 
+                                    <div class="input-group select2-bootstrap-append">
+                                        <ui-select name="SupporterUserProfileId" data-ng-model="supporter.UserProfileId" theme="select2" class="form-control" data-ng-required="true">
+                                            <ui-select-match placeholder="-- Select One --">{{$select.selected.Name}}</ui-select-match>
+                                            <ui-select-choices repeat="item.CommissionUserProfileId as item in edit.commissionSupporters | uiSelectChoicesFilteredByUsage : $select.search : edit.salesPattern.CommissionSalesPatternSupporters: supporter : 'UserProfileId' : 'CommissionUserProfileId' : 'Name'">
+                                                <span data-ng-bind-html="item.Name | highlight: $select.search"></span>
+                                            </ui-select-choices>
+                                        </ui-select>
+                                        <span class="input-group-btn">
+                                            <button tabindex="-1" data-ng-click="supporter.UserProfileId=undefined;" class="btn btn-default btn-sales-pattern-drp"><i class="material-icons md-18">clear</i></button>
+                                        </span>
+                                    </div>
+                                </div>                            
+                                <div ng-if="!$first"> 
+                                    <div class="input-group select2-bootstrap-append col-xs-10 col-sm-11 col-lg-10 col-xl-11" style="float: left;">
+                                        <ui-select name="SupporterUserProfileId" data-ng-model="supporter.UserProfileId" theme="select2" class="form-control" data-ng-required="true">
+                                            <ui-select-match placeholder="-- Select One --">{{$select.selected.Name}}</ui-select-match>
+                                            <ui-select-choices repeat="item.CommissionUserProfileId as item in edit.commissionSupporters | uiSelectChoicesFilteredByUsage : $select.search : edit.salesPattern.CommissionSalesPatternSupporters: supporter : 'UserProfileId' : 'CommissionUserProfileId' : 'Name'">
+                                                <span data-ng-bind-html="item.Name | highlight: $select.search"></span>
+                                            </ui-select-choices>
+                                        </ui-select>
+                                        <span class="input-group-btn">
+                                            <button tabindex="-1" data-ng-click="supporter.UserProfileId=undefined;" class="btn btn-default btn-sales-pattern-drp"><i class="material-icons md-18">clear</i></button>
+                                        </span>
+                                    </div>
+                                    <div class="col-xs-2 col-sm-1 col-lg-2 col-xl-1" style="padding: 0;">
+                                        <div class="btn-toolbar pull-right">
+                                            <!--button type="button" class="btn btn-default btn-material" data-ng-hide="edit.salesPattern.CommissionSalesPatternSupporters.length ===5 || edit.salesPattern.CommissionSalesPatternSupporters.length === edit.commissionSupporters.length"
+                                                data-ng-show="$first && edit.salesPattern.CommissionSalesPatternSupporters.length <= 1" data-ng-click="edit.addSupporter()"><i class="material-icons">add</i></button-->
+                                            <button type="button" class="btn btn-default btn-material" data-ng-show="!$first" data-ng-click="edit.removeSupporter($index)"><i class="material-icons">delete</i></button>
+                                        </div>
+                                    </div>                            
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-9">
+                        <div class="btn-toolbar pull-right">
+                            <button type="button" class="btn btn-default btn-material" data-ng-hide="edit.salesPattern.CommissionSalesPatternSupporters.length ===5 || edit.salesPattern.CommissionSalesPatternSupporters.length === edit.commissionSupporters.length"
+                                data-ng-show="true" data-ng-click="edit.addSupporter()"><i class="material-icons">add</i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel-footer ">
+            <div class="row">
+                <div class="col-lg-6"></div>
+                <div class="col-lg-6">
+                    <div class="pull-right">
+                        <button type="button" class="btn btn-default" data-ng-click="edit.discard(edit.salesPattern)">Cancel and Discard</button>
+                        <button type="button" class="btn btn-default" data-ng-click="edit.cancel()">Cancel</button>
+                                                <!-- <a type="button" class="btn btn-default" ui-sref="edit.cancel()">Cancel</a> -->
+                        <button type="button" class="btn btn-primary" data-ng-click="edit.save(edit.salesPattern)" data-ng-disabled="!formSalesPattern.$valid">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-12 panel-body" data-pt-validation-messages="edit.validationMessages" data-ng-if="edit.validationMessages"></div>
+    </div>
+</div>

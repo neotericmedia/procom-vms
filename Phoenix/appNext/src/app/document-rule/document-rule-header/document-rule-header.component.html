@@ -1,0 +1,29 @@
+<div class="headstone panel-heading">
+  <div class="row">
+    <div class="col-lg-1 col-md-1">
+      <label class="control-label col-xs-12 ">ID</label>
+      <span class="col-xs-12">{{ documentRule?.OriginalId || ruleTypeId }}</span>
+    </div>
+    <div class="col-lg-5 col-md-5">
+      <label class="control-label col-xs-12 ">Name</label>
+      <span class=" col-xs-12 ">{{documentRule?.DisplayName}}&nbsp;</span>
+    </div>
+    <div class="col-lg-4 col-md-4">
+      <label class="control-label col-xs-12 ">Area Type</label>
+      <div class="col-xs-12">
+        {{ documentRule.ComplianceDocumentRuleAreaTypeId | CodeValue: html.codeValueGroups.ComplianceDocumentRuleAreaType }}
+      </div>
+    </div>
+    <div class="col-lg-2 col-md-2">
+      <label class="control-label col-xs-12 ">Status</label>
+      <div class="col-xs-12 ">
+
+        <span [class]="documentRule?.ComplianceDocumentRuleStatusId === html.phxConstants.ComplianceDocumentRuleStatus.Draft ?'text-warning':''">
+
+          {{ documentRule?.ComplianceDocumentRuleStatusId
+          | CodeValue: html.codeValueGroups.ComplianceDocumentRuleStatus }}</span>
+
+      </div>
+    </div>
+  </div>
+</div>

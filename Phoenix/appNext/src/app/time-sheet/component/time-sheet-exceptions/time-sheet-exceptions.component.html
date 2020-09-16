@@ -1,0 +1,20 @@
+<div class="col col-xs-12">
+    <div class="row">
+      <app-phx-data-table [configuration]="dataTableConfiguration" [dataSourceUrl]="'timesheet/getTimesheetExceptions'" [columns]="columns" 
+        [exportFileName]="'timesheets'" [componentName]="'timeSheets'" (cellClick)="onCellClick($event)" [height]="700" (contextMenuPreparing)="onContextMenuPreparing($event)">
+        <div *dxTemplate="let c of 'commentsCellTemplate'">
+          <div *ngIf="c.value">
+            <ul class="timesheet-exception">
+              <li *ngFor="let comment of c.value" class="view-link" (click)="viewExceptionComment(comment, c.data)">
+                  <span class="comment">{{comment.Comment | phxTranslate}}</span>
+                  <a (click)="$event.preventDefault()">{{'common.generic.view' | phxTranslate}}</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div *dxTemplate="let wo of 'workOrderNumberCellTemplate'" class="view-link">
+          <a (click)="$event.preventDefault()">{{ wo.value }}</a>
+        </div>
+      </app-phx-data-table>
+    </div>
+</div>

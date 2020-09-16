@@ -1,0 +1,6 @@
+<app-phx-data-table [configuration]="dataTableConfiguration" [dataSourceUrl]="dataSourceUrl" [columns]="columns" [summary]="summary"
+  [exportFileName]="'workorder'" [componentName]="dataGridComponentName" (selectionChanged)="onRowSelected($event)" (responseReceived)="dataReceived($event)" (contextMenuOpenTab)="onContextMenuOpenTab($event)">
+  <div *dxTemplate="let d of 'currencyCellTemplate'">
+    <div style="text-align: right">{{d.data[d.column.dataField] || 0 | pxCurrency}} {{currencyId | CodeValue:'geo.CodeCurrency':'code'}}</div>
+  </div>
+</app-phx-data-table>

@@ -1,0 +1,163 @@
+﻿<div data-save-as-template="" data-control="templateControl"></div>
+<div class="col-lg-12">
+    <div class="row" data-cg-busy="loadItemsPromise">
+        <div class="col-lg-10">
+            <div class="row" style="height: 35px;">
+                <div class="col col-lg-12">
+                    <div class="btn-toolbar">
+                        <div class="btn-group">
+                            <!--<div class="btn-group col-lg-12" data-ng-if="workflow.WorkflowAvailableActions.length>0">
+                                <ui-select theme="select2" class="form-control"
+                                           data-ng-model="workflow.actionButtonSelectionId"
+                                           data-ng-change="workflow.actionButtonOnClick({{$select.selected}});workflow.actionButtonSelectionId=null;">
+                                    <ui-select-match placeholder="Actions...">{{$select.selected.Name}}</ui-select-match>
+                                    <ui-select-choices repeat="item.Id as item in workflow.WorkflowAvailableActions | orderBy:'DisplayButtonOrder' | uiSelectChoicesFilter: $select.search: 'Name': 'Id'">
+                                        <span data-ng-bind-html="item.Name | highlight: $select.search"></span>
+                                    </ui-select-choices>
+                                </ui-select>
+                            </div>-->
+                            <button type="button" class="btn btn-clouds dropdown-toggle" data-toggle="dropdown">
+                                Actions...
+                                <span class="caret ml"></span>
+                            </button>
+
+                            <ul class="dropdown-menu bordered" data-ng-if="$state.includes('workorder.edit')">
+                                <li style="cursor: pointer;" data-ng-if="actionButton.show.syncFromATS" data-ng-click="actionButton.onClick.syncFromATS()">
+                                    <a>Refresh data from ATS</a>
+                                </li>
+                                <li style="cursor: pointer;" data-ng-if="actionButton.show.workOrderSaveAsTemplate" data-ng-click="actionButton.onClick.workOrderSaveAsTemplate()">
+                                    <a>Save as a template</a>
+                                </li>
+                                <li style="cursor: pointer;" data-ng-repeat="action in workflow.WorkflowAvailableActions | orderBy:'DisplayButtonOrder'"
+                                    data-ng-click="workflow.actionButtonOnClick(action)">
+                                    <a>{{action.Name}}</a>
+                                </li>
+                            </ul>
+                            <ul class="dropdown-menu bordered" data-ng-if="$state.includes('template.workorder')">
+                                <li style="cursor: pointer;" data-ng-click="workOrderTemplateSave()">
+                                    <a>Save Template</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <!--<div class="badge"><i class="icon-tag"></i>tag 1</div>
+                        <div class="badge"><i class="icon-tag"></i>tag 2</div>
+                        <div class="badge"><i class="icon-tag"></i>tag 3</div>
+                        <div class="badge"><i class="icon-tag"></i>tag 4</div>-->
+                    <!--<hr class="separator-vertical  separator-btn" />-->
+                </div>
+            </div>
+            <div class="row " data-ng-form="entityForm">
+                <div class="tab-content">
+                    <div class="tabbable panel panel-tabbable">
+                        <div class="tab-content">
+                            <div class="tab-pane active">
+                                <div class="panel">
+                                    <div class="panel-heading headstone" ng-class="{'test-headstone': isTest}">
+                                        <div class="row">
+                                            <div class="col-xs-12 col-lg-1">
+                                                <label class="col-xs-3 col-md-12 control-label no-padding-h-l">ID</label>
+                                                <div>{{model.entity.Id}}.{{CurrentWorkOrder.WorkOrderNumber}}.{{CurrentWorkOrderVersion.VersionNumber}}</div>
+                                            </div>
+                                            <div class="col-xs-12 col-lg-3">
+                                                <label class="col-xs-3 col-md-12 control-label no-padding-h-l">Client</label>
+                                                <div>{{CurrentWorkOrderVersion.BillingInfoes[0].OrganizationIdClient | lookup:lists.listOrganizationClient:'Id':'DisplayName'}}
+                                                    - {{CurrentWorkOrderVersion.BillingInfoes[0].OrganizationIdClient}}</div>
+                                            </div>
+                                            <div class="col-xs-12 col-lg-3">
+                                                <label class="col-xs-3 col-md-12 control-label no-padding-h-l">Worker</label>
+                                                <div>
+                                                    <a data-ng-if="(model.entity.UserProfileIdWorker|lookupnocache:lists.listUserProfileWorker:'Id':'ProfileTypeId')==ApplicationConstants.UserProfileType.WorkerTemp" data-ui-sref="EditWorkerTempProfile({ contactId:(model.entity.UserProfileIdWorker|lookupnocache:lists.listUserProfileWorker:'Id':'ContactId'), profileId: model.entity.UserProfileIdWorker })">{{model.entity.UserProfileIdWorker|lookupnocache:lists.listUserProfileWorker:'Id':'Contact.FullName'}} - {{model.entity.UserProfileIdWorker}}({{model.entity.UserProfileIdWorker|lookupnocache:lists.listUserProfileWorker:'Id':'ProfileTypeId' | lookupnocache:lists.profileTypeList:'id':'text'}})</a>
+                                                    <a data-ng-if="(model.entity.UserProfileIdWorker|lookupnocache:lists.listUserProfileWorker:'Id':'ProfileTypeId')==ApplicationConstants.UserProfileType.WorkerCanadianSp" data-ui-sref="EditWorkerCanadianSPProfile({ contactId:(model.entity.UserProfileIdWorker|lookupnocache:lists.listUserProfileWorker:'Id':'ContactId'), profileId: model.entity.UserProfileIdWorker })">{{model.entity.UserProfileIdWorker|lookupnocache:lists.listUserProfileWorker:'Id':'Contact.FullName'}} - {{model.entity.UserProfileIdWorker}}({{model.entity.UserProfileIdWorker|lookupnocache:lists.listUserProfileWorker:'Id':'ProfileTypeId' | lookupnocache:lists.profileTypeList:'id':'text'}})</a>
+                                                    <a data-ng-if="(model.entity.UserProfileIdWorker|lookupnocache:lists.listUserProfileWorker:'Id':'ProfileTypeId')==ApplicationConstants.UserProfileType.WorkerCanadianInc" data-ui-sref="EditWorkerCanadianIncProfile({ contactId:(model.entity.UserProfileIdWorker|lookupnocache:lists.listUserProfileWorker:'Id':'ContactId'), profileId: model.entity.UserProfileIdWorker })">{{model.entity.UserProfileIdWorker|lookupnocache:lists.listUserProfileWorker:'Id':'Contact.FullName'}} - {{model.entity.UserProfileIdWorker}}({{model.entity.UserProfileIdWorker|lookupnocache:lists.listUserProfileWorker:'Id':'ProfileTypeId' | lookupnocache:lists.profileTypeList:'id':'text'}})</a>
+                                                    <a data-ng-if="(model.entity.UserProfileIdWorker|lookupnocache:lists.listUserProfileWorker:'Id':'ProfileTypeId')==ApplicationConstants.UserProfileType.WorkerSubVendor" data-ui-sref="EditWorkerSubVendorProfile({ contactId:(model.entity.UserProfileIdWorker|lookupnocache:lists.listUserProfileWorker:'Id':'ContactId'), profileId: model.entity.UserProfileIdWorker })">{{model.entity.UserProfileIdWorker|lookupnocache:lists.listUserProfileWorker:'Id':'Contact.FullName'}} - {{model.entity.UserProfileIdWorker}}({{model.entity.UserProfileIdWorker|lookupnocache:lists.listUserProfileWorker:'Id':'ProfileTypeId' | lookupnocache:lists.profileTypeList:'id':'text'}})</a>
+                                                    <a data-ng-if="(model.entity.UserProfileIdWorker|lookupnocache:lists.listUserProfileWorker:'Id':'ProfileTypeId')==ApplicationConstants.UserProfileType.WorkerUnitedStatesW2" data-ui-sref="EditWorkerUnitedStatesW2Profile({ contactId:(model.entity.UserProfileIdWorker|lookupnocache:lists.listUserProfileWorker:'Id':'ContactId'), profileId: model.entity.UserProfileIdWorker })">{{model.entity.UserProfileIdWorker|lookupnocache:lists.listUserProfileWorker:'Id':'Contact.FullName'}} - {{model.entity.UserProfileIdWorker}}({{model.entity.UserProfileIdWorker|lookupnocache:lists.listUserProfileWorker:'Id':'ProfileTypeId' | lookupnocache:lists.profileTypeList:'id':'text'}})</a>
+                                                    <a data-ng-if="(model.entity.UserProfileIdWorker|lookupnocache:lists.listUserProfileWorker:'Id':'ProfileTypeId')==ApplicationConstants.UserProfileType.WorkerUnitedStatesLLC" data-ui-sref="EditWorkerUnitedStatesLLCProfile({ contactId:(model.entity.UserProfileIdWorker|lookupnocache:lists.listUserProfileWorker:'Id':'ContactId'), profileId: model.entity.UserProfileIdWorker })">{{model.entity.UserProfileIdWorker|lookupnocache:lists.listUserProfileWorker:'Id':'Contact.FullName'}} - {{model.entity.UserProfileIdWorker}}({{model.entity.UserProfileIdWorker|lookupnocache:lists.listUserProfileWorker:'Id':'ProfileTypeId' | lookupnocache:lists.profileTypeList:'id':'text'}})</a>
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-12 col-lg-3">
+                                                <label class="col-xs-3 col-md-12 control-label no-padding-h-l">Work Order Period</label>
+                                                <div>
+                                                    <span data-ng-if="(CurrentWorkOrder.StartDate| date:ApplicationConstants.formatDateSorting).length==10">{{CurrentWorkOrder.StartDate | date:ApplicationConstants.formatDate}}</span>
+                                                    -
+                                                    <span data-ng-if="(CurrentWorkOrder.EndDate| date:ApplicationConstants.formatDateSorting).length==10">{{CurrentWorkOrder.EndDate | date:ApplicationConstants.formatDate}}</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-12 col-lg-2">
+                                                <label class="col-xs-3 col-md-12 control-label no-padding-h-l">Status</label>
+                                                <div>
+                                                    <span data-ng-if="!workflow.runningStatus.IsRunning">{{CurrentWorkOrderVersion.StatusId | lookup:lists.workOrderStatuses}}</span>
+                                                    <span data-ng-if="workflow.runningStatus.IsRunning">Workflow is Running</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tabbable">
+                            <ul class="nav nav-tabs">
+                                <li data-ng-repeat='curTab in workOrderTabs' data-ng-class="{ active : $state.includes(curTab.state) } ">
+                                    <a ui-sref="{{curTab.state || curTab.stateNav}}" class="text-center">{{curTab.stateName}}&nbsp;
+                                        <i ng-if="!tabValid(curTab.state)" class="material-icons md-18">warning</i>
+                                    </a>
+                                </li>
+                                <li data-ng-if="$state.includes('workorder.edit')" data-ng-class="{ active : $state.includes('workorder.edit.activity') } ">
+                                    <a data-ui-sref="workorder.edit.activity.notes">&nbsp;Activity</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="tab-content">
+                            <div class="tab-pane active">
+                                <div class="panel">
+                                    <div class="panel-body" data-ui-view="workOrderActiveTabs" data-autoscroll="false"></div>
+                                    <div class="panel-body" data-pt-validation-messages="model.ValidationMessages"></div>
+                                    <div class="panel-footer">
+                                        <div class="row">
+                                            <div class="col-md-4 col-md-4-override">
+                                                <label class="control-label form-control-static req-lab-right" for-property="EffectiveDate" for="EffectiveDate" data-model-property="CurrentWorkOrderVersion.EffectiveDate"
+                                                    data-original-title="" title="">Effective Date</label>
+                                                <div class="inline-wrapper" style="margin-top:2px;">
+                                                    <pt-date-picker data-ng-model="CurrentWorkOrderVersion.EffectiveDate" data-pt-field-view="model.ptFieldViewConfigOnChangeStatusId"
+                                                        data-ng-required="true" data-required-message="Required" />
+                                                </div>
+                                                <div style="display:inline;font-size:12px;" data-ng-if="CurrentWorkOrderVersion.StatusId == ApplicationConstants.WorkOrderStatus.Active">-&nbsp; {{CurrentWorkOrderVersion.EffectiveToDate|date:ApplicationConstants.formatDate}}</div>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <div data-ng-if="$state.includes('workorder.edit')">
+                                                    <div class="task-actions" data-ng-if="!workflow.runningStatus.IsRunning">
+                                                        <div class="btn-toolbar task-results pull-right" style="margin-left:20px;">
+                                                            <button type="button" class="btn" data-ng-repeat="action in workflow.WorkflowAvailableActions | orderBy:'DisplayButtonOrder' | filter: { IsActionButton: true }"
+                                                                data-ng-class="workflow.buttonClass(action.CommandName)" data-ng-click="workflow.actionButtonOnClick(action)"
+                                                                data-ng-disabled="(action.CommandName=='WorkOrderSave'&&CommissionsLoading)||(workflow.validateButton(action.CommandName)&&(!formValid.core || !formValid.partiesAndRates || !formValid.timeMaterialInvoice || !formValid.expensemanagement || !formValid.purchaseorder || !formValid.earningsanddeductions || !formValid.taxes || !formValid.compliancedocuments || !formValid.clientspecificfields || CommissionsLoading))">
+                                                                {{action.Name}}
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="pull-right" data-ng-if="$state.includes('template.workorder')">
+                                                    <button type="button" class="btn btn-primary" data-ng-click="workOrderTemplateSave()">Save Template</button>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-2" data-ng-if="$state.includes('workorder.edit')">
+            <div work-order-versions></div>
+        </div>
+    </div>
+</div>
+
+<div class="slider-holder" data-ng-class="{ out: !$state.is('workorder.edit.purchaseorder.line') , in: $state.is('workorder.edit.purchaseorder.line')}">
+    <div ui-view="purchaseOrderLine"></div>
+</div>

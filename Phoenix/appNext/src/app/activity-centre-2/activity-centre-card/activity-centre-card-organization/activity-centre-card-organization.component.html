@@ -1,0 +1,23 @@
+<div class="panel panel-default" *ngIf="card" [ngClass]="{'selected' : card?.selected}">
+  <div class="panel-body">
+    <app-activity-centre-card-header [showProfilePicture]="showProfilePicture" [cardInfo]="card">
+    </app-activity-centre-card-header>
+    <div (tap)="navigate($event)" (press)="onPress($event)" class="panel-content long-content">
+      <dl>
+        <dd>{{'activityCentre2.card.CreationDateLabel' | phxTranslate}}</dd>
+        <dt>{{ card.CreationDate | date:phxConstants.DateFormat.MMM_ddComma_yyyy }}</dt>
+        <br />
+        <div class="line-figure">
+          <div class="pull-left">
+            <dd>{{'activityCentre2.cardOrganization.CountryLabel' | phxTranslate}}</dd>
+            <dt phxEllipsisTip="150">
+              {{ card.CountryId | CodeValue:codeValueGroups.Country || ('activityCentre2.card.NotSpecified' | phxTranslate) }}
+            </dt>
+          </div>
+        </div>
+      </dl>
+    </div>
+    <app-activity-centre-card-footer [cardInfo]="card" [entityTypeStatus]="codeValueGroups.ExpenseClaimStatus"></app-activity-centre-card-footer>
+  </div>
+</div>
+<app-activity-centre-card-loading *ngIf="!card"></app-activity-centre-card-loading>

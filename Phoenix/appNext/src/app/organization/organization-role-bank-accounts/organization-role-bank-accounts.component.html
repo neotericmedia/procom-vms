@@ -1,0 +1,29 @@
+<app-phx-panel headerTitle="Bank Accounts">
+    <phx-form-control *ngIf="isEditable && bankAccountsFormArray.length === 0" class="padding-10">
+        <button type="button" class="btn btn-default btn-material right pull-right" (click)="onClickAddAccount()">
+            <i class="material-icons">add</i>
+        </button>
+    </phx-form-control>
+    <div>
+        <form [formGroup]="inputFormGroup" *ngIf="readOnlyStorage && inputFormGroup">
+            <div formArrayName="BankAccounts">
+                <div *ngFor="let accountFormGroup of formArrayInternalRoleBankAccount.controls; let i = index; trackBy: trackByFn">
+                    <div [formGroupName]="i">
+                        <div class="form-group">
+                            <app-organization-role-bank-account [inputFormGroup]="accountFormGroup" 
+                            [isEditable]="isEditable"
+                            [canPrimaryAccountButtonEnabled]="canPrimaryAccountButtonEnabled"
+                            [accountIndex]="i" [readOnlyStorage]="readOnlyStorage"
+                                (outputEvent)="onOutputEvent()"></app-organization-role-bank-account>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <phx-form-control *ngIf="isEditable && bankAccountsFormArray.length !== 0" class="padding-10">
+                <button type="button" class="btn btn-default btn-material right pull-right" (click)="onClickAddAccount()">
+                    <i class="material-icons">add</i>
+                </button>
+            </phx-form-control>
+        </form>
+    </div>
+</app-phx-panel>

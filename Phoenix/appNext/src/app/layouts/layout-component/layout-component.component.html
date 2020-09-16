@@ -1,0 +1,8 @@
+<app-header (sideMenuOpenChanged)="onSideMenuOpenChanged($event)"></app-header>
+<app-sidenav #sidebar></app-sidenav>
+<div id="mainContentPage" class="main-content {{stateName}}">
+  <app-breadcrumbs></app-breadcrumbs>
+  <div class="page-content">
+    <router-outlet></router-outlet>
+  </div>
+</div>

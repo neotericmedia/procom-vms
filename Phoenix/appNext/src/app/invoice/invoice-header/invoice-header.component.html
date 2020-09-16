@@ -1,0 +1,40 @@
+<div class="panel panel-heading headstone" [ngClass]="{'test-headstone': invoice.IsTest}">
+  <div class="row">
+    <div class="col col-lg-1">
+      <div class="form-group">
+        <label class="control-label ">{{invoiceModuleResourceKeys.detail.idHeader| phxTranslate}}</label>
+        <div>{{invoice?.Id}}</div>
+      </div>
+    </div>
+    <div class="col col-lg-2">
+      <div class="form-group">
+        <label class="control-label ">{{invoiceModuleResourceKeys.detail.invoiceNumberHeader| phxTranslate}}</label>
+        <div>{{invoice?.InvoiceNumber}}</div>
+      </div>
+    </div>
+    <div class="col col-lg-3">
+      <div class="form-group">
+        <label class="control-label ">{{invoiceModuleResourceKeys.detail.clientNameHeader| phxTranslate}}</label>
+        <div>{{invoice?.OrganizationClientLegalName }}</div>
+      </div>
+    </div>
+    <div class="col col-lg-3">
+      <div class="form-group">
+          <label class="control-label ">{{invoiceModuleResourceKeys.detail.internalOrganizationHeader| phxTranslate}}</label>
+        <div>{{invoice?.InternalCompanyLegalName }}</div>
+      </div>
+    </div>
+    <div class="col col-lg-1">
+      <div class="form-group">
+        <label class="control-label ">{{invoiceModuleResourceKeys.detail.totalAmountHeader| phxTranslate}}</label>
+        <div>{{invoice?.Total | number:'1.2'}} {{invoice?.CurrencyId | CodeValue:codeValueGroups.Currency:'code'}}</div>
+      </div>
+    </div>
+    <div class="col col-lg-2">
+      <div class="form-group">
+        <label class="control-label ">{{invoiceModuleResourceKeys.detail.statusHeader| phxTranslate}}</label>
+        <div>{{invoice?.StatusId | CodeValue:codeValueGroups.InvoiceStatus}}</div>
+      </div>
+    </div>
+  </div>
+</div>

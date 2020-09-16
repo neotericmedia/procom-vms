@@ -1,0 +1,195 @@
+<div class="garnishee-new-header" *ngIf="canShow">
+  <form [formGroup]="formGarnishee" *ngIf="formGarnishee">
+    <div class="col-lg-12 garnishee-info">
+      <div class="col-lg-12 garnishee-details">
+        <div class="panel-heading garnishee-view-header">
+          <div class="row">
+            <h3 class="panel-title">Garnishee Details</h3>
+          </div>
+        </div>
+        <div class="panel-body garnishee-view-body">
+          <div class="row">
+            <div class="form-horizontal">
+              <div class="form-group">
+                <phx-form-control labelText="Status" [editable]="true" [control]="formGarnishee.controls.GarnisheeStatusId"
+                  viewModeText="{{formGarnishee.controls.GarnisheeStatusId.value}}">
+                  <div class="col-md-7 padding-0">
+                    <app-phx-select-box [items]="listGarnisheeStatuses" textField="code" valueField="id" [formControl]="formGarnishee.controls.GarnisheeStatusId">
+                    </app-phx-select-box>
+                  </div>
+                </phx-form-control>
+              </div>
+              <div class="form-group">
+                <phx-form-control labelText="Internal Company" [editable]="false" [control]="formGarnishee.controls.OrganizationInternalLegalName"
+                  viewModeText="{{formGarnishee.controls.OrganizationInternalLegalName.value}}">
+                </phx-form-control>
+              </div>
+              <div class="form-group">
+                <phx-form-control labelText="Issue Date" [editable]="false" [control]="formGarnishee.controls.IssueDate"
+                  viewModeText="{{formGarnishee.controls.IssueDate.value | date:phxConstants.DateFormat.MMM_ddComma_yyyy}}">
+                </phx-form-control>
+              </div>
+              <div class="form-group">
+                <phx-form-control [control]="formGarnishee.controls.PayAmountMaximum" [editable]="false" labelText="Garnish Maximum"
+                  viewModeText="{{ formGarnishee.controls.PayAmountIsMaximum.value ? (formGarnishee.controls.PayAmountMaximum.value | phxDisplayCurrency) : 'Unlimited'}}">
+                </phx-form-control>
+              </div>
+              <div class="form-group" *ngIf="formGarnishee.controls.PayTypeIsAmount.value">
+                <phx-form-control [control]="formGarnishee.controls.PayAmount" [editable]="false" labelText="Garnish Amount"
+                  viewModeText="{{formGarnishee.controls.CurrencyId.value | lookup:listCurrency:'id':'code'}} {{formGarnishee.controls.PayAmount.value | phxDisplayCurrency}}">
+                </phx-form-control>
+              </div>
+              <div class="form-group" *ngIf="!formGarnishee.controls.PayTypeIsAmount.value">
+                <phx-form-control [control]="formGarnishee.controls.PayPercentage" [editable]="false" labelText="Garnish Percentage"
+                  viewModeText="{{(formGarnishee.controls.PayPercentage.value | phxPercentWithDecimals)}}">
+                </phx-form-control>
+              </div>
+              <div class="form-group">
+                <phx-form-control [control]="formGarnishee.controls.PaybackRemainder" [editable]="false" labelText="Amount Remaining"
+                  viewModeText="{{formGarnishee.controls.PayAmountIsMaximum.value
+                  ?(formGarnishee.controls.CurrencyId.value | lookup:listCurrency:'id':'code'):''}} {{formGarnishee.controls.PayAmountIsMaximum.value
+                  ? (formGarnishee.controls.PaybackRemainder.value | phxDisplayCurrency):'N/A'}}">
+                </phx-form-control>
+              </div>
+              <div class="form-group garnishee-detail-text">
+                <phx-form-control [control]="formGarnishee.controls.Description" [editable]="true" labelText="Description"
+                  viewModeText="{{formGarnishee.controls.Description.value}}">
+                  <div class="col-md-7 padding-0">
+                    <input formControlName="Description" type="text" class="form-control" />
+                  </div>
+                </phx-form-control>
+              </div>
+              <div class="form-group garnishee-detail-text">
+                <phx-form-control [control]="formGarnishee.controls.ReferenceNumber" [editable]="true" labelText="Garnish Reference"
+                  viewModeText="{{formGarnishee.controls.ReferenceNumber.value}}">
+                  <div class="col-md-7 padding-0">
+                    <input formControlName="ReferenceNumber" type="text" class="form-control" />
+                  </div>
+                </phx-form-control>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="panel-heading garnishee-new-header garnishee-payee-header">
+          <div class="row">
+            <div class="col-xs-9">
+              <h3 class="panel-title">Payee Details</h3>
+            </div>
+          </div>
+        </div>
+        <div class="panel-body garnishee-view-body">
+          <div class="row">
+            <div class="form-horizontal">
+              <div class="form-group">
+                <phx-form-control labelText="Garnishee Type" [editable]="false" [control]="formGarnishee.controls.PayToType"
+                  viewModeText="{{formGarnishee.controls.PayToType.value}}">
+                </phx-form-control>
+              </div>
+              <div class="existing-garnishee-wrapper">
+                <div class="form-group">
+                  <phx-form-control [control]="formGarnishee.controls.PayToName" [editable]="false" labelText="Payee Name"
+                    viewModeText="{{formGarnishee.controls.PayToName.value}}">
+                  </phx-form-control>
+                </div>
+                <div class="form-group">
+                  <phx-form-control [control]="formGarnishee.controls.AddressLine1" [editable]="false" labelText="Address 1"
+                    viewModeText="{{formGarnishee.controls.AddressLine1.value}}">
+                  </phx-form-control>
+                </div>
+                <div class="form-group" *ngIf="formGarnishee.controls.AddressLine2.value">
+                  <phx-form-control [control]="formGarnishee.controls.AddressLine2" [editable]="false" labelText="Address 2" 
+                    viewModeText="{{formGarnishee.controls.AddressLine2.value}}">
+                  </phx-form-control>
+                </div>
+                <div class="form-group">
+                  <phx-form-control [control]="formGarnishee.controls.CityName" [editable]="false" labelText="City"
+                    viewModeText="{{formGarnishee.controls.CityName.value}}">
+                  </phx-form-control>
+                </div>
+                <div class="form-group">
+                  <phx-form-control [control]="formGarnishee.controls.CountryId" labelText="Country" [editable]="false"
+                    viewModeText="{{formGarnishee.controls.CountryId.value | CodeValue:codeValueGroups.Country}}">
+                  </phx-form-control>
+                </div>
+                <div class="form-group">
+                  <phx-form-control [control]="formGarnishee.controls.SubdivisionId" labelText="Province/State" [editable]="false"
+                    viewModeText="{{formGarnishee.controls.SubdivisionId.value | CodeValue:codeValueGroups.Subdivision}}">
+                  </phx-form-control>
+                </div>
+                <div class="form-group">
+                  <phx-form-control [control]="formGarnishee.controls.PostalCode" [editable]="false" labelText="Postal/Zip"
+                    viewModeText="{{formGarnishee.controls.PostalCode.value}}">
+                  </phx-form-control>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-12 garnishee-transaction-details">
+          <div class="panel-heading garnishee-view-header">
+            <div class="row">
+              <h3 class="panel-title">Re-Payment Transactions</h3>
+            </div>
+          </div>
+          <div class="panel-body garnishee-view-body">
+            <div class="">
+              <div class="form-horizontal">
+                <div class="form-group garnishee-trn" *ngIf="formGarnishee.controls.GarnisheeRepaymentTransactions.value.length > 0">
+                  <div class="bg-gray-strong garnishee-trn-header col-lg-12">
+                    <div class="col-lg-3 text-black">Payment Transaction</div>
+                    <div class="col-lg-2 text-black">Amount</div>
+                    <div class="col-lg-2 text-black">Release Date</div>
+                    <div class="col-lg-2 text-black">Payment Method</div>
+                    <div class="col-lg-3 text-black">Payment Reference</div>
+                  </div>
+                  <div class="row garnishee-trn-body col-lg-12" *ngFor="let trn of formGarnishee.controls.GarnisheeRepaymentTransactions.value; let i = index;">
+                    <div>
+                      <div class="col-lg-3 text-black garnishee-trn-cell">
+                        {{trn.PaymentTransactionNumber}}
+                      </div>
+                      <div class="col-lg-2 text-black garnishee-trn-cell">
+                        {{formGarnishee.controls.CurrencyId.value | lookup:listCurrency:'id':'code'}}{{trn.Amount | phxDisplayCurrency}}
+                      </div>
+                      <div class="col-lg-2 text-black garnishee-trn-cell-ext">
+                        {{trn.ReleaseDate ? (trn.ReleaseDate | date:phxConstants.DateFormat.MMM_ddComma_yyyy) : 'N/A'}}
+                      </div>
+                      <div class="col-lg-2 text-black garnishee-trn-cell-ext">
+                        {{trn.PaymentMethodId ? (trn.PaymentMethodId | lookup: paymentMethods) : 'N/A'}}
+                      </div>
+                      <div class="col-lg-3 text-black garnishee-trn-cell-ext">
+                        {{trn.PaymentNumber ? trn.PaymentNumber : 'N/A'}}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group garnishee-trn" *ngIf="formGarnishee.controls.GarnisheeRepaymentTransactions.value.length === 0">
+                  <div class="col-lg-12 text-black garnishee-trn-no-repayments">There are no repayments yet.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xs-12 panel-footer garnishee-footer-div">
+          <div class="row">
+            <div class="col-xs-6"></div>
+            <div class="col-xs-6">
+              <div class="pull-right">
+                <button type="button" class="btn btn-primary" (click)="onClickSubmit()" [disabled]="!formGarnishee.valid">
+                  Submit
+                </button>
+                <button type="button" class="btn btn-default" (click)="onClickCancel()">Cancel</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="validationMessages.length > 0" class="alert alert-danger alert-dismissable error-box">
+          <div *ngFor="let msg of validationMessages">
+            <div>
+              {{msg}}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

@@ -1,0 +1,38 @@
+<div class="vms-batch-discount-main">
+  <app-vms-documents-header
+    [document]="document"
+    [constCodeValueGroups]="constCodeValueGroups">
+  </app-vms-documents-header>
+  <div class="row">
+    <div class="tabbable col-lg-12">
+      <div>
+        <tabset>
+          <tab heading="Details">
+            <app-vms-documents-details #details
+              [dataTableConfiguration]="dataTableConfiguration"
+              [columns]="columns"
+              [oDataParams]="oDataParams"
+              [document]="document"
+              [dataSourceUrl]="dataSourceUrl"
+              [dataTableDiscartedConfiguration]="dataTableDiscartedConfiguration"
+              [skippedRecords] = "skippedRecords"
+              documentType = "Expense"
+              (discardAllConflictsEvent)="discardAllConflicts()"
+              (rowClick)="onRowClick($event)"
+              [actionId] = "actionId">
+            </app-vms-documents-details>
+          </tab>
+          <tab heading="Files">
+            <app-vms-documents-files
+              [document]="document" [importType]="'Expense'">
+            </app-vms-documents-files>
+          </tab>
+          <tab heading="Workflow">
+            TBD
+          </tab>
+        </tabset>
+      </div>
+    </div>
+
+  </div>
+</div>

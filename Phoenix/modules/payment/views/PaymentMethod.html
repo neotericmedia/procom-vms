@@ -1,0 +1,128 @@
+﻿<div class="smart-table-wrapper">
+    <div class="row" data-cg-busy="loadItemsPromise">
+        <table data-st-table-struct='[{"stTableValue" : "items"}, {"stPipeValue" : "callServer"}, {"widthValues" : "[3, 4, 13, 9, 9, 7, 7, 9, 8, 9, 8, 8, 9, 7]"}]'>
+            <thead data-st-head="2200px">
+                <tr>
+                    <th data-st-pen-name="CheckBoxes" title="Selection"><input class="small-check-box-invoice-release" data-ng-show="items.length > 0" ng-checked="masterSelecter" data-ng-click="selectAllRows()" type="checkbox"></th>
+                    <th data-st-sort="Id" data-st-sort-default="reverse">ID</th>
+                    <th data-st-sort="PaymentTransactionNumber">Payment Transaction Number</th>
+                    <th data-st-sort="PayeeName">Payee</th>
+                    <th data-st-sort="PaymentSubtotal" class="align-right">Payment Subtotal</th>
+                    <th data-st-sort="PaymentSalesTax" class="align-right">Sales Tax</th>
+                    <th data-st-sort="PaymentTotal" class="align-right">Payment Total</th>
+                    <th data-st-sort="WorkerName">Worker</th>
+                    <th data-st-sort="WorkerProfileTypeId">Profile</th>
+                    <th data-st-sort="ClientCompany">Client</th>
+                    <th data-st-sort="StartDate">From</th>
+                    <th data-st-sort="EndDate">To</th>
+                    <th data-st-sort="PlannedReleaseDate">Planned Release Date</th>
+                    <th class="align-right">Units</th>
+                </tr>
+                <tr>
+                    <th style="padding-left: 3px;"></th>
+                    <th>
+                        <input data-st-advanced-search="{property: 'Id', ignoreQuotes: true}" placeholder=""
+                               class="input-sm form-control numberType" data-safe-restrict-input="[^0123456789]" />
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="'PaymentTransactionNumber'" placeholder=""
+                               class="input-sm form-control" type="search" />
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="'PayeeName'" placeholder=""
+                               class="input-sm form-control" type="search" />
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="{property: 'PaymentSubtotal', ignoreQuotes: true, valueSuffix: 'M'}" placeholder=""
+                               class="input-sm form-control numberType align-right" data-safe-restrict-input="[^0123456789.]" />
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="{property: 'PaymentSalesTax', ignoreQuotes: true, valueSuffix: 'M'}" placeholder=""
+                               class="input-sm form-control numberType" data-safe-restrict-input="[^0123456789.]" />
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="{property: 'PaymentTotal', ignoreQuotes: true, valueSuffix: 'M'}" placeholder=""
+                               class="input-sm form-control numberType" data-safe-restrict-input="[^0123456789.]" />
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="'WorkerName'" placeholder=""
+                               class="input-sm form-control" type="search" />
+                    </th>
+                    <th>
+                        <select data-st-advanced-search="{property: 'WorkerProfileTypeId', ignoreQuotes: true}" class="input-sm form-control"
+                                data-st-as-options-override="list.profileTypes"></select>
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="'ClientCompany'" placeholder=""
+                               class="input-sm form-control" type="search" />
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="'StartDate'"
+                               data-st-as-operator-override="'ge'"
+                               close-on-date-selection="false" show-button-bar="false" show-weeks="false" class="input-sm form-control"
+                               data-st-as-lazy-attributes="{'uib-datepicker' : ApplicationConstants.formatDate}"
+                               data-st-as-height-override="400"
+                               data-st-as-width-override="315" />
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="'EndDate'"
+                               data-st-as-operator-override="'le'"
+                               close-on-date-selection="false" show-button-bar="false" show-weeks="false" class="input-sm form-control"
+                               data-st-as-lazy-attributes="{'uib-datepicker' : ApplicationConstants.formatDate}"
+                               data-st-as-height-override="400"
+                               data-st-as-width-override="315" />
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="'PlannedReleaseDate'"
+                               data-st-as-operator-override="'le'"
+                               close-on-date-selection="false" show-button-bar="false" show-weeks="false" class="input-sm form-control"
+                               data-st-as-lazy-attributes="{'uib-datepicker' : ApplicationConstants.formatDate}"
+                               data-st-as-height-override="400"
+                               data-st-as-width-override="315" />
+                    </th>
+                    <th>
+                        <!-- No Unit search -->
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr id="{{item.Id}}" data-ng-repeat="item in items" data-ng-click="selectPayment(item); selectedRowCurrent()"
+                    class="paymentBatchRow documentReleaseRow" data-st-select-row-in-array="item in items track by item.Id"
+                    data-st-select-all-retrieval="selectAllVirtual"
+                    data-st-select-mode="multiple" data-st-selection-obj="selectionObj" data-action="view">
+                    <td title="checkbox" style="pointer-events: all;">
+                        <input class="small-check-box-invoice-release" type="checkbox" ng-checked="item.isSelected">
+                    </td>
+                    <td title="{{item.Id}}">{{item.Id}}</td>
+                    <td title="{{item.PaymentTransactionNumber}}">{{item.PaymentTransactionNumber}}</td>
+                    <td title="{{item.PayeeName}}">{{item.PayeeName}}</td>
+                    <td class="align-right" title="{{item.PaymentSubtotal | currency: '$'}}{{item.CurrencyId | lookup: list.currencies:'id':'code'}}">{{item.PaymentSubtotal | currency: '$'}}&nbsp;{{item.CurrencyId | lookup: list.currencies:'id':'code'}}</td>
+                    <td class="align-right" title="{{item.PaymentSalesTax | currency: '$'}}{{item.CurrencyId | lookup: list.currencies:'id':'code'}}">{{item.PaymentSalesTax | currency: '$'}}&nbsp;{{item.CurrencyId | lookup: list.currencies:'id':'code'}}</td>
+                    <td class="align-right" title="{{item.PaymentTotal | currency: '$'}}{{item.CurrencyId | lookup: list.currencies:'id':'code'}}">{{item.PaymentTotal | currency: '$'}}&nbsp;{{item.CurrencyId | lookup: list.currencies:'id':'code'}}</td>
+                    <td title="{{item.WorkerName}}">{{item.WorkerName || 'N/A'}}</td>
+                    <td title="{{item.WorkerProfileTypeId | lookup: list.profileTypes:'id':'text'}}">{{item.WorkerProfileTypeId | lookup: list.profileTypes:'id':'text'}}</td>
+                    <td title="{{item.ClientCompany}}">{{item.ClientCompany || 'N/A'}}</td>
+                    <td title="{{item.StartDate | date:ApplicationConstants.formatDate}}">{{item.StartDate | date:ApplicationConstants.formatDate}}</td>
+                    <td title="{{item.EndDate | date:ApplicationConstants.formatDate}}">{{item.EndDate | date:ApplicationConstants.formatDate}}</td>
+                    <td title="{{(item.PlannedReleaseDate | date:ApplicationConstants.formatDate) || 'N/A' }}">{{(item.PlannedReleaseDate | date:ApplicationConstants.formatDate) || 'N/A'}}</td>
+                    <td class="align-right" title="{{item.unitsFormatted}}">{{item.unitsFormatted}}</td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="9">
+                        <span>Total Count: {{totalItemCount || 0}}; Items Loaded: {{ items ? items.length : 0}}</span>
+                        <span style="font-size:larger; font-weight:600">|</span>
+                        <span>{{batchArray.length}} of {{items.length}} selected;</span>
+                        <button type="button" data-ng-show="model.paymentMethodId === ApplicationConstants.PaymentMethodType.Cheque && isDue" data-ng-disabled="batchArray.length == 0" class="btn btn-primary btnDirectDeposit" data-ng-click="workflowBatchOperationOnTasks.transactionPaymentChequesToPrint()" title="Create Cheques">Create Cheques</button>
+                        <button type="button" data-ng-show="(model.paymentMethodId === ApplicationConstants.PaymentMethodType.DirectDeposit || model.paymentMethodId === ApplicationConstants.PaymentMethodType.WireTransfer) && isDue" data-ng-disabled="batchArray.length == 0" class="btn btn-primary btnDirectDeposit" data-ng-click="workflowBatchOperationOnTasks.transactionPaymentCreateBatch()" title="Create Payment Batch">Create Batch</button>
+                        <button type="button" data-ng-disabled="batchArray.length == 0" ng-class="(isDue == true)?'btn btn-default btnDirectDeposit':'btn btn-primary btnDirectDeposit'" data-ng-click="workflowBatchOperationOnTasks.transactionPaymentSuppressRelease()" title="Suppress Release">Suppress Release</button>
+                        <button type="button" data-ng-disabled="batchArray.length == 0" class="btn btn-default btnDirectDeposit" data-ng-click="workflowBatchOperationOnTasks.transactionPaymentChangeReleaseDateOrPutOnHold()" title="Change Release Date">Change Release Date</button>
+                        <button type="button" data-ng-disabled="batchArray.length == 0" class="btn btn-default btnDirectDeposit" data-ng-click="workflowBatchOperationOnTasks.transactionPaymentChangePaymentMethod()" title="Change Payment Method">Change Payment Method</button>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+    <div class="row" data-pt-validation-messages="model.ValidationMessages"></div>
+</div>

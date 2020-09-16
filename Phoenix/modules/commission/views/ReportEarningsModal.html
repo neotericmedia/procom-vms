@@ -1,0 +1,41 @@
+﻿<div class="modal-header dialog-header-notify">
+    <button type="button" class="close pull-right" ng-click="modal.close()">&times;</button>
+    <h4 class="modal-title">{{modal.title}}</h4>
+</div>
+<div class="modal-body">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Transaction Number</th>
+                <th>Worker</th>
+                <th>Client Organization</th>
+                <th>Gross Profit</th>
+                <th>LOB</th>
+                <th>Commission</th>
+                <th>Commission Percentage</th>
+                <th>Commission Amount</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr data-ng-repeat="row in modal.data">
+                <td>{{row.TransactionNumber}}</td>
+                <td>{{row.WorkerName}}</td>
+                <td>{{row.ClientOrganizationName}}</td>
+                <td class="text-nowrap">{{row.GrossMargin | currency}}</td>
+                <td>{{row.LineOfBusinessId | lookupnocache:modal.lists.LineOfBusinessList}}</td>
+                <td>{{row.CommissionDescription}}</td>
+                <td class="text-nowrap">{{row.CommissionPercentage | displayPercentageView:4}}</td>
+                <td class="text-nowrap">{{row.CommissionAmount | currency}}</td>
+                <td>{{row.CommissionStatusId | lookupnocache:modal.lists.CommissionStatusList}}</td>
+                <td>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-xs btn-clouds" title="View" data-ui-sref-tr="transaction.view.summary({transactionHeaderId:row.TransactionId})"><i class="fontello-icon-eye-1"></i>&nbsp;</button>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div class="modal-footer"><button type="button" class="btn btn-primary" ng-click="modal.close()">{{"DIALOGS_OK" | translate}}</button></div>

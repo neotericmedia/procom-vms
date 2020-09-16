@@ -1,0 +1,73 @@
+﻿<div data-ng-form="formRates">
+    <div class="row">
+        <!--<div class="col-xs-1"></div>-->
+        <div class="col-xs-12" style="margin-bottom: 5px; border-bottom: 1px solid #ffffff;">
+            <div class="col-xs-1"></div>
+            <div class="col-xs-2"><label>Income From</label></div>
+            <div class="col-xs-3"><label>Income To</label></div>
+            <div class="col-xs-3"><label>Rate (%)</label></div>
+            <div class="col-xs-2" ng-if="!hideConstantColumn"><label>{{DisplayConstantLabel}}</label></div>
+        </div>
+    </div>
+    <div class="" ng-repeat="rate in taxRates">
+        <!--<div class="col-xs-1">
+            <button class="btn btn-material btn-default pull-right" ng-click="removeRate($index)" ng-if="!$last && showButtons"> <i class="material-icons">delete</i>  </button>
+        </div>-->
+        <div class="col-xs-12" style="margin-bottom: 5px; border-bottom: 1px solid #ddd;">
+            <div class="col-xs-1"></div>
+            <div class="col-xs-2">{{rate.IncomeFrom | currency}}</div>
+            <div class="col-xs-3" ng-if="!$last">
+                <div class="input-group payroll-taxes-gray-box-fields">
+                    <input type="text"
+                           data-float-between-input="{from:0, to:9999999999999.99, decimalplaces:2, doesemptytozero:'false'}"
+                           input-float-greater-than-expr="$first ? 0 : taxRates[$index-1].IncomeTo"
+                           ng-model="rate.IncomeTo"
+                           data-required-message="Required"
+                           data-pt-field-view="ptFieldViewConfig"
+                           data-pt-field-view-custom="{ {rate.IncomeTo | currency} }"
+                           data-ng-required="true"
+                           class="form-control form-control ng-scope"
+                           required="required"
+                           ng-change="taxRates[$index+1].IncomeFrom=rate.IncomeTo*1+0.01"
+                           input-display-decimal-places="2" />
+                </div>
+            </div>
+            <div class="col-xs-3" ng-if="$last">and over</div>
+            <div class="col-xs-3">
+                <div class="input-group payroll-taxes-gray-box-fields">
+                    <input type="text"
+                           data-float-between-input="{from:0, to:99.9999, decimalplaces:4, doesemptytozero:'false'}"
+                           ng-model="rate.RatePercentage"
+                           data-required-message="Required"
+                           data-pt-field-view="ptFieldViewConfig"
+                           data-pt-field-view-custom="{ { rate.RatePercentage | displayPercentageView:4 } }"
+                           data-ng-required="true"
+                           class="form-control form-control ng-scope col-xs-2"
+                           required="required"
+                           input-display-decimal-places="4" />
+                    <span class="input-group-addon">%</span>
+                </div>
+            </div>
+            <div class="col-xs-2" ng-if="!hideConstantColumn">
+                <div class="input-group payroll-taxes-gray-box-fields">
+                    <input type="text"
+                           data-float-between-input="{from:0, to:9999999999999.99, decimalplaces:2, doesemptytozero:'false'}"
+                           ng-model="rate.Constant"
+                           data-required-message="Required"
+                           data-pt-field-view="ptFieldViewConfig"
+                           data-pt-field-view-custom="{ {rate.Constant | currency} }"
+                           data-ng-required="true"
+                           class="form-control form-control ng-scope"
+                           required="required"
+                           input-display-decimal-places="2" />
+                </div>
+            </div>
+            <div class="col-xs-1" style="height: 40px;">
+                <button class="btn btn-material btn-default pull-right" ng-click="removeRate($index)" ng-if="!$last && showButtons"><i class="material-icons">delete</i></button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row" ng-if="showButtons">  
+    <button class="btn btn-material btn-default pull-right panel-alignment-bottom-right-button" style="margin-right: 35px" ng-click="addRate()"> <i class="material-icons">add</i>  </button>
+</div>

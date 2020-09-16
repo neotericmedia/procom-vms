@@ -1,0 +1,157 @@
+@import "../../styles.less";
+
+@menu-overlay-font-color: @white;
+
+@list-item-highlight: #e5e5e5;
+@list-item-hover: @gray-light;
+@list-divider-color: @headstone-border-color;
+
+.name-profile {
+    color: #333;
+    padding: 3px 20px;
+    font-size: @font-size-large;
+    font-weight: bold;
+}
+.profile-picture{
+	width:24px;
+    font-size:24px;
+	margin-right: 3px;
+}
+
+ul>li>a>.material-icons {
+    vertical-align: text-bottom;
+}
+
+.navbar-nav {
+    &>li {
+        &>a>span {
+            padding: 2px;
+        }
+        &>.dropdown-toggle .material-icons {
+            color: @dropdown-caret-color;
+            position: relative;
+            bottom: 2px;
+        }
+    }
+}
+
+.dropdown-toggle-button {
+    display: none;
+    &.display {
+        display: block;
+    }
+}
+
+svg {
+    fill: @dropdown-link-color;
+}
+
+.navbar-nav>li>.dropdown-menu.noanimate {
+    .animation(none);
+}
+
+.menuOverlay {
+    padding: 75px 50px 25px !important; /* overriden by #leftMenu ul */
+
+    overflow: auto;
+
+    position: fixed; /*or  absolute*/
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 30px;
+    background: green;
+    z-index: 999; /* or  greater value */
+
+    &, .btn-link {
+        color: @menu-overlay-font-color;
+    }
+
+    svg {
+        fill: @menu-overlay-font-color;
+    }
+
+    .menu-instance-name {
+        font-weight: bold;
+    }
+
+    .menu-profile-name {
+        font-size: @font-size-large;
+        font-weight: bold;
+        margin-top: 10px;
+    }
+
+    .menu-profile-picture {
+        width: 107px;
+        height: 107px;
+        font-size: 107px;
+        margin: auto;
+        margin-bottom: 25px;
+    }
+
+    .menu-profile-list {
+        list-style-type: none;
+
+        &>li {
+            text-align: left;
+            padding: 10px;
+        }
+    }
+
+    @media screen and (min-width: @screen-xs-min) {
+        .menu-profile-list {
+            &>li {
+                text-align: center;
+            }
+        }
+    }
+
+}
+
+.profile-instance-group {
+    text-align: center;
+    padding: 0 25px;
+
+    .heading-instance-name {
+        font-size: @font-size-base;
+        font-weight: bold;
+    }
+
+    .heading-contact-name {
+        font-weight: bold;
+        margin-top: 10px;
+    }
+
+    ul {
+        list-style-type: none;
+        padding-left: 0;
+
+        &>li {
+            
+            &>a {
+                display: block;
+                padding: 10px 5px;
+                color: @black;
+                text-decoration: none;
+            }
+            &.highlight {
+                background-color: @list-item-highlight;
+                pointer-events: none;
+            }
+
+            &:not(.highlight) {
+                cursor: pointer;
+
+                &:hover {
+                    background-color: @list-item-hover;
+                }
+            }
+        }
+    }
+
+    hr {
+        border-color: @list-divider-color;
+        padding-left: 25px;
+        padding-right: 25px;
+    }
+}

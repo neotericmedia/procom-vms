@@ -1,0 +1,36 @@
+<div class="panel panel-default headstone">
+  <div class="row" class="headstone-row">
+    <!-- <div class="col col-lg-1">
+
+    </div> -->
+    <div class="col col-lg-2">
+      <div class="form-group">
+        <label class="control-label">ID</label>
+        <div>{{organization.Id}}</div>
+      </div>
+    </div>
+    <div class="col col-lg-5">
+      <div class="form-group">
+        <label class="control-label">Legal Name</label>
+        <div>{{orgLegalName}}</div>
+      </div>
+    </div>
+    <div class="col col-lg-2">
+      <div class="form-group">
+        <label class="control-label">Role</label>
+        <div>
+          <i *ngIf="organization.OrganizationClientRoles?.length>0" class="icon icon-small icon-organization-client" title="Client"></i>
+          <i *ngIf="organization.OrganizationIndependentContractorRoles?.length>0 || organization.OrganizationSubVendorRoles?.length>0 || organization.OrganizationLimitedLiabilityCompanyRoles?.length>0"
+            class="icon icon-small icon-organization-independentcontractor" title="Supplier"></i>
+          <i *ngIf="organization.OrganizationInternalRoles?.length>0" class="icon icon-small icon-organization-internal" title="Internal"></i> &nbsp;
+        </div>
+      </div>
+    </div>
+    <div class="col col-lg-2">
+      <div class="form-group">
+        <label class="control-label">Status</label>
+        <div>{{organization.OrganizationStatusId | CodeValue:'org.CodeOrganizationStatus':'text'}}</div>
+      </div>
+    </div>
+  </div>
+</div>

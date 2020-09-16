@@ -1,0 +1,23 @@
+<div class="panel panel-default" *ngIf="card" [ngClass]="{'selected' : card?.selected}">
+  <div class="panel-body">
+    <app-activity-centre-card-header [showProfilePicture]="showProfilePicture" [cardInfo]="card">
+    </app-activity-centre-card-header>
+    <div (tap)="navigate($event)" (press)="onPress($event)" class="panel-content long-content">
+      <dl>
+        <dd>{{'activityCentre2.cardPayment.PaymentReleaseDateLabel' | phxTranslate}}</dd>
+        <dt>{{ card.PaymentReleaseDate | date: phxConstants.DateFormat.MMM_ddComma_yyyy }}</dt>
+        <br />
+        <div class="line-figure">
+          <div class="pull-left">
+            <dd>{{'activityCentre2.cardPayment.NumTransactionsLabel' | phxTranslate}}</dd>
+            <dt>{{ card.NumberOfTransactions }}</dt>
+          </div>
+          <dt class="big-figure"> {{ card.Amount | currency }} </dt>
+        </div>
+      </dl>
+    </div>
+    <app-activity-centre-card-footer [cardInfo]="card" [entityTypeStatus]="codeValueGroups.PaymentStatus">
+    </app-activity-centre-card-footer>
+  </div>
+</div>
+<app-activity-centre-card-loading *ngIf="!card"></app-activity-centre-card-loading>

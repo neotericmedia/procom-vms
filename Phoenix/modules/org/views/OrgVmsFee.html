@@ -1,0 +1,171 @@
+﻿<div data-ng-form="formVmsFee" class="vms-fee-details col-lg-12">
+    <div class="col-lg-12 vms-fee-actions-wrapper">
+        <div class="col-lg-3 vms-fee-actions-drp" data-ng-if="fee.currentVersion.WorkflowAvailableActions.length>0">
+            <ui-select data-ng-model="fee.feeActionId" theme="select2" class="form-control" data-ng-change="fee.actionChanged({{$select.selected}}, fee.currentVersion)">
+                <ui-select-match placeholder="Actions">{{$select.selected.Name}}</ui-select-match>
+                <ui-select-choices repeat="item.Id as item in fee.currentVersion.WorkflowAvailableActions | orderBy:'DisplayButtonOrder' | uiSelectChoicesFilter: $select.search: 'Name': 'Id'">
+                    <span data-ng-bind-html="item.Name | highlight: $select.search"></span>
+                </ui-select-choices>
+            </ui-select>
+        </div>
+    </div>
+    <div class="vms-fee-entity-wrapper col-lg-10">
+		<div class="vms-fee-header panel-heading headstone">
+			<div class="row">
+				<div class="col-lg-1 col-md-1">
+					<label class="control-label col-xs-12 ">ID</label>
+					<span class="col-xs-12">{{fee.vmsFeeHeader.Id}}</span>
+				</div>
+				<div class="col-lg-5 col-md-5">
+					<label class="control-label col-xs-12 ">Organization</label>
+					<span class=" col-xs-12 ">{{fee.vmsFeeHeader.OrganizationDisplayName || 'N/A'}}</span>
+				</div>
+				<div class="col-lg-2 col-md-2">
+					<label class="control-label col-xs-12 ">Status</label>
+					<div class="col-xs-12">
+						<span data-ng-if="!fee.isWorkflowRunning && fee.selectedActionId == null" data-ng-class="{'text-warning': fee.currentVersion.VmsFeeVersionStatusId==ApplicationConstants.VmsFeeVersionStatus.Active}">{{fee.currentVersion.VmsFeeVersionStatusId|lookup:fee.vmsFeeCodeValueList.vmsFeeVersionStatuses}}</span>
+						<span data-ng-if="!fee.isWorkflowRunning && fee.selectedActionId !== null">{{fee.selectedActionId|lookup:fee.vmsFeeCodeValueList.actionStatuses}}</span>
+						<span data-ng-if="fee.isWorkflowRunning">Workflow Is Running</span>
+					</div>
+				</div>
+			</div>
+		</div>
+       
+        <div class="panel">
+            <div class="panel-body">
+                <div class="vms-fee-body">
+                    <div class="form-group col-lg-12">
+                        <label for-property="OrgId" for="OrgId" data-model-property="fee.vmsFeeHeader.OrganizationId" class="col-lg-3 control-label label-to-right req-lab-right vms-fee-lbl" data-original-title="" title="" style="">Organization</label>
+                        <div class="col-lg-7">
+                            <div class="input-group select2-bootstrap-append">
+                                <ui-select name="OrgId" data-ng-model="fee.vmsFeeHeader.OrganizationId" theme="select2" class="form-control" required data-ng-disabled="fee.orgId>0"
+                                           data-pt-field-view="fee.ptFieldViewConfigOnChangeStatusId"
+                                           data-pt-field-view-custom="{{fee.vmsFeeHeader.OrganizationId|lookupnocache:fee.clientOrganizations:'Id':'DisplayName'}}">
+                                    <ui-select-match placeholder="-- Select One --">{{$select.selected.DisplayName}}</ui-select-match>
+                                    <ui-select-choices repeat="item.Id as item in fee.clientOrganizations | uiSelectChoicesFilter : $select.search : 'DisplayName'">
+                                        <span data-ng-bind-html="item.DisplayName | highlight: $select.search"></span>
+                                    </ui-select-choices>
+                                </ui-select>
+                                <span class="input-group-btn" style="vertical-align:middle;">
+                                    <button tabindex="-1" data-ng-click="fee.vmsFeeHeader.OrganizationId=undefined" class="btn btn-default btn-vms-fee-drp" data-ng-disabled="$stateParams.orgId"><i class="material-icons md-18">clear</i></button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-12">
+                        <label for-property="Description" for="Description" data-model-property="fee.vmsFeeHeader.Description" class="col-lg-3 control-label label-to-right req-lab-right vms-fee-lbl" data-original-title="" title="">Description</label>
+                        <div class="col-lg-7">
+                            <input type="text"
+                                   placeholder="Description"
+                                   data-ng-model="fee.vmsFeeHeader.Description"
+                                   name="Description"
+                                   data-required-message="Required"
+                                   data-pt-field-view="fee.ptFieldViewConfigOnChangeStatusId"
+                                   data-ng-required="true"
+                                   data-ng-maxlength="100" input-text-limit-to-max-length="100"
+                                   class="form-control form-control ng-scope"
+                                   required="required">
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-12">
+                        <label for-property="LineOfBusinessId" for="LineOfBusinessId" data-model-property="fee.currentVersion.LineOfBusinessId" class="col-lg-3 control-label label-to-right req-lab-right vms-fee-lbl" data-original-title="" title="" style="">Line Of Business</label>
+                        <div class="col-lg-7">
+                            <div class="input-group select2-bootstrap-append">
+                                <ui-select name="LineOfBusinessId" data-ng-model="fee.currentVersion.LineOfBusinessId" theme="select2" class="form-control" data-pt-field-view="fee.ptFieldViewConfigOnChangeStatusId" required>
+                                    <ui-select-match placeholder="-- Select One --">{{$select.selected.text}}</ui-select-match>
+                                    <ui-select-choices repeat="item.id as item in fee.vmsFeeCodeValueList.lineOfBusiness | uiSelectChoicesFilter: $select.search: 'text'">
+                                        <span data-ng-bind-html="item.text | highlight: $select.search"></span>
+                                    </ui-select-choices>
+                                </ui-select>
+                                <span class="input-group-btn">
+                                    <button tabindex="-1" data-ng-click="fee.currentVersion.LineOfBusinessId=undefined" class="btn btn-default btn-vms-fee-drp"><i class="material-icons md-18">clear</i></button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-12">
+                        <label for-property="RebateTypeId" for="RebateTypeId" data-model-property="fee.currentVersion.RebateTypeId" class="col-lg-3 control-label label-to-right req-lab-right vms-fee-lbl" data-original-title="" title="" style="">Vms Fee Type</label>
+                        <div class="col-lg-7">
+                            <div class="input-group select2-bootstrap-append">
+                                <ui-select name="RebateTypeId" data-ng-model="fee.currentVersion.RebateTypeId" theme="select2" class="form-control" data-pt-field-view="fee.ptFieldViewConfigOnChangeStatusId" required data-ng-change="fee.rebateChanged($select.selected.id)">
+                                    <ui-select-match placeholder="-- Select One --">{{$select.selected.text}}</ui-select-match>
+                                    <ui-select-choices repeat="item.id as item in fee.vmsFeeCodeValueList.vmsFeeTypes | uiSelectChoicesFilter: $select.search: 'text'">
+                                        <span data-ng-bind-html="item.text | highlight: $select.search"></span>
+                                    </ui-select-choices>
+                                </ui-select>
+                                <span class="input-group-btn">
+                                    <button tabindex="-1" data-ng-click="fee.currentVersion.RebateTypeId=undefined" class="btn btn-default btn-vms-fee-drp"><i class="material-icons md-18">clear</i></button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-12" data-ng-if="fee.currentVersion.RebateTypeId == ApplicationConstants.RebateType.Percentage">
+                        <label data-for-property="Rate" for="Rate" data-model-property="fee.currentVersion.Rate" class="col-lg-3 control-label label-to-right req-lab-right vms-fee-lbl" data-original-title="" title="">Rate</label>
+                        <div class="col-lg-3">
+                            <div class="input-group">
+                                <input type="text" name="Rate" class="form-control form-control ng-scope"
+                                       data-float-between-input="{from:0, to:100, decimalplaces:4, doesemptytozero:'false'}"
+                                       placeholder="Rate"
+                                       data-ng-model="fee.currentVersion.Rate"
+                                       data-required-message="Required" data-pt-field-view="fee.ptFieldViewConfigOnChangeStatusId"
+                                       data-ng-required="true">
+                                <span class="input-group-addon"><b>%</b></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-12" data-ng-if="fee.currentVersion.RebateTypeId != ApplicationConstants.RebateType.Percentage">
+                        <label data-for-property="Rate" for="Rate" data-model-property="fee.currentVersion.Rate" class="col-lg-3 control-label label-to-right req-lab-right vms-fee-lbl" data-original-title="" title="">Rate</label>
+                        <div class="col-lg-3">
+                            <div class="input-group">
+                                <span class="input-group-addon vms-fee-addon"><b>$</b></span>
+                                <input type="text" name="Rate" class="form-control form-control ng-scope"
+                                       data-float-between-input="{from:0, to:99999999999999999.99, decimalplaces:2, doesemptytozero:'false'}"
+                                       placeholder="Rate"
+                                       data-ng-model="fee.currentVersion.Rate"
+                                       data-required-message="Required" data-pt-field-view="fee.ptFieldViewConfigOnChangeStatusId"
+                                       data-ng-required="true">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-12 vms-fee-effective-date">
+                        <label for-property="EffectiveDate" for="EffectiveDate" data-model-property="fee.currentVersion.EffectiveDate" class="col-lg-3 control-label label-to-right req-lab-right vms-fee-lbl" data-original-title="" title="">Effective Date</label>
+                        <div class="col-lg-3">
+                            <pt-date-picker data-ng-model="fee.currentVersion.EffectiveDate" data-pt-field-view="fee.ptFieldViewConfigOnChangeStatusId" data-ng-required="true" data-required-message="Required" data-func-callback-on-done="fee.datePickerCallbackOnDoneEffectiveDate()" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-footer" data-ng-if="fee.currentVersion.VmsFeeVersionStatusId == ApplicationConstants.VmsFeeVersionStatus.New || fee.selectedActionId == fee.vmsFeeCodeValueList.actionStatusType.ToCorrect || fee.selectedActionId == fee.vmsFeeCodeValueList.actionStatusType.ToScheduleChange">
+                <div class="row">
+                    <div class="col-lg-6"></div>
+                    <div class="col-lg-6 vms-fee-btns" style="min-height:30px;">
+                        <div class="pull-right">
+                            <button type="button" class="btn btn-default" data-ng-click="fee.vmsFeeButtonsHandler('CancelNew', fee.currentVersion, fee.vmsFeeHeader.OrganizationId, fee.vmsFeeHeader.Description, fee.vmsFeeHeader.VmsFeeHeaderStatusId)" data-ng-if="fee.currentVersion.VmsFeeVersionStatusId == ApplicationConstants.VmsFeeVersionStatus.New">Cancel</button>
+                            <button type="button" class="btn btn-primary" data-ng-click="fee.vmsFeeButtonsHandler('Created', fee.currentVersion, fee.vmsFeeHeader.OrganizationId, fee.vmsFeeHeader.Description, fee.vmsFeeHeader.VmsFeeHeaderStatusId)" data-ng-if="fee.currentVersion.VmsFeeVersionStatusId == ApplicationConstants.VmsFeeVersionStatus.New" data-ng-disabled="!formVmsFee.$valid">Create</button>
+
+                            <button type="button" class="btn btn-default" data-ng-click="fee.vmsFeeButtonsHandler('Cancelled', fee.currentVersion, fee.vmsFeeHeader.OrganizationId, fee.vmsFeeHeader.Description, fee.vmsFeeHeader.VmsFeeHeaderStatusId)" data-ng-if="fee.selectedActionId == fee.vmsFeeCodeValueList.actionStatusType.ToCorrect || fee.selectedActionId == fee.vmsFeeCodeValueList.actionStatusType.ToScheduleChange">Cancel</button>
+                            <button type="button" class="btn btn-primary" data-ng-click="fee.vmsFeeButtonsHandler('Corrected', fee.currentVersion, fee.vmsFeeHeader.OrganizationId, fee.vmsFeeHeader.Description, fee.vmsFeeHeader.VmsFeeHeaderStatusId)" data-ng-if="fee.selectedActionId == fee.vmsFeeCodeValueList.actionStatusType.ToCorrect" data-ng-disabled="!formVmsFee.$valid">Correct</button>
+                            <button type="button" class="btn btn-primary" data-ng-click="fee.vmsFeeButtonsHandler('Schedule Changed', fee.currentVersion, fee.vmsFeeHeader.OrganizationId, fee.vmsFeeHeader.Description, fee.vmsFeeHeader.VmsFeeHeaderStatusId)" data-ng-if="fee.selectedActionId == fee.vmsFeeCodeValueList.actionStatusType.ToScheduleChange" data-ng-disabled="!formVmsFee.$valid">Schedule Change</button>                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-12 panel-body" data-pt-validation-messages="fee.validationMessages" data-ng-if="fee.validationMessages"></div>
+    </div>
+    <div class="col-lg-2">
+        <div class="vms-fee-versions">
+            <div class="vms-fee-version-group">
+                <div class="version-version-item"
+                     data-ng-repeat="version in fee.vmsFeeHeader.VmsFeeVersions | orderBy:'EffectiveDate':true"
+                     data-ng-click="fee.onVersionClick(version)"
+                     data-ng-class="{ 'active' : (fee.currentVersion.VmsFeeVersionStatusId != ApplicationConstants.VmsFeeVersionStatus.New && fee.selectedActionId != fee.vmsFeeCodeValueList.actionStatusType.ToScheduleChange && fee.selectedActionId != fee.vmsFeeCodeValueList.actionStatusType.ToCorrect && version.Id==fee.currentVersion.Id)}">
+                    <div>
+                        <div><span class="small-text">Effective Date:&nbsp;</span>{{version.EffectiveDate|date:ApplicationConstants.formatDate}}</div>
+                        <span data-ng-class="version.VmsFeeVersionStatusId==ApplicationConstants.VmsFeeVersionStatus.Active?'text-warning':''"><span class="small-text">Status:&nbsp;</span>{{version.VmsFeeVersionStatusId| lookup:fee.vmsFeeCodeValueList.vmsFeeVersionStatuses}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

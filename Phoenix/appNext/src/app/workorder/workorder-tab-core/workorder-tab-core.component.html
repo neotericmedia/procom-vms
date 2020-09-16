@@ -1,0 +1,20 @@
+<div class="content-group form-horizontal">
+  <div class="content-left">
+    <div class="panel-internal">
+      <app-workorder-tab-core-details [inputFormGroup]="inputFormGroup.controls.Details" [readOnlyStorage]="readOnlyStorage"
+        (outputEvent)="onOutputEvent($event)"></app-workorder-tab-core-details>
+    </div>
+    <div class="panel-internal">
+      <app-workorder-tab-core-collaborators [inputFormGroup]="inputFormGroup.controls.Collaborators" [readOnlyStorage]="readOnlyStorage"
+        (outputEvent)="onOutputEvent($event)">
+      </app-workorder-tab-core-collaborators>
+    </div>
+  </div>
+  <div class="content-right" *ngIf="!phxConstants.ProductionHideFunctionality">
+    <div class="panel-internal">
+      <app-workorder-tab-core-commission [inputFormGroup]="inputFormGroup.controls.Commissions" [readOnlyStorage]="readOnlyStorage"
+        (outputEvent)="onOutputEvent($event)">
+      </app-workorder-tab-core-commission>
+    </div>
+  </div>
+</div>

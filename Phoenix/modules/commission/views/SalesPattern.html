@@ -1,0 +1,62 @@
+﻿<div class="row sales-patt">
+    <div class="btn-group btn-sales-patt-search-nav">
+        <div class="sales-patt-btn-wrapper">
+            <button type="button" class="btn btn-clouds dropdown-toggle" data-toggle="dropdown">
+                <span class="sales-patt-btn-name">Actions</span> <span class="caret ml sales-patt-btn-caret"></span>
+            </button>
+            <ul class="dropdown-menu bordered">
+                <li><a data-ui-sref="commission.salespatternedit({ salesPatternId:0 })">Add New Sales Pattern</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="smart-table-wrapper">
+        <div class="row" data-cg-busy="loadItemsPromise">
+            <table class="table table-striped table-content table-hover" data-st-table-struct='[{"stTableValue" : "sales.items"}, {"stPipeValue" : "sales.callServer"}, {"widthValues" : "[10, 50, 20, 20]"}, {"stPaginationValue" : "sales.pageSize"}]'>
+                <thead data-st-head="1200px">
+                    <tr>
+                        <th data-st-sort="Id" data-st-sort-default="">ID</th>
+                        <th data-st-sort="Description">Description</th>
+                        <th data-st-sort="SalesPatternStatusId">Status</th>
+                        <th data-st-pen-name="Action" title="Action">Action</th>
+                    </tr>
+                    <tr>
+                        <th>
+                            <input data-st-advanced-search="{property: 'Id', ignoreQuotes: true}" placeholder="" class="input-sm form-control numberType" data-safe-restrict-input="{regExpStr: '[^0123456789]', maxLength: 9}" />
+                        </th>
+                        <th>
+                            <input data-st-advanced-search="'Description'" placeholder="" data-safe-restrict-input="[\p{C}]"
+                                   class="input-sm form-control" />
+                        </th>
+                        <th>
+                            <select data-st-advanced-search="{property: 'SalesPatternStatusId', ignoreQuotes: true}" class="input-sm form-control">
+                                <option value="2">Active</option>
+                            </select>
+                        </th>
+                        <th>
+
+                        </th>
+                    </tr>
+                </thead>
+                <tbody class="sales-patt-table-body">
+                    <tr data-ng-repeat="item in sales.items" data-ui-sref-tr="commission.salespatternedit({ salesPatternId: item.Id })" style="cursor: pointer">
+                        <td class="sales-patt-item" title="{{item.Id}}"><span class="sales-patt-item-in">{{item.Id}}</span></td>
+                        <td class="sales-patt-item" title="{{item.Description}}"><span class="sales-patt-item-in">{{item.Description}}</span></td>
+                        <td class="sales-patt-item" title="{{item.SalesPatternStatusId| lookup:sales.patternStatuses}}"><sp><span class="sales-patt-item-in">{{item.SalesPatternStatusId| lookup:sales.patternStatuses}}</span></td>
+                        <td class="sales-patt-item">
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-xs btn-clouds btn-row-action btn-sales-patt-view" data-action="view" title="View"><i class="fontello-icon-eye-1"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="9">
+                            <span class="salesPattTotal">Total Count: {{sales.totalItemCount || 0}}; Items Loaded: {{ sales.items ? sales.items.length : 0}}</span>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>

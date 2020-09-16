@@ -1,0 +1,20 @@
+<div id="workflow-event-history-table-container" class="row">
+    <div class="col-xs-12">
+        <app-phx-data-table #masterDataTable [configuration]="dataTableConfiguration" [dataSource]="workflowItems" [columns]="columns"
+            [exportFileName]="'workflow history'" [componentName]="'workflow-history'">
+            <div *dxTemplate="let workflowItem of 'items'">
+                <div class="col col-xs-12">
+                    <app-phx-data-table [configuration]="detailDataTableConfiguration" [dataSource]="workflowItem.data.items" [columns]="detailColumns"
+                        [exportFileName]="'workflow detail history'" [componentName]="'workflow-history-items'">
+                        <div *dxTemplate="let d of 'dateCellTemplate'">
+                            <span>{{d.value | date:ApplicationConstants.DateFormat.MMM_dd_yyyy_HH_mm}}</span>
+                        </div>
+                    </app-phx-data-table>
+                </div>
+            </div>
+            <div *dxTemplate="let d of 'dateCellTemplate'">
+                <span>{{d.value | date:ApplicationConstants.DateFormat.MMM_dd_yyyy_HH_mm}}</span>
+            </div>
+        </app-phx-data-table>
+    </div>
+</div>

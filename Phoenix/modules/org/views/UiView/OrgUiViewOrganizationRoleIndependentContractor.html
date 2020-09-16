@@ -1,0 +1,54 @@
+﻿<div class="form-group">
+    <div class="col-lg-10">
+        <h4>Role Details</h4>
+    </div>
+</div>
+<div class="form-group" ng-if="scopeOrg.entity.OrganizationIndependentContractorRoles[0].Id!=0">
+    <label data-for-property="OrganizationRoleStatusId" for="OrganizationRoleStatusId" data-model-property="scopeOrg.entity.OrganizationIndependentContractorRoles[0].OrganizationRoleStatusId" class="col-lg-3 control-label label-to-right req-lab-right" data-original-title="" title="">Role Status</label>
+    <div class="col-lg-7">
+        <ui-select name="OrganizationRoleStatusId" theme="select2" class="form-control" required="required"
+                   data-ng-model="scopeOrg.entity.OrganizationIndependentContractorRoles[0].OrganizationRoleStatusId"
+                   data-pt-field-view="scopeOrg.ptFieldViewConfigOnChangeStatusId"
+                   data-pt-field-view-model-validation="{ { scopeOrg.entity.OrganizationIndependentContractorRoles[0] } }">
+            <ui-select-match placeholder="-- Select One --">{{$select.selected.text}}</ui-select-match>
+            <ui-select-choices repeat="item.id as item in scopeOrg.lists.organizationRoleStatusTypeList | uiSelectChoicesFilter: $select.search: 'text'"><span data-ng-bind-html="item.text | highlight: $select.search"></span></ui-select-choices>
+        </ui-select>
+    </div>
+</div>
+<div class="form-group">
+    <label data-for-property="NotificationEmail" for="NotificationEmail" class="col-lg-3 control-label label-to-right req-lab-right" data-original-title="" title=""
+           data-model-property="scopeOrg.entity.OrganizationIndependentContractorRoles[0].NotificationEmail">Payment Notification Email(s)</label>
+	<div class="col-lg-7" ng-class="{'col-lg-9': !scopeOrg.entity.IsDraftStatus}">
+		<email-list-directive class="" ng-model="scopeOrg.entity.OrganizationIndependentContractorRoles[0].NotificationEmail" name="NotificationEmail" data-pt-field-view="scopeOrg.ptFieldViewConfigOnChangeStatusId"></email-list-directive>
+	</div>
+</div>
+
+<div class="form-group">
+    <label data-for-property="BusinessNumber" for="BusinessNumber" class="col-lg-3 control-label label-to-right req-lab-right" data-original-title="" title=""
+           data-model-property="scopeOrg.entity.OrganizationIndependentContractorRoles[0].BusinessNumber">Business Number</label>
+    <div class="col-lg-7">
+        <input type="text" data-ng-model="scopeOrg.entity.OrganizationIndependentContractorRoles[0].BusinessNumber" name="BusinessNumber"
+               data-ng-maxlength="32" maxlength="32"
+               data-ng-minlength="0" minlength="0"
+               data-length-message="LengthRange"
+               class="form-control ng-valid-maxlength ng-valid-minlength"
+               data-pt-field-view="scopeOrg.ptFieldViewConfigOnChangeStatusId"
+               data-ng-required="true"
+               data-required-message="Required">
+    </div>
+</div>
+
+<div class="form-group">
+    <label for-property="IsNonResident" for="IsNonResident" data-model-property="scopeOrg.entity.OrganizationIndependentContractorRoles[0].IsNonResident"
+           class="col-lg-3 control-label label-to-right req-lab-right">
+        <span>Residency&nbsp;status</span>
+    </label>
+    <div class="col-lg-9">
+        <pt-input-radio name="IsNonResident"
+                        data-template-type="input-radio"
+                        data-ng-required="true"
+                        data-ng-model="scopeOrg.entity.OrganizationIndependentContractorRoles[0].IsNonResident"
+                        data-options="scopeOrg.residencyStatusOptions"
+                        data-pt-field-view="scopeOrg.ptFieldViewConfigOnChangeStatusId" />
+    </div>
+</div>

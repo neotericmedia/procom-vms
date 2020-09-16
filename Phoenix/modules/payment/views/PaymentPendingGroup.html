@@ -1,0 +1,44 @@
+<div class="app-accordion-container app-accordion-container-28" cg-busy="loadItemsPromise">
+    <ft-accordion>
+        <ft-accordion-group class="app-accordion-level-one" ng-repeat="company in companies" template="/Phoenix/app/directive/collapsibleHeadingGroup.html" is-open="company.open">
+            <ft-accordion-heading>
+                <div class="app-accordion-level-one-item">
+                    <i class="app-accordion-chevron" ng-class="{'icon-chevron-up': company.open, 'icon-chevron-down': !company.open}"></i>
+                    <span>{{company.companyName}}</span>
+                </div>
+            </ft-accordion-heading>
+            <ft-accordion>
+                <ft-accordion-group class="app-accordion-level-two" ng-repeat="currency in company.currencies" is-open="currency.open">
+                    <ft-accordion-heading>
+                        <div class="app-accordion-level-two-item">
+                            <span>{{currency.currencyCode | lookup:lists.currencyList:'id':'code'}}</span>
+                            <span class="badge badge-warning app-badge">{{currency.count}}</span>
+                            <i class="app-accordion-chevron" ng-class="{'icon-chevron-up': currency.open, 'icon-chevron-down': !currency.open}"></i>
+                        </div>
+                    </ft-accordion-heading>
+                    <div class="app-accordion-level-three">
+                        <!-- Creates columns if there is more than one payment method-->
+                        <div ng-repeat="paymentMethod in currency.paymentMethods" class="col-lg-20-percent">
+                            <div class="app-accordion-column">
+                                <ft-row>
+                                    <span>{{paymentMethod.methodId | lookup:lists.paymentMethodList:'id':'text'}}</span>
+                                </ft-row>
+                                <ft-row ng-repeat="transaction in paymentMethod.transactions">
+                                    <div class="app-accordion-level-three-item" ng-class="{ 'app-no-link': transaction.count == 0}"
+                                        ui-sref="ngtwo.m( getPaymentListUrl(transaction) )" >
+                                        <span>{{transaction.transactionType | lookup:lists.paymentTransactionStatus:'id':'text'}}</span>
+                                        <span class="badge badge-warning app-badge" ng-if="transaction.count > 0">{{transaction.count}}</span>
+                                    </div>
+                                </ft-row>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                </ft-accordion-group>
+            </ft-accordion>
+        </ft-accordion-group>
+    </ft-accordion>
+    <p class="app-no-items" ng-if="companies.length == 0">
+        There are no pending payments.
+    </p>
+</div>

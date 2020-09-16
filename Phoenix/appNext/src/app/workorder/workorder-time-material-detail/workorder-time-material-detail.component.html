@@ -1,0 +1,151 @@
+<form [formGroup]="inputFormGroup">
+  <div class="content-group ">
+    <div class="content-left">
+      <div class="panel-internal">
+        <div class="form-group">
+          <div class="col-lg-12">
+            <h4>Timesheet Methodology &amp; Cycle</h4>
+          </div>
+        </div>
+        <div class="form-group">
+          <phx-form-control labelText="Timesheet Methodology" [editable]="readOnlyStorage.IsEditable && checkPtFiledAccessibility('WorkOrderVersion','TimeSheetMethodologyId')"
+            [control]="inputFormGroup.controls.TimeSheetMethodologyId"
+            viewModeText="{{inputFormGroup.controls.TimeSheetMethodologyId.value | CodeValue:codeValueGroups.TimeSheetMethodology }}">
+            <app-phx-select-box [items]="html.codeValueLists.listTimesheetMethodologies" textField="text" valueField="id" [formControl]="inputFormGroup.controls.TimeSheetMethodologyId"
+              (valueChanged)="onChangeTimeSheetMethodology($event)" placeholder="-- select one --">
+            </app-phx-select-box>
+          </phx-form-control>
+        </div>
+        <div class="form-group" *ngIf="html.timeCard.timeCardCycle">
+          <phx-form-control labelText="Timesheet Cycle" [editable]="readOnlyStorage.IsEditable && checkPtFiledAccessibility('WorkOrderVersion','TimeSheetCycleId')"
+            [control]="inputFormGroup.controls.TimeSheetCycleId" viewModeText="{{inputFormGroup.controls.TimeSheetCycleId.value | CodeValue:codeValueGroups.TimeSheetCycle }}">
+            <app-phx-select-box [items]="html.codeValueLists.listTimesheetCycles" textField="text" valueField="id" [formControl]="inputFormGroup.controls.TimeSheetCycleId" placeholder="-- select one --">
+            </app-phx-select-box>
+          </phx-form-control>
+        </div>
+      </div>
+    </div>
+    <div class="content-right" *ngIf="html.timeCard.timeCardApproval">
+      <div class="panel-internal">
+        <div class="form-group">
+          <div class="col-lg-12">
+            <h4>Timesheet Approval</h4>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-lg-4 control-label label-to-right">Timesheet Approver Definition</label>
+          <div class="col-lg-8">
+          </div>
+        </div>
+        <div class="form-group">
+          <div formArrayName="TimeSheetApprovers">
+            <div *ngFor="let item of inputFormGroup.controls['TimeSheetApprovers'].controls; let i = index; let last = last; trackBy: trackByFn">
+              <div [formGroup]="item">
+                <div class="form-group">
+                  <phx-form-control labelText="Client Approver" [editable]="readOnlyStorage.IsEditable && checkPtFiledAccessibility('WorkOrderVersion.TimeSheetApprovers','UserProfileId')"
+                    [control]="item.controls.UserProfileId" viewModeText="{{item.controls.UserProfileId.value | lookupNoCache: html.commonLists.listProfilesForApproval:'Id':'Contact.FullName'}} - {{item.controls.UserProfileId.value}}">
+                    <div [ngClass]="{'col-md-10 padding-0': (i != 0)}">
+                      <app-phx-select-box [items]="html.commonLists.listProfilesForApproval | filterSelectChoicesByUsage: inputFormGroup.controls['TimeSheetApprovers'].value: item.value: 'UserProfileId': 'Id': 'Contact.FullName': 'Contact.Id'" 
+                        textField="DisplayValue" valueField="Id" [formControl]="item.controls.UserProfileId" placeholder="Approver Name Search">
+                      </app-phx-select-box>
+                    </div>
+                    <div class="col-xs-1 pull-right padding-0" *ngIf="i != 0">
+                      <button type="button" class="btn btn-default btn-material pull-right" (click)="removeTimeSheetApproverDefinition(i)">
+                        <i class="material-icons">delete</i>
+                      </button>
+                    </div>
+                  </phx-form-control>
+                </div>
+                <div class="col-lg-2 pull-right" *ngIf="last && readOnlyStorage.IsEditable">
+                  <button type="button" class="btn btn-default btn-material pull-right add-btn-group" (click)="addTimeSheetApproverDefinition()"
+                    title="Add a new Timesheet Approver" [disabled]="inputFormGroup.controls['TimeSheetApprovers'].length === html.commonLists.listProfilesForApproval.length">
+                    <i class="material-icons">add</i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group" *ngIf="inputFormGroup.controls['TimeSheetApprovers'].length > 1">
+          <phx-form-control labelText="Timecard Approval Flow Type" [editable]="readOnlyStorage.IsEditable && checkPtFiledAccessibility('WorkOrderVersion','TimeSheetApprovalFlowId')"
+            [control]="inputFormGroup.controls.TimeSheetApprovalFlowId"
+            viewModeText="{{inputFormGroup.controls.TimeSheetApprovalFlowId.value | CodeValue:codeValueGroups.TimeSheetApprovalFlow }}">
+            <app-phx-select-box [items]="html.codeValueLists.listTimeSheetApprovalFlows" textField="text" valueField="id" [formControl]="inputFormGroup.controls.TimeSheetApprovalFlowId"
+            placeholder="-- select one --">
+            </app-phx-select-box>
+          </phx-form-control>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="content-group" *ngIf="html.timeCard.projectsAndCoding || html.timeCard.configurationAndDescriptors">
+    <div class="content-left" *ngIf="html.timeCard.projectsAndCoding">
+      <div class="panel-internal">
+        <div class="form-group">
+          <div class="col-lg-12">
+            <h4>Projects & Coding</h4>
+          </div>
+        </div>
+        <div class="form-group">
+          <phx-form-control labelText="Timesheet Uses Projects?" [control]="inputFormGroup.controls['IsTimeSheetUsesProjects']"
+            [editable]="readOnlyStorage.IsEditable && checkPtFiledAccessibility('WorkOrderVersion','IsTimeSheetUsesProjects')"
+            viewModeText="{{inputFormGroup.controls['IsTimeSheetUsesProjects'].value ? 'Yes' : 'No'}}">
+            <label class="radio-inline">
+              <input class="form-check-input" type="radio" [value]="true" formControlName="IsTimeSheetUsesProjects">Yes</label>
+            <label class="radio-inline">
+              <input class="form-check-input" type="radio" [value]="false" formControlName="IsTimeSheetUsesProjects">No</label>
+          </phx-form-control>
+        </div>
+      </div>
+    </div>
+    <div class="content-right" *ngIf="html.timeCard.configurationAndDescriptors">
+      <div class="panel-internal">
+        <div class="form-group">
+          <div class="col-lg-12">
+            <h4>Configuration &amp; Descriptors</h4>
+          </div>
+        </div>
+        <div class="form-group" *ngIf="html.timeCard.thirdPartyWorkerID">
+          <phx-form-control [control]="inputFormGroup.controls.VmsWorkOrderReference"
+            [editable]="readOnlyStorage.IsEditable && checkPtFiledAccessibility('WorkOrderVersion','VmsWorkOrderReference')"
+            labelText="Third Party Worker ID"
+            viewModeText="{{inputFormGroup.controls.VmsWorkOrderReference.value}}">
+            <span class="input-display-cell">
+              <input formControlName="VmsWorkOrderReference" type="text" class="form-control" />
+            </span>
+            <span class="input-group-addon" style="padding:3px 6px;">
+              <i class="material-icons">account_box</i>
+            </span>
+          </phx-form-control>
+        </div>
+        <div class="form-group" *ngIf="html.timeCard.displayEstimatedInvoiceAmount">
+          <phx-form-control labelText="Display Estimated Invoice Amount" [control]="inputFormGroup.controls['IsDisplayEstimatedInvoiceAmount']"
+            [editable]="readOnlyStorage.IsEditable && checkPtFiledAccessibility('WorkOrderVersion','IsDisplayEstimatedInvoiceAmount')"
+            viewModeText="{{inputFormGroup.controls['IsDisplayEstimatedInvoiceAmount'].value ? 'Yes' : 'No'}}">
+            <label class="radio-inline">
+              <input class="form-check-input" type="radio" [value]="true" formControlName="IsDisplayEstimatedInvoiceAmount">Yes</label>
+            <label class="radio-inline">
+              <input class="form-check-input" type="radio" [value]="false" formControlName="IsDisplayEstimatedInvoiceAmount">No</label>
+          </phx-form-control>
+        </div>
+        <div class="form-group" *ngIf="html.timeCard.displayEstimatedPaymentAmount">
+          <phx-form-control labelText="Display Estimated Payment Amount" [control]="inputFormGroup.controls['IsDisplayEstimatedPaymentAmount']"
+            [editable]="readOnlyStorage.IsEditable && checkPtFiledAccessibility('WorkOrderVersion','IsDisplayEstimatedPaymentAmount')"
+            viewModeText="{{inputFormGroup.controls['IsDisplayEstimatedPaymentAmount'].value ? 'Yes' : 'No'}}">
+            <label class="radio-inline">
+              <input class="form-check-input" type="radio" [value]="true" formControlName="IsDisplayEstimatedPaymentAmount">Yes</label>
+            <label class="radio-inline">
+              <input class="form-check-input" type="radio" [value]="false" formControlName="IsDisplayEstimatedPaymentAmount">No</label>
+          </phx-form-control>
+        </div>
+        <div class="form-group" *ngIf="html.timeCard.timecardDescription">
+          <phx-form-control [control]="inputFormGroup.controls.TimeSheetDescription" [editable]="readOnlyStorage.IsEditable && checkPtFiledAccessibility('WorkOrderVersion','TimeSheetDescription')"
+            labelText="Timecard Description"
+            viewModeText="{{inputFormGroup.controls.TimeSheetDescription.value}}">
+            <input formControlName="TimeSheetDescription" type="text" class="form-control" />
+          </phx-form-control>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

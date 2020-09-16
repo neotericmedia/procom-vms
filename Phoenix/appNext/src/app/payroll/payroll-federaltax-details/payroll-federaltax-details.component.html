@@ -1,0 +1,160 @@
+<div class="col-lg-12" style="padding-left:0;height:50px;" *ngIf="taxDetails" (keydown.enter)="$event.preventDefault()">
+  <form [formGroup]="formFederalTax" class="form-horizontal">
+    <div class="row">
+      <app-phx-workflow-buttons (callWorkflowCommand)="executeWorkflowAction($event)" [workflowAvailableActions]="workflowAvailableActions"
+        [isButtonBar]="false" *ngIf="currentVersion?.TaxVersionStatusId != phxConstants.TaxVersionStatus.Replaced && !editable"></app-phx-workflow-buttons>
+    </div>
+    <div class="col-lg-10">
+      <div class="row ">
+        <div class="tab-content">
+          <div class="tabbable panel panel-tabbable">
+            <div class="tab-content">
+              <div class="tab-pane active">
+                <div class="panel">
+                  <div class="headstone panel-heading container-fluid">
+                    <div class="row">
+                      <div class="col-lg-1">
+                        <label class="control-label col-xs-12 ">ID</label>
+                        <span class="col-xs-12 ">{{taxDetails?.Id}}</span>
+                      </div>
+                      <div class="col-lg-3">
+                        <label class="control-label col-xs-12 ">Country</label>
+                        <span class="col-xs-12 ">{{taxDetails?.CountryId|CodeValue:codeValueGroups.Country:'text'}}</span>
+                      </div>
+                      <div class="col-lg-3">
+                        <label class="control-label col-xs-12 ">Created Date</label>
+                        <span class="col-xs-12 " *ngIf="!isNew">{{currentVersion?.CreatedDatetime|date:phxConstants.DateFormat.mediumDate}}</span>
+                      </div>
+                      <div class="col-lg-3">
+                        <label class="control-label col-xs-12 ">Effective Date</label>
+                        <span class="col-xs-12 ">{{currentVersion?.EffectiveDate
+                          |date:phxConstants.DateFormat.mediumDate}}</span>
+                      </div>
+                      <div class="col-lg-2">
+                        <label class="control-label col-xs-12 ">Status</label>
+                        <span class="col-xs-12 " *ngIf="!editable">{{currentVersion?.TaxVersionStatusId
+                          |CodeValue:codeValueGroups.TaxVersionStatus:'code'}}</span>
+                        <span class="col-xs-12 " *ngIf="editable && isCorrection">To Correct</span>
+                        <span class="col-xs-12 " *ngIf="editable && isScheduleChange">To Schedule Change</span>
+                        <span class="col-xs-12 " *ngIf="editable && isNew">New</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row panel-margin-bottom">
+            <div class="col-lg-12">
+              <phx-form-control [showValidationMessages]="false" name="Country" labelText="Country" [control]="formFederalTax.controls['CountryId']" [editable]="editable && isNew"
+                viewModeText="{{taxDetails?.CountryId|CodeValue:codeValueGroups.Country:'text'}}">
+                <div class="col-lg-8 col-xl-12">
+                  <div class="input-group panel-margin-bottom">
+                    <app-phx-select-box-code-value country [groupName]="codeValueGroups.Country" sortByFieldName="text" formControlName="CountryId">
+                    </app-phx-select-box-code-value>
+                  </div>
+                </div>
+              </phx-form-control>
+            </div>
+          </div>
+          <div class="row panel-margin-bottom">
+            <div class="col-lg-12">
+              <phx-form-control name="effectiveDate" labelText="Effective Date" [control]="formFederalTax.controls['EffectiveDate']"
+                [editable]="editable && !isCorrection" viewModeText="{{currentVersion?.EffectiveDate | date:phxConstants.DateFormat.mediumDate}}">
+                <div class="col-lg-4 col-xxl-3">
+                  <div class="panel-margin-bottom">
+                    <app-phx-date-box type="date" formControlName="EffectiveDate"></app-phx-date-box>
+                  </div>
+                </div>
+              </phx-form-control>
+            </div>
+          </div>
+          <div class="row panel-margin-bottom">
+            <div class="col-lg-12">
+              <phx-form-control [showValidationMessages]="false" name="TD1Minimum" labelText="TD1 Minimum" [editable]="editable"
+                [control]="formFederalTax.controls['TD1Minimum']" viewModeText="{{currentVersion?.TD1Minimum | phxDisplayCurrency}}">
+                <div class="col-lg-4 col-xxl-3">
+                  <div class="panel-margin-bottom">
+                    <input type="text" [inputTextLimitWithDecimals]="numberFilter" class="form-control ng-scope" name="TD1Minimum"
+                      formControlName="TD1Minimum" /> {{TD1Minimum | json}}
+                  </div>
+                </div>
+              </phx-form-control>
+            </div>
+          </div>
+
+          <div class="row panel-margin-bottom">
+            <div class="col-lg-12">
+              <phx-form-control [showValidationMessages]="false" name="AbatementRatePercentage" labelText="Abatement Rate"
+                [editable]="editable" [control]="formFederalTax.controls['AbatementRatePercentage']" viewModeText="{{currentVersion?.AbatementRatePercentage | phxPercentWithDecimals}}">
+                <div class="col-lg-4 col-xxl-3">
+                  <div class="input-group panel-margin-bottom">
+                    <input type="number" class="form-control ng-scope" name="AbatementRatePercentage" formControlName="AbatementRatePercentage"
+                      [inputTextLimitWithDecimals]="percentageFilter" />
+                    <span class="input-group-addon">%</span>
+                  </div>
+                </div>
+              </phx-form-control>
+            </div>
+          </div>
+          <div class="row panel-margin-bottom">
+            <div class="col-lg-12">
+              <phx-form-control [showValidationMessages]="false" name="NonResidentWithholdingPercentage" labelText="Non Resident Withholding Percentage Rate"
+                [editable]="editable" [control]="formFederalTax.controls['NonResidentWithholdingPercentage']"
+                viewModeText="{{currentVersion.NonResidentWithholdingPercentage | phxPercentWithDecimals}}">
+                <div class="col-lg-4 col-xxl-3">
+                  <div class="input-group panel-margin-bottom">
+                    <input type="number" class="form-control ng-scope" name="NonResidentWithholdingPercentage"
+                      formControlName="NonResidentWithholdingPercentage" [inputTextLimitWithDecimals]="percentageFilter" />
+                    <span class="input-group-addon">%</span>
+                  </div>
+                </div>
+              </phx-form-control>
+            </div>
+          </div>
+          <div class="row panel-margin-bottom">
+            <div class="col-lg-12">
+              <phx-form-control [showValidationMessages]="false" name="CanadaEmploymentAmount" labelText="Canada Employment Amount"
+                [editable]="editable" [control]="formFederalTax.controls['CanadaEmploymentAmount']" viewModeText="{{currentVersion?.CanadaEmploymentAmount| phxDisplayCurrency }}">
+                <div class="col-lg-4 col-xxl-3">
+                  <div class="panel-margin-bottom">
+                    <input type="number" class="form-control ng-scope" name="CanadaEmploymentAmount" formControlName="CanadaEmploymentAmount"
+                      [inputTextLimitWithDecimals]="numberFilter" />
+                  </div>
+                </div>
+              </phx-form-control>
+            </div>
+          </div>
+        </div>
+      </div>
+      <app-phx-panel headerTitle="Tax Rates" *ngIf="taxDetails">
+        <app-payroll-taxrate #federalTaxComponent [(taxRates)]="currentVersion.FederalTaxRates" [groupName]="'FederalTaxRates'"
+          [(formTaxRate)]="formFederalTax" [fb]="fb" [editable]="editable" [showButtons]="showButtons"
+          [displayConstant]="displayConstant">
+        </app-payroll-taxrate>
+      </app-phx-panel>
+      <div class="col-lg-12 panel panel-internal" *ngIf="currentVersion?.TaxVersionStatusId == phxConstants.TaxVersionStatus.Active||currentVersion?.TaxVersionStatusId == phxConstants.TaxVersionStatus.Replaced">
+        <div class="panel-body">
+          <app-phx-workflow-event-history [entityTypeId]="phxConstants.EntityType.FederalTaxHeader" [entityId]="federalTaxHeaderId"></app-phx-workflow-event-history>
+        </div>
+      </div>
+      <div class="panel-footer" *ngIf="editable">
+        <app-phx-state-action-buttons [stateActions]="stateActions"></app-phx-state-action-buttons>
+      </div>
+      <div class="col-lg-12">
+        <app-phx-validation-messages [messages]="validationMessages"></app-phx-validation-messages>
+      </div>
+    </div>
+    <div class="col-lg-2">
+      <div class="payrolltax-versions">
+        <div class="payrolltax-version-group">
+          <div *ngIf="taxDetails">
+            <app-phx-tax-versions [taxVersions]="taxDetails?.FederalTaxVersions" [currentVersionId]="federalTaxVersionId"
+              (selectedTaxVersion)="currentFederalTaxVersion($event)" [editable]="editable"></app-phx-tax-versions>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

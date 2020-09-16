@@ -1,0 +1,23 @@
+<div>
+    <div class="btn-group">
+        <div class="payroll-btn-wrapper">
+            <button class="btn btn-clouds dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true"
+                aria-expanded="true">
+                {{'common.generic.actions' | phxTranslate}}...
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu bordered">
+                <li>
+                    <a (click)="createNewFederalTax()">Create New Federal Tax</a>
+                </li>
+                <li>
+                    <a (click)="createNewProvincialTax()">Create New Provincial/State Tax</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <app-phx-data-table [configuration]="dataTableConfiguration" [dataSourceUrl]="'payroll/getAllPayrolls'" [dataSourceParams]='odataParams'
+        [columns]="columns" [exportFileName]="'PayrollTaxes'" [componentName]="'PayrollSearch'" (rowClick)="onRowClick($event)"
+        (contextMenuOpenTab)="onContextMenuOpenTab($event)">
+    </app-phx-data-table>
+</div>

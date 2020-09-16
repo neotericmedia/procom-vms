@@ -1,0 +1,667 @@
+﻿<div data-cg-busy="loadItemsPromise" data-ng-form="formPayrollTax">
+    <div class="col-lg-12" style="padding-left:0;height:50px;">
+        <div>
+            <div class="transaction-selection col-lg-2" data-ng-if="header.common.workflow.WorkflowAvailableActions.length>0" style="padding-left:0;">
+                <ui-select data-ng-model="header.common.workflow.SelectedActionId" theme="select2" class="form-control" data-ng-change="header.common.workflow.actionButtonOnClick(header.currentVersion, {{$select.selected}})">
+                    <ui-select-match placeholder="Actions">{{$select.selected.Name}}</ui-select-match>
+                    <ui-select-choices repeat="item.Id as item in header.common.workflow.WorkflowAvailableActions | orderBy:'DisplayButtonOrder' | uiSelectChoicesFilter: $select.search: 'Name': 'Id'">
+                        <span data-ng-bind-html="item.Name | highlight: $select.search"></span>
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+            <label class="col-lg-2 control-label label-to-right" style="height:30px;">&nbsp;</label>
+        </div>
+    </div>
+
+    <div class="col-lg-10 ">
+        <div class="row " data-ng-form="entityForm">
+            <div class="tab-content">
+                <div class="tabbable panel panel-tabbable">
+                    <div class="tab-content">
+                        <div class="tab-pane active">
+                            <div class="panel">
+                                <div class="headstone panel-heading container-fluid">
+                                    <div class="row">
+                                        <div class="col-lg-1">
+                                            <label class="control-label col-xs-12 ">ID</label>
+                                            <span class="col-xs-12 " data-ng-class="model.entity.IsDraft?'text-warning':''">{{header.Id}}</span>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <label class="control-label col-xs-12 ">Province/State</label>
+                                            <span class="col-xs-12 ">{{header.SubdivisionId|lookup:header.common.lists.listSubdivision}}</span>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <label class="control-label col-xs-12 ">Created Date</label>
+                                            <span class="col-xs-12 ">{{header.currentVersion.CreatedDatetime|date:ApplicationConstants.formatDate}}</span>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <label class="control-label col-xs-12 ">Effective Date</label>
+                                            <span class="col-xs-12 ">{{header.currentVersion.EffectiveDate|date:ApplicationConstants.formatDate}}</span>
+                                        </div>
+                                        <div class="col-lg-2">
+                                            <label class="control-label col-xs-12 ">Status</label>
+                                            <span class="col-xs-12 " data-ng-if="!header.common.workflow.WorkflowIsRunning&&header.common.customStatusId == null" data-ng-class="header.currentVersion.TaxVersionStatusId==ApplicationConstants.TaxVersionStatus.Active?'text-warning':''">{{header.currentVersion.TaxVersionStatusId|lookup:header.common.lists.listTaxVersionStatus}}</span>
+                                            <span class="col-xs-12 " data-ng-if="!header.common.workflow.WorkflowIsRunning&&header.common.customStatusId !== null">{{header.common.customStatusId|lookup:header.common.lists.listCustomStatus}}</span>
+                                            <span class="col-xs-12 " data-ng-if="header.common.workflow.WorkflowIsRunning">Workflow Is Running</span>
+                                        </div>
+                                    </div>
+                                    <!-- <div class="row">
+                                        <div class="col-lg-1">
+                                            <span data-ng-class="model.entity.IsDraft?'text-warning':''">{{header.Id}}</span>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <span>{{header.SubdivisionId|lookup:header.common.lists.listSubdivision}}</span>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            {{header.currentVersion.CreatedDatetime|date:ApplicationConstants.formatDate}}
+                                        </div>
+                                        <div class="col-lg-3">
+                                            {{header.currentVersion.EffectiveDate|date:ApplicationConstants.formatDate}}
+                                        </div>
+                                        <div class="col-lg-2">
+                                            <span data-ng-if="!header.common.workflow.WorkflowIsRunning&&header.common.customStatusId == null" data-ng-class="header.currentVersion.TaxVersionStatusId==ApplicationConstants.TaxVersionStatus.Active?'text-warning':''">{{header.currentVersion.TaxVersionStatusId|lookup:header.common.lists.listTaxVersionStatus}}</span>
+                                            <span data-ng-if="!header.common.workflow.WorkflowIsRunning&&header.common.customStatusId !== null">{{header.common.customStatusId|lookup:header.common.lists.listCustomStatus}}</span>
+                                            <span data-ng-if="header.common.workflow.WorkflowIsRunning">Workflow Is Running</span>
+                                        </div>
+                                    </div> -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tabbable">
+                        <div class="tab-content">
+                            <div class="tab-pane active">
+                                <div class="panel">
+                                    <div class="panel-body">
+                                        <div class="col-lg-6 panel-margin-bottom">
+                                            <label for-property="SubdivisionId" for="SubdivisionId" data-model-property="header.SubdivisionId" class="col-lg-4 control-label label-to-right req-lab-right" data-original-title="" title="">Province/State</label>
+                                            <div class="col-lg-8">
+                                                <div class="input-group select2-bootstrap-append">
+                                                    <ui-select name="SubdivisionId" data-ng-model="header.SubdivisionId" theme="select2" class="form-control" data-pt-field-view="header.common.ptFieldViewConfigOnChangeStatusId" required>
+                                                        <ui-select-match placeholder="-- Select One --">{{$select.selected.text}} - {{$select.selected.code}}</ui-select-match>
+                                                        <ui-select-choices repeat="item.id as item in header.common.lists.listSubdivision | uiSelectChoicesFilter: $select.search: 'text'">
+                                                            <span data-ng-bind-html="item.text | highlight: $select.search"></span>
+                                                            <span data-ng-bind-html="' - ' + item.code | highlight: $select.search"></span>
+                                                        </ui-select-choices>
+                                                    </ui-select>
+                                                    <span class="input-group-btn">
+                                                        <button tabindex="-1" data-ng-click="header.SubdivisionId=undefined" class="btn btn-default"><i class="material-icons md-18">clear</i></button>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6 panel-margin-bottom">
+                                            <label for-property="EffectiveDate" for="EffectiveDate" data-model-property="header.currentVersion.EffectiveDate" class="col-lg-4 control-label label-to-right req-lab-right" data-original-title="" title="">Effective Date</label>
+                                            <div class="col-lg-8">
+                                                <pt-date-picker data-ng-model="header.currentVersion.EffectiveDate" data-pt-field-view="header.common.ptFieldViewConfigOnChangeStatusId" data-ng-required="true" data-required-message="Required" data-func-callback-on-done="header.datePickerCallbackOnDoneEffectiveDate()" />
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6 panel-margin-bottom">
+                                            <label for-property="TD1Minimum" for="TD1Minimum" data-model-property="header.currentVersion.TD1Minimum" class="col-lg-4 control-label label-to-right req-lab-right" data-original-title="" title="">TD1 Minimum</label>
+                                            <div class="col-lg-8">
+                                                <div class="input-group">
+                                                    <input type="text"
+                                                           data-input-by-float-range="{from:0, to:ApplicationConstants.max.currency, decimalplaces:2, doesemptytozero:'true'}"
+                                                           data-ng-model="header.currentVersion.TD1Minimum"
+                                                           input-display-decimal-places="2"
+                                                           name="TD1Minimum"
+                                                           data-required-message="Required"
+                                                           data-pt-field-view="header.common.ptFieldViewConfigOnChangeStatusId"
+                                                           data-pt-field-view-custom="{ { header.currentVersion.TD1Minimum | currency } }"
+                                                           data-ng-required="true"
+                                                           class="form-control form-control ng-scope"
+                                                           required="required">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6 panel-margin-bottom">
+                                            <label for-property="WCBMaximum" for="WCBMaximum" data-model-property="header.currentVersion.WCBMaxEarnings" class="col-lg-4 control-label label-to-right req-lab-right" data-original-title="" title="">WCB Maximum</label>
+                                            <div class="col-lg-8">
+                                                <div class="input-group">
+                                                    <input type="text"
+                                                           data-input-by-float-range="{from:0, to:ApplicationConstants.max.currency, decimalplaces:2, doesemptytozero:'true'}"
+                                                           data-ng-model="header.currentVersion.WCBMaximum"
+                                                           input-display-decimal-places="2"
+                                                           name="TD1Minimum"
+                                                           data-required-message="Required"
+                                                           data-pt-field-view="header.common.ptFieldViewConfigOnChangeStatusId"
+                                                           data-pt-field-view-custom="{ { header.currentVersion.WCBMaximum | currency } }"
+                                                           data-ng-required="true"
+                                                           class="form-control form-control ng-scope"
+                                                           required="required">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6 panel-margin-bottom">
+                                            <label for-property="CanadaEmploymentAmount" for="CanadaEmploymentAmount" data-model-property="header.currentVersion.CanadaEmploymentAmount" class="col-lg-4 control-label label-to-right req-lab-right" data-original-title="" title="">Canada Employment Amount</label>
+                                            <div class="col-lg-8">
+                                                <div class="input-group">
+                                                    <input type="text"
+                                                           data-input-by-float-range="{from:0, to:ApplicationConstants.max.currency, decimalplaces:2, doesemptytozero:'true'}"
+                                                           data-ng-model="header.currentVersion.CanadaEmploymentAmount"
+                                                           input-display-decimal-places="2"
+                                                           name="CanadaEmploymentAmount"
+                                                           data-required-message="Required"
+                                                           data-pt-field-view="header.common.ptFieldViewConfigOnChangeStatusId"
+                                                           data-pt-field-view-custom="{ { header.currentVersion.CanadaEmploymentAmount | currency } }"
+                                                           data-ng-required="true"
+                                                           class="form-control form-control ng-scope"
+                                                           required="required">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12 panel-body" data-pt-validation-messages="header.validationMessages" data-ng-if="header.validationMessages"></div>
+
+                                        <div class="col-lg-12 panel-internal">
+                                            <div>
+                                                <div class="row">
+                                                    <h4 class="col-lg-10 panel-title alignment-on-title">Tax Rates</h4>
+                                                    <div class="col-lg-2">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <div class="panel-body" data-ng-form="formRates">
+
+                                                    <payroll-tax-rates tax-rates="header.currentVersion.ProvincialTaxRates"
+                                                                       pt-field-view-config-on-change-status-id="header.common.ptFieldViewConfigOnChangeStatusId"
+                                                                       tax-version-status-id="header.currentVersion.TaxVersionStatusId"
+                                                                       custom-status-id="header.common.customStatusId"
+                                                                       show-buttons="header.currentVersion.TaxVersionStatusId == ApplicationConstants.TaxVersionStatus.New || header.common.customStatusId == header.common.customStatusType.ToCorrect || header.common.customStatusId == header.common.customStatusType.ToScheduleChange">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12 panel-internal">
+                                            <div>
+                                                <div class="row">
+                                                    <h4 class="col-lg-10 panel-title alignment-on-title">Surtax Rates</h4>
+                                                    <div class="col-lg-2">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <div class="panel-body" data-ng-form="formRates">
+
+                                                    <payroll-tax-rates tax-rates="header.currentVersion.ProvincialSurtaxRates"
+                                                                       hide-constant-column="true"
+                                                                       pt-field-view-config-on-change-status-id="header.common.ptFieldViewConfigOnChangeStatusId"
+                                                                       tax-version-status-id="header.currentVersion.TaxVersionStatusId"
+                                                                       custom-status-id="header.common.customStatusId"
+                                                                       show-buttons="header.currentVersion.TaxVersionStatusId == ApplicationConstants.TaxVersionStatus.New || header.common.customStatusId == header.common.customStatusType.ToCorrect || header.common.customStatusId == header.common.customStatusType.ToScheduleChange">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12 panel-internal">
+                                            <div>
+                                                <div class="row">
+                                                    <h4 class="col-lg-10 panel-title alignment-on-title">Health Premiums</h4>
+                                                    <div class="col-lg-2">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <div class="panel-body" data-ng-form="formRates">
+                                                    <payroll-tax-rates tax-rates="header.currentVersion.ProvincialHealthPremiums"
+                                                                       pt-field-view-config-on-change-status-id="header.common.ptFieldViewConfigOnChangeStatusId"
+                                                                       tax-version-status-id="header.currentVersion.TaxVersionStatusId"
+                                                                       custom-status-id="header.common.customStatusId"
+                                                                       constant-label="Max"
+                                                                       show-buttons="header.currentVersion.TaxVersionStatusId == ApplicationConstants.TaxVersionStatus.New || header.common.customStatusId == header.common.customStatusType.ToCorrect || header.common.customStatusId == header.common.customStatusType.ToScheduleChange">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="provincialTaxTypes form-horizontal" style="clear:both;">
+                                            <div class="content-group">
+                                                <div class="content-left">
+                                                    <div class="panel-internal">
+                                                        <div class="form-group">
+                                                            <div class="col-lg-12">
+                                                                <h4>Health Tax</h4>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="control-label col-lg-4 label-to-right">Health Tax Rate (%)</label>
+                                                            <div class="col-lg-8">
+                                                                <div class="input-group">
+                                                                    <input type="text" data-float-between-input="{from:0, to:99.99, decimalplaces:4, doesemptytozero:'false'}"
+                                                                           ng-model="header.currentVersion.TaxTypeHealthCare.EmployeeRatePercentage"
+                                                                           data-required-message="Required"
+                                                                           data-pt-field-view="header.common.ptFieldViewConfigOnChangeStatusId"
+                                                                           data-pt-field-view-custom="{ { header.currentVersion.TaxTypeHealthCare.EmployeeRatePercentage | displayPercentageView:4 } }"
+                                                                           data-ng-required="true"
+                                                                           required="required"
+                                                                           class="form-control"
+                                                                           input-display-decimal-places="4" />
+                                                                    <span class="input-group-addon">%</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="content-right">
+                                                    <div class="panel-internal">
+                                                        <div class="form-group">
+                                                            <div class="col-lg-12">
+                                                                <h4>Parental Insurance Plan</h4>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="control-label col-lg-4 label-to-right">PIP Eligible?</label>
+                                                            <div class="col-lg-8">
+                                                                <pt-input-radio ng-model="header.currentVersion.TaxTypeParentalInsurancePlan.IsEligible" options="[{key:true,value:'Yes'},{key:false,value:'No'}]" template-type="input-radio" data-pt-field-view="header.common.ptFieldViewConfigOnChangeStatusId" />
+                                                            </div>
+                                                        </div>
+                                                        <div ng-if="header.currentVersion.TaxTypeParentalInsurancePlan.IsEligible">
+                                                            <div class="form-group">
+                                                                <label class="control-label col-lg-4 label-to-right">Max Insurable</label>
+                                                                <div class="col-lg-8">
+                                                                    <input type="text" data-float-between-input="{from:0, to:99999999999999999.99, decimalplaces:2, doesemptytozero:'false'}"
+                                                                           ng-model="header.currentVersion.TaxTypeParentalInsurancePlan.MaxInsurable"
+                                                                           data-required-message="Required"
+                                                                           data-pt-field-view="header.common.ptFieldViewConfigOnChangeStatusId"
+                                                                           data-pt-field-view-custom="{ { header.currentVersion.TaxTypeParentalInsurancePlan.MaxInsurable | currency} }"
+                                                                           data-ng-required="true"
+                                                                           required="required"
+                                                                           class="form-control"
+                                                                           input-display-decimal-places="2" />
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="control-label col-lg-4 label-to-right">Employee Rate (%)</label>
+                                                                <div class="col-lg-8">
+                                                                    <div class="input-group">
+                                                                        <input type="text" data-float-between-input="{from:0, to:99.99, decimalplaces:4, doesemptytozero:'false'}"
+                                                                               ng-model="header.currentVersion.TaxTypeParentalInsurancePlan.EmployeeRatePercentage"
+                                                                               data-required-message="Required"
+                                                                               data-pt-field-view="header.common.ptFieldViewConfigOnChangeStatusId"
+                                                                               data-pt-field-view-custom="{ { header.currentVersion.TaxTypeParentalInsurancePlan.EmployeeRatePercentage | displayPercentageView:4 } }"
+                                                                               data-ng-required="true"
+                                                                               required="required"
+                                                                               class="form-control"
+                                                                               input-display-decimal-places="4" />
+                                                                        <span class="input-group-addon">%</span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="control-label col-lg-4 label-to-right">Employer Mult</label>
+                                                                <div class="col-lg-8">
+                                                                    <input type="text" data-float-between-input="{from:0, to:99.99, decimalplaces:2, doesemptytozero:'false'}"
+                                                                           ng-model="header.currentVersion.TaxTypeParentalInsurancePlan.EmployerMultiplerPercentage"
+                                                                           data-required-message="Required"
+                                                                           data-pt-field-view="header.common.ptFieldViewConfigOnChangeStatusId"
+                                                                           data-ng-required="true"
+                                                                           required="required"
+                                                                           class="form-control"
+                                                                           input-display-decimal-places="2" />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="content-group">
+                                                <div class="content-left">
+                                                    <div class="panel-internal">
+                                                        <div class="form-group">
+                                                            <div class="col-lg-12">
+                                                                <h4>CPP</h4>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="control-label col-lg-4 label-to-right">CPP Eligible?</label>
+                                                            <div class="col-lg-8">
+                                                                <pt-input-radio ng-model="header.currentVersion.TaxTypeCanadaPensionPlan.IsEligible" options="[{key:true,value:'Yes'},{key:false,value:'No'}]" template-type="input-radio" data-pt-field-view="header.common.ptFieldViewConfigOnChangeStatusId" />
+                                                            </div>
+                                                        </div>
+                                                        <div ng-if="header.currentVersion.TaxTypeCanadaPensionPlan.IsEligible">
+                                                            <div class="form-group">
+                                                                <label class="control-label col-lg-4 label-to-right">Min Age</label>
+                                                                <div class="col-lg-8">
+                                                                    <input type="text" data-float-between-input="{from:0, to:199, decimalplaces:0, doesemptytozero:'false'}"
+                                                                           ng-model="header.currentVersion.TaxTypeCanadaPensionPlan.MinAge"
+                                                                           data-required-message="Required"
+                                                                           data-pt-field-view="header.common.ptFieldViewConfigOnChangeStatusId"
+                                                                           data-ng-required="true"
+                                                                           class="form-control"
+                                                                           required="required"
+                                                                           input-display-decimal-places="0" />
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="control-label col-lg-4 label-to-right">Max Age</label>
+                                                                <div class="col-lg-8">
+                                                                    <input type="text" data-float-between-input="{from:0, to:199, decimalplaces:0, doesemptytozero:'false'}"
+                                                                           ng-model="header.currentVersion.TaxTypeCanadaPensionPlan.MaxAge"
+                                                                           data-required-message="Required"
+                                                                           data-pt-field-view="header.common.ptFieldViewConfigOnChangeStatusId"
+                                                                           data-ng-required="true"
+                                                                           class="form-control"
+                                                                           required="required"
+                                                                           input-display-decimal-places="0" />
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="control-label col-lg-4 label-to-right">Max Earnings</label>
+                                                                <div class="col-lg-8">
+                                                                    <input type="text" data-float-between-input="{from:0, to:99999999999999999.99, decimalplaces:2, doesemptytozero:'false'}"
+                                                                           ng-model="header.currentVersion.TaxTypeCanadaPensionPlan.MaxEarnings"
+                                                                           data-required-message="Required"
+                                                                           data-pt-field-view="header.common.ptFieldViewConfigOnChangeStatusId"
+                                                                           data-pt-field-view-custom="{ { header.currentVersion.TaxTypeCanadaPensionPlan.MaxEarnings | currency} }"
+                                                                           data-ng-required="true"
+                                                                           required="required"
+                                                                           class="form-control"
+                                                                           input-display-decimal-places="2" />
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="control-label col-lg-4 label-to-right">Annual Exemption</label>
+                                                                <div class="col-lg-8">
+                                                                    <input type="text" data-float-between-input="{from:0, to:99999999999999999.99, decimalplaces:2, doesemptytozero:'false'}"
+                                                                           ng-model="header.currentVersion.TaxTypeCanadaPensionPlan.AnnualExemption"
+                                                                           data-required-message="Required"
+                                                                           data-pt-field-view="header.common.ptFieldViewConfigOnChangeStatusId"
+                                                                           data-pt-field-view-custom="{ { header.currentVersion.TaxTypeCanadaPensionPlan.AnnualExemption | currency} }"
+                                                                           data-ng-required="true"
+                                                                           required="required"
+                                                                           class="form-control"
+                                                                           input-display-decimal-places="2" />
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="control-label col-lg-4 label-to-right">Employee Rate (%)</label>
+                                                                <div class="col-lg-8">
+                                                                    <div class="input-group">
+                                                                        <input type="text" data-float-between-input="{from:0, to:99.99, decimalplaces:4, doesemptytozero:'false'}"
+                                                                               ng-model="header.currentVersion.TaxTypeCanadaPensionPlan.EmployeeRatePercentage"
+                                                                               data-required-message="Required"
+                                                                               data-pt-field-view="header.common.ptFieldViewConfigOnChangeStatusId"
+                                                                               data-pt-field-view-custom="{ { header.currentVersion.TaxTypeCanadaPensionPlan.EmployeeRatePercentage | displayPercentageView:4 } }"
+                                                                               data-ng-required="true"
+                                                                               required="required"
+                                                                               class="form-control"
+                                                                               input-display-decimal-places="4" />
+                                                                        <span class="input-group-addon">%</span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="control-label col-lg-4 label-to-right">Employer Mult</label>
+                                                                <div class="col-lg-8">
+                                                                    <input type="text" data-float-between-input="{from:0, to:99.99, decimalplaces:2, doesemptytozero:'false'}"
+                                                                           ng-model="header.currentVersion.TaxTypeCanadaPensionPlan.EmployerMultiplerPercentage"
+                                                                           data-required-message="Required"
+                                                                           data-pt-field-view="header.common.ptFieldViewConfigOnChangeStatusId"
+                                                                           data-ng-required="true"
+                                                                           required="required"
+                                                                           class="form-control"
+                                                                           input-display-decimal-places="2" />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="content-right">
+                                                    <div class="panel-internal">
+                                                        <div class="form-group">
+                                                            <div class="col-lg-12">
+                                                                <h4>EI</h4>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="control-label col-lg-4 label-to-right">EI Eligible?</label>
+                                                            <div class="col-lg-8">
+                                                                <pt-input-radio ng-model="header.currentVersion.TaxTypeEmploymentInsurance.IsEligible" options="[{key:true,value:'Yes'},{key:false,value:'No'}]" template-type="input-radio" data-pt-field-view="header.common.ptFieldViewConfigOnChangeStatusId" />
+                                                            </div>
+                                                        </div>
+                                                        <div ng-if="header.currentVersion.TaxTypeEmploymentInsurance.IsEligible">
+                                                            <div class="form-group">
+                                                                <label class="control-label col-lg-4 label-to-right">Max Earnings</label>
+                                                                <div class="col-lg-8">
+                                                                    <input type="text" data-float-between-input="{from:0, to:99999999999999999.99, decimalplaces:2, doesemptytozero:'false'}"
+                                                                           ng-model="header.currentVersion.TaxTypeEmploymentInsurance.MaxEarnings"
+                                                                           data-required-message="Required"
+                                                                           data-pt-field-view="header.common.ptFieldViewConfigOnChangeStatusId"
+                                                                           data-pt-field-view-custom="{ { header.currentVersion.TaxTypeEmploymentInsurance.MaxEarnings | currency} }"
+                                                                           data-ng-required="true"
+                                                                           required="required"
+                                                                           class="form-control"
+                                                                           input-display-decimal-places="2" />
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="control-label col-lg-4 label-to-right">Max Insurable</label>
+                                                                <div class="col-lg-8">
+                                                                    <input type="text" data-float-between-input="{from:0, to:99999999999999999.99, decimalplaces:2, doesemptytozero:'false'}"
+                                                                           ng-model="header.currentVersion.TaxTypeEmploymentInsurance.MaxInsurable"
+                                                                           data-required-message="Required"
+                                                                           data-pt-field-view="header.common.ptFieldViewConfigOnChangeStatusId"
+                                                                           data-pt-field-view-custom="{ { header.currentVersion.TaxTypeEmploymentInsurance.MaxInsurable | currency} }"
+                                                                           data-ng-required="true"
+                                                                           required="required"
+                                                                           class="form-control"
+                                                                           input-display-decimal-places="2" />
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="control-label col-lg-4 label-to-right">Employee Rate (%)</label>
+                                                                <div class="col-lg-8">
+                                                                    <div class="input-group">
+                                                                        <input type="text" data-float-between-input="{from:0, to:99.99, decimalplaces:4, doesemptytozero:'false'}"
+                                                                               ng-model="header.currentVersion.TaxTypeEmploymentInsurance.EmployeeRatePercentage"
+                                                                               data-required-message="Required"
+                                                                               data-pt-field-view="header.common.ptFieldViewConfigOnChangeStatusId"
+                                                                               data-pt-field-view-custom="{ { header.currentVersion.TaxTypeEmploymentInsurance.EmployeeRatePercentage | displayPercentageView:4 } }"
+                                                                               data-ng-required="true"
+                                                                               required="required"
+                                                                               class="form-control"
+                                                                               input-display-decimal-places="4" />
+                                                                        <span class="input-group-addon">%</span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="control-label col-lg-4 label-to-right">Employer Mult</label>
+                                                                <div class="col-lg-8">
+                                                                    <input type="text" data-float-between-input="{from:0, to:99.99, decimalplaces:2, doesemptytozero:'false'}"
+                                                                           ng-model="header.currentVersion.TaxTypeEmploymentInsurance.EmployerMultiplerPercentage"
+                                                                           data-required-message="Required"
+                                                                           data-pt-field-view="header.common.ptFieldViewConfigOnChangeStatusId"
+                                                                           data-ng-required="true"
+                                                                           required="required"
+                                                                           class="form-control"
+                                                                           input-display-decimal-places="2" />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="content-group">
+                                                <div class="content-left">
+                                                    <div class="panel-internal">
+                                                        <div class="form-group">
+                                                            <div class="col-lg-12">
+                                                                <h4>QPP</h4>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="control-label col-lg-4 label-to-right">QPP Eligible?</label>
+                                                            <div class="col-lg-8">
+                                                                <pt-input-radio ng-model="header.currentVersion.TaxTypeQuebecPensionPlan.IsEligible" options="[{key:true,value:'Yes'},{key:false,value:'No'}]" template-type="input-radio" data-pt-field-view="header.common.ptFieldViewConfigOnChangeStatusId" />
+                                                            </div>
+                                                        </div>
+                                                        <div ng-if="header.currentVersion.TaxTypeQuebecPensionPlan.IsEligible">
+                                                            <div class="form-group">
+                                                                <label class="control-label col-lg-4 label-to-right">Min Age</label>
+                                                                <div class="col-lg-8">
+                                                                    <input type="text" data-float-between-input="{from:0, to:199, decimalplaces:0, doesemptytozero:'false'}"
+                                                                           ng-model="header.currentVersion.TaxTypeQuebecPensionPlan.MinAge"
+                                                                           data-required-message="Required"
+                                                                           data-pt-field-view="header.common.ptFieldViewConfigOnChangeStatusId"
+                                                                           data-ng-required="true"
+                                                                           class="form-control"
+                                                                           required="required"
+                                                                           input-display-decimal-places="0" />
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="control-label col-lg-4 label-to-right">Max Age</label>
+                                                                <div class="col-lg-8">
+                                                                    <input type="text" data-float-between-input="{from:0, to:199, decimalplaces:0, doesemptytozero:'false'}"
+                                                                           ng-model="header.currentVersion.TaxTypeQuebecPensionPlan.MaxAge"
+                                                                           data-required-message="Required"
+                                                                           data-pt-field-view="header.common.ptFieldViewConfigOnChangeStatusId"
+                                                                           data-ng-required="true"
+                                                                           class="form-control"
+                                                                           required="required"
+                                                                           input-display-decimal-places="0" />
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="control-label col-lg-4 label-to-right">Max Earnings</label>
+                                                                <div class="col-lg-8">
+                                                                    <input type="text" data-float-between-input="{from:0, to:99999999999999999.99, decimalplaces:2, doesemptytozero:'false'}"
+                                                                           ng-model="header.currentVersion.TaxTypeQuebecPensionPlan.MaxEarnings"
+                                                                           data-required-message="Required"
+                                                                           data-pt-field-view="header.common.ptFieldViewConfigOnChangeStatusId"
+                                                                           data-pt-field-view-custom="{ { header.currentVersion.TaxTypeQuebecPensionPlan.MaxEarnings | currency} }"
+                                                                           data-ng-required="true"
+                                                                           required="required"
+                                                                           class="form-control"
+                                                                           input-display-decimal-places="2" />
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="control-label col-lg-4 label-to-right">Annual Exemption</label>
+                                                                <div class="col-lg-8">
+                                                                    <input type="text" data-float-between-input="{from:0, to:99999999999999999.99, decimalplaces:2, doesemptytozero:'false'}"
+                                                                           ng-model="header.currentVersion.TaxTypeQuebecPensionPlan.AnnualExemption"
+                                                                           data-required-message="Required"
+                                                                           data-pt-field-view="header.common.ptFieldViewConfigOnChangeStatusId"
+                                                                           data-pt-field-view-custom="{ { header.currentVersion.TaxTypeQuebecPensionPlan.AnnualExemption | currency} }"
+                                                                           data-ng-required="true"
+                                                                           required="required"
+                                                                           class="form-control"
+                                                                           input-display-decimal-places="2" />
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="control-label col-lg-4 label-to-right">Employee Rate (%)</label>
+                                                                <div class="col-lg-8">
+                                                                    <div class="input-group">
+                                                                        <input type="text" data-float-between-input="{from:0, to:99.99, decimalplaces:4, doesemptytozero:'false'}"
+                                                                               ng-model="header.currentVersion.TaxTypeQuebecPensionPlan.EmployeeRatePercentage"
+                                                                               data-required-message="Required"
+                                                                               data-pt-field-view="header.common.ptFieldViewConfigOnChangeStatusId"
+                                                                               data-pt-field-view-custom="{ { header.currentVersion.TaxTypeQuebecPensionPlan.EmployeeRatePercentage | displayPercentageView:4 } }"
+                                                                               data-ng-required="true"
+                                                                               required="required"
+                                                                               class="form-control"
+                                                                               input-display-decimal-places="4" />
+                                                                        <span class="input-group-addon">%</span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="control-label col-lg-4 label-to-right">Employer Mult</label>
+                                                                <div class="col-lg-8">
+                                                                    <input type="text" data-float-between-input="{from:0, to:99.99, decimalplaces:2, doesemptytozero:'false'}"
+                                                                           ng-model="header.currentVersion.TaxTypeQuebecPensionPlan.EmployerMultiplerPercentage"
+                                                                           data-required-message="Required"
+                                                                           data-pt-field-view="header.common.ptFieldViewConfigOnChangeStatusId"
+                                                                           data-ng-required="true"
+                                                                           required="required"
+                                                                           class="form-control"
+                                                                           input-display-decimal-places="2" />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="content-right">
+                                                    <div class="panel-internal">
+                                                        <div class="form-group">
+                                                            <div class="col-lg-12">
+                                                                <h4>Quebec Training Fee</h4>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="control-label col-lg-4 label-to-right">QTF Eligible?</label>
+                                                            <div class="col-lg-8">
+                                                                <pt-input-radio ng-model="header.currentVersion.TaxTypeQuebecTrainingFee.IsEligible" options="[{key:true,value:'Yes'},{key:false,value:'No'}]" template-type="input-radio" data-pt-field-view="header.common.ptFieldViewConfigOnChangeStatusId" />
+                                                            </div>
+                                                        </div>
+                                                        <div ng-if="header.currentVersion.TaxTypeQuebecTrainingFee.IsEligible">
+                                                            <div class="form-group">
+                                                                <label class="control-label col-lg-4 label-to-right">Rate (%)</label>
+                                                                <div class="col-lg-8">
+                                                                    <div class="input-group">
+                                                                        <input type="text" data-float-between-input="{from:0, to:99.99, decimalplaces:4, doesemptytozero:'false'}"
+                                                                               ng-model="header.currentVersion.TaxTypeQuebecTrainingFee.EmployeeRatePercentage"
+                                                                               data-required-message="Required"
+                                                                               data-pt-field-view="header.common.ptFieldViewConfigOnChangeStatusId"
+                                                                               data-pt-field-view-custom="{ { header.currentVersion.TaxTypeQuebecTrainingFee.EmployeeRatePercentage | displayPercentageView:4 } }"
+                                                                               data-ng-required="true"
+                                                                               required="required"
+                                                                               class="form-control"
+                                                                               input-display-decimal-places="4" />
+                                                                        <span class="input-group-addon">%</span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <div class="col-lg-12 panel panel-internal" data-ng-if="header.currentVersion.TaxVersionStatusId == ApplicationConstants.TaxVersionStatus.Active||header.currentVersion.TaxVersionStatusId == ApplicationConstants.TaxVersionStatus.Replaced">
+                                                <div class="panel-body">
+                                                    <app-phx-workflow-event-history [entity-type-id]="ApplicationConstants.EntityType.ProvincialTaxHeader" [entity-id]="$state.params.provincialTaxHeaderId"></app-phx-workflow-event-history>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="panel-footer" data-ng-if="header.currentVersion.TaxVersionStatusId == ApplicationConstants.TaxVersionStatus.New || header.common.customStatusId == header.common.customStatusType.ToCorrect || header.common.customStatusId == header.common.customStatusType.ToScheduleChange">
+                                            <div class="row">
+                                                <div class="col-lg-6">
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <div class="pull-right">
+                                                        <button type="button" class="btn btn-default" data-ng-click="header.common.workflow.customButtonOnClick(header.currentVersion,header.SubdivisionId, 'NewCancel')" data-ng-if="header.currentVersion.TaxVersionStatusId == ApplicationConstants.TaxVersionStatus.New">Cancel and Discard</button>
+                                                        <button type="button" class="btn btn-default" data-ng-click="header.common.workflow.customButtonOnClick(header.currentVersion,header.SubdivisionId, 'Cancel')" data-ng-if="header.common.customStatusId == header.common.customStatusType.ToCorrect || header.common.customStatusId == header.common.customStatusType.ToScheduleChange">Cancel and Discard</button>
+
+                                                        <button type="button" class="btn btn-primary" data-ng-click="header.common.workflow.customButtonOnClick(header.currentVersion,header.SubdivisionId, 'NewCreate')" data-ng-if="header.currentVersion.TaxVersionStatusId == ApplicationConstants.TaxVersionStatus.New" data-ng-disabled="!formPayrollTax.$valid">Create</button>
+                                                        <button type="button" class="btn btn-primary" data-ng-click="header.common.workflow.customButtonOnClick(header.currentVersion,header.SubdivisionId, 'ToCorrect')" data-ng-if="header.common.customStatusId == header.common.customStatusType.ToCorrect" data-ng-disabled="!formPayrollTax.$valid">Correct</button>
+                                                        <button type="button" class="btn btn-primary" data-ng-click="header.common.workflow.customButtonOnClick(header.currentVersion,header.SubdivisionId, 'ToScheduleChange')" data-ng-if="header.common.customStatusId == header.common.customStatusType.ToScheduleChange" data-ng-disabled="!formPayrollTax.$valid">Schedule Change</button>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-2">
+        <div class="payrolltax-versions">
+            <div class="payrolltax-version-group">
+                <div class="version-version-item"
+                     data-ng-repeat="version in header.ProvincialTaxVersions" data-ng-form=" formrate"
+                     data-ng-click="header.common.onVersionClick(version)"
+                     data-ng-class="(header.currentVersion.TaxVersionStatusId != ApplicationConstants.TaxVersionStatus.New && header.common.customStatusId != header.common.customStatusType.ToCorrect && header.common.customStatusId != header.common.customStatusType.ToScheduleChange && version.Id==header.currentVersion.Id)?'active':''">
+                    <div>
+                        <div><span class="small-text">Effective Date:&nbsp;</span>{{version.EffectiveDate|date:ApplicationConstants.formatDate}}</div>
+                        <span data-ng-class="version.TaxVersionStatusId==ApplicationConstants.TaxVersionStatus.Active?'text-warning':''"><span class="small-text">Status:&nbsp;</span>{{version.TaxVersionStatusId| lookup:header.common.lists.listTaxVersionStatus}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

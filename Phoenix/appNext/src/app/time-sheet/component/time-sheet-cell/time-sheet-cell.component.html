@@ -1,0 +1,30 @@
+<div *ngIf="timeSheet && timeSheetDay && timeSheetDay.Id === null" fxLayout="column" fxLayoutAlign="start stretch" class="time-sheet-cell out-of-range">
+    <div class="time-sheet-cell-counts">
+        <app-time-sheet-cell-date [timeSheetDay]="timeSheetDay"></app-time-sheet-cell-date>
+    </div>
+</div>
+<div *ngIf="timeSheet && timeSheetDay && timeSheetDay.Id !== null" class="flex-container time-sheet-cell" [ngClass]="{ 'has-capsule': !isEmptyTimeSheetDay() }">
+    <div class="time-sheet-cell-counts">
+        <app-time-sheet-cell-date [active]="isSelected" [timeSheetDay]="timeSheetDay"></app-time-sheet-cell-date>
+        <button *ngIf="!isEmptyTimeSheetDay()" class="btn btn-material btn-borderless toggle-capsule pull-right" (click)="showCapsules();$event.stopPropagation();">
+            <i class="material-icons" aria-hidden="true">
+                {{ (isCapsuleVisible || timeSheet.ExpandAllDays) ? 'keyboard_arrow_up' : 'keyboard_arrow_down' }}
+            </i>
+        </button>
+        <div *ngIf="timeSheetDay.Id !== null" class="pull-right primary-counts">
+            <span *ngIf="sumDetailsPrimaryUnits > 0" class="time-sheet-cell-hours">{{ sumDetailsPrimaryUnits | number : '1.2-2' }}</span>
+            <span *ngIf="sumDetailsPrimaryUnits > 0" class="time-sheet-cell-units">{{ timeSheet.PrimaryRateUnitId | CodeValue:commonService.CodeValueGroups.RateUnit:'text' | slice:0:1 }}</span>
+        </div>
+    </div>
+    <div class="flex-container capsule-area" [class.collapsed]="!isCapsuleVisible && !timeSheet.ExpandAllDays" *ngIf="timeSheetDay.Id !== null"
+        [class.holiday]="timeSheetDay.IsHoliday">
+        <div *ngFor="let detail of timeSheetDay.TimeSheetDetails | keyValue">
+            <app-time-sheet-capsule [timeSheet]="timeSheet" [lineManagement]="lineManagement" [timeSheetDay]="timeSheetDay" [timeSheetDetail]="detail.value"
+                [projectManagement]="projectManagement" [spotLightMode]="lineManagement.spotLightMode"></app-time-sheet-capsule>
+        </div>
+        <div *ngIf="timeSheet.IsEditable" dnd-droppable [allowDrop]="allowDropFunction(targetDetail)" (onDropSuccess)="dropSuccess($event.dragData)"
+            fxLayoutAlign="end end" class="manageDay" [ngClass]="{ 'empty' : isEmptyTimeSheetDay() }">
+        </div>
+        <span *ngIf="timeSheetDay.IsHoliday" class="holiday-text">{{ 'timesheet.cell.holidayText' | phxTranslate }}</span>
+    </div>
+</div>

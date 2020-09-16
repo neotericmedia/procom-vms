@@ -1,0 +1,36 @@
+<div class="form-group row">
+  <label class="col-lg-3 control-label label-to-right" data-original-title="" title="">Internal Company:</label>
+  <div class="col-xl-6 col-lg-9">
+    <app-phx-tag-box [dataSource]="internalOrganizations" valueExpr="value" displayExpr="text" showSelectionControls="true" (valueChanged)="onOrganizationIdInternalSelectionChanged($event)"
+      [placeholder]="!internalOrganizations || !internalOrganizations.length ? 'Loading...' : 'Select Internal Company, or leave empty to select all'">
+    </app-phx-tag-box>
+  </div>
+</div>
+
+<div class="form-group row">
+  <label for-property="branchId" for="branchId" data-model-property="branchId" class="col-lg-3 control-label label-to-right"
+    data-original-title="" title="">Branch:</label>
+  <div class="col-xl-6 col-lg-9">
+    <app-phx-tag-box [dataSource]="branches" valueExpr="value" displayExpr="text" showSelectionControls="true" (valueChanged)="onBranchSelectionChanged($event)"
+      [placeholder]="!branches || !branches.length ? 'Loading...' : 'Select Branch, or leave empty to select all'">
+    </app-phx-tag-box>
+  </div>
+</div>
+
+<div class="form-group row">
+  <label class="col-lg-3 control-label label-to-right">Month and Year:</label>
+  <div class="col-lg-6 col-xl-6">
+    <app-phx-date-box [value]="reportDate" displayFormat="monthAndYear" maxZoomLevel="year" minZoomLevel="century" (onValueChanged)="onReportDateChanged($event.value)"></app-phx-date-box>
+  </div>
+  <div class="col-lg-3 col-xl-3 margin-top-md-10">
+    <div class="tn-group pull-right">
+      <button class="btn btn-primary" (click)="getReport()" [disabled]="!(reportDate)">Get Report</button>
+    </div>
+  </div>
+</div>
+
+<div class="commission-branch-summary" *ngIf="dataSourceUrl">
+  <app-phx-data-table #grid [configuration]="dataTableConfiguration" [dataSourceUrl]="dataSourceUrl" [dataSourceParams]="odataParams"
+    [columns]="columns" [exportFileName]="'Branch Summary ' + reportYear + '_' + reportMonth" [componentName]="'CommissionBranchSummary'">
+  </app-phx-data-table>
+</div>

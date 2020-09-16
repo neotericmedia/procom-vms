@@ -1,0 +1,25 @@
+<div class="panel" >
+  <div class="panel-heading headstone">
+    <div class="row">
+      <div class="col-lg-1 col-md-1" title="{{subscription.Id }}">
+        <label class="control-label col-xs-12 ">ID</label>
+        <span class="col-xs-12">{{subscription.SourceId || subscription.Id }}</span>
+      </div>
+      <div class="col-lg-5 col-md-5" title="{{subscription.UserProfileIdSubscriber ? subscription.UserProfileSubscriber : '-'}}">
+        <label class="control-label col-xs-12 ">Subscriber</label>
+        <span class=" col-xs-12 ">{{subscription.UserProfileIdSubscriber ? subscription.UserProfileSubscriber : '-'}}</span>
+      </div>
+      <div class="col-lg-4 col-md-4" title="{{subscription.AccessSubscriptionTypeId ? (subscription.AccessSubscriptionTypeId | lookup: html.codeValueLists.subscriptionTypes:'id':'text') : '-'}}">
+        <label class="control-label col-xs-12 ">Subscription Type</label>
+        <span class=" col-xs-12 ">{{subscription.AccessSubscriptionTypeId ? (subscription.AccessSubscriptionTypeId | lookup: html.codeValueLists.subscriptionTypes:'id':'text')
+          : '-'}}</span>
+      </div>
+      <div class="col-lg-2 col-md-2" title="{{subscription.AccessSubscriptionStatusId |lookup: html.codeValueLists.subStatuses:'id':'text'}}">
+        <label class="control-label col-xs-12 ">Status</label>
+        <div class="col-xs-12 ">
+          <span>{{subscription.AccessSubscriptionStatusId | lookup: html.codeValueLists.subStatuses:'id':'text'}}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,148 @@
+<form [formGroup]="inputFormGroup" *ngIf="inputFormGroup">
+  <div class="content-group form-horizontal" style="height:100%;">
+    <fieldset *ngIf="!workOrderCreateInProgress">
+      <div class="row">
+        <div class="col-lg-8">
+          <div class="panel-internal" *ngIf="sourceId >0">
+            <div class="content-group form-horizontal">
+              <div class="form-group">
+                <div class="col-lg-10">
+                  <h4>Application Transaction System Result</h4>
+                </div>
+                <div class="form-group col-lg-12">
+                  <label class="col-lg-4 control-label label-to-right" data-original-title="" title="">Source</label>
+                  <div class="col-lg-6">
+                    <label class="control-label">{{sourceId | CodeValue:codeValueGroups.AtsSource}}</label>
+                  </div>
+                </div>
+                <div class="form-group col-lg-12" *ngIf="inputFormGroup.controls.AtsPlacementId.value>0">
+                  <label class="col-lg-4 control-label label-to-right" data-original-title="" title="">Placement ID</label>
+                  <div class="col-lg-6">
+                    <label class="control-label">{{inputFormGroup.controls.AtsPlacementId.value}}</label>
+                  </div>
+                </div>
+                <div class="form-group col-lg-12" *ngIf="inputFormGroup.controls.AtsPlacementId.value==0 && placementId>0">
+                  <label class="col-lg-4 control-label label-to-right" data-original-title="" title="">Placement ID</label>
+                  <div class="col-lg-6">
+                    <label class="control-label alert-danger">No ATS result on requested id: {{placementId}}</label>
+                  </div>
+                </div>
+
+                <div class="form-group col-lg-12" *ngIf="inputFormGroup.controls.AtsPlacementId.value>0">
+                  <label class="col-lg-4 control-label label-to-right" data-original-title="" title="">Start Date</label>
+                  <div class="col-lg-6">
+                    <label class="control-label">{{inputFormGroup.controls.StartDate.value}}</label>
+                  </div>
+                </div>
+
+                <div class="form-group col-lg-12" *ngIf="inputFormGroup.controls.AtsPlacementId.value>0">
+                  <label class="col-lg-4 control-label label-to-right" data-original-title="" title="">End Date</label>
+                  <div class="col-lg-6">
+                    <label class="control-label">{{inputFormGroup.controls.EndDate.value}}</label>
+                  </div>
+                </div>
+                <div formArrayName="BillingRates">
+                  <div class="form-group col-lg-12" *ngFor="let rate of inputFormGroup.controls['BillingRates'].controls; let idx = index">
+                    <div [formGroup]="rate">
+                      <label class="col-lg-4 control-label label-to-right" data-original-title=""
+                        title="">{{rate.controls.RateTypeId.value | CodeValue:codeValueGroups.RateType}} Billing Rate</label>
+                      <div class="col-lg-6">
+                        <label class="control-label">$ {{rate.controls.Rate.value | number : '1.2-2'}} {{inputFormGroup.controls.BillingRateUnitId.value
+                          | CodeValue:codeValueGroups.RateUnit}}
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div formArrayName="PaymentRates">
+                  <div class="form-group col-lg-12" *ngFor="let rate of inputFormGroup.controls['PaymentRates'].controls; let idx = index">
+                    <div [formGroup]="rate">
+                      <label class="col-lg-4 control-label label-to-right" data-original-title="" title="">
+                        {{rate.controls.RateTypeId.value | CodeValue:codeValueGroups.RateType}} Payment Rate</label>
+                      <div class="col-lg-6">
+                        <label class="control-label">$ {{rate.controls.Rate.value | number : '1.2-2'}} {{inputFormGroup.controls.PaymentRateUnitId.value
+                          | CodeValue:codeValueGroups.RateUnit}}</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group col-lg-12" *ngIf="inputFormGroup.controls.AtsOrganizationIdClient.value>0">
+                  <label class="col-lg-4 control-label label-to-right" data-original-title="" title="">Client Company</label>
+                  <div class="col-lg-6">
+                    <label class="control-label">{{inputFormGroup.controls.AtsOrganizationIdClient.value}} - {{inputFormGroup.controls.AtsOrganizationClientDisplayName.value}}</label>
+                  </div>
+                </div>
+                <div class="form-group col-lg-12" *ngIf="inputFormGroup.controls.AtsUserProfileIdWorker.value>0">
+                  <label class="col-lg-4 control-label label-to-right" data-original-title="" title="">User Profile Worker</label>
+                  <div class="col-lg-6">
+                    <label class="control-label">{{inputFormGroup.controls.AtsUserProfileIdWorker.value}} - {{inputFormGroup.controls.AtsUserProfileWorkerName.value}}</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-lg-4 control-label label-to-right" title="">Line Of Business</label>
+            <div class="col-lg-6">
+              <label class="control-label">{{lineofBusinessId | CodeValue:codeValueGroups.LineOfBusiness}}</label>
+            </div>
+          </div>
+          <div class="form-group" *ngIf="!inputFormGroup.controls.MappedOrganizationIdClient.value">
+            <phx-form-control [control]="inputFormGroup.controls.SuggestedOrganizationIdClient" labelText="Work Order Client Company"
+              [editable]="true">
+              <app-phx-select-box [items]="listOrganizationClient" textField="DisplayValue" valueField="Id" placeholder="-- select one --"
+                formControlName="SuggestedOrganizationIdClient">
+              </app-phx-select-box>
+            </phx-form-control>
+          </div>
+          <div class="form-group" *ngIf="inputFormGroup.controls.MappedOrganizationIdClient.value>0">
+            <label class="col-lg-4 control-label" data-original-title="" title="">Mapped Client Company</label>
+            <div class="col-lg-8">
+              {{inputFormGroup.controls.MappedOrganizationIdClient.value}} -
+              {{inputFormGroup.controls.MappedOrganizationIdClient.value|lookupNoCache:listOrganizationClient:'Id':'DisplayName'}}
+            </div>
+          </div>
+          <div class="form-group">
+            <phx-form-control [control]="inputFormGroup.controls.TemplateId" labelText="Work Order Template" [editable]="true">
+              <app-phx-select-box [items]="listFilteredWorkOrderTemplates" textField="DisplayValue" valueField="Id" placeholder="-- select one --"
+                formControlName="TemplateId">
+              </app-phx-select-box>
+            </phx-form-control>
+          </div>
+          <div class="form-group" *ngIf="!inputFormGroup.controls.MappedUserProfileIdWorker.value">
+            <phx-form-control [control]="inputFormGroup.controls.SuggestedUserProfileIdWorker" labelText="Work Order User Profile Worker"
+              [editable]="true">
+              <app-phx-select-box [items]="listUserProfileWorker" textField="DisplayValue" valueField="Id" placeholder="-- select one --"
+                formControlName="SuggestedUserProfileIdWorker">
+              </app-phx-select-box>
+            </phx-form-control>
+          </div>
+          <div class="form-group" *ngIf="inputFormGroup.controls.MappedUserProfileIdWorker.value>0">
+            <phx-form-control [control]="inputFormGroup.controls.MappedUserProfileIdWorker" labelText="Mapped User Profile Worker" [editable]="false"
+              viewModeText="{{inputFormGroup.controls.MappedUserProfileIdWorker.value}} -
+              {{inputFormGroup.controls.MappedUserProfileIdWorker.value | lookupNoCache:listUserProfileWorker:'Id':'Contact.FullName'">
+            </phx-form-control>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="panel-body" data-pt-validation-messages="ValidationMessages"></div>
+          </div>
+        </div>
+      </div>
+    </fieldset>
+    <div class="col-lg-4">
+    </div>
+  </div>
+  <div class="col-lg-12" *ngIf="!workOrderCreateInProgress">
+    <div class="row panel-footer">
+      <div class="col-lg-6"></div>
+      <div class="col-lg-6">
+        <div class="pull-right">
+          <button type="button" class="btn btn-primary" (click)="workOrderCreate()" [disabled]="!inputFormGroup.valid">Next</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+<app-phx-dialog [config]="phxDialogComponentConfigModel"></app-phx-dialog>

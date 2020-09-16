@@ -1,0 +1,43 @@
+<div class="app-accordion-container app-accordion-container-28" cg-busy="loadItemsPromise">
+    <ft-accordion>
+        <ft-accordion-group class="app-accordion-level-one" ng-repeat="company in companies" template="/Phoenix/app/directive/collapsibleHeadingGroup.html" is-open="company.open">
+            <ft-accordion-heading>
+                <div class="app-accordion-level-one-item">
+                    <i class="app-accordion-chevron" data-ng-class="{'icon-chevron-up': company.open, 'icon-chevron-down': !company.open}"></i>
+                    <span>{{company.companyLegalName}} - {{company.organizationIdInternal}}</span>
+                </div>
+            </ft-accordion-heading>
+            <ft-accordion>
+                <ft-accordion-group class="app-accordion-level-two" ng-repeat="currency in company.currencies" is-open="currency.open">
+                    <ft-accordion-heading>
+                        <div class="app-accordion-level-two-item">
+                            <span>{{currency.currencyCode | lookup:lists.currencyList:'id':'code'}}</span>
+                            <span class="badge badge-warning app-badge">{{currency.count}}</span>
+                            <i class="app-accordion-chevron" ng-class="{'icon-chevron-up': currency.open, 'icon-chevron-down': !currency.open}"></i>
+                        </div>
+                    </ft-accordion-heading>
+                    <div class="app-accordion-level-three">
+                        <ft-columns>
+                            <ft-column ng-repeat="releaseType in currency.releaseTypes">
+                                <div class="app-accordion-column">
+                                    <ft-row>
+                                        <div class="app-accordion-level-three-item" ng-class="{ 'app-no-link': releaseType.count == 0}"                                             
+                                            ui-sref="ngtwo.m({ 'p': 'payment/paymenttransactiongarnishee/release/internalorganization/' + company.organizationIdInternal + '/currency/' + currency.currencyId + '/readytorelease/' + releaseType.IsReadyToRelease })">
+                                            <div class="divRelease navWithLink">
+                                                <span>{{releaseType.releaseTypeName}}</span>
+                                                <span class="badge badge-warning app-badge" ng-if="releaseType.count > 0">{{releaseType.count}}</span>
+                                            </div>
+                                        </div>
+                                    </ft-row>
+                                </div>
+                            </ft-column>
+                        </ft-columns>
+                    </div>
+                </ft-accordion-group>
+            </ft-accordion>
+        </ft-accordion-group>
+    </ft-accordion>
+    <p class="app-no-items" ng-if="companies.length == 0">
+        There are no Pending Garnishee Payments.
+    </p>
+</div>

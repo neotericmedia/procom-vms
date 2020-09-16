@@ -1,0 +1,79 @@
+﻿<div class="contacts">
+    <div class="content-group form-horizontal">
+        <div class="content-full">
+            <div class="panel-internal">
+                <div class="form-group">
+                    <div class="form-group" data-ng-if="scopeOrg.actionScope.show.addProfile">
+                        <div class="col-lg-10">
+                        </div>
+                        <div class="col-lg-2 right">
+                            <button type="button" class="btn btn-clouds" data-ng-click="scopeOrg.actionScope.event.addProfile()">Add Profile</button>
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-12">
+                        <div class="row" data-cg-busy="loadItemsPromise">
+                            <table class="table table-striped table-content table-hover" data-st-fixed-header="" data-st-table="items" data-st-pagination-scroll="pageSize" data-st-pipe="callServer" data-st-column-widths="[25, 20, 35, 20]">
+                                <thead>
+                                    <tr>
+                                        <th data-st-sort="Contact/FullName" data-st-sort-default="">Name</th>
+                                        <th data-st-sort="ProfileTypeId">Profile</th>
+                                        <th data-st-sort="PrimaryEmail">Profile Primary Email</th>
+                                        <th data-st-sort="ProfileStatusId">Status</th>
+                                    </tr>
+                                    <tr>
+                                        <th>
+                                            <input data-st-advanced-search="'Contact/FullName'" placeholder="" class="input-sm form-control" type="search" />
+                                        </th>
+                                        <th>
+                                            <select data-st-advanced-search="{property: 'ProfileTypeId', ignoreQuotes: true}" class="input-sm form-control">
+                                                <option value="1">Organizational</option>
+                                                <option value="2">Internal</option>
+                                                <option value="3">Temp</option>
+                                                <option value="4">Canadian SP</option>
+                                                <!--<option value="5">Canadian Inc</option>-->
+                                                <!--<option value="6">Sub Vendor</option>-->
+                                                <!--<option value="7">W2 Worker</option>-->
+                                                <option value="8">LLC Worker</option>
+                                                <option value="99">System</option>
+                                            </select>
+                                        </th>
+                                        <th>
+                                            <input data-st-advanced-search="'PrimaryEmail'" placeholder="" class="input-sm form-control" type="search" />
+                                        </th>
+                                        <th>
+                                            <select data-st-advanced-search="{property: 'ProfileStatusId', ignoreQuotes: true}" class="input-sm form-control numberType">
+                                                <option value="1">Active</option>
+                                                <!--<option value="2">InActive</option>
+                                                <option value="3">Suspended</option>-->
+                                                <option value="4">Draft</option>
+                                                <!--<option value="5">New</option>-->
+                                                <option value="6">Pending Review</option>
+                                                <option value="7">Pending Change</option>
+                                                <!--<option value="8">Discard</option>-->
+                                            </select>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr data-ng-repeat="item in items" data-ng-click="rowClick(item)">
+                                        <td>{{item.Contact.FullName}}</td>
+                                        <td>{{item.ProfileTypeId | lookup:lists.profileTypeList}}</td>
+                                        <td>{{item.PrimaryEmail}}</td>
+                                        <td><span data-ng-class="item.IsDraft?'text-warning':''">{{item.ProfileStatusId | lookup:lists.profileStatusesList}}</span></td>
+                                    </tr>
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="4">
+                                            <span>Total Count: {{totalItemCount || 0}}; Items Loaded: {{ items ? items.length : 0}}</span>
+                                        </td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,21 @@
+<div class="panel panel-default" *ngIf="card" [ngClass]="{'selected' : card?.selected}">
+  <div class="panel-body">
+    <app-activity-centre-card-header [showProfilePicture]="showProfilePicture" [cardInfo]="card"></app-activity-centre-card-header>
+    <div (tap)="navigate($event)" (press)="onPress($event)" class="panel-content long-content">
+      <dl>
+        <dd>{{'activityCentre2.card.CreationDateLabel' | phxTranslate}}</dd>
+        <dt>Jun 30, 2017</dt>
+        <br />
+        <div class="line-figure">
+          <div class="pull-left">
+            <dd>{{'activityCentre2.card.ClientLabel' | phxTranslate}}</dd>
+            <dt>Acme Corporation</dt>
+          </div>
+          <dt class="big-figure">$1,260.00 <small>USD</small></dt>
+        </div>
+      </dl>
+    </div>
+    <app-activity-centre-card-footer [cardInfo]="card" [entityTypeStatus]="codeValueGroups.OrganizationStatus"></app-activity-centre-card-footer>
+  </div>
+</div>
+<app-activity-centre-card-loading *ngIf="!card"></app-activity-centre-card-loading>

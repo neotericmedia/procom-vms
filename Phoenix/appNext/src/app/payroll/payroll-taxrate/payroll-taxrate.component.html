@@ -1,0 +1,75 @@
+<div class="row" *ngIf="formGroups.controls" [formGroup]="formTaxRate">
+  <div class="col-lg-12" style="border-bottom: 1px solid #ffffff;">
+    <div class="col-lg-1 col-md-1 col-xs-1"></div>
+    <div class="col-lg-2 col-md-2 col-xs-2">
+      <label>Income From</label>
+    </div>
+    <div class="col-lg-3 col-md-3 col-xs-3">
+      <label>Income To</label>
+    </div>
+    <div class="col-lg-3 col-md-3 col-xs-3">
+      <label>Rate (%)</label>
+    </div>
+    <div class="col-lg-2 col-md-2 col-xs-2" *ngIf="displayConstant">
+      <label>Constant</label>
+    </div>
+    <div class="col-lg-1 col-md-1 col-xs-1"></div>
+  </div>
+  <div [formArrayName]="groupName">
+    <div *ngFor="let rate of formGroups.controls; let i = index; let last = last;">
+      <div [formGroupName]="i">
+        <div class="col-lg-12" style="padding-top: 5px; padding-bottom: 5px; border-bottom: 1px solid #ddd;">
+          <div class="col-lg-1 col-md-1 col-xs-1"></div>
+          <div class="col-lg-2 col-md-2 col-xs-2">
+            <phx-form-control [editable]="false" viewModeText="{{rate.controls.IncomeFrom?.value | phxDisplayCurrency}}" [layoutType]="4">
+            </phx-form-control>
+          </div>
+          <div class="col-lg-3 col-md-3 col-xs-3" *ngIf="!last">
+            <div calss="input-group payroll-taxes-gray-box-fields">
+              <phx-form-control [showValidationMessages]="false" name="IncomeTo" [control]="rate.controls.IncomeTo"
+                [editable]="editable" viewModeText="{{rate.controls.IncomeTo.value | phxDisplayCurrency }}" [layoutType]="4">
+                <input type="text" [inputTextLimitWithDecimals]="numberFilter" name="IncomeTo" class="form-control"
+                  formControlName="IncomeTo" (focusout)="onIncomeToChange(i, $event)" (keyup)="onIncomeToChange(i, $event)"
+                  (ngModelChange)="calculateIncomeFrom(i, $event)" />
+              </phx-form-control>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-3 col-xs-3" *ngIf="last">
+            <div calss="input-group payroll-taxes-gray-box-fields">
+              <phx-form-control [editable]="false" viewModeText="and over" [layoutType]="4">
+              </phx-form-control>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-3 col-xs-3">
+            <phx-form-control [showValidationMessages]="false" [editable]="editable" [control]="rate.controls.RatePercentage"
+              [layoutType]="4" viewModeText="{{ rate.controls.RatePercentage.value | phxPercentWithDecimals}}">
+              <div class="input-group">
+                <input type="text" name="RatePercentage" class="form-control" formControlName="RatePercentage"
+                  [inputTextLimitWithDecimals]="percentageFilter" (keyup)="onIncomeToChange(i, $event)" />
+                <span class="input-group-addon">%</span>
+              </div>
+            </phx-form-control>
+          </div>
+          <div class="col-lg-2 col-md-2 col-xs-2" *ngIf="displayConstant">
+            <phx-form-control [showValidationMessages]="false" [editable]="editable" [control]="rate.controls.Constant"
+              viewModeText="{{ rate.controls.Constant.value | phxDisplayCurrency}}" [layoutType]="4">
+              <input type="text" name="Constant" class="form-control" formControlName="Constant"
+                [inputTextLimitWithDecimals]="numberFilter" (keyup)="onIncomeToChange(i, $event)" />
+            </phx-form-control>
+          </div>
+          <div class="col-lg-1 col-md-1 col-xs-1" style="height: 20px;">
+            <button class="btn btn-material btn-default pull-right" (click)="removeRate(i)" *ngIf="!last && showButtons">
+              <i class="material-icons">delete</i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row" *ngIf="showButtons">
+  <button class="btn btn-material btn-default pull-right panel-alignment-bottom-right-button" style="margin-right: 15px"
+    (click)="addRate()">
+    <i class="material-icons">add</i>
+  </button>
+</div>

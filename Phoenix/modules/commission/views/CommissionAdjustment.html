@@ -1,0 +1,95 @@
+﻿<div class="row commission-adjustment">
+    <div class="btn-group btn-adj-search-nav">
+        <div class="adj-btn-wrapper">
+            <button type="button" class="btn btn-clouds dropdown-toggle" data-toggle="dropdown">
+                <span class="adj-btn-name">Actions</span> <span class="caret ml adj-btn-caret"></span>
+            </button>
+            <ul class="dropdown-menu bordered">
+                <li><a data-ui-sref="commission.adjustmentedit({ commissionId:0 })">Create New Adjustment</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="smart-table-wrapper">
+        <div class="row" data-cg-busy="loadItemsPromise">
+                <table class="table table-striped table-content table-hover" data-st-table="adj.items" data-st-pagination-scroll="adj.pageSize" data-st-pipe="adj.callServer" data-st-fixed-header="" data-st-column-widths="[5, 12, 20, 20, 12, 12, 12, 7]">
+                    <thead>
+                        <tr>
+                            <th data-st-sort="Id" data-st-sort-default="reverse">ID</th>
+                            <th data-st-sort="AdjustmentDate">Date</th>
+                            <th data-st-sort="Description">Description</th>
+                            <th data-st-sort="ClientCompany">Client</th>
+                            <th class="text-right" data-st-sort="AdjustmentAmountNet">Amount</th>
+                            <th data-st-sort="CommissionAdjustmentHeaderTypeId">Type</th>
+                            <th data-st-sort="CommissionAdjustmentHeaderStatusId">Status</th>
+                            <th>Action</th>
+                        </tr>
+                        <tr>
+                            <th>
+                                <input data-st-advanced-search="{property: 'Id', ignoreQuotes: true}" placeholder="" class="input-sm form-control numberType" data-safe-restrict-input="[^0123456789]" />
+                            </th>
+                            <th>
+                                <input data-st-advanced-search="'AdjustmentDate'"
+                                       data-st-as-operator-override="'ge'"
+                                       close-on-date-selection="false" show-button-bar="false" show-weeks="false" class="input-sm form-control"
+                                       data-st-as-lazy-attributes="{'uib-datepicker' : ApplicationConstants.formatDate}"
+                                       data-st-as-height-override="400"
+                                       data-st-as-width-override="315" />
+                            </th>
+                            <th>
+                                <input data-st-advanced-search="'Description'" placeholder=""
+                                       class="input-sm form-control" />
+                            </th>
+                            <th>
+                                <input data-st-advanced-search="'ClientCompany'" placeholder=""
+                                       class="input-sm form-control" />
+                            </th>
+                            <th>
+                                <input data-st-advanced-search="{property: 'AdjustmentAmountNet', ignoreQuotes: true, valueSuffix: 'M'}" placeholder=""
+                                       class="input-sm form-control numberType" data-safe-restrict-input="[^0123456789.]" />
+                            </th>
+                            <th>
+                                <select data-st-advanced-search="{property: 'CommissionAdjustmentHeaderTypeId', ignoreQuotes: true}" class="input-sm form-control">
+                                    <option value="1">Manual</option>
+                                    <option value="2">Background Check</option>
+                                    <option value="3">Vms Discount</option>
+                                    <option value="4">Interest</option>
+                                </select>
+                            </th>
+                            <th>
+                                <select data-st-advanced-search="{property: 'CommissionAdjustmentHeaderStatusId', ignoreQuotes: true}" class="input-sm form-control">
+                                    <option value="2">Active</option>
+                                    <option value="3">InActive</option>
+                                </select>
+                            </th>
+                            <th>
+
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="sales-patt-table-body">
+                        <tr data-ng-repeat="item in adj.items" data-ui-sref-tr="commission.adjustmentedit({ commissionId: item.Id })" style="cursor:pointer">
+                            <td class="adj-item" title="{{item.Id}}"><span class="adj-item-in">{{item.Id}}</span></td>
+                            <td class="adj-item" title="{{item.AdjustmentDate | date: ApplicationConstants.formatDateComma}}"><span class="adj-item-in">{{item.AdjustmentDate| date: ApplicationConstants.formatDateComma}}</span></td>
+                            <td class="adj-item adj-item-desc" title="{{item.Description}}"><span class="adj-item-in-1">{{item.Description}}</span></td>
+                            <td class="adj-item" title="{{item.ClientCompany}}"><span class="adj-item-in-2">{{item.ClientCompany}}</span></td>
+                            <td class="adj-item text-right" title="{{item.AdjustmentAmountNet | currency: ' $'}}"><span class="adj-item-in-3">{{item.AdjustmentAmountNet | currency: '$ '}}</span></td>
+                            <td class="adj-item" title="{{item.CommissionAdjustmentHeaderTypeId| lookup:adj.commissionAdjustmentHeaderTypes}}"><span class="adj-item-in-2">{{item.CommissionAdjustmentHeaderTypeId| lookup:adj.commissionAdjustmentHeaderTypes}}</span></td>
+                            <td class="adj-item" title="{{item.CommissionAdjustmentHeaderStatusId| lookup:adj.commissionAdjustmentHeaderStatuses}}"><span class="adj-item-in-2" data-ng-class="{ 'text-warning' : item.CommissionAdjustmentHeaderStatusId==ApplicationConstants.CommissionAdjustmentHeaderStatus.Active, 'text-red' : item.CommissionRecurrency && item.CommissionAdjustmentHeaderStatusId==ApplicationConstants.CommissionAdjustmentHeaderStatus.InActive, 'text-green' : item.CommissionRecurrency && item.CommissionAdjustmentHeaderStatusId==ApplicationConstants.CommissionAdjustmentHeaderStatus.Active }">{{item.CommissionAdjustmentHeaderStatusId| lookup:adj.commissionAdjustmentHeaderStatuses}}</span></td>
+                            <td class="adj-item">                                
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-xs btn-clouds btn-row-action btn-adj-view" data-action="view" title="View"><i class="fontello-icon-eye-1"></i></button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="9">
+                                <span class="adjTotal">Total Count: {{adj.totalItemCount || 0}}; Items Loaded: {{ adj.items ? adj.items.length : 0}}</span>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+        </div>
+    </div>
+</div>

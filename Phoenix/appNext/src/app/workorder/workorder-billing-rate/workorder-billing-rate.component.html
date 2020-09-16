@@ -1,0 +1,53 @@
+<form [formGroup]="inputFormGroup">
+  <div role="form">
+    <div *ngIf="rateIndex==0">
+      <div>
+        <phx-form-control [control]="inputFormGroup.controls.Rate" labelText="Primary Rate" [editable]="readOnlyStorage.IsEditable && checkPtFiledAccessibility('WorkOrderVersion.BillingInfoes.BillingRate','Rate', inputFormGroup.value)"
+          viewModeText="{{inputFormGroup.controls.Rate.value | currency:''}}">
+          <div class="col-xl-12 input-group payroll-taxes-gray-box-fields">
+            <input [formControl]="inputFormGroup.controls.Rate" type="text" class="form-control" phxFloatBetweenInput='{"from":0, "to":999999.99, "decimalplaces":2}'
+              (blur)="floatApplyTwoDecimalPlaces(inputFormGroup.controls.Rate.value)" />
+            <span class="input-group-addon">$</span>
+          </div>
+        </phx-form-control>
+      </div>
+    </div>
+    <div *ngIf="rateIndex>0">
+      <div>
+        <div *ngIf="!inputFormGroup.controls.RateTypeId.value || inputFormGroup.controls.RateTypeId.value==0">
+            <phx-form-control [control]="inputFormGroup.controls.RateTypeId" labelText="Rate Type" [editable]="readOnlyStorage.IsEditable"
+              viewModeText="{{inputFormGroup.controls.RateTypeId.value | CodeValue:codeValueGroups.RateType }}">
+              <app-phx-select-box [formControl]="inputFormGroup.controls.RateTypeId"
+                [items]="html.codeValueLists.listworkOrderRateTypes | filterSelectChoicesByUsage: selectedRateType.value: inputFormGroup.value: 'RateTypeId': 'id': 'text'"
+                textField="text" valueField="id" (valueChanged)="onRateTypeValueChanged($event)">
+              </app-phx-select-box>
+            </phx-form-control>
+        </div>
+        <div *ngIf="inputFormGroup.controls.RateTypeId.value>0">
+          <phx-form-control [control]="inputFormGroup.controls.Rate" [editable]="readOnlyStorage.IsEditable && checkPtFiledAccessibility('WorkOrderVersion.BillingInfoes.BillingRate','Rate')"
+            labelText="{{inputFormGroup.controls.RateTypeId.value | lookup:html.codeValueLists.listworkOrderRateTypes }}" viewModeText="{{inputFormGroup.controls.Rate.value | currency:''}}">
+            <div class="col-lg-10 padding-0">
+              <input [formControl]="inputFormGroup.controls.Rate" type="text" class="form-control" phxFloatBetweenInput='{"from":0, "to":999999.99, "decimalplaces":2}'
+                (blur)="floatApplyTwoDecimalPlaces(inputFormGroup.controls.Rate.value)" style="text-align: right;" />
+            </div>
+            <div class="col-xs-1 pull-right padding-0">
+              <button type="button" class="btn btn-default btn-material pull-right" (click)="onRemoveBillingPartyRate()">
+                <i class="material-icons">delete</i>
+              </button>
+            </div>
+          </phx-form-control>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="inputFormGroup.controls.RateTypeId.value>0">
+      <div>
+          <phx-form-control [control]="inputFormGroup.controls.RateUnitId" labelText="Rate Unit" [editable]="readOnlyStorage.IsEditable && checkPtFiledAccessibility('WorkOrderVersion.BillingInfoes.BillingRate','RateUnit', inputFormGroup.value)"
+          viewModeText="{{inputFormGroup.controls.RateUnitId.value | CodeValue:codeValueGroups.RateUnit }}">
+            <app-phx-select-box [formControl]="inputFormGroup.controls.RateUnitId" [items]="html.codeValueLists.listWorkOrderRateUnits"
+              textField="text" valueField="id">
+            </app-phx-select-box>
+          </phx-form-control>
+      </div>
+    </div>
+  </div>
+</form>

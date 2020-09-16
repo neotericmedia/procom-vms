@@ -1,0 +1,105 @@
+<form [formGroup]="inputFormGroup">
+  <div role="form">
+    <div *ngIf="rateIndex==0">
+      <div class="form-group">
+        <phx-form-control [control]="inputFormGroup.controls.Rate" labelText="Primary Rate" [editable]="readOnlyStorage.IsEditable && checkPtFiledAccessibility('WorkOrderVersion.PaymentInfoes.PaymentRates','Rate', inputFormGroup.value)"
+          viewModeText="{{inputFormGroup.controls.Rate.value | currency:''}}">
+          <div class="col-lg-12 input-group payroll-taxes-gray-box-fields">
+            <input [formControl]="inputFormGroup.controls.Rate" type="text" class="form-control" phxFloatBetweenInput='{"from":0, "to":999999.99, "decimalplaces":2}'
+              (blur)="floatApplyTwoDecimalPlaces(inputFormGroup.controls.Rate.value)" />
+            <span class="input-group-addon">$</span>
+          </div>
+        </phx-form-control>
+      </div>
+    </div>
+    <div *ngIf="rateIndex>0">
+      <div>
+        <phx-form-control [control]="inputFormGroup.controls.Rate" [editable]="readOnlyStorage.IsEditable && checkPtFiledAccessibility('WorkOrderVersion.PaymentInfoes.PaymentRates','Rate', inputFormGroup.value)"
+          labelText="{{inputFormGroup.controls.RateTypeId.value | lookup:html.codeValueLists.listworkOrderRateTypes}}" viewModeText="{{inputFormGroup.controls.Rate.value | currency:''}}">
+          <input [formControl]="inputFormGroup.controls.Rate" type="text" class="form-control" phxFloatBetweenInput='{"from":0, "to":999999.99, "decimalplaces":2}'
+            style="text-align: right;" />
+        </phx-form-control>
+      </div>
+    </div>
+    <div *ngIf="inputFormGroup.controls.RateTypeId.value>0">
+      <div>
+        <div *ngIf="paymentInfoIndex==0">
+          <phx-form-control [control]="inputFormGroup.controls.RateUnitId" labelText="Rate Unit" [editable]="readOnlyStorage.IsEditable && checkPtFiledAccessibility('WorkOrderVersion.PaymentInfoes.PaymentRates','RateUnitId', inputFormGroup.value)"
+            viewModeText="{{inputFormGroup.controls.RateUnitId.value | CodeValue:codeValueGroups.RateUnit }}">
+            <app-phx-select-box [formControl]="inputFormGroup.controls.RateUnitId" [items]="html.codeValueLists.listWorkOrderRateUnits"
+              textField="text" valueField="id">
+            </app-phx-select-box>
+          </phx-form-control>
+        </div>
+        <div *ngIf="paymentInfoIndex>0">
+          <phx-form-control [control]="inputFormGroup.controls.RateUnitId" labelText="Rate Unit" [editable]="readOnlyStorage.IsEditable"
+            viewModeText="{{inputFormGroup.controls.RateUnitId.value | CodeValue:codeValueGroups.RateUnit }}">
+            <p class="form-control-static">{{inputFormGroup.controls.RateUnitId.value | lookup: html.codeValueLists.listWorkOrderRateUnits}}&nbsp;
+            </p>
+          </phx-form-control>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="workerProfileTypeId === phxConstants.UserProfileType.WorkerTemp || workerProfileTypeId === phxConstants.UserProfileType.WorkerCanadianSp">
+    <div class="form-group">
+      <div class="col-lg-4"></div>
+      <div class="col-lg-8">
+        <div class="pull-left" style="margin-right: 15px;">
+          <div *ngIf="readOnlyStorage.IsEditable">
+            <phx-form-control [control]="inputFormGroup.controls.IsApplyDeductions" [layoutType]="layoutType" [editable]="readOnlyStorage.IsEditable && checkPtFiledAccessibility('WorkOrderVersion.PaymentInfoes.PaymentRates','IsApplyDeductions', inputFormGroup.value)">
+              <label class="checkbox-inline">
+                <input type="checkbox" class="custom-control-input" [formControl]="inputFormGroup.controls.IsApplyDeductions" value="Check1"> Apply Deduction
+              </label>
+            </phx-form-control>
+          </div>
+          <div *ngIf="!readOnlyStorage.IsEditable">
+            <phx-form-control [control]="inputFormGroup.controls.IsApplyDeductions" [layoutType]="layoutType" [editable]="!readOnlyStorage.IsEditable && checkPtFiledAccessibility('WorkOrderVersion.PaymentInfoes.PaymentRates','IsApplyDeductions', inputFormGroup.value)">
+              <label class="checkbox-inline">
+                <input type="checkbox" required="false" disabled class="custom-control-input" [formControl]="inputFormGroup.controls.IsApplyDeductions"
+                  value="Check1"> Apply Deduction
+              </label>
+            </phx-form-control>
+          </div>
+        </div>
+        <!-- </div> -->
+        <div *ngIf="workerProfileTypeId===phxConstants.UserProfileType.WorkerTemp">
+          <div class="pull-left" style="margin-right: 15px;">
+            <div *ngIf="readOnlyStorage.IsEditable">
+              <phx-form-control [control]="inputFormGroup.controls.IsApplyVacation" [layoutType]="layoutType" [editable]="readOnlyStorage.IsEditable && checkPtFiledAccessibility('WorkOrderVersion.PaymentInfoes.PaymentRates','IsApplyVacation', inputFormGroup.value)">
+                <label class="checkbox-inline">
+                  <input type="checkbox" class="custom-control-input" [formControl]="inputFormGroup.controls.IsApplyVacation" value="Check1"> Apply Vacation
+                </label>
+              </phx-form-control>
+            </div>
+            <div *ngIf="!readOnlyStorage.IsEditable">
+              <phx-form-control [control]="inputFormGroup.controls.IsApplyVacation" [layoutType]="layoutType" [editable]="!readOnlyStorage.IsEditable && checkPtFiledAccessibility('WorkOrderVersion.PaymentInfoes.PaymentRates','IsApplyVacation', inputFormGroup.value)">
+                <label class="checkbox-inline">
+                  <input type="checkbox" required="false" disabled class="custom-control-input" [formControl]="inputFormGroup.controls.IsApplyVacation"
+                    value="Check1"> Apply Vacation
+                </label>
+              </phx-form-control>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="workerProfileTypeId===phxConstants.UserProfileType.WorkerTemp && (inputFormGroup.controls.RateUnitId.value === phxConstants.RateUnit.Hour || inputFormGroup.controls.RateUnitId.value === phxConstants.RateUnit.Day) ">
+          <div *ngIf="readOnlyStorage.IsEditable">
+            <phx-form-control [control]="inputFormGroup.controls.IsApplyStatHoliday" [layoutType]="layoutType" [editable]="readOnlyStorage.IsEditable && checkPtFiledAccessibility('WorkOrderVersion.PaymentInfoes.PaymentRates','IsApplyStatHoliday', inputFormGroup.value)">
+              <label class="checkbox-inline">
+                <input type="checkbox" class="custom-control-input" [formControl]="inputFormGroup.controls.IsApplyStatHoliday" value="Check1"> Apply Stat Holiday
+              </label>
+            </phx-form-control>
+          </div>
+          <div *ngIf="!readOnlyStorage.IsEditable">
+            <phx-form-control [control]="inputFormGroup.controls.IsApplyStatHoliday" [layoutType]="layoutType" [editable]="!readOnlyStorage.IsEditable && checkPtFiledAccessibility('WorkOrderVersion.PaymentInfoes.PaymentRates','IsApplyStatHoliday', inputFormGroup.value)">
+              <label class="checkbox-inline">
+                <input type="checkbox" required="false" disabled class="custom-control-input" [formControl]="inputFormGroup.controls.IsApplyStatHoliday"
+                  value="Check1"> Apply Stat Holiday
+              </label>
+            </phx-form-control>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

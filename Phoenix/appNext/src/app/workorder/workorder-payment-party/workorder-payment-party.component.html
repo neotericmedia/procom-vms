@@ -1,0 +1,97 @@
+<form [formGroup]="inputFormGroup">
+    <div role="form">
+        <div class="form-group">
+            <div class="col-lg-10">
+                <p class="form-control-static" *ngIf="inputFormGroup.controls.OrganizationIdSupplier.value>0">
+                    <a routerLink="/next/organization/{{inputFormGroup.controls.OrganizationIdSupplier.value}}/details">{{inputFormGroup.controls.OrganizationSupplierDisplayName.value}} - {{inputFormGroup.controls.OrganizationIdSupplier.value}}</a>
+                </p>
+                <p class="form-control-static" *ngIf="inputFormGroup.controls.OrganizationIdSupplier.value==null &&(workerProfileTypeId == html.lists.phxConstants.UserProfileType.WorkerTemp || workerProfileTypeId == html.lists.phxConstants.UserProfileType.WorkerCanadianSp || workerProfileTypeId == html.lists.phxConstants.UserProfileType.WorkerUnitedStatesW2)">
+                    <a *ngIf="workerProfileTypeId==html.lists.phxConstants.UserProfileType.WorkerTemp && inputFormGroup.controls.UserProfileIdWorker"
+                        routerLink="/next/contact/{{inputFormGroup.controls.UserProfileIdWorker.value|lookupNoCache:html.commonLists.listUserProfileWorker:'Id':'ContactId'}}/profile/workertemp/{{inputFormGroup.controls.UserProfileIdWorker.value}}">{{inputFormGroup.controls.OrganizationSupplierDisplayName.value}}</a>
+                    <a *ngIf="workerProfileTypeId==html.lists.phxConstants.UserProfileType.WorkerCanadianSp && inputFormGroup.controls.UserProfileIdWorker"
+                        routerLink="/next/contact/{{inputFormGroup.controls.UserProfileIdWorker.value|lookupNoCache:html.commonLists.listUserProfileWorker:'Id':'ContactId'}}/profile/workercanadiansp/{{inputFormGroup.controls.UserProfileIdWorker.value}}">{{inputFormGroup.controls.OrganizationSupplierDisplayName.value}}</a>
+                    <a *ngIf="workerProfileTypeId==html.lists.phxConstants.UserProfileType.WorkerUnitedStatesW2 && inputFormGroup.controls.UserProfileIdWorker"
+                        routerLink="/next/contact/{{inputFormGroup.controls.UserProfileIdWorker.value|lookupNoCache:html.commonLists.listUserProfileWorker:'Id':'ContactId'}}/profile/workerunitedstatesw2/{{inputFormGroup.controls.UserProfileIdWorker.value}}">{{inputFormGroup.controls.OrganizationSupplierDisplayName.value}}</a>
+                </p>
+            </div>
+        </div>
+        <div class="form-group" *ngIf="!isProduction && (workerProfileTypeId==html.lists.phxConstants.UserProfileType.WorkerTemp || workerProfileTypeId==html.lists.phxConstants.UserProfileType.WorkerCanadianSp)">
+            <div class="col-lg-10">
+                <p class="form-control-static">
+                    <strong>Download T4: </strong>
+                    <span *ngFor="let year of html.lists.t4PrintableYears; let last = last;">
+                        <a [href]="downloadT4(currentWorkOrderVersionId, year)">{{ year }} </a>
+                        <span *ngIf="!last"> | </span>
+                    </span>
+                </p>
+            </div>
+        </div>
+        <div class="form-group" *ngIf="!isProduction && (workerProfileTypeId==html.lists.phxConstants.UserProfileType.WorkerCanadianSp)">
+                <div class="col-lg-10">
+                    <p class="form-control-static">
+                        <strong>Download T4A: </strong>
+                        <span *ngFor="let year of html.lists.t4PrintableYears; let last = last;">
+                            <a [href]="downloadT4A(currentWorkOrderVersionId, year)" target="_blank">{{ year }} </a>
+                            <span *ngIf="!last"> | </span>
+                        </span>
+                    </p>
+                </div>
+            </div>
+        <div class="form-group" *ngIf="paymentInfoIndex ===0 && (!inputFormGroup.controls.UserProfileIdWorker.value || inputFormGroup.controls.UserProfileIdWorker.value === 0)">
+            <phx-form-control labelText="Worker" [control]="inputFormGroup.controls.UserProfileIdWorker" 
+                viewModeText="{{inputFormGroup.controls.UserProfileIdWorker.value | lookupNoCache:html.commonLists.listUserProfileWorker:'Id':'DisplayValue'}}">
+                <app-phx-select-box [items]="html.commonLists.listUserProfileWorker" textField="DisplayValue" valueField="Id" 
+                [formControl]="inputFormGroup.controls.UserProfileIdWorker" placeholder=" -- select one --">
+                </app-phx-select-box>
+            </phx-form-control>
+        </div>
+        <div class="form-group" *ngIf="paymentInfoIndex > 0 && (!inputFormGroup.controls.OrganizationIdSupplier.value || inputFormGroup.controls.OrganizationIdSupplier.value===0) ">
+            <phx-form-control labelText="Supplier Organization" [control]="inputFormGroup.controls.OrganizationIdSupplier" viewModeText="{{inputFormGroup.controls.OrganizationIdSupplier.value}}">
+                <app-phx-select-box [items]="html.commonLists.listOrganizationSupplier | filterSelectChoicesByUsage: oldPaymentInfoes: inputFormGroup.value: 'OrganizationIdSupplier': 'Id': 'DisplayName': 'Id' " 
+                    textField="DisplayValue" valueField="Id" [formControl]="inputFormGroup.controls.OrganizationIdSupplier"
+                    placeholder=" -- select one --">
+                </app-phx-select-box>
+            </phx-form-control>
+        </div>
+        <div class="form-group" *ngIf="paymentInfoIndex == 0  && inputFormGroup.controls.UserProfileIdWorker.value >0">
+            <phx-form-control labelText="Worker" [control]="inputFormGroup.controls.UserProfileIdWorker" [editable]="true" viewModeText="">
+                <div class="col-lg-12 padding-0">
+                    <p class="form-control-static">
+                        {{inputFormGroup.controls.UserProfileIdWorker.value | lookupNoCache:html.commonLists.listUserProfileWorker:'Id':'DisplayValue'}}
+                    </p>
+                </div>
+                <!-- 20190225: hide change button according to Steven -->
+                <!-- <div class="col-lg-4 pull-right padding-0">
+                    <button type="button" class="btn btn-clouds pull-right" *ngIf="isDraftStatus" (click)="erasePaymentInfo()" [disabled]="AtsPlacementId>0">
+                        Change
+                    </button>
+                </div> -->
+            </phx-form-control>
+        </div>
+        <div class="form-group">
+            <phx-form-control labelText="Primary Contact" [control]="inputFormGroup.controls.UserProfileIdSupplier" 
+                [editable]="readOnlyStorage.IsEditable && checkPtFiledAccessibility('WorkOrderVersion.PaymentInfoes','UserProfileIdSupplier')"
+                viewModeText="{{inputFormGroup.controls.UserProfileIdSupplier.value | lookupNoCache:html.commonLists.listProfilesListForPaymentOrganization:'Id':'Contact.FullName'}} - {{inputFormGroup.controls.UserProfileIdSupplier.value}}">
+                <app-phx-select-box [items]="html.commonLists.listProfilesListForPaymentOrganization" textField="DisplayValue" valueField="Id"
+                    [formControl]="inputFormGroup.controls.UserProfileIdSupplier" placeholder=" -- select one --">
+                </app-phx-select-box>
+            </phx-form-control>
+        </div>
+        <div class="form-group">
+            <phx-form-control [control]="inputFormGroup.controls.Hours" labelText="Hours Per Day" viewModeText="{{inputFormGroup.controls.Hours.value}}"
+                [editable]="false">
+                <input [formControl]="inputFormGroup.controls.Hours" type="text" class="form-control" />
+            </phx-form-control>
+        </div>
+        <div class="form-group">
+            <phx-form-control [control]="inputFormGroup.controls.CurrencyId" labelText="Currency" [editable]="readOnlyStorage.IsEditable && checkPtFiledAccessibility('WorkOrderVersion.PaymentInfoes','CurrencyId')"
+                viewModeText="{{inputFormGroup.controls.CurrencyId.value | CodeValue:codeValueGroups.Currency }}">
+                <app-phx-select-box [formControl]="inputFormGroup.controls.CurrencyId" [items]="html.codeValueLists.listCurrency" textField="text"
+                    valueField="id" placeholder=" -- select one --">
+                </app-phx-select-box>
+            </phx-form-control>
+        </div>
+    </div>
+    <app-workorder-payment-rates [inputFormGroup]="inputFormGroup.controls.PaymentRatesDetail" [readOnlyStorage]="readOnlyStorage"
+        [paymentInfoIndex]="paymentInfoIndex" (outputEvent)="onOutputEvent($event)"></app-workorder-payment-rates>
+</form>

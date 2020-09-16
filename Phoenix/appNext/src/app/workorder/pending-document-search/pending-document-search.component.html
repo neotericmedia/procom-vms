@@ -1,0 +1,15 @@
+<app-phx-data-table 
+    [configuration]="dataTableConfiguration" 
+    [dataSourceUrl]="'assignment/getSearchWithDocumentCount'" 
+    [dataSourceParams]='oDataParams' 
+    [columns]="columns" 
+    [summary]="summary"
+    [exportFileName]="'workorder'" 
+    [componentName]="'WorkOrderDocumentSearch'" 
+    (selectionChanged)="onRowSelected($event)">
+  <div *dxTemplate="let d of 'viewWorkOrderDetailsCellTemplate'">
+    <div class="btn-group">
+      <button type="button" class="btn btn-xs btn-clouds btn-row-action no-padding-bottom-right" title="View" (click)="viewWorkOrderDetails(d.data)"><i class="fontello-icon-eye-1"></i>&nbsp;</button>
+    </div>
+  </div>
+</app-phx-data-table>

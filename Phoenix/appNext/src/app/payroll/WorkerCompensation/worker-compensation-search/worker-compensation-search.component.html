@@ -1,0 +1,8 @@
+<button class="btn btn-default" (click)="createWorkerCompensationCode()">New</button>
+
+<app-phx-data-table [configuration]="dataTableConfiguration" [dataSourceUrl]="'Payroll/getAllWorkerCompensations'" [dataSourceParams]='odataParams'
+    [columns]="columns" [exportFileName]="'WorkerCompensationCodes'" [componentName]="'WorkerCompensationSearch'" (selectionChanged)="onRowSelected($event)"
+    (contextMenuOpenTab)="onContextMenuOpenTab($event)">
+</app-phx-data-table>
+
+<div class="worker-compensation-code-report" [ngClass]="{ out: !Id, in: Id}"> </div>

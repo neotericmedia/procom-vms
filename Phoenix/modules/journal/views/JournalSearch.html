@@ -1,0 +1,22 @@
+<div data-cg-busy="loadItemsPromise">
+    <div class="journal-search">
+        <ft-accordion>
+            <ft-accordion-group data-ng-repeat="company in companies" class="paymentRelease" template="/Phoenix/app/directive/collapsibleHeadingGroup.html" is-open="company.open">
+                <ft-accordion-heading>
+                    <div class="companyHeaderLine row col-md-12"></div><!--ui-sref="journal.batches({ organizationId:company.companyId })"-->
+                    <div class="row">
+                        <div class="row journalHeader" data-ng-class="{'journalNavBlock': company.count == 0}" ui-sref="ngtwo.m({ p:'journal/batches/organization/' + company.companyId})">
+                            <div class="col-lg-12 journalCompanyName">
+                                <span ng-bind="company.companyName"></span>&nbsp;<!--<span class="badge badge-positive-gray currencyBadge" data-ng-if="company.count>0">{{company.count}}</span>-->
+                                <i class="pull-right icon-chevron-right journal-chevron"></i>
+                            </div>
+                        </div>
+                    </div>
+                </ft-accordion-heading>
+            </ft-accordion-group>
+        </ft-accordion>
+        <div data-ng-if="companies.length == 0" class="emptyCurrency">
+            <span>There are no exported transactions to search.</span>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,41 @@
+<div class="row">
+  <div class="col-xs-12" style="margin-left: 10px;">
+    <h4>{{html.roleDisplayName}} Role</h4>
+  </div>
+</div>
+
+<form [formGroup]="inputFormGroup" *ngIf="inputFormGroup">
+
+  <div class="row">
+    <div>
+      <button type="button" class="btn btn-default" style="margin-left: 20px;" *ngIf="inputFormGroup.controls.Id.value===0"
+        (click)="onClickDeleteOrganizationRole()">Cancel
+        {{html.roleDisplayName}} Role</button>
+    </div>
+  </div>
+
+  <app-phx-panel headerTitle="Role Details">
+
+    <phx-form-control [control]="inputFormGroup?.controls.OrganizationRoleStatusId" *ngIf="inputFormGroup.controls.Id.value !== 0"
+      [editable]="readOnlyStorage.IsEditable && rootModel.IsOriginal" labelText="Role Status" viewModeText="{{inputFormGroup?.controls.OrganizationRoleStatusId?.value | CodeValue:codeValueGroups.OrganizationRoleStatusType }}">
+      <app-phx-select-box [formControl]="inputFormGroup?.controls.OrganizationRoleStatusId" [items]="html.codeValueLists.listOrganizationRoleStatusType"
+        textField="text" valueField="id">
+      </app-phx-select-box>
+    </phx-form-control>
+
+    <app-organization-llc-role [inputFormGroup]="inputFormGroup" (outputEvent)="onOutputEvent()" [isQuickAdd]="true"
+      [readOnlyStorage]="readOnlyStorage">
+
+    </app-organization-llc-role>
+
+  </app-phx-panel>
+
+  <app-organization-role-payment-methods [inputFormGroup]="inputFormGroup" [isEditable]="html.canEditPaymentMethods"
+    [readOnlyStorage]="readOnlyStorage">
+  </app-organization-role-payment-methods>
+
+  <app-compliance-document [useBoldHeading]="true" [entityTypeId]="phxConstants.EntityType.OrganizationLimitedLiabilityCompanyRole" [entityId]="inputFormGroup.controls.IdOriginal.value"
+    [entityName]="legalName" [referenceEntityLink]="documentsRefLink" (complianceDocumentOutput)="onComplianceDocumentOutput($event)">
+  </app-compliance-document>
+
+</form>

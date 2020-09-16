@@ -1,0 +1,230 @@
+/* 
+   abn-tree.css
+
+   style for the angular-bootstrap-nav-tree
+   for both Bootstrap 2 and Bootstrap 3
+
+*/
+
+
+
+/* ------------------------------------------
+AngularJS Animations...
+
+The first selector is for Angular 1.1.5
+The second selector is for Angular 1.2.0
+
+*/
+.abn-tree-animate-enter,
+li.abn-tree-row.ng-enter {
+    transition: 200ms linear all;
+    /*position: relative;*/
+    display: block;
+    opacity: 0;
+    max-height: 0px;
+}
+
+    .abn-tree-animate-enter.abn-tree-animate-enter-active,
+    li.abn-tree-row.ng-enter-active {
+        opacity: 1;
+        max-height: 30px;
+    }
+
+.abn-tree-animate-leave,
+li.abn-tree-row.ng-leave {
+    transition: 200ms linear all;
+    /*position: relative;*/
+    display: block;
+    height: 30px;
+    max-height: 30px;
+    opacity: 1;
+}
+
+    .abn-tree-animate-leave.abn-tree-animate-leave-active,
+    li.abn-tree-row.ng-leave-active {
+        height: 0px;
+        max-height: 0px;
+        opacity: 0;
+    }
+
+
+/* 
+------------------------------------------
+Angular 1.2.0 Animation 
+*/
+
+
+.abn-tree-animate.ng-enter {
+}
+
+
+
+
+/*
+   end animation stuff
+-----------------------------------------
+   begin normal css stuff
+*/
+ul.abn-tree li.abn-tree-row {
+    padding: 0;
+    margin: 0;
+    background-color: white;
+    border-bottom: none;
+}
+
+ul.abn-tree li.abn-tree-row a {
+    height: 33px;
+    background-color: white;
+    margin-left:0;
+    line-height: 36px;
+}
+
+ul.abn-tree i.indented {
+    padding-bottom: 30px;
+}
+
+
+span.indented.tree-label {
+ display:inline-block;
+    white-space: nowrap;
+    overflow:hidden !important;
+    text-overflow: ellipsis;
+
+}
+
+.abn-tree {
+    cursor: pointer;
+    /*border-right: 1px solid lightgray !important;*/
+}
+
+ul.nav.nav-list.nav-pills.nav-stacked.abn-tree.ng-isolate-scope {
+    border-right: 1px solid lightgray\9;
+} 
+
+i.indented.tree-icon.glyphicon.fa.icon-file.glyphicon-file.fa-file {
+    color: lightslategray;
+    font-size: smaller;
+    padding-bottom: 33px;
+}
+
+i.indented.tree-icon.icon-minus.glyphicon.glyphicon-minus.fa.fa-minus {
+    color: lightslategray;
+    font-size: smaller;
+}
+
+i.indented.tree-icon.icon-plus.glyphicon.glyphicon-plus.fa.fa-plus {
+    color: lightslategray;
+    font-size: smaller;
+    padding-bottom: 33px;
+}
+
+a.selected {
+    /*background-color: whitesmoke !important;*/
+    background-color:rgba(245, 245, 245, 0.8) !important;
+}
+
+    a.selected i.indented.tree-icon.glyphicon.fa.icon-plus.glyphicon-plus.fa-plus {
+        color: #428bca
+    }
+
+    a.selected i.indented.tree-icon.glyphicon.fa.icon-file.glyphicon-file.fa-file {
+        color: #428bca
+    }
+
+    a.selected i.indented.tree-icon.icon-minus.glyphicon.glyphicon-minus.fa.fa-minus {
+        color: orange !important;
+    }
+
+/*Top Header*/
+li.abn-tree-row.ng-scope.level-1 a{
+    padding-top:4px;
+
+}
+
+li.abn-tree-row.ng-scope.level-1:not(:first-child) {
+    /*margin-top: 2px;*/
+}
+
+li.abn-tree-row.ng-scope.level-1:first-child a {
+    /*border-top: 1px solid lightgray;*/
+    height: 42px;
+    border-bottom: 1px solid orange;
+}
+
+.nav-list li.active > a:after {
+    display:none;
+}
+
+.nav-list > li.active > a, .nav-list > li.active > a:hover, .nav-list > li.active > a:focus, .nav-list > li.active > a:active {
+        font-weight: 600;
+}
+
+/*Following Headers such as TimeSheets*/
+li.abn-tree-row.ng-scope.level-1:not(:first-child) a {
+    border-top: 3px solid lightgray;
+    height: 43px;
+    border-bottom: 1px solid orange;
+
+}
+
+li.abn-tree-row.ng-scope:last-child {
+    /*border-bottom: 1px solid lightgray;*/
+}
+
+ul.nav.abn-tree .level-1 .indented {
+    left: 0;
+    font-size: 13px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    max-width: 93%;
+}
+
+
+ul.nav.abn-tree .level-2 .indented {
+    left: 0;
+    max-width: 78%;
+    height
+}
+
+ul.nav.abn-tree .level-3 .indented {
+    position: relative;
+    left: 10px;
+    max-width: 75%;
+}
+
+ul.nav.abn-tree .level-4 .indented {
+    position: relative;
+    left: 20px;
+    max-width: 70%;
+}
+
+ul.nav.abn-tree .level-5 .indented {
+    position: relative;
+    left: 30px;
+    max-width: 60%;
+}
+
+ul.nav.abn-tree .level-6 .indented {
+    position: relative;
+    left: 80px;
+    max-width: 50%;
+}
+
+ul.nav.nav-list.abn-tree .level-7 .indented {
+    position: relative;
+    left: 100px;
+    max-width: 40%;
+}
+
+ul.nav.nav-list.abn-tree .level-8 .indented {
+    position: relative;
+    left: 120px;
+    max-width: 30%;
+}
+
+ul.nav.nav-list.abn-tree .level-9 .indented {
+    position: relative;
+    left: 140px;
+    max-width: 20%;
+}

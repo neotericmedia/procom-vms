@@ -1,0 +1,91 @@
+<div *ngIf="subscription" class="base-contact-form contact-page-wrapper">
+  <div class="col-lg-12 panel-body sub-user-body">
+    <div class="col-lg-10 margin-10-v-t">
+      <div class="panel col-lg-12">
+        <div class="row">
+          <app-subscription-header [subscription]="subscription"></app-subscription-header>
+        </div>
+        <div class="row" style="padding-left:2px; padding-right:1px;">
+          <app-phx-navigation-bar [navigationBarContent]="html.navigationBarContent" [url]="routerState.url"
+          *ngIf="html.navigationBarContent">
+          </app-phx-navigation-bar>
+        </div>
+        <div class="row">
+          <app-subscription-tab-subscription [inputFormGroup]="rootFormGroup.controls.TabSubscription" 
+            *ngIf="routerState.routerPath===html.phxConstants.SubscriptionNavigationName.subscription"
+            [readOnlyStorage]="readOnlyStorage" (outputEvent)="onOutputEvent($event)">
+          </app-subscription-tab-subscription>
+        </div>
+        <app-subscription-tab-history *ngIf="routerState.routerPath===html.phxConstants.SubscriptionNavigationName.history">
+        </app-subscription-tab-history>
+        <div *ngIf="html.validationMessages && html.validationMessages.length > 0"
+          class="alert alert-danger alert-dismissable error-box">
+          <div *ngFor="let message of html.validationMessages">
+            <div>
+              {{message}}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row" *ngIf="routerState.routerPath !==html.phxConstants.SubscriptionNavigationName.history">
+        <div class="panel-footer col-lg-12">
+          <div class="row sub-user-footer-row">
+            <app-phx-workflow-buttons #buttonActionButtons (callWorkflowCommand)="onClickWorkflowAction($event,subscription)"
+            [workflowAvailableActions]="subscription.WorkflowAvailableActions" [isButtonBar]="true" 
+            [buttonSortDirection]="1"
+            [valid]="rootFormGroup?.valid" [buttonSortDirection]="html.buttonSortDirections.LeftToRight"
+            [getActionButtonCssClass]="setCssClassForActionButton"></app-phx-workflow-buttons>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-2">
+      <div class="contact-versions">
+        <div class="contact-version-group">
+          <div class="contact-version-item" [ngClass]="{ 'active' : (routerParams.subscriptionId == subscription.Id  && !subscription.SourceId) }"
+            (click)="onVersionClick(subscription, true)">
+            <div>
+              <div>
+                <span class="small-text">Current Subscription</span>
+              </div>
+              <span *ngIf="!subscription.SourceId && !subscription.ChildId"
+                [ngClass]="{'text-warning' : subscription.AccessSubscriptionStatusId === html.phxConstants.AccessSubscriptionStatus.Active }">
+                <span class="small-text">Status:&nbsp;&nbsp;&nbsp;</span>
+                {{subscription.AccessSubscriptionStatusId | lookup: html.codeValueLists.subStatuses:'id':'text'}}
+              </span>
+              <span *ngIf="subscription.SourceId || subscription.ChildId">
+                <span class="small-text">Status:&nbsp;&nbsp;&nbsp;</span>Pending Change</span>
+            </div>
+          </div>
+          <div *ngIf="subscription.SourceId" class="contact-version-item"
+            [ngClass]="{ 'active' : (routerParams.subscriptionId == subscription.Id  && subscription.SourceId) }"
+            (click)="onVersionClick(subscription, false)">
+            <div>
+              <div>
+                <span class="small-text">Proposed Change</span>
+              </div>
+              <span>
+                <span class="small-text">Status:&nbsp;&nbsp;&nbsp;</span>
+                {{subscription.AccessSubscriptionStatusId | lookup: html.codeValueLists.subStatuses:'id':'text'}}
+              </span>
+            </div>
+          </div>
+          <div *ngIf="subscription.ChildId" class="contact-version-item"
+            [ngClass]="{ 'active' : (routerParams.subscriptionId == subscription.Id  && !subscription.ChildId) }"
+            (click)="onVersionClick(subscription, false)">
+            <div>
+              <div>
+                <span class="small-text">Proposed Change</span>
+              </div>
+              <span>
+                <span class="small-text">Status:&nbsp;&nbsp;&nbsp;</span>
+                {{subscription.ChildAccessSubscriptionStatusId | lookup: html.codeValueLists.subStatuses:'id':'text'}}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <app-subscription-workflow (commandExecuted)="onCommandExecutedSuccessfully($event)" #workFlow></app-subscription-workflow>
+</div>

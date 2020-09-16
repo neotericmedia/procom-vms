@@ -1,0 +1,15 @@
+<app-commission-add-work-order [organizationIdInternal]="organizationIdInternal" [clientOrganizationId]="clientOrganizationId"
+  [selectedWorkorders]="selectedWorkorders" (workorderSelectionChanged)="onChangeWorkOrderSelection($event)">
+</app-commission-add-work-order>
+<div class="col-lg-12 panel-footer garnishee-footer-div">
+  <div class="row">
+    <div class="col-xs-6"></div>
+    <div class="col-xs-6">
+      <div class="pull-right">
+        <button type="button" class="btn btn-primary" (click)="onClickSelect()"
+          [disabled]="workOrders.length === 0">Select</button>
+        <button type="button" class="btn btn-default" (click)="onClickCancel()">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>

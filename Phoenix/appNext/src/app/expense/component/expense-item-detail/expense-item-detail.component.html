@@ -1,0 +1,109 @@
+<div class="row " [class.item-detail-container]="editable" *ngIf="item">
+  <div class="form-horizontal">
+    <app-expense-item-dynamic-field *ngFor="let field of dynamicFieldsSliced[0]" [field]="field" [editable]="editable" [currencyId]="item.CurrencyId"
+      (fieldValueChanged)="updateDynamicProp(field,$event)"></app-expense-item-dynamic-field>
+
+    <phx-form-control name="categoryName" labelText="" [layoutType]="4" [editable]="true" viewModeText="">
+      <div class="category-container">
+        <app-expense-category-icon icon="{{item?.ExpenseCategory?.Icon}}" size="sm"></app-expense-category-icon>
+        <div class="category-name">{{item?.ExpenseCategory?.DisplayName}} </div>
+      </div>
+    </phx-form-control>
+
+    <phx-form-control name="attachments" labelText="" [layoutType]="4" [editable]="true" viewModeText="">
+      <app-expense-item-attachments #itemAttachments [item]="item" [editable]="editable" (onAddItemAttachment)="emitAddItemAttachment($event)"
+        (onPreviewAttachment)="previewAttachment($event)"></app-expense-item-attachments>
+    </phx-form-control>
+
+    <app-expense-item-dynamic-field *ngFor="let field of dynamicFieldsSliced[1000]" [field]="field" [editable]="editable" [currencyId]="item.CurrencyId"
+      (fieldValueChanged)="updateDynamicProp(field,$event)"></app-expense-item-dynamic-field>
+
+
+    <phx-form-control name="DateIncurred" labelText="{{expenseModuleResourceKeys.itemAdd.dateIncurred | phxTranslate}} {{requiredStar}}"
+      [layoutType]="controlLayoutType" [editable]="editable" viewModeText="{{item?.DateIncurred | date:formatDate}}">
+      <dx-date-box type="date" [(value)]="item.DateIncurred" (onValueChanged)="loadSubdivisionTaxes()"></dx-date-box>
+    </phx-form-control>
+
+    <app-expense-item-dynamic-field *ngFor="let field of dynamicFieldsSliced[2000]" [field]="field" [editable]="editable" [currencyId]="item.CurrencyId"
+      (fieldValueChanged)="updateDynamicProp(field,$event)"></app-expense-item-dynamic-field>
+
+    <phx-form-control *ngIf="item && item.ExpenseCategory && item.ExpenseCategory.ShowMerchant" name="Merchant" labelText="{{expenseModuleResourceKeys.itemAdd.merchant | phxTranslate}}{{requiredStar}}"
+      [layoutType]="controlLayoutType" [editable]="editable" viewModeText="{{item?.Merchant}}">
+      <dx-text-box [ngModel]="item.Merchant" placeholder="{{expenseModuleResourceKeys.itemAdd.placeHolderMerchant | phxTranslate}}"
+        maxlength="128" [phxDebounce]="500" (onDebounce)="updateProp('Merchant', $event)" valueChangeEvent="keyup"></dx-text-box>
+    </phx-form-control>
+
+    <app-expense-item-dynamic-field *ngFor="let field of dynamicFieldsSliced[3000]" [field]="field" [editable]="editable" [currencyId]="item.CurrencyId"
+      (fieldValueChanged)="updateDynamicProp(field,$event)"></app-expense-item-dynamic-field>
+
+
+    <phx-form-control name="Country" labelText="{{expenseModuleResourceKeys.itemAdd.country | phxTranslate}}{{requiredStar}}"
+      [layoutType]="controlLayoutType" [editable]="editable" viewModeText="{{item?.CountryId | CodeValue:codeValueGroups.Country}}">
+      <app-phx-select-box #countriesSelectBox [items]="countries" textField="text" valueField="id" placeholder="{{expenseModuleResourceKeys.itemAdd.placeHolderCountry | phxTranslate}}"
+        [value]="item.CountryId" (valueChanged)="countrySelected()">
+      </app-phx-select-box>
+    </phx-form-control>
+
+    <app-expense-item-dynamic-field *ngFor="let field of dynamicFieldsSliced[4000]" [field]="field" [editable]="editable" [currencyId]="item.CurrencyId"
+      (fieldValueChanged)="updateDynamicProp(field,$event)"></app-expense-item-dynamic-field>
+
+    <phx-form-control name="SubdivisionId" labelText="{{expenseModuleResourceKeys.itemAdd.provinceOrState | phxTranslate}}{{requiredStar}}"
+      [layoutType]="controlLayoutType" [editable]="editable" viewModeText="{{item?.SubdivisionId | CodeValue:codeValueGroups.Subdivision}}">
+      <app-phx-select-box #subdivisionsSelectBox [items]="subdivisions" textField="text" valueField="id" placeholder="{{expenseModuleResourceKeys.itemAdd.placeHolderProvinceOrState | phxTranslate}}"
+        [value]="item.SubdivisionId" (valueChanged)="subdivisionSelected()">
+      </app-phx-select-box>
+    </phx-form-control>
+
+    <app-expense-item-dynamic-field *ngFor="let field of dynamicFieldsSliced[5000]" [field]="field" [editable]="editable" [currencyId]="item.CurrencyId"
+      (fieldValueChanged)="updateDynamicProp(field,$event)"></app-expense-item-dynamic-field>
+
+    <phx-form-control name="Subtotal" labelText="{{expenseModuleResourceKeys.itemAdd.subtotal | phxTranslate}} {{requiredStar}}"
+      [layoutType]="controlLayoutType" [editable]="editable" class="text-align-right" viewModeText="{{item?.Subtotal | number : '1.2-2'}}">
+      <dx-number-box #subtotalNumberBox [value]="item.Subtotal" [min]="0" [max]="9999999999999998" format="#,##0.00" (onValueChanged)="updateProp('Subtotal', subtotalNumberBox.value)"
+        valueChangeEvent="keyup" [step]="0"></dx-number-box>
+    </phx-form-control>
+
+    <app-expense-item-dynamic-field *ngFor="let field of dynamicFieldsSliced[6000]" [field]="field" [editable]="editable" [currencyId]="item.CurrencyId"
+      (fieldValueChanged)="updateDynamicProp(field,$event)"></app-expense-item-dynamic-field>
+
+    <div *ngIf="item && item.ExpenseCategory && item.ExpenseCategory.ShowTax">
+      <div *ngFor="let taxField of item.TaxLines">
+        <phx-form-control name="Tax{{taxField.Id}}" labelText="{{taxField.SalesTaxId| CodeValue:codeValueGroups.SalesTax}} ({{taxField.SalesTaxVersionRatePercentage}}%)"
+          [layoutType]="controlLayoutType" [editable]="editable" class="text-align-right" viewModeText="{{taxField?.Amount| number : '1.2-2'}}">
+          <dx-number-box #taxNumberBox *ngIf="editable" [value]="taxField.Amount" [min]="0" [max]="9999999999999998" format="#,##0.00"
+            (onValueChanged)="updateTaxProp(taxField, taxNumberBox.value)" valueChangeEvent="keyup" [step]="0"></dx-number-box>
+        </phx-form-control>
+      </div>
+    </div>
+    <app-expense-item-dynamic-field *ngFor="let field of dynamicFieldsSliced[7000]" [field]="field" [editable]="editable" [currencyId]="item.CurrencyId"
+      (fieldValueChanged)="updateDynamicProp(field,$event)"></app-expense-item-dynamic-field>
+
+    <phx-form-control *ngIf="item && item.ExpenseCategory && item.ExpenseCategory.ShowTip" name="Tip" labelText="{{expenseModuleResourceKeys.itemAdd.tip | phxTranslate}}"
+      [layoutType]="controlLayoutType" [editable]="editable" class="text-align-right" viewModeText="{{item?.Tip | number : '1.2-2'}}">
+      <dx-number-box #tipNumberBox [value]="item.Tip" [min]="0" [max]="9999999999999998" format="#,##0.00" (onValueChanged)="updateProp('Tip', tipNumberBox.value)"
+        valueChangeEvent="keyup" [step]="0"></dx-number-box>
+    </phx-form-control>
+
+    <app-expense-item-dynamic-field *ngFor="let field of dynamicFieldsSliced[8000]" [field]="field" [editable]="editable" [currencyId]="item.CurrencyId"
+      (fieldValueChanged)="updateDynamicProp(field,$event)"></app-expense-item-dynamic-field>
+
+    <phx-form-control name="Total" labelText="{{expenseModuleResourceKeys.itemAdd.total | phxTranslate}} ({{item?.CurrencyId| CodeValue:codeValueGroups.Currency:'code'}}){{requiredStar}}"
+      [layoutType]="controlLayoutType" [editable]="editable" class="text-align-right" viewModeText="{{item?.Total | number : '1.2-2'}}">
+      <dx-number-box [value]="item.Total" [disabled]="true" format="#,##0.00" [min]="0" [max]="9999999999999998"></dx-number-box>
+    </phx-form-control>
+
+    <app-expense-item-dynamic-field *ngFor="let field of dynamicFieldsSliced[9000]" [field]="field" [editable]="editable" [currencyId]="item.CurrencyId"
+      (fieldValueChanged)="updateDynamicProp(field,$event)"></app-expense-item-dynamic-field>
+
+    <phx-form-control name="Note" labelText="{{expenseModuleResourceKeys.itemAdd.note | phxTranslate}}" [layoutType]="controlLayoutType"
+      [editable]="editable" viewModeText="{{item?.Note}}">
+      <dx-text-area [height]="90" [maxLength]="1000" placeholder="{{expenseModuleResourceKeys.itemAdd.placeHolderNotes | phxTranslate}}"
+        [ngModel]="item.Note" [phxDebounce]="500" (onDebounce)="updateProp('Note', $event)" valueChangeEvent="keyup">
+      </dx-text-area>
+    </phx-form-control>
+
+    <app-expense-item-dynamic-field *ngFor="let field of dynamicFieldsSliced[10000]" [field]="field" [editable]="editable" [currencyId]="item.CurrencyId"
+      (fieldValueChanged)="updateDynamicProp(field,$event)"></app-expense-item-dynamic-field>
+
+  </div>
+</div>

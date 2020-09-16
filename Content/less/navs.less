@@ -1,0 +1,133 @@
+// Core variables and mixins
+@import "variables.less";
+@import "mixins.less";
+
+//
+// Navs
+// --------------------------------------------------
+
+
+// Base class
+// --------------------------------------------------
+
+
+.nav-main {
+	padding-top: 10px;
+	padding-bottom: 15px;
+	margin-bottom: 10px;
+	background-color: #f6f6f6;
+
+	> li {
+		> a {
+			padding: 10px 15px 10px 30px;
+			font-size: ceil(@font-size-base * 1.14); // ~16px
+			color: @text-color;
+		}
+
+		&.active > a {
+			&::before {
+				position: absolute;
+				left: 10px;
+				bottom: 8px;
+				display: inline-block;
+				font-family: 'appicon';
+				content: "\e042";
+			}
+		}
+	}
+}
+
+.nav-subnav {
+    > li {
+        text-align: right;
+
+        > a {
+            padding: 8px 30px 8px 15px;
+            color: @gray-light;
+            border-bottom: 1px solid #f6f6f6;
+            &:hover {
+                color: @text-color;
+            }
+        }
+
+        &.active > a {
+            &::after {
+                position: absolute;
+                right: 10px;
+                display: inline-block;
+                font-family: 'appicon';
+                content: "\e043";
+            }
+        }
+    }
+}
+
+.nav-tabs {
+    //border: 1px solid @nav-tabs-border-color;
+    > li {
+        /*min-width: 100px;*/
+        margin-top: -1px;
+        cursor: pointer;
+
+        &:first-child {
+            margin-left: -1px;
+        }
+
+        > a {
+
+            &,
+            & > tab-heading > a {
+                margin-right: 0;
+                color: @text-color;
+                line-height: @line-height-base;
+                border: 1px solid transparent;
+                border-radius: @border-radius-base @border-radius-base 0 0;
+                text-decoration: none;
+            }
+
+            &:hover {
+                color: @text-color;
+                border-color: @nav-tabs-link-hover-border-color;
+                border-bottom-color: @brand-primary-accent;
+            }
+        }
+        // Active state, and it's :hover to override normal :hover
+        &.active > a {
+            color: #000000;
+            &:hover,
+            &:focus, & > tab-heading > a {
+                color: #222222;
+                font-weight: 400;
+                background-color: @nav-tabs-active-link-hover-bg;
+                border-bottom-color: transparent;
+                cursor: default;
+            }
+        }
+    }
+}
+
+
+// Pills
+// -------------------------
+.nav-pills {
+    > li {
+        > a {
+            border-radius: @border-radius-base;
+            background-color: #f6f6f6;
+			cursor: pointer
+        }
+
+        + li > a {
+            margin-left: 4px;
+        }
+        // Active state
+        &.active > a {
+            &,
+            &:hover,
+            &:focus {
+                color: @nav-pills-active-link-hover-color;
+                background-color: @brand-primary-accent;
+            }
+        }
+    }
+}

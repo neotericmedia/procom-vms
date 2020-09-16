@@ -1,0 +1,257 @@
+﻿<div class="advance-new" data-ng-if="scopeOrg.actionScope.show.organizationIndependentContractorRoleAdvanceView || scopeOrg.actionScope.show.organizationSubvendorRoleAdvanceView">
+    <div class="content-group form-horizontal" data-ng-form="formOrganizationAdvancesDetails" style="height:100%;background-color:#fafafa;">
+		<!--Advance Info-->
+		<div class="col-lg-12 advance-info" data-ng-init="scopeAdvanceDetails.init(scopeAdvance)">
+			<!--Advance Details-->
+			<div class="col-lg-12 advance-details">
+				<div>
+					<div class="panel-heading advance-view-header">
+						<div class="row">
+							<h3 class="panel-title">Advance Details</h3>
+						</div>
+					</div>
+					<div class="panel-body advance-view-body">
+						<div class="row">
+							<div class="form-horizontal" role="form">
+								<div class="form-group">
+                                    <label class="col-lg-4 control-label req-lab-right" watch-property="scopeAdvanceDetails.AdvanceHeader.AdvanceStatusId" for-property="AdvanceStatusId" for="AdvanceStatusId" data-model-property="scopeAdvanceDetails.AdvanceHeader.AdvanceStatusId" data-original-title="" title="">Status</label>
+									<div class="col-lg-5">
+										<div class="input-group select2-bootstrap-append">
+                                            
+											<ui-select name="AdvanceStatusId" data-ng-model="scopeAdvanceDetails.AdvanceHeader.AdvanceStatusId" theme="select2" class="form-control" data-ng-required="true">
+												<ui-select-match placeholder="-- Select One --">{{$select.selected.text}}</ui-select-match>
+												<ui-select-choices repeat="item.id as item in scopeAdvanceDetails.statuses | uiSelectChoicesFilter: $select.search: 'text'">
+													<span data-ng-bind-html="item.text | highlight: $select.search"></span>
+												</ui-select-choices>
+											</ui-select>
+											<span class="input-group-btn">
+												<button tabindex="-1" data-ng-click="scopeAdvanceDetails.AdvanceHeader.AdvanceStatusId=undefined;" class="btn btn-default btn-advance-drp"><i class="material-icons md-18">clear</i></button>
+											</span>
+										</div>
+									</div>
+									<div class="col-lg-3"></div>
+								</div>
+								<div class="form-group">
+									<label class="col-lg-4 control-label">Internal Company</label>
+									<div class="col-lg-5">
+										<div class="advance-detail-input">{{scopeAdvanceDetails.AdvanceHeader.OrganizationInternalLegalName}}</div>
+									</div>
+									<div class="col-lg-3"></div>
+								</div>
+								<div class="form-group advance-issue-date">
+									<label class="col-lg-4 control-label">Issue Date</label>
+									<div class="col-lg-5">
+										<div class="advance-detail-input">{{scopeAdvanceDetails.AdvanceHeader.IssueDate | date:ApplicationConstants.formatDateComma}}</div>
+									</div>
+									<div class="col-lg-3"></div>
+								</div>
+								<div class="form-group">
+									<label class="col-lg-4 control-label">Amount Initial</label>
+									<div class="col-lg-5">
+										<div class="advance-detail-input">{{scopeAdvanceDetails.AdvanceHeader.CurrencyId | lookup: scopeAdvanceDetails.currencies:'id':'code'}}{{scopeAdvanceDetails.AdvanceHeader.AmountInitial | currency: ' $'}}</div>
+									</div>
+									<div class="col-lg-3"></div>
+								</div>
+								<div class="form-group" data-ng-if="scopeAdvanceDetails.AdvanceHeader.PaybackType">
+									<label class="col-lg-4 control-label">Payback Amount</label>
+									<div class="col-lg-5">
+										<div class="input-group">
+											<div class="advance-detail-input">{{scopeAdvanceDetails.AdvanceHeader.CurrencyId | lookup: scopeAdvanceDetails.currencies:'id':'code'}}{{scopeAdvanceDetails.AdvanceHeader.PaybackAmount | currency: ' $'}}</div>
+										</div>
+									</div>
+									<div class="col-lg-3"></div>
+								</div>
+								<div class="form-group" data-ng-if="!scopeAdvanceDetails.AdvanceHeader.PaybackType">
+									<label class="col-lg-4 control-label">Payback Percentage</label>
+									<div class="col-lg-5">
+										<div class="input-group">
+											<div class="advance-detail-input">{{(scopeAdvanceDetails.AdvanceHeader.PaybackPercentage | number : 4) + " %"}}</div>
+										</div>
+									</div>
+									<div class="col-lg-3"></div>
+								</div>
+								<div class="form-group">
+									<label class="col-lg-4 control-label">Amount Remaining</label>
+									<div class="col-lg-5">
+										<div class="input-group">
+											<div class="advance-detail-input">{{scopeAdvanceDetails.AdvanceHeader.CurrencyId | lookup: scopeAdvanceDetails.currencies:'id':'code'}}{{scopeAdvanceDetails.AdvanceHeader.PaybackRemainder | currency: ' $'}}</div>
+										</div>
+									</div>
+									<div class="col-lg-3"></div>
+								</div>
+								<div class="form-group advance-detail-text">
+                                    <label class="col-lg-4 control-label req-lab-right" for-property="Description" for="Description" data-model-property="scopeAdvanceDetails.AdvanceHeader.Description" data-original-title="" title="">Description</label>
+									<div class="col-lg-5">
+										<input type="text" class="form-control" name="Description" ng-model="scopeAdvanceDetails.AdvanceHeader.Description" data-ng-minlength="3" data-ng-maxlength="64" data-ng-required="true">
+									</div>
+									<div class="col-lg-3"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!---->
+			<!--Payee & Payment Details-->
+            <div class="row" style="background-color:#fafafa;">
+				<!--Payee Details-->
+				<div class="col-lg-6 advance-payee-view-details">
+					<div>
+						<div class="panel-heading panel-info-title">
+							<div class="row">
+								<h3 class="col-lg-10 panel-title">Payee Details</h3>
+							</div>
+						</div>
+						<div class="panel-body">
+							<div class="form-horizontal" role="form">
+								<div class="row">
+									<div class="form-group">
+										<label class="col-lg-4 control-label">Payee Name</label>
+										<div class="col-lg-8">
+											<div class="advance-detail-input">{{scopeAdvanceDetails.AdvanceHeader.PayeeName}}</div>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-lg-4 control-label">Address 1</label>
+										<div class="col-lg-8">
+											<div class="advance-detail-input">{{scopeAdvanceDetails.AdvanceHeader.AddressLine1}}</div>
+										</div>
+									</div>
+									<div class="form-group" data-ng-if="scopeAdvanceDetails.AdvanceHeader.AddressLine2 && scopeAdvanceDetails.AdvanceHeader.AddressLine2.length>0">
+										<label class="col-lg-4 control-label">Address 2</label>
+										<div class="col-lg-8">
+											<div class="advance-detail-input">{{scopeAdvanceDetails.AdvanceHeader.AddressLine2}}</div>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-lg-4 control-label">City</label>
+										<div class="col-lg-8">
+											<div class="advance-detail-input">{{scopeAdvanceDetails.AdvanceHeader.CityName}}</div>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-lg-4 control-label">Country</label>
+										<div class="col-lg-8">
+											<div class="advance-detail-input">{{scopeAdvanceDetails.AdvanceHeader.CountryId| lookup: scopeAdvanceDetails.countries}}</div>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-lg-4 control-label">Province/State</label>
+										<div class="col-lg-8">
+											<div class="advance-detail-input">{{scopeAdvanceDetails.AdvanceHeader.SubdivisionId | lookup: scopeAdvanceDetails.subdivisions}}</div>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-lg-4 control-label">Postal/Zip</label>
+										<div class="col-lg-8">
+											<div class="advance-detail-input">{{scopeAdvanceDetails.AdvanceHeader.PostalCode}}</div>
+										</div>
+									</div>
+								</div>
+							</div>
+
+						</div>
+					</div>
+				</div>
+				<!---->
+				<!--Advance Payment Details-->
+				<div class="col-lg-6 advance-payment-view-details">
+					<div>
+						<div class="panel-heading panel-info-title">
+							<div class="row">
+								<h3 class="col-lg-10 panel-title">Advance Payment</h3>
+							</div>
+						</div>
+						<div class="panel-body">
+							<div class="form-group">
+								<label class="col-lg-5 control-label">Payment Transaction</label>
+								<div class="col-lg-7">
+									<div class="advance-detail-input">
+										<a data-ui-sref="transaction.view.summary({transactionHeaderId: scopeAdvanceDetails.AdvanceHeader.AdvanceInitialTransaction.TransactionHeaderId })">{{scopeAdvanceDetails.AdvanceHeader.AdvanceInitialTransaction.PaymentTransactionNumber}}</a>
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-lg-5 control-label">Amount</label>
+								<div class="col-lg-7">
+									<div class="advance-detail-input">{{scopeAdvanceDetails.AdvanceHeader.CurrencyId | lookup: scopeAdvanceDetails.currencies:'id':'code'}}{{scopeAdvanceDetails.AdvanceHeader.AdvanceInitialTransaction.Amount | currency : ' $'}}</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-lg-5 control-label">Release Date</label>
+								<div class="col-lg-7">
+									<div class="advance-detail-input">{{scopeAdvanceDetails.AdvanceHeader.AdvanceInitialTransaction.ReleaseDate ? (scopeAdvanceDetails.AdvanceHeader.AdvanceInitialTransaction.ReleaseDate | date:ApplicationConstants.formatDateComma) : 'N/A'}}</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-lg-5 control-label">Payment Method</label>
+								<div class="col-lg-7">
+									<div class="advance-detail-input">{{scopeAdvanceDetails.AdvanceHeader.PaymentMethodId | lookup: scopeAdvanceDetails.paymentMethods}}</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-lg-5 control-label">Payment Reference</label>
+								<div class="col-lg-7">
+									<div class="advance-detail-input">{{scopeAdvanceDetails.AdvanceHeader.AdvanceInitialTransaction.PaymentNumber ? scopeAdvanceDetails.AdvanceHeader.AdvanceInitialTransaction.PaymentNumber : 'N/A'}}</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!---->
+			<!--Re-Payment Transactions-->
+                <div class="col-lg-12 advance-transaction-details" style="background-color:#fafafa;">
+				<div class="panel-heading advance-view-header">
+					<div class="row">
+						<h3 class="panel-title">Re-Payment Transactions</h3>
+					</div>
+				</div>
+				<div class="panel-body advance-view-body">
+						<div class="form-horizontal" role="form">
+                            <div class="form-group advance-trn row" data-ng-if="scopeAdvanceDetails.AdvanceHeader.AdvanceRepaymentTransactions.length>0">
+                                <div class="bg-gray-strong advance-trn-header col-lg-12 row">
+									<div class="col-lg-3 text-black">Payment Transaction</div>
+									<div class="col-lg-2 text-black">Amount</div>
+									<div class="col-lg-2 text-black">Release Date</div>
+									<div class="col-lg-2 text-black">Payment Method</div>
+									<div class="col-lg-3 text-black">Payment Reference</div>
+								</div>
+                                <div class="row advance-trn-body row" data-ng-repeat="pta in scopeAdvanceDetails.AdvanceHeader.AdvanceRepaymentTransactions">
+									<div class="col-lg-3 text-black advance-trn-cell">{{pta.PaymentTransactionNumber}}</div>
+									<div class="col-lg-2 text-black advance-trn-cell">{{scopeAdvanceDetails.AdvanceHeader.CurrencyId | lookup: scopeAdvanceDetails.currencies:'id':'code'}}{{pta.Amount | currency : ' $'}}</div>
+									<div class="col-lg-2 text-black advance-trn-cell-ext">{{pta.ReleaseDate ? (pta.ReleaseDate | date:ApplicationConstants.formatDateComma) : 'N/A'}}</div>
+									<div class="col-lg-2 text-black advance-trn-cell-ext">{{scopeAdvanceDetails.AdvanceHeader.PaymentMethodId | lookup: scopeAdvanceDetails.paymentMethods}}</div>
+									<div class="col-lg-3 text-black advance-trn-cell-ext">{{pta.PaymentNumber ? pta.PaymentNumber : 'N/A'}}</div>
+								</div>
+							</div>
+							<div class="form-group advance-trn col-lg-12" data-ng-if="scopeAdvanceDetails.AdvanceHeader.AdvanceRepaymentTransactions.length==0">
+                                <div class="text-black advance-trn-no-repayments">There are no repayments yet.</div>
+							</div>
+						</div>
+					</div>
+				</div>
+                <!---->
+			</div>
+			<!---->
+			<!--Advance Buttons-->
+            <div class="advance-footer-wrapper">
+				<div class="row panel-footer advance-detail-footer">
+					<div class="col-lg-6"></div>
+					<div class="col-lg-6">
+						<div class="pull-right">
+							<button type="button" class="btn btn-primary"
+									data-ng-click="scopeAdvanceDetails.advanceSubmit(scopeAdvance, scopeOrg.actionScope.event.refreshActiveAdvancesAndActiveGarnisheesCount)"
+									data-ng-disabled="!formOrganizationAdvancesDetails.$valid"
+									data-ng-if="scopeOrg.actionScope.show.organizationIndependentContractorRoleAdvanceSubmit">
+								Submit
+							</button>
+							<button type="button" class="btn btn-default" data-ng-click="scopeAdvanceDetails.close()">Cancel</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!---->
+		</div>
+		<!---->
+	</div>
+</div>

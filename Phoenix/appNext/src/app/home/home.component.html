@@ -1,0 +1,239 @@
+<div class="body">
+    <!-- InstanceBeginEditable name="header-top" -->
+    <!-- InstanceEndEditable -->
+    <header class="site-header shadow">
+        <div class="shadow-content">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-12 col-md-2">
+                        <div class="logo">
+                            <a href="/">
+                                <img src="../../assets/homepage/logo-flex.svg" width="100%" />
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="col-xs-12 col-md-10">
+                        <div id="site-header-menu" class="ease site-header-menu" [class.menu-open]="menuOpen">
+                            <button id="menu-toggle" class="menu-toggle class-toggle" (click)="menuButtonClick()">
+                                <img src="../../assets/homepage/icon-menu.svg" width="60%" class="ease" />
+                            </button>
+
+                            <nav id="site-navigation" class="clearfix main-navigation" role="navigation">
+                                <ul class="menu">
+                                    <li>
+                                        <a href="#main" class="link-scroll" (click)="scrollToAnchor('#main')">{{ localization.homeLabel }}</a>
+                                    </li>
+                                    <li>
+                                        <a href="#contact" class="link-scroll" (click)="scrollToAnchor('#contact')">{{ localization.contactLabel }}</a>
+                                    </li>
+                                    <li>
+                                        <!-- <a href="#/next/account/login">{{ localization.loginLabel }}</a> -->
+                                        <a routerLink="/login">{{ localization.loginLabel }}</a>
+                                    </li>
+                                </ul>
+                            </nav>
+                            <!-- .main-navigation -->
+                        </div>
+                        <!-- .site-header-menu -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- InstanceBeginEditable name="header-bottom" -->
+    <!-- InstanceEndEditable -->
+
+    <!-- InstanceBeginEditable name="main" -->
+    <section id="main">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="title">
+                        <div class="top">{{ localization.slogan1Label }}</div>
+                        <div class="bottom">{{ localization.slogan2Label }}</div>
+                    </div>
+
+                    <div class="statement">
+                        <span class="block-lg">{{ localization.slogan3Label }}</span>
+                        <span class="block-lg">{{ localization.slogan4Label }}</span>
+                    </div>
+
+                    <!--<div class="cta"><a href="register.html" class="btn btn-upper btn-warning btn-wrap btn-register">Register for our Alpha release</a></div>-->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="glance">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12">
+                    <h2 class="section-title">{{ localization.featuresTitle }}</h2>
+
+                    <div class="row row-boxes">
+                        <div class="col-box col-xs-12 col-lg-4">
+                            <div class="box">
+                                <div class="box-icon">
+                                    <img src="../../assets/homepage/icons/icon-cycle.svg" width="80" />
+                                </div>
+
+                                <div class="box-text">{{ localization.feature1Message }}</div>
+                            </div>
+                        </div>
+
+                        <div class="col-box col-xs-12 col-lg-4">
+                            <div class="box">
+                                <div class="box-icon">
+                                    <img src="../../assets/homepage/icons/icon-list.svg" width="80" />
+                                </div>
+
+                                <div class="box-text">{{ localization.feature2Message }}</div>
+                            </div>
+                        </div>
+
+                        <div class="col-box col-xs-12 col-lg-4">
+                            <div class="box">
+                                <div class="box-icon">
+                                    <img src="../../assets/homepage/icons/icon-data.svg" width="80" />
+                                </div>
+
+                                <div class="box-text">{{ localization.feature3Message }}</div>
+                            </div>
+                        </div>
+
+                        <div class="col-box col-xs-12 col-lg-4">
+                            <div class="box">
+                                <div class="box-icon">
+                                    <img src="../../assets/homepage/icons/icon-umbrella.svg" width="80" />
+                                </div>
+
+                                <div class="box-text">{{ localization.feature4Message }}</div>
+                            </div>
+                        </div>
+
+                        <div class="col-box col-xs-12 col-lg-4">
+                            <div class="box">
+                                <div class="box-icon">
+                                    <img src="../../assets/homepage/icons/icon-gears.svg" width="80" />
+                                </div>
+
+                                <div class="box-text">{{ localization.feature5Message }}</div>
+                            </div>
+                        </div>
+
+                        <div class="col-box col-xs-12 col-lg-4">
+                            <div class="box">
+                                <div class="box-icon">
+                                    <img src="../../assets/homepage/icons/icon-venn.svg" width="80" />
+                                </div>
+
+                                <div class="box-text">{{ localization.feature6Message }}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="value">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="quote">
+                        <div>{{ localization.description1Message }}</div>
+                        <br />
+                        <div>
+                            <a href="mailto:info@flexbackoffice.com" class="link-scroll">{{ localization.contactUs1Message }}</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="contact">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12">
+                    <h2 class="section-title">{{ localization.contactUsLabel }}</h2>
+
+                    <p> {{ localization.query1Label }}
+                        <br /> {{ localization.query2Label }}</p>
+
+                    <div class="row row-form">
+                        <div class="col-md-6 col-md-3"></div>
+                        <!--Remove this After: SN-->
+                        <div class="col-xs-12 col-md-6">
+                            <div class="list-form">
+                                <div class="list-item double">
+                                    <div class="icon">
+                                        <img src="../../assets/homepage/icons/icon-address.svg" width="36" />
+                                    </div>
+                                    <div class="text">
+                                        <span class="text-line"> {{ localization.addressLine1Label }} | {{ localization.addressLine2Label }} | {{
+                                            localization.addressLine3Label }}</span>
+                                    </div>
+                                </div>
+
+                                <!--
+								<div class="list-item">
+									<div class="icon"><img src="../../assets/homepage/icons/icon-phone.svg" width="36" /></div>
+									<div class="text">
+										<span class="text-line"><a href="tel:18005361540">1 (800) 536 1540</a></span>
+									</div>
+								</div>
+								-->
+
+                                <div class="list-item">
+                                    <div class="icon">
+                                        <img src="../../assets/homepage/icons/icon-email.svg" width="36" />
+                                    </div>
+                                    <div class="text">
+                                        <span class="text-line">
+                                            <a href="mailto:info@flexbackoffice.com"></a>{{ localization.emailAddressLabel }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--
+						<div class="col-xs-12 col-md-6">	
+					
+							<form action="" method="POST">
+								<div class="form-group">
+									<label for="input-contact-name">Name <sup class="text-danger">*</sup></label>
+									<input type="text" class="form-control" id="input-contact-name" />
+								</div>
+								
+								<div class="form-group">
+									<label for="input-contact-email">Email <sup class="text-danger">*</sup></label>
+									<input type="email" class="form-control" id="input-contact-email" />
+								</div>
+								
+								<div class="form-group">
+									<label for="input-contact-message">Message</label>
+									<textarea rows="4" class="form-control" id="input-contact-name"></textarea>
+								</div>
+								
+								<button type="submit" class="btn btn-block btn-warning">Submit</button>
+							</form>
+						</div>
+						-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- InstanceEndEditable -->
+
+    <section id="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div>{{ localization.copyrightMessage }}</div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

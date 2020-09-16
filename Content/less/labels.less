@@ -1,0 +1,218 @@
+// Core variables and mixins
+@import "variables.less";
+@import "mixins.less";
+
+//
+// Labels
+// --------------------------------------------------
+
+.tag-box {
+	margin-bottom: @line-height-computed / 2;
+
+	i {
+		color: @tag-primary-color;
+	}
+}
+
+.tag {
+	display: inline-block;
+	padding: 3px 9px;
+	font-size: @font-size-small;
+	font-weight: 500;
+	line-height: @line-height-small;
+	color: @label-color;
+	text-align: center;
+	text-transform: uppercase;
+	white-space: nowrap;
+	vertical-align: top;
+	background-color: @tag-primary-color;
+	border-radius: .25em;
+	border: 1px solid darken(@tag-primary-color, 3%);
+
+	&:hover,
+	&:focus {
+		color: @label-color;
+		text-decoration: none;
+		cursor: pointer;
+		background-color: darken(@tag-primary-color, 10%);
+		border-color: darken(@tag-primary-color, 15%);
+	}
+	// Add hover effects, but only for links
+	&[href] {
+	}
+}
+
+.badge {
+    background-color: #B9B9B9;
+    min-width: 10px;
+}
+
+// Colors
+// Contextual variations (linked labels get darker on :hover)
+.label-danger {
+	.label-variant(@label-danger-bg);
+}
+
+.label-success {
+	.label-variant(@label-success-bg);
+}
+
+.label-warning {
+	.label-variant(@label-warning-bg);
+}
+
+.label-info {
+	.label-variant(@label-info-bg);
+}
+
+// Colors
+// Only give background-color difference to links (and to simplify, we don't quality with `a` but [href] attribute)
+// Important (red)
+.label-important[href] {
+	background-color: darken(@state-error-text, 10%);
+}
+// Warnings (orange)
+.label-warning[href] {
+	background-color: darken(@app-orange, 10%);
+}
+// Success (green)
+.label-success[href] {
+	background-color: darken(@state-success-text, 10%);
+}
+// Info (turquoise)
+.label-info[href] {
+	background-color: darken(@state-info-text, 10%);
+}
+// Inverse (black)
+.label-inverse {
+	background-color: @gray-dark;
+}
+
+.label-inverse[href] {
+	background-color: darken(@gray-dark, 10%);
+}
+
+// Positive (Green)
+.label-positive {
+	background-color: #57A957;
+}
+
+.label-positive[href] {
+	background-color: darken(#57A957, 10%);
+}
+// Negative (Red)
+.label-negative {
+	background-color: #DB6464;
+}
+
+.label-negative[href] {
+	background-color: darken(#DB6464, 10%);
+}
+// Notification (Orange)
+.label-notification {
+	background-color: #ED7A53;
+}
+
+.label-notification[href] {
+	background-color: darken(#ED7A53, 10%);
+}
+// White (333)
+.label-white {
+	background-color: @white;
+	color: @gray-dark;
+	text-shadow: 0 1px 0 rgba(255, 255, 255, 1);
+}
+
+.label-white[href] {
+	background-color: darken(@white, 5%);
+	color: @gray-dark;
+	text-shadow: 0 1px 0 rgba(255, 255, 255, 1);
+}
+
+
+// Important (red)
+.badge-important {
+	background-color: @state-error-text;
+}
+
+.badge-important[href] {
+	background-color: darken(@state-error-text, 10%);
+}
+// Warnings (orange)
+.badge-warning {
+	background-color: @app-orange;
+}
+
+.badge-warning[href] {
+	background-color: darken(@app-orange, 10%);
+}
+// Success (green)
+.badge-success {
+	background-color: @state-success-text;
+}
+
+.badge-success[href] {
+	background-color: darken(@state-success-text, 10%);
+}
+// Info (turquoise)
+.badge-info {
+	background-color: @state-info-text;
+}
+
+.badge-info[href] {
+	background-color: darken(@state-info-text, 10%);
+}
+// Inverse (black)
+.badge-inverse {
+	background-color: @gray-dark;
+}
+
+.badge-inverse[href] {
+	background-color: darken(@gray-dark, 10%);
+}
+
+// Positive (Green)
+.badge-positive {
+	background-color: #57A957;
+}
+
+// Positive (Green)
+.badge-positive-gray {
+	background-color: gray;
+}
+
+.badge-positive[href] {
+	background-color: darken(#57A957, 10%);
+}
+// Negative (Red)
+.badge-negative {
+	background-color: #DB6464;
+}
+
+.badge-negative[href] {
+	background-color: darken(#DB6464, 10%);
+}
+// Notification (Orange)
+.badge-notification {
+	background-color: #ED7A53;
+}
+
+.badge-notification[href] {
+	background-color: darken(#ED7A53, 10%);
+}
+// White (333)
+.badge-white {
+	background-color: @white;
+	color: @gray-dark;
+	text-shadow: 0 1px 0 rgba(255, 255, 255, 1);
+}
+
+.badge-white[href] {
+	background-color: darken(@white, 5%);
+	color: @gray-dark;
+	text-shadow: 0 1px 0 rgba(255, 255, 255, 1);
+}
+.margin-top-bottom-5 {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}

@@ -1,0 +1,78 @@
+<div class="component-wrapper">
+  <div class="container-fluid" *ngIf="complianceDocument">
+    <div class="row doc-header">
+      <div class="prof-picture">
+        <div class="frame">
+          <app-phx-profile-picture [profileId]="profileId$ | async"></app-phx-profile-picture>
+        </div>
+      </div>
+      <div class="doc-header-info-block">
+        <span>ID</span>
+        <span>{{complianceDocument.ComplianceDocumentHeaderId}}.{{complianceDocument.ComplianceDocumentId}}</span>
+      </div>
+      <div class="doc-header-info-block">
+        <span>Document Rule</span>
+        <span>{{complianceDocument.ComplianceDocumentRuleDisplayName}}</span>
+      </div>
+      <div class="doc-header-info-block">
+        <span>Expiry Date</span>
+        <span>{{complianceDocument.ComplianceDocumentExpiryDate|date:DateFormat.mediumDate}}</span>
+      </div>
+      <div class="doc-header-info-block" *ngIf="docHeaderWorkOrderInfo">
+        <span>Work Order Number</span>
+        <span>{{docHeaderWorkOrderInfo.WorkOrderFullNumber}}</span>
+      </div>
+      <div class="doc-header-info-block" *ngIf="docHeaderWorkOrderInfo">
+        <span>Worker Name</span>
+        <span>{{docHeaderWorkOrderInfo.WorkerName}}</span>
+      </div>
+      <div class="doc-header-info-block" *ngIf="docHeaderWorkOrderInfo">
+        <span>Client Name</span>
+        <span>{{docHeaderWorkOrderInfo.ClientName}}</span>
+      </div>
+      <div class="doc-header-info-block" *ngIf="docHeaderOrgInfo">
+        <span>Organization Name</span>
+        <span>{{docHeaderOrgInfo.DisplayName}}</span>
+      </div>
+      <div class="doc-header-info-block" *ngIf="docHeaderUserProfileInfo">
+        <span>Worker Name</span>
+        <span>{{docHeaderUserProfileInfo.FirstName}} {{docHeaderUserProfileInfo.LastName}}</span>
+      </div>
+      <div class="doc-header-info-block">
+        <span>Status</span>
+        <span>{{complianceDocument.ComplianceDocumentStatusId | CodeValue:codeValueGroups.ComplianceDocumentStatus}}</span>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-4 col-xl-3 nav-section">
+        <div class="nav-tree">
+          <dx-tree-view #treeview id="treeview-document-list" [items]="documents" (onItemClick)="onItemClick($event)" selectedExpr="isSelected">
+            <div *dxTemplate="let data of 'item';let i = index">
+              <strong>Document {{i}}</strong>
+              <div [ngSwitch]="data.eSignedStatusId" class="pull-right">
+                <div *ngSwitchCase="ESignStatus.Signed" class="pull-left">
+                  <i class="material-icons md-18 icon-done" aria-hidden="true">done</i>  
+                </div>
+                <div *ngSwitchCase="ESignStatus.SignedTempered" class="pull-left">
+                  <i class="material-icons md-18 icon-warning" aria-hidden="true">warning</i>
+                </div>
+                <div class="pull-right" *ngIf="data.eSignedStatusId===ESignStatus.Signed||data.eSignedStatusId===ESignStatus.SignedTempered">{{data.eSignedStatusId | CodeValue:codeValueGroups.ESignedStatus}}</div>
+              </div>
+            </div>
+          </dx-tree-view>
+        </div>
+      </div>
+      <div class="col-md-8 col-xl-9 content-panel">
+        <div class="pdfContainerReportView">
+          <iframe id="doc-view-iframe" [src]="url" *ngIf="url" (load)="onIframeLoad($event)"></iframe>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="showStateActions && complianceDocument.AvailableStateActions.length" class="row panel-footer">
+      <p class="pull-left" *ngIf="documents && documents.length > 1">{{documents.length}} documents will be approved.</p>
+      
+      <app-phx-state-action-buttons [availableStateActions]="complianceDocument.AvailableStateActions" [stateActions]="stateActions">
+      </app-phx-state-action-buttons>
+    </div>
+  </div>
+</div>

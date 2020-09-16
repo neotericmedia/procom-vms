@@ -1,0 +1,24 @@
+<div class="modal-header">
+  <h4 class="modal-title pull-left">{{title}}</h4>
+  <button type="button" class="close pull-right" aria-label="Close" (click)="close()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <div class="form-group">
+    <div class="col-md-12">
+        <label>{{ label }}</label>
+        <dx-text-area [height]="100" [(ngModel)]="comment" required [maxLength]="maxLength" [phxDebounce]="500" (onDebounce)="updateComment($event)"
+            valueChangeEvent="keyup" [placeholder]="'common.phxDialogComment.commentPlaceholder' | phxTranslate : title : maxLength"></dx-text-area>
+        <span class="help-block" [innerHTML]="helpblock"></span>
+    </div>
+</div>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-default" (click)="close()">
+    {{ 'common.generic.cancel' | phxTranslate }}
+  </button>
+  <button type="button" class="btn btn-primary" [disabled]="!comment || comment.trim().length == 0" (click)="save()">
+    {{ saveButtonText }}
+  </button>
+</div>

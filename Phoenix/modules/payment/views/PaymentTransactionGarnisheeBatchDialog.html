@@ -1,0 +1,43 @@
+﻿<div class="modal-content" data-ng-form="formPaymentBatchDialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <span class="modal-title">{{data.title}}</span>
+            <div class="btn pull-right paymentBatchClose" data-ng-click="cancel()"><i class="fontello-icon-cancel-circle"></i></div>
+        </div>
+        <div class="modal-body">
+            <div class="content-group form-horizontal">
+                <div class="form-group col-lg-12">
+                    <div class="paymentDialogTitle col-lg-8">Total Payment Amount:<span class="paymentDialogSp">{{data.amount | currency: data.currency + " $"}}</span></div>
+                </div>
+                <div class="form-group col-lg-12" style="margin-top:25px;" data-ng-if="data.paymentMethodId == ApplicationConstants.PaymentMethodType.Cheque">
+                    <div class="paymentDialogBatchNo col-lg-8">Tentative Cheque Number:<span class="paymentDialogSp">{{data.chequeNo}}</span></div>
+                </div>
+                <div class="form-group col-lg-12" style="margin-top:25px;" data-ng-if="data.paymentMethodId == ApplicationConstants.PaymentMethodType.DirectDeposit">
+                    <div class="paymentDialogBatchNo col-lg-8">Tentative Batch Number:<span class="paymentDialogSp">{{data.batchNo}}</span></div>
+                </div>
+                <div class="form-group col-lg-12" style="margin-top:24px;">
+                    <label for-property="PayFrom" for="PayFrom" model-property="data.bankId" class="control-label col-lg-4 label-to-right req-lab-right" data-original-title="" title="">Pay From</label>
+                    <div class="input-group select2-bootstrap-append col-lg-6" style="padding-left:10px;">
+                        <ui-select name="PayFrom" data-ng-model="data.bankId" theme="select2" class="form-control" required data-ng-change="bankChanged(data.bankId)">
+                            <ui-select-match placeholder="Select Bank Account">{{$select.selected.text}}</ui-select-match>
+                            <ui-select-choices repeat="item.id as item in data.bankAccounts | uiSelectChoicesFilter: $select.search: 'text': 'id'">
+                                <span data-ng-bind-html="item.text | highlight: $select.search"></span>
+                            </ui-select-choices>
+                        </ui-select>
+                        <span class="input-group-btn">
+                            <button tabindex="-1" data-ng-click="data.bankId=undefined;bankChanged(data.bankId)" class="btn btn-default"><i class="material-icons md-18">clear</i></button>
+                        </span>
+                    </div>
+                </div>
+                <div class="emptyBankList col-lg-12" data-ng-show="emptyMessageToShow">
+                    <span class="col-lg-4"></span>
+                    <span class="col-lg-8">{{data.emptyBankListMessage}}</span>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" ng-click="cancel()">Cancel</button>
+            <button type="button" class="btn btn-primary" ng-click="create()" data-ng-disabled="!formPaymentBatchDialog.$valid">Create</button>
+        </div>
+    </div>
+</div>

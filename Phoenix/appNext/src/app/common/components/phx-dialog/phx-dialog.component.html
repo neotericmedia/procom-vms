@@ -1,0 +1,63 @@
+<div bsModal #phxDialogComponent="bs-modal" [config]="{ show: false, backdrop: 'static', keyboard: true }" class="modal fade"
+  tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-sm phxDialogComponent">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button style="padding: 15px 15px;" type="button" class="close pull-right" (click)="close();">&times;</button>
+        <h4 class="header-title">{{config?.HeaderTitle}}</h4>
+      </div>
+      <div class="modal-body">
+        <h4>{{config?.BodyMessage}}</h4>
+        <div class="row form-group" *ngIf="config!=null&&config.ObjectDate!=null">
+          <label class="col-lg-3 control-label label-to-right" title="">
+            {{config?.ObjectDate?.Label}}
+            <span *ngIf="config.ObjectDate.IsRequared" class="asterisk" [class.error]="!config.ObjectDate.Value">*</span>
+          </label>
+          <div class="col-lg-5">
+            <app-phx-date-box class="col-lg-8" [(ngModel)]="config.ObjectDate.Value" type="date" [required]="config.ObjectDate.IsRequared"
+              [max]="config.ObjectDate.Max" [min]="config.ObjectDate.Min" (isValidChange)="isValidChangeHandler($event)"></app-phx-date-box>
+          </div>
+          <div class="col-lg-4">
+          </div>
+        </div>
+        <div class="form-group col-lg-12" *ngIf="config && config.ObjectDropdown">
+          <label class="col-lg-3 control-label label-to-right" title="">
+            {{config?.ObjectDropdown?.Label}}
+            <span *ngIf="config.ObjectDropdown.IsRequared" class="asterisk" [class.error]="!config.ObjectDropdown.Value">*</span>
+          </label>
+          <div class="col-lg-5">
+            <app-phx-select-box [required]="config.ObjectDropdown.IsRequared" [items]="config.ObjectDropdown.DropDownList"
+              valueField="id" [(ngModel)]="config.ObjectDropdown.Value" textField="text" searchable="true" placeholder="{{config?.ObjectComment?.PlaceHolder ? config?.ObjectDropdown?.PlaceHolder : '--- Select One ---'}}">
+            </app-phx-select-box>
+          </div>
+        </div>
+        <div class="row form-group" *ngIf="config!=null&&config.ObjectComment!=null">
+          <label class="col-lg-3 control-label label-to-right" title="">
+            {{config?.ObjectComment?.Label}}
+            <span *ngIf="config.ObjectComment.IsRequared" class="asterisk" [class.error]="config.ObjectComment.IsRequared && (!config.ObjectComment.Value || 
+                config.ObjectComment.Value.length < config.ObjectComment.LengthMin || 
+                config.ObjectComment.Value.length > config.ObjectComment.LengthMax)">*</span>
+          </label>
+          <div [ngClass]="config?.ObjectComment?.Label ? 'col-lg-9' : 'col-lg-12'">
+            <div class="col-lg-12">
+              <textarea style="width:100%;height:100px;" name="ObjectComment" maxlength="{{config?.ObjectComment?.LengthMax}}"
+                minlength="{{config?.ObjectComment?.LengthMin}}" required="config.ObjectComment.IsRequared" [(ngModel)]="config.ObjectComment.Value"
+                placeholder="{{config?.ObjectComment?.PlaceHolder}}"></textarea>
+              <span class="help-block">{{config?.ObjectComment?.HelpBlock}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div class="btn-toolbar task-results pull-right">
+          <button type="button" class="btn" *ngFor="let btn of config?.Buttons|orderBy:'SortOrder'" [ngClass]="btn.Class"
+            (click)="onButtonClick(btn)" [disabled]="btn?.CheckValidation
+                    &&((config?.ObjectDate!=null&&(!isValidDate||config?.ObjectDate?.IsRequared&&config?.ObjectDate.Value==null)) || (config?.ObjectDropdown &&(config?.ObjectDropdown?.IsRequared&&config?.ObjectDropdown.Value==null))
+                     ||(config?.ObjectComment!=null&&config?.ObjectComment?.IsRequared
+                     &&(config?.ObjectComment?.Value?.length < config.ObjectComment.LengthMin || config?.ObjectComment?.Value?.length > config.ObjectComment.LengthMax)
+                     ))">{{btn.Name}}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

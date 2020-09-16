@@ -1,0 +1,17 @@
+﻿<div class="document-list">
+    <div data-ng-repeat="document in documents">
+        <div class="row">
+            <div class="col-md-10 col-lg-10">
+                <div class="filename">
+                    <a type="button" data-ng-class="document.PdfDocumentPublicId==pdfDocumentIdToPreview?'bold':''" data-ng-click="setDocumentIdToPreview(document.PdfDocumentPublicId)" data-ng-if="document.PdfDocumentPublicId" title="View" style="cursor:pointer;">{{document.Name}}</a>
+                </div>
+            </div>
+            <div class="col-md-1 col-lg-1">
+                <a type="button" data-ng-href="{{getPdfStreamByPublicId(document.PdfDocumentPublicId)}}" target="_blank" data-ng-if="document.PdfDocumentPublicId" title="View document in a new tab"><i class="fontello-icon-link-ext" /></a>
+            </div>
+            <div class="col-md-1 col-lg-1" data-ng-if="hasRemoveDocument(task)">
+                <a type="button" class="pull-right" data-ng-click="documentDelete(document)" title="Delete" style="cursor: pointer;"><i class="fontello-icon-trash"></i></a>
+            </div>
+        </div>
+    </div>
+</div>

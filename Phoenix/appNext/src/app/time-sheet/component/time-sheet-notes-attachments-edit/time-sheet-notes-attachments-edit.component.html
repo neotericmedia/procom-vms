@@ -1,0 +1,38 @@
+<blockquote class="note-block" [ngClass]="{ 'editable' : isEditing }">
+  <div class="note-edit-wrap">
+    <div class="row">
+      <div class="col-xs-8">
+        <strong class="note-label">{{ noteLabel }}</strong>
+      </div>
+      <div class="col-xs-4 text-right">
+        <button class="btn btn-link" (click)="edit()" *ngIf="isEditable && !isEditing" [disabled]="!isEditable">
+            <i class="material-icons">mode_edit</i>
+        </button>
+        <button class="btn btn-link" (click)="clear()" *ngIf="isEditable" [disabled]="!isEditable || (noteText && noteText.length === 0)">
+            <i class="material-icons">clear</i>
+        </button>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-12">
+        <div [hidden]="isEditing" class="quote">
+          <pre class="note-text">{{noteText}}</pre>
+        </div>
+        <div [hidden]="!isEditing">
+          <app-phx-textarea-expanding
+            #noteTextarea
+            [isDisabled]="!isEditable"
+            [textValue]="noteText"
+            [placeHolder]="'timesheet.notesAttachmentsEdit.notePlaceholder' | phxTranslate : maxLength"
+            [maxLength]="maxLength"            
+          ></app-phx-textarea-expanding>
+          <div class="text-right confirm">
+            <button class="btn btn-default" (click)="cancel()">{{'common.generic.cancel' | phxTranslate}}</button>
+            <button class="btn btn-primary" (click)="save()">{{'common.generic.save' | phxTranslate}}</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</blockquote>
+<div class="shroud" [hidden]="!isEditing"></div>

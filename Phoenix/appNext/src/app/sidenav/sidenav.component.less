@@ -1,0 +1,141 @@
+a:hover {
+  text-decoration: none;
+}
+
+i.material-icons.accordion-heading {
+  position: relative;
+  top: 6px;
+  padding-right: 5px;
+}
+
+.myButton {
+  display: block;
+  color: #ffffff;
+  font-weight: 400;
+  padding: 7px 0 9px 37px;
+  margin: 0;
+  cursor: pointer;
+
+  &:hover {
+    color: #ccc;
+    text-decoration: none;
+  }
+}
+
+.myButtonSub {
+  display: block;
+  color: #ffffff;
+  font-weight: 400;
+  padding: 6px 0 8px 47px;
+  margin: 0;
+  font-size: 13px;
+
+  &:hover {
+    color: #ccc;
+    text-decoration: none;
+  }
+}
+
+a>.arrow {
+  position: relative;
+  right: 0px;
+  top: 4px;
+  padding: 0;
+
+  &:before {
+    font-family: "Material Icons";
+    content: "\E145";
+  }
+}
+
+a>.arrow.arrowExpanded {
+  &:before {
+    font-family: "Material Icons";
+    content: "\E15B";
+
+  }
+}
+
+#sidebar .panel-default {
+  border-color: transparent;
+}
+
+::ng-deep #sidebar .panel {
+  border: none;
+}
+
+::ng-deep #sidebar .panel .panel-body {
+  background-color: #354051;
+  border-top: none;
+  padding: 0px;
+}
+
+::ng-deep #sidebar .panel .panel-body .childPanel .panel .panel-heading {
+  padding: 7px 0px 9px 37px;
+  border-top-left-radius: 0px;
+  border-top-right-radius: 0px;
+  color: #354051;
+  border-color: transparent;
+  color: #fff;
+}
+
+::ng-deep #sidebar .panel .panel-heading {
+  width: 100%;
+  padding: 10px 10px 15px 15px;
+  border-top-left-radius: 0px;
+  border-top-right-radius: 0px;
+
+  &:hover {
+    background-color: #2F3948;
+    color: #c7c7c7;
+    text-decoration: none;
+  }
+}
+
+::ng-deep #sidebar .panel .panel-heading .panel-title {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+::ng-deep #sidebar .panel .panel-body .childPanel .panel .panel-heading .panel-title {
+  font-weight: normal;
+}
+
+::ng-deep #sidebar .panel .panel-body .childPanel .panel {
+  background-color: #354051;
+  border-radius: 0px;
+}
+
+::ng-deep #sidebar .panel .panel-body .childPanel .panel a {
+  color: #fff;
+}
+
+::ng-deep #sidebar .panel .panel-body .childPanel .panel #childLinks a {
+  padding: 7px 0 9px 47px;
+  display: block;
+  color: #fff;
+}
+
+::ng-deep #sidebar .panel-default>.panel-heading {
+  color: #fff;
+  background-color: #354051;
+}
+
+::ng-deep #sidebar .panel-group .panel-heading+.panel-collapse>.panel-body,
+::ng-deep .panel-group .panel-heading+.panel-collapse>.list-group {
+  border-top: 0px solid #ddd;
+}
+
+::ng-deep accordion #sidebar .panel .panel-body {
+  background-color: #354051;
+  border-top: none;
+}
+
+.fa {
+  font-size: 23px;
+  padding-right: 10px;
+}
+
+.active-link {
+  background-color: #2F3948;
+}

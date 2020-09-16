@@ -1,0 +1,30 @@
+﻿<div data-cg-busy="vm.loadItemsPromise">
+    <div class="row">
+        <div class="col-lg-offset-1 col-sm-12 col-lg-10">
+            <table class="table table-condensed">
+                <thead>
+                    <tr>
+                        <th>Work Order</th>
+                        <th>Worker</th>
+                        <th>Client</th>
+                        <th>Company</th>
+                        <th class="text-center">Start</th>
+                        <th class="text-center">End</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="item in vm.items"
+                        data-ui-sref-tr="workorder.edit.core({ assignmentId: item.AssignmentId, workOrderId: item.WorkOrderId, workOrderVersionId: item.WorkOrderVersionId })"
+                        style="cursor:pointer">
+                        <td>{{item.WorkOrderFullNumber}}</td>
+                        <td>{{item.WorkerName}}</td>
+                        <td>{{item.ClientName}}</td>
+                        <td>{{item.InternalCompanyDisplayName}}</td>
+                        <td class="text-right">{{item.StartDate | date:'mediumDate'}}</td>
+                        <td class="text-right">{{item.EndDate | date:'mediumDate'}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

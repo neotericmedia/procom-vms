@@ -1,0 +1,19 @@
+<div class="app-accordion-container app-accordion-container-28" cg-busy="loadItemsPromise">
+    <div class="journal-pending0 app-accordion-level-one">
+        <div ng-repeat="company in companies">
+            <div ng-if="company.count">
+                <div class="app-accordion-level-one-item" ng-click="exportLine(company)">
+                    <i class="app-accordion-chevron" ng-class="{'icon-chevron-up': currency.open, 'icon-chevron-down': !company.open}"></i>
+                    <span ng-bind="::company.name"></span>&nbsp;
+                    <span class="badge badge-warning app-badge">{{company.count}}</span>
+                </div>
+                <div class="app-accordion-level-two text-right" style="padding:10px 40px;" ng-show="company.isOpen">
+                    <button class="btn btn-primary journal-button" ng-click="generateFinancialBatch(company.id)" title="Export to Excel">Create Export File</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <p class="app-no-items" ng-if="companyCount == 0">
+        There are no transactions to export
+    </p>
+</div>

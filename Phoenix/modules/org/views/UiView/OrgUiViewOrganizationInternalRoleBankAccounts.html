@@ -1,0 +1,200 @@
+﻿<div class="form-group">
+    <div class="col-xs-9">
+        <h4>Bank Accounts</h4>
+    </div>
+    <div class="col-xs-2 padding-10">
+        <div class="btn-toolbar">
+
+            <button type="button" class="btn btn-material btn-default" data-ng-if="scopeOrg.actionScope.show.modifyBankAccount" data-ng-show="scopeOrg.entity.OrganizationInternalRoles[0].BankAccounts==0"
+                data-ng-click="scopeOrg.actionScope.event.role.internal.bankAccountAdd()">
+                <i class="material-icons email-add-button-icon">add</i>
+            </button>
+        </div>
+    </div>
+</div>
+<div data-ng-repeat="bankAccount in scopeOrg.entity.OrganizationInternalRoles[0].BankAccounts" data-ng-form="formBankAccount"
+    class="panel panel-internal panel-internal-bank-accounts row" role="form">
+    <div class="col-lg-6 no-padding-h ">
+        <div class="form-group">
+            <label for-property="bankname" for="BankName" data-model-property="BankName" class="col-md-3 col-lg-4 control-label req-lab-right"
+                data-original-title="" title="">Bank Name</label>
+            <div class="col-md-7 col-lg-8">
+                <input type="text" ng-model="bankAccount.BankName" name="BankName" data-ng-minlength="3" data-ng-maxlength="200" maxlength="200"
+                    data-length-message="LengthRange" class="form-control" data-pt-field-view="scopeOrg.ptFieldViewConfigOnChangeStatusId"
+                    data-ng-required='scopeOrg.entity.AreComplianceFieldsRequired'>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for-property="description" for="description" data-model-property="description" class="col-md-3 col-lg-4 control-label noreq-lab"
+                data-original-title="" title="">Description</label>
+            <div class="col-md-7 col-lg-8">
+                <input type="text" ng-model="bankAccount.Description" name="description" data-ng-minlength="0" ng-maxlength="200" maxlength="200"
+                    data-length-message="LengthRange" class="form-control" data-pt-field-view="scopeOrg.ptFieldViewConfigOnChangeStatusId">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for-property="GLAccount" for="GLAccount" data-model-property="GLAccount" class="col-md-3 col-lg-4 control-label req-lab-right"
+                data-original-title="" title="">GL Account</label>
+            <div class="col-md-7 col-lg-8">
+                <input type="text" ng-model="bankAccount.GLAccount" name="GLAccount" data-ng-minlength="1" data-ng-maxlength="100" data-length-message="LengthRange"
+                    maxlength="100" class="form-control" data-pt-field-view="scopeOrg.ptFieldViewConfigOnChangeStatusId" data-ng-required='scopeOrg.entity.AreComplianceFieldsRequired'>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for-property="CurrencyId" for="CurrencyId" data-model-property="bankAccount.CurrencyId" class="col-md-3 col-lg-4 control-label req-lab-right"
+                data-original-title="" title="">Currency</label>
+            <div class="col-md-7 col-lg-8">
+                <ui-select name="CurrencyId" data-ng-model="bankAccount.CurrencyId" theme="select2" class="form-control" data-pt-field-view="scopeOrg.ptFieldViewConfigOnChangeStatusId"
+                    data-ng-required='scopeOrg.entity.AreComplianceFieldsRequired'>
+                    <ui-select-match placeholder="-- Select One --">{{$select.selected.text}}</ui-select-match>
+                    <ui-select-choices repeat="item.id as item in scopeOrg.lists.currencyList | uiSelectChoicesFilter: $select.search: 'text'">
+                        <span data-ng-bind-html="item.text | highlight: $select.search"></span>
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for-property="Transit" for="Transit" data-model-property="Transit" class="col-md-3 col-lg-4 control-label req-lab-right"
+                data-original-title="" title="">Transit</label>
+            <div class="col-md-7 col-lg-8">
+                <input type="text" ng-model="bankAccount.Transit" name="Transit" data-ng-minlength="1" data-ng-maxlength="50" maxlength="50"
+                    data-length-message="LengthRange" class="form-control" data-pt-field-view="scopeOrg.ptFieldViewConfigOnChangeStatusId"
+                    data-ng-required='scopeOrg.entity.AreComplianceFieldsRequired'>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for-property="AccountNo" for="AccountNo" data-model-property="AccountNo" class="col-md-3 col-lg-4 control-label req-lab-right"
+                data-original-title="" title="">Account #</label>
+            <div class="col-md-7 col-lg-8">
+                <input type="text" account="#" ng-model="bankAccount.AccountNo" name="AccountNo" data-ng-minlength="1" data-ng-maxlength="50"
+                    maxlength="50" data-length-message="LengthRange" class="form-control" data-pt-field-view="scopeOrg.ptFieldViewConfigOnChangeStatusId"
+                    data-ng-required='scopeOrg.entity.AreComplianceFieldsRequired'>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6 no-padding-h">
+        <div class="form-group">
+            <div data-ng-if="scopeOrg.actionScope.show.modifyBankAccount">
+                <div class="col-md-3 col-lg-4"></div>
+                <div class="col-lg-6">
+                    <button class="btn btn-default" data-ng-click="scopeOrg.actionScope.event.role.internal.bankAccountMakePrimary(bankAccount)"
+                        data-ng-hide="bankAccount.IsPrimary || scopeOrg.entity.Id == 0">Make Primary</button>
+                    <strong data-ng-show="bankAccount.IsPrimary">Primary Bank Account</strong>
+                </div>
+                <div class="col-lg-2 no-padding-h-r">
+
+                </div>
+            </div>
+            <div data-ng-if="!scopeOrg.actionScope.show.modifyBankAccount">
+                <div class="col-md-3 col-lg-4"></div>
+                <div class="col-md-7 col-lg-8">
+                    <strong data-ng-show="bankAccount.IsPrimary">Primary Bank Account</strong>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for-property="OrganizationBankStatusId" for="OrganizationBankStatusId" data-model-property="bankAccount.OrganizationBankStatusId"
+                class="col-md-3 col-lg-4 control-label req-lab-right" data-original-title="" title="">Status</label>
+            <div class="col-md-7 col-lg-8 no-padding-h-r">
+                <ui-select name="OrganizationBankStatusId" data-ng-model="bankAccount.OrganizationBankStatusId" theme="select2" class="form-control"
+                    data-pt-field-view="scopeOrg.ptFieldViewConfigOnChangeStatusId" data-ng-required='scopeOrg.entity.AreComplianceFieldsRequired'>
+                    <ui-select-match placeholder="-- Select One --">{{$select.selected.text}}</ui-select-match>
+                    <ui-select-choices repeat="item.id as item in scopeOrg.lists.organizationBankStatusList | uiSelectChoicesFilter: $select.search: 'text'">
+                        <span data-ng-bind-html="item.text | highlight: $select.search"></span>
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for-property="NextChequeNumber" for="NextChequeNumber" data-model-property="NextChequeNumber" class="col-md-3 col-lg-4 control-label req-lab-right"
+                data-original-title="" title="">Next Cheque</label>
+            <div class="col-md-7 col-lg-8 no-padding-h-r">
+                <!--
+                    Restore this code when CIMS goes offline
+                    <input type="text" ng-model="bankAccount.NextChequeNumber" name="NextChequeNumber" class="form-control"
+                           data-float-between-input="{from:1, to:2147483647, decimalplaces:0, doesemptytozero:'false'}"
+                           data-pt-field-view="scopeOrg.ptFieldViewConfigOnChangeStatusId"
+                           data-required-message="Required" required="required" pattern="^[\d]*$">
+                    -->
+                <div data-ng-if="!scopeOrg.actionScope.show.modifyBankAccount" class="fieldViewMode form-control-static">{{bankAccount.NextChequeNumber ? bankAccount.NextChequeNumber : 'N/A'}}</div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for-property="NextDirectDepositBatchNumber" for="NextDirectDepositBatchNumber" data-model-property="NextDirectDepositBatchNumber"
+                class="col-md-3 col-lg-4 control-label req-lab-right" data-original-title="" title="">Next Direct Deposit Batch</label>
+            <div class="col-md-7 col-lg-8 no-padding-h-r">
+                <!--
+                    Restore this code when CIMS goes offline
+                    <input type="text" ng-model="bankAccount.NextDirectDepositBatchNumber" name="NextDirectDepositBatchNumber" class="form-control"
+                           data-float-between-input="{from:1, to:2147483647, decimalplaces:0, doesemptytozero:'false'}"
+                           data-pt-field-view="scopeOrg.ptFieldViewConfigOnChangeStatusId"
+                           data-required-message="Required" required="required" pattern="^[\d]*$">
+                    -->
+                <div data-ng-if="!scopeOrg.actionScope.show.modifyBankAccount" class="fieldViewMode form-control-static">{{bankAccount.NextDirectDepositBatchNumber ? bankAccount.NextDirectDepositBatchNumber : 'N/A'}}</div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for-property="NextWireTransferBatchNumber" for="NextWireTransferBatchNumber" data-model-property="NextWireTransferBatchNumber"
+                class="col-md-3 col-lg-4 control-label req-lab-right" data-original-title="" title="">Next Wire Transfer Batch</label>
+            <div class="col-md-7 col-lg-8 no-padding-h-r">
+                <!--
+                    Restore this code when CIMS goes offline
+                    <input type="text" ng-model="bankAccount.NextWireTransferBatchNumber" name="NextWireTransferBatchNumber" class="form-control"
+                           data-float-between-input="{from:1, to:2147483647, decimalplaces:0, doesemptytozero:'false'}"
+                           data-pt-field-view="scopeOrg.ptFieldViewConfigOnChangeStatusId"
+                           data-required-message="Required" required="required" pattern="^[\d]*$">
+                    -->
+                <div data-ng-if="!scopeOrg.actionScope.show.modifyBankAccount" class="fieldViewMode form-control-static">{{bankAccount.NextWireTransferBatchNumber ? bankAccount.NextWireTransferBatchNumber : 'N/A'}}</div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for-property="AccountId" for="AccountId" data-model-property="AccountId" class="col-md-3 col-lg-4 control-label req-lab-right"
+                data-original-title="" title="">Account ID</label>
+            <div class="col-md-7 col-lg-8 no-padding-h-r">
+                <input type="text" ng-model="bankAccount.AccountId" name="AccountId" data-ng-minlength="1" data-ng-maxlength="50" maxlength="50"
+                    data-length-message="LengthRange" class="form-control" data-pt-field-view="scopeOrg.ptFieldViewConfigOnChangeStatusId">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for-property="OrganizationBankSignatureId" for="OrganizationBankSignatureId" data-model-property="OrganizationBankSignatureId"
+                class="col-md-3 col-lg-4 control-label" data-original-title="" title="">Signature</label>
+            <div class="col-md-7 col-lg-8 no-padding-h-r">
+                <div class="input-group select2-bootstrap-append">
+                    <ui-select name="OrganizationBankSignatureId" data-ng-model="bankAccount.OrganizationBankSignatureId" theme="select2" class="form-control"
+                        data-pt-field-view="scopeOrg.ptFieldViewConfigOnChangeStatusId">
+                        <ui-select-match placeholder="-- Select One --">{{$select.selected.text}}</ui-select-match>
+                        <ui-select-choices repeat="item.id as item in scopeOrg.lists.organizationBankSignatureList | uiSelectChoicesFilter: $select.search: 'text'">
+                            <span data-ng-bind-html="item.text | highlight: $select.search"></span>
+                        </ui-select-choices>
+                    </ui-select>
+                    <span class="input-group-btn">
+                        <button tabindex="-1" data-ng-click="bankAccount.OrganizationBankSignatureId=undefined" class="btn btn-default">
+                            <i class="material-icons md-18">clear</i>
+                        </button>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-2 pull-right no-padding-h" data-ng-if="scopeOrg.actionScope.show.modifyBankAccount">
+            <button type="button" class="btn btn-material btn-default pull-right" data-ng-click="scopeOrg.actionScope.event.role.internal.bankAccountRemove(bankAccount)">
+                <i class="material-icons">delete</i>
+            </button>
+        </div>
+    </div>
+    <!--<div class="form-group" data-ng-if="scopeOrg.actionScope.show.modifyBankAccount" >
+			<div class="col-lg-12 no-padding-h">				
+				<button type="button" class="btn btn-material btn-default pull-right" data-ng-click="scopeOrg.actionScope.event.role.internal.bankAccountRemove(bankAccount)" >
+					<i class="material-icons">delete</i>
+				</button>
+			</div>
+		</div>-->
+</div>
+
+<div class="padding-10 pull-right" data-ng-if="scopeOrg.actionScope.show.modifyBankAccount">
+    <div class="btn-toolbar">
+        <button type="button" class="btn btn-material btn-default" data-ng-if="scopeOrg.actionScope.show.modifyBankAccount" data-ng-hide="scopeOrg.entity.OrganizationInternalRoles[0].BankAccounts==0"
+            data-ng-click="scopeOrg.actionScope.event.role.internal.bankAccountAdd()">
+            <i class="material-icons email-add-button-icon">add</i>
+        </button>
+    </div>
+</div>

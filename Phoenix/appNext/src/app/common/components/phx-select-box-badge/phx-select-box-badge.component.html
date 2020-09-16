@@ -1,0 +1,19 @@
+<app-phx-select-box [items]="items" [value]="value" [showClearButton]="showClearButton" [readOnly]="readOnly" [disabled]="disabled"
+    [width]="width" [valueField]="valueField" [searchable]="false" (valueChanged)="onValueChanged($event)">
+    <div *dxTemplate="let data of 'item-template'">
+        {{data[textField]}}
+        <span class="badge" [ngClass]="badgeCssClass">{{data[badgeField]}}</span>
+    </div>
+    <div *dxTemplate="let data of 'field-template'">
+        <div class="text-field-container">
+            <dx-text-box [value]="data && data[textField]" [readOnly]="true" class="hidden-text-box"></dx-text-box>
+            <div class="text-field">
+                <span *ngIf="data">
+                    {{data[textField]}}
+                    <span class="badge" [ngClass]="badgeCssClass">{{data[badgeField]}}</span>
+                </span>
+                <span class="placeholder" *ngIf="!data || !data[textField]">{{placeholder}}</span>
+            </div>
+        </div>
+    </div>
+</app-phx-select-box>

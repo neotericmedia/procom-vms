@@ -1,0 +1,138 @@
+// ----------------------------------------------------
+// ADMIN TEMPLATE | WII Admin Template
+// --------------------------------------
+// version       : 20.05.2013
+// copyright     : (c) 2013 Petr Marasek
+// contact       : gootoboo@gmail.com
+// ----------------------------------------------------
+/* WII - THEMES - PRETTYCHECKABLE  
+ * ----------------------------------------------------------------------------- 
+ */
+
+.prettycheckbox,
+.prettyradio {    
+    display: inline-block;
+    margin:0;
+    //padding:5px 0 4px;
+    min-height: 20px;
+    vertical-align: middle;
+
+    a {
+        display: block;
+        float: left;
+        margin:0;
+        .size(20px, 20px);
+        border: @input-border-width solid @input-border;
+        cursor: pointer;
+        text-decoration: none;
+        &:hover {
+            text-decoration: none;
+        }
+
+        &:focus {
+            outline: 0 none;
+            text-decoration: none;
+        }
+    
+        &:after {
+            display: block;
+            .size(16px, 16px);
+            .font-appicon(16px);
+            text-align: center; 
+        }
+    }
+
+    label {
+        display: block;
+        float: left;
+        margin: 1px 5px 0;
+        cursor: pointer;
+    }
+}
+
+.prettycheckbox {
+    a {    
+        &:focus {
+
+        }
+        &.checked {
+            &:after {
+                content: "\e011";        
+            }        
+        }
+        &.checked:focus {
+
+        }
+    }
+}
+
+.prettyradio { 
+    a {
+        border-radius: 50%;
+
+        &:focus {
+
+        }
+        &.checked {
+            &:after {
+                content: "\e005";        
+            }        
+        }
+        &.checked:focus {
+
+        }
+    }
+}
+
+.prettycheckbox.default a,
+.prettyradio.default a { 
+    color: @gray-dark;
+}
+
+.prettycheckbox.blue a,
+.prettyradio.blue a { 
+    color: @brand-primary;
+}
+
+.prettycheckbox.green a,
+.prettyradio.green a { 
+    color: @brand-success;
+}
+
+.prettycheckbox.disabled a,
+.prettyradio.disabled a,
+.prettycheckbox.disabled label,
+.prettyradio.disabled label{
+    cursor:not-allowed;
+}
+
+.prettycheckbox.disabled a,
+.prettyradio.disabled a {
+    background-color: #ebebeb;
+    color: #888888;
+    //.opacity(90);
+}
+
+
+// Indent the labels to position radios/checkboxes as hanging
+.radio,
+.radio-inline,
+.checkbox,
+.checkbox-inline {
+  .prettycheckbox,
+  .prettyradio {
+    float: left;
+    margin-left: -20px;
+  }
+}
+
+.labelright.prettycheckbox,
+.labelright.prettyradio {
+    //float: left;
+    //margin-left: -20px;
+}
+.labelleft.prettycheckbox,
+.labelleft.prettyradio {
+    //float: none;
+    //margin-left: 0;
+}

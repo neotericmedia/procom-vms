@@ -1,0 +1,31 @@
+<div *ngIf="entityTypeId>0 && entityId>0">
+    <div *ngIf="parentEntityHasNoApplicableComplianceDocuments">
+        <h4>No Applicable Compliance Document(s)</h4>
+    </div>
+    <div>
+        <div class="panel-body row">
+            <div class="col-lg-12 pull-left" *ngIf="documentEntityGroupsWithTemplates?.length">
+                <button type="button" class="btn btn-default compliance-document-button elipsis" (click)="onGenerateAllDocuments()">
+                    Generate All Documents
+                </button>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="documentEntityGroups">
+        <div class="col-lg-12" *ngFor="let group of documentEntityGroups; trackBy: identifyEntityGroup">
+            <app-compliance-document-entity-group [parentEntityTypeId]="entityTypeId" [documentEntityGroup]="group" [useBoldHeading]="useBoldHeading"
+                (onStateAction)="onStateAction($event)"
+                (onViewSample)="onViewSample($event)"
+                (onGenerateDocument)="onGenerateDocument($event)"
+            >
+            </app-compliance-document-entity-group>
+    </div>
+</div>
+
+<app-compliance-document-expiry-date-modal (actionClick)="onExpiryDateModalConfirm($event)"></app-compliance-document-expiry-date-modal>
+
+<app-phx-document-file-upload [editable]="false" [showAddButton]="false" [fileUploaderOptions]="fileUploaderOptions_DocumentMain"
+    [(configuration)]="complianceDocumentFileUploadConfiguration" (onSuccessItem)="callBackOnFileUploadFinish($event)" (onClose)="callBackOnFileUploadClose($event)"
+    (onStartUpload)="callBackOnFileUploadBegin($event)"></app-phx-document-file-upload>
+
+<app-compliance-document-dialog-compliance-template #complianceDocumentDialogComplianceTemplate (complianceDocumentDialogComplianceTemplateOnClickEvent)="complianceDocumentDialogComplianceTemplateOnClickEvent()"></app-compliance-document-dialog-compliance-template>

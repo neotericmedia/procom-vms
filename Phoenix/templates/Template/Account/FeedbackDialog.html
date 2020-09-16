@@ -1,0 +1,42 @@
+﻿<div class="modal-header">
+    <span class="modal-title">{{ localization.feedbackLabel }}</span>
+    <div class="btn pull-right" data-ng-click="close()" style="left:20px;"><i class="fontello-icon-cancel-circle"></i></div>
+</div>
+<div class="modal-body" style="max-height: 700px;">
+    <div id="feedbackAreaDiv" style="width:86%;margin:2% 7%;">
+        <div class="col-lg-12" style="margin:-15px 0 20px 0;">
+            <span>
+                {{ localization.feedbackDescription }}
+            </span>
+        </div>
+        <div class="col-lg-12 row" id="feedbackType" style="margin:10px 0;">
+            <div class="col-lg-3">
+                <span class="feedbackHeader" data-ng-click="feedbackType(0)" title="Share your idea" data-ng-class="{selected :types[0].type}"><icon class="icon-lightbulb"></icon>&nbsp;&nbsp;{{ localization.ideaLabel }}</span>
+            </div>
+            <div class="col-lg-3">
+                <span class="feedbackHeader" data-ng-click="feedbackType(1)" title="Describe your problem" data-ng-class="{selected :types[1].type}"><icon class="icon-warning-sign"></icon>&nbsp;&nbsp;{{ localization.problemLabel }}</span>
+            </div>
+            <div class="col-lg-3">
+                <span class="feedbackHeader" data-ng-click="feedbackType(2)" title="Ask a question" data-ng-class="{selected :types[2].type}"><icon class="icon-question-sign"></icon>&nbsp;&nbsp;{{ localization.questionLabel }}</span>
+            </div>
+            <div class="col-lg-3">
+                <span class="feedbackHeader" data-ng-click="feedbackType(3)" title="Praisе" data-ng-class="{selected :types[3].type}"><icon class="icon-heart"></icon>&nbsp;&nbsp;{{ localization.praiseLabel }}</span>
+            </div>
+        </div>
+        <div class="col-lg-12" data-ng-form="textForm">
+            <textarea class="form-control" name="FeedbackTextarea" placeholder="{{ localization.feedbackPlaceholder }}" rows="5" id="feedbackArea" data-ng-model="feedback" style="font-size:12px;width:100%" maxlength="1000"></textarea>
+            <div ng-show="feedback.length > 990">
+                {{ localization.feedbackLengthMessage | phxTranslate:feedback.length }}
+            </div>
+        </div>
+
+    </div>
+</div>
+<div class="modal-footer" style="padding-right:20px;">
+    <div class="row">
+        <div class="pull-right buttons">
+            <button type="button" class="btn btn-default" data-ng-click="cancelSend()">{{ localization.cancelButton }}</button>
+            <button type="button" class="btn btn-primary" data-ng-click="sendFeedback(feedback)">{{ localization.submitButton }}</button>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,202 @@
+.panel.panel-default{border: none; padding:0;}
+
+@calendarBorder: #EAEAEA;
+@screen-calendar: 959px;
+
+.header-row{
+    font-weight: bold;
+    font-size: 12px;
+    height: 24px;
+    text-align: center;
+    border-left: solid 1px @calendarBorder;
+    border-right: solid 1px @calendarBorder;
+
+}
+.header-row > div {
+    border-top: solid 1px @calendarBorder;
+    border-left: solid 1px @calendarBorder;    
+}
+
+.header-row > div:first-child{
+    border-left: none;    
+}
+
+.header-weekend{
+    color: #FF7A7A;
+}
+
+.header-weekday{
+    color: #959595;
+}
+
+.calendar-outer-container{
+    border-left: solid 1px @calendarBorder;
+    border-bottom: solid 1px @calendarBorder;
+    border-right: solid 1px @calendarBorder;
+}
+ 
+.cell-row > div {
+    border-top: solid 1px @calendarBorder;
+    border-left: solid 1px @calendarBorder;    
+}
+
+.cell-row > div:first-child{
+    border-left: none;    
+}
+
+@media only screen and (max-width: @screen-calendar) {
+    .cell-row > div {
+        border-left: none;
+    }
+}
+
+.cell-wrap{
+    height: 100%;
+}
+
+.weekend, .holiday{
+    background-color: #F7F7F7;
+}
+
+.weekday{
+    background-color: #fff;
+
+}
+
+.fillDay{
+    background-color:#f5f5f5;
+}
+
+.footer-row{
+    padding: 15px 0 0 0;
+    text-align: right; 
+}
+
+.footer-row .footer-label{    
+    text-transform: uppercase; 
+    font-size: 16px;
+    color: #000000;
+    font-weight: bold; 
+    padding-right: 25px;
+}
+
+.footer-row .footer-hours{
+    font-size: 24px;  
+    font-weight: bold;  
+    color: #000000;
+}
+
+.footer-row .footer-units{
+    font-size: 16px;
+    color: #666666;
+    padding-right: 15px;
+}
+
+.btn-add {
+    z-index: 99;
+    color: #3399FF;
+    bottom: 10px;
+    right: 10px;
+    position: fixed;
+    float: right;
+    cursor: pointer;
+    display: none;
+}
+
+.btn-add .material-icons {
+    display: block;
+    position: relative;
+    font-size: 65px;
+}
+
+.btn-add:before {
+    content: ' ';
+    background-color: white;
+    display: block;
+    position: absolute;
+    top: 25%;
+    bottom: 25%;
+    left: 25%;
+    right: 25%;
+}
+
+.cell-day {
+    flex: 1 0 auto !important;
+    position: relative;
+}
+
+.add-btn-container {
+    position: absolute;
+    bottom: 0px;
+    right: 0px;
+}
+
+.cell-day .add-btn{
+    display:none;
+    cursor: pointer;
+}
+
+.cell-day:hover .add-btn{
+    display: inline;
+    color: #3399FF;
+}
+
+.active {
+    background-color: #EBEBEB;
+} 
+
+@media only screen and (max-width: @screen-calendar) {
+
+    .cell-day.fillDay {
+        display:none;
+    }
+
+    .btn-add {
+        display: block;     // IE does not support initial
+    }
+
+    .calendar-inner-container {
+
+        overflow: hidden;
+        border:none;
+    }    
+
+    .cell-day:hover .add-btn {
+        display: none;
+    }
+}
+
+@media only screen and (max-width: 767px) {
+    .btn-add {
+        bottom: 55px;
+    }
+}
+
+.panel-footer{
+    padding: 10px 15px;
+    background-color: #F5F5F5;
+    border-top: 1px solid #DDD;
+    border-bottom-right-radius: 3px;
+    text-align: right; 
+}
+
+.capsuleListItemWrap {
+    padding-left: 10px;
+    padding-right: 10px;
+    cursor: pointer;
+}
+.capsuleListItemWrap:hover *, .capsuleListItemWrap:focus *{
+    color: #428bca;
+}
+.capsuleListItem > div{
+    padding: 10px 0 10px 0;
+}
+
+.text-gray {
+    padding-bottom: 0;
+}
+
+.btn-add {
+    text-decoration: none;
+    padding: 0;
+}

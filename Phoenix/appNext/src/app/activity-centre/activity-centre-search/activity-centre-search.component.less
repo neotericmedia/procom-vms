@@ -1,0 +1,126 @@
+:host {
+    display: block;
+}
+
+.search-container {
+    margin-top: 15px;
+    padding:15px;
+    > div:nth-last-child(3) {
+        margin-bottom: 50px;
+    }
+}
+
+.checkAll {
+    label {
+        margin-bottom: 0;
+    }
+    input[type="checkbox"] {
+        display: none;
+    }
+    i.material-icons {
+        display: block;
+        color: #666;
+        cursor: pointer;
+        font-size: 1.85em;
+        text-align: center;
+    }
+}
+
+.checkAll_top {
+    margin: 20px 0 0;
+    border-bottom: solid 1px #ccc;
+    padding-bottom: 9px;
+}
+
+.checkAll_bottom {
+    display: inline-block;
+    label {
+        position: relative;
+        display: block;
+        z-index: 101;
+        // width: calc((100%/6) * 0.9287828450619148);
+        // @media screen and (min-width: 768px) {
+        //     width: calc((100%/12) * 0.7287828450619148);
+        // }
+    }
+}
+
+.footer-btn {
+    position: fixed;
+    bottom: 0;
+    height: 45px;
+    width: 50%;
+    margin-left: 3.5%;
+    z-index: 100;
+}
+
+.count {
+    position: relative;
+    display: inline-block;
+    bottom: 6px;
+    opacity: 0;
+    transition: opacity 200ms ease-in;
+    z-index: 101;
+    h5 {
+        opacity: 0;
+    }
+    &-display {
+        opacity: 1;
+        h5 {
+            opacity: 1;
+        }
+    }
+
+}
+
+@media only screen and (min-width: 550px) {
+    .count {
+        h5 {
+            font-weight: 600;
+        }
+    }
+}
+
+@media only screen and (max-width: 550px) {
+    .checkAll_bottom {
+        display: none;
+    }
+    .checkAll_top {
+        position: sticky;
+        top: 0;
+        background: #ffffff;
+        z-index: 1;
+        padding: 7px 0;
+        margin-top: 0px;
+    }
+    .count {
+        padding: 3px 32px;
+        background-color: rgba(102, 102, 102, 0.85);
+        color: #fff;
+        right: 100px;
+        bottom: 23px;
+        border-radius: 20px;
+        position: fixed;
+    }
+}
+
+@media only screen and (min-width: 767px) {
+    .footer-btn {
+        width: 60%;
+        margin-left: 1.1%;
+    }
+}
+
+@media only screen and (min-width: 992px) {
+    .footer-btn {
+        margin-left: 0.6%;
+    }
+}
+
+@media only screen and (min-width: 1500px) {
+    .footer-btn {
+        margin-left: 0.8%;
+    }
+}
+
+    

@@ -1,0 +1,53 @@
+<div class="btn-group btn-payroll-search-nav">
+    <div class="payroll-btn-wrapper">
+        <button type="button" class="btn btn-clouds dropdown-toggle" data-toggle="dropdown">
+            <span class="payroll-btn-name">Actions</span> <span class="caret ml payroll-btn-caret"></span>
+        </button>
+        <ul class="dropdown-menu bordered">
+            <li><a data-ui-sref="commission.ratesetup({ commissionUserProfileId:0})">Create New Commission</a></li>
+        </ul>
+    </div>
+</div>
+<div class="smart-table-wrapper">
+    <div class="row" data-cg-busy="loadItemsPromise">
+        <table data-st-table-struct='[{"stTableValue" : "searchScope.items"}, {"stPipeValue" : "searchScope.callServer"}, {"widthValues" : "[5, 34, 34, 20, 7]"}, {"stPaginationValue" : "searchScope.pageSize"}]'>
+            <thead data-st-head="1200px">
+                <tr>
+                    <th data-st-sort="CommissionUserProfileId" data-st-sort-default="reverse">ID</th>
+                    <th data-st-sort="CommissionUserProfileFirstName">First Name</th>
+                    <th data-st-sort="CommissionUserProfileLastName">Last Name</th>
+                    <th data-st-sort="CommissionRateHeadersCountOfActive">Number of Active Commissions</th>
+                    <!--<th data-st-sort="CommissionUserProfileStatusName">Status</th>-->
+                    <th data-st-pen-name="Action" title="Action">Action</th>
+                </tr>
+                <tr>
+                    <th><input placeholder="" class="input-sm form-control numberType" data-st-advanced-search="{property: 'CommissionUserProfileId', ignoreQuotes: true}" data-safe-restrict-input="[^0123456789]" /></th>
+                    <th><input placeholder="" class="input-sm form-control" data-st-advanced-search="'CommissionUserProfileFirstName'" /></th>
+                    <th><input placeholder="" class="input-sm form-control" data-st-advanced-search="'CommissionUserProfileLastName'" /></th>
+                    <th><input placeholder="" class="input-sm form-control numberType" data-st-advanced-search="{property: 'CommissionRateHeadersCountOfActive', ignoreQuotes: true}" data-safe-restrict-input="[^0123456789]" /></th>
+                    <!--<th><input placeholder="" class="input-sm form-control" data-st-advanced-search="'CommissionUserProfileStatusName'" /></th>-->
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr data-ng-repeat="item in searchScope.items" data-ui-sref="commission.rates({ commissionUserProfileId: item.CommissionUserProfileId})" style="cursor: pointer">
+                    <td title="{{item.CommissionUserProfileId}}"><span class="payroll-search-item">{{item.CommissionUserProfileId}}</span></td>
+                    <td title="{{item.CommissionUserProfileFirstName}}"><span class="payroll-search-item">{{item.CommissionUserProfileFirstName}}</span></td>
+                    <td title="{{item.CommissionUserProfileLastName}}"><span class="payroll-search-item">{{item.CommissionUserProfileLastName}}</span></td>
+                    <td title="{{item.CommissionRateHeadersCountOfActive}}"><span class="payroll-search-item">{{item.CommissionRateHeadersCountOfActive}}</span></td>
+                    <!--<td title="{{item.CommissionUserProfileStatusName}}"><span class="payroll-search-item">{{item.CommissionUserProfileStatusName}}</span></td>-->
+                    <td>
+                        <a class="btn btn-xs btn-clouds btn-row-action btn-payroll-view" data-action="view" title="View"><i class="fontello-icon-eye-1"></i></a>
+                    </td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="9">
+                        <span>Total Count: {{searchScope.totalItemCount || 0}}; Items Loaded: {{ searchScope.items ? searchScope.items.length : 0}}</span>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>

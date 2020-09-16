@@ -1,0 +1,33 @@
+app-phx-panel[headertitle='Details'] {
+    div.phx-panel{
+        padding: 0px;
+    }
+}
+
+app-organization-tab-detail {
+    div.content-group.form-horizontal {
+        padding: 0px;
+    }
+}
+
+:host ::ng-deep {
+    margin: 0 -15px;
+    display: block;
+    .control-label {
+        padding-top: 3px;
+        padding-right: 5px !important;
+        .asterisk {
+            position: absolute;
+            padding-left: 5px;
+        }
+    }
+    @media (min-width: 1200px) {
+        .form-group .col-lg-4 {
+            padding-left: 0;
+            min-width: 40% !important;
+        }
+        .form-group .col-lg-8 {
+            max-width: 60% !important;
+        }
+    }
+}

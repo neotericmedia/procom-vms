@@ -1,0 +1,112 @@
+<form [formGroup]="form">
+  <div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-8 col-xxl-6">
+      <app-phx-panel *ngIf="template" headerTitle="Name">
+        <div class="form-horizontal">
+
+          <phx-form-control [control]="form.controls['Name']" labelText="Name" [editable]="editable" viewModeText="{{template?.Name}}">
+            <input type="text" class="form-control" maxlength="128" formControlName="Name" />
+          </phx-form-control>
+
+        </div>
+      </app-phx-panel>
+
+      <app-phx-panel *ngIf="template" headerTitle="Files">
+        <div class="form-horizontal">
+          <phx-form-control-label [control]="form.controls['Files']" [enableAsterisk]="editable">Must upload at least ONE file type</phx-form-control-label>
+
+          <app-compliance-template-document-form-control [control]="form.controls['TemplateDocumentId']" labelText="Template File"
+            [editable]="editable" [documentName]="template.TemplateDocumentName" [documentId]="template.TemplateDocumentId"
+            [documentPublicId]="template.TemplateDocumentPublicId" [uploadConfiguration]="templateDocumentUploadConfiguration"
+            [uploadOptions]="templateFileUploadOptions" (onShowUploader)="initTemplateUploadConfig()" (onUploadComplete)="onUploadComplete()"
+            (onDeleteDocumentClick)="onDeleteTemplateDocument($event)"></app-compliance-template-document-form-control>
+
+          <app-compliance-template-document-form-control [control]="form.controls['SampleDocumentId']" labelText="Sample File" [editable]="editable"
+            [documentName]="template.SampleDocumentName" [documentId]="template.SampleDocumentId" [documentPublicId]="template.SampleDocumentPublicId"
+            [uploadConfiguration]="sampleDocumentUploadConfiguration" [uploadOptions]="sampleFileUploadOptions" (onShowUploader)="initSampleUploadConfig()"
+            (onUploadComplete)="onUploadComplete()" (onDeleteDocumentClick)="onDeleteSampleDocument($event)"></app-compliance-template-document-form-control>
+
+        </div>
+      </app-phx-panel>
+    </div>
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-8 col-xxl-6">
+
+      <app-phx-panel *ngIf="template" headerTitle="Restrictions">
+        <div class="form-horizontal">
+
+          <phx-form-control name="norestriction" labelText="" [editable]="false" *ngIf="!editable && template.HasRestriction === false"
+            viewModeText="No Restriction">
+          </phx-form-control>
+
+          <app-restriction-dropdown #restrictionDropDown [dropdowmitems]="restrictionDropDownItems" [editable]="editable" [items]="restirctionItemList"
+            [selectedItems]="restirctionSelectedItemsList" (restrictionItemClick)="loadRestictionItems($event)" (selectedItemsChanged)="restrictionItemsChanged($event)"
+            *ngIf="editable"></app-restriction-dropdown>
+
+          <phx-form-control name="restriction-type-header" labelText="Type" [editable]="true" *ngIf="template.HasRestriction === true"
+            viewModeText="Restrictions">
+            <label class="control-label">Restrictions</label>
+          </phx-form-control>
+
+          <phx-form-control name="Branches" labelText="Branch" [editable]="false" *ngIf="template?.Branches" viewModeText="{{template?.Branches}}"
+            [showLabelAsHyperlink]="editable" (labelClick)="onRestrictionLabelClick(ComplianceTemplateRestrictionType.InternalOrganizationDefinition1)">
+          </phx-form-control>
+
+          <phx-form-control name="Clients" labelText="Client" [editable]="false" *ngIf="template?.ClientOrganizations" viewModeText="{{template?.ClientOrganizations}}"
+            [showLabelAsHyperlink]="editable" (labelClick)="onRestrictionLabelClick(ComplianceTemplateRestrictionType.ClientOrganization)">
+          </phx-form-control>
+
+          <phx-form-control name="InternalOrganizations" labelText="Internal Organization" [editable]="false" *ngIf="template?.InternalOrganizations"
+            viewModeText="{{template?.InternalOrganizations}}" [showLabelAsHyperlink]="editable" (labelClick)="onRestrictionLabelClick(ComplianceTemplateRestrictionType.InternalOrganization)">
+          </phx-form-control>
+
+          <phx-form-control name="LineOfBusinesses" labelText="Line Of Business" [editable]="false" *ngIf="template?.LineOfBusinesses"
+            viewModeText="{{template?.LineOfBusinesses}}" [showLabelAsHyperlink]="editable" (labelClick)="onRestrictionLabelClick(ComplianceTemplateRestrictionType.LineOfBusiness)">
+          </phx-form-control>
+
+          <phx-form-control name="OrganizationRoleTypes" labelText="Organization Type" [editable]="false" *ngIf="template?.OrganizationRoleTypes"
+            viewModeText="{{template?.OrganizationRoleTypes}}" [showLabelAsHyperlink]="editable" (labelClick)="onRestrictionLabelClick(ComplianceTemplateRestrictionType.OrganizationRoleType)">
+          </phx-form-control>
+
+          <phx-form-control name="ProfileTypes" labelText="Worker Type" [editable]="false" *ngIf="template?.ProfileTypes" viewModeText="{{template?.ProfileTypes}}"
+            [showLabelAsHyperlink]="editable" (labelClick)="onRestrictionLabelClick(ComplianceTemplateRestrictionType.WorkerType)">
+          </phx-form-control>
+
+          <phx-form-control name="Worksites" labelText="Worksite" [editable]="false" *ngIf="template?.Worksites" viewModeText="{{template?.Worksites}}"
+            [showLabelAsHyperlink]="editable" (labelClick)="onRestrictionLabelClick(ComplianceTemplateRestrictionType.Worksite)">
+          </phx-form-control>
+
+          <phx-form-control name="TaxSubdivisions" labelText="Tax Province/State" [editable]="false" *ngIf="template?.TaxSubdivisions"
+            viewModeText="{{template?.TaxSubdivisions}}" [showLabelAsHyperlink]="editable" (labelClick)="onRestrictionLabelClick(ComplianceTemplateRestrictionType.TaxSubdivision)">
+          </phx-form-control>
+
+          <phx-form-control name="WorkerEligibilities" labelText="Worker Eligibility" [editable]="false" *ngIf="template?.WorkerEligibilities"
+            viewModeText="{{template?.WorkerEligibilities}}" [showLabelAsHyperlink]="editable" (labelClick)="onRestrictionLabelClick(ComplianceTemplateRestrictionType.WorkerEligibility)">
+          </phx-form-control>
+
+        </div>
+      </app-phx-panel>
+    </div>
+  </div>
+</form>
+<br/>
+
+<div class="row">
+  <app-phx-validation-messages [messages]="validationMessages"></app-phx-validation-messages>
+</div>
+
+<div class="row panel-footer ">
+  <div class="btn-toolbar button-bar">
+    <div class="btn-group pull-left">
+      <button type="button" class="btn action-button pull-left" (click)="confirmAndBacktoDocumentTypes()">
+        Back to Document Types</button>
+    </div>
+    <div class="btn-group">
+      <button type="button" class="btn btn-default action-button" (click)="discard()">
+        Cancel and Discard</button>
+      <button type="button" class="btn btn-default btn-primary action-button" [disabled]="form && !form.valid" *ngIf="editable"
+        (click)="submit()"> Submit </button>
+      <button type="button" class="btn btn-default btn-primary action-button" *ngIf="!editable" (click)="edit()">
+        Edit </button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,67 @@
+<div class="body note-container">
+    <div id="note-icons" style="display: inline-block;">
+        <span (click)="filterUnread()" [ngClass]="{selected : unred}" class="note-icon" title="Show Unread Notes">
+            <i class="material-icons  md-18 black-icon ">mail</i>
+            <span id="unreadNotes">
+                Unread
+                <span class="badge" *ngIf="readCount>0">{{readCount}}</span>
+            </span>
+        </span>
+        <span (click)="filterCritical()" class="note-icon" [ngClass]="{selected :critical}" title="Show Critical Notes">
+            <i class="material-icons  md-18 red-icon">priority_high</i>
+            <span id="criticalNotes">
+                Critical
+                <span class="badge" *ngIf="criticalCount>0">{{criticalCount}}</span>
+            </span>
+        </span>
+        <span (click)="filterAll()" class="note-icon" (click)="filterAll()" title="Show All Notes" [ngClass]="{selected :all}">
+            <i class="material-icons  md-18 black-icon">list</i>
+            <span id="allNotes">All Notes
+                <span class="badge" *ngIf="itemcount>0">{{itemcount}}</span>
+            </span>
+        </span>
+    </div>
+
+
+    <div id="noteAreaDiv">
+        <div class="col-lg-12">
+            <textarea class="form-control" placeholder="Write a Note ..." rows="3" id="noteArea" style="font-size:12px;" maxlength="32000"
+                [(ngModel)]="entity.note"> </textarea>
+        </div>
+        <div class="col-lg-12">
+            <button class="btn btn-default btn-material pull-right" (click)="addNote(entity.note, entity.isCritical)" title="Post">
+                <i class="material-icons">send</i>
+            </button>
+            <button class="btn btn-default btn-material pull-right critical" [ngClass]="{pressed : entity.isCritical }" (click)="entity.isCritical = !entity.isCritical"
+                title="Mark as critical">
+                <i class="material-icons">priority_high</i>
+            </button>
+        </div>
+    </div>
+
+    <div id="noteScroll">
+        <div *ngFor="let note of notes" class="note-box">
+            <div class="note-comment-header">
+                <span *ngIf='note.IsCritical' title="Mark as not Critical" (click)="markCritical(note, false)">
+                    <i class="material-icons md-18 red-icon">priority_high</i>
+                </span>
+                <span *ngIf="!note.IsCritical" title="Mark as Critical" (click)="markCritical(note, true)">
+                    <i class="material-icons md-18 gray-icon">priority_high</i>
+                </span>
+                <span *ngIf="note.UnreadNote.IsRead" title="Mark as Unread" (click)="markRead(note, false)">
+                    <i class="material-icons md-18 gray-icon">mail_outline</i>
+                </span>
+                <span *ngIf="!note.UnreadNote.IsRead" title="Mark as Read" (click)="markRead(note, true)">
+                    <i class="material-icons md-18">mail</i>
+                </span>
+                <span>
+                    <span class="note-owner">{{note.CommentOwnerName}}</span>
+                    <span class="note-time">&nbsp;{{note.CreatedDatetime | date:'EEE MMM dd yyyy HH:mm'}}</span>
+                </span>
+            </div>
+            <div class="note-comment-container">
+                <span class="note-comment">{{note.Comment}}</span>
+            </div>
+        </div>
+    </div>
+</div>

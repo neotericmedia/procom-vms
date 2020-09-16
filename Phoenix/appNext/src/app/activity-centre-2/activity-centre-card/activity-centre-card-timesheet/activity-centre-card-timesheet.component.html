@@ -1,0 +1,27 @@
+<div class="panel panel-default" *ngIf="card" [ngClass]="{'selected' : card?.selected}">
+  <div class="panel-body">
+    <app-activity-centre-card-header [showProfilePicture]="showProfilePicture" [cardInfo]="card">
+    </app-activity-centre-card-header>
+    <div (tap)="navigate($event)" (press)="onPress($event)" [ngClass]="{'long-content' : !hasTimeSheetApproveDeclineActions}"
+      class="panel-content">
+      <dl>
+        <dd>{{'activityCentre2.card.PeriodLabel' | phxTranslate}}</dd>
+        <dt>{{ (card.TimesheetStartDate | date:phxConstants.DateFormat.MMM_ddComma_yyyy) }} - {{ (card.TimesheetEndDate
+          | date:phxConstants.DateFormat.MMM_ddComma_yyyy) }}</dt>
+        <br />
+        <div class="line-figure">
+          <div class="pull-left">
+            <dd>{{'activityCentre2.card.ClientLabel' | phxTranslate}}</dd>
+            <dt phxEllipsisTip="150">{{ card.Client }}</dt>
+          </div>
+          <dt class="big-figure">{{ card.Amount | number:'0.2-2' }} <small>{{
+              card.RateUnitId | CodeValue:codeValueGroups.RateUnit:'text' | slice:0:1 | lowercase }}</small></dt>
+        </div>
+      </dl>
+    </div>
+    <app-activity-centre-actions *ngIf="hasTimeSheetApproveDeclineActions" (actionExecuted)="onActionExecuted($event)"
+      [card]="card"></app-activity-centre-actions>
+    <app-activity-centre-card-footer [cardInfo]="card" [entityTypeStatus]="codeValueGroups.TimeSheetStatus"></app-activity-centre-card-footer>
+  </div>
+</div>
+<app-activity-centre-card-loading *ngIf="!card"></app-activity-centre-card-loading>

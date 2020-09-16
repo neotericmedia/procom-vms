@@ -1,0 +1,57 @@
+<div [formGroup]="control.parent" 
+*ngIf="customFieldValue?.CustomFieldVersionConfiguration && nameAttribute && control">
+  <phx-form-control 
+      [control]="control"
+      [forceValidation]="forceValidation"
+      [labelText]="customFieldValue.CustomFieldVersionConfiguration?.DisplayName"
+      [layoutType]="layoutType"
+      >
+
+      <!-- List -->
+      <div *ngIf="customFieldValue.CustomFieldVersionConfiguration?.UIControlTypeId == 1 && 
+           customFieldValue.CustomFieldVersionConfiguration?.CustomFieldDataSourceDetails"> 
+        <select 
+          class="form-control"
+          [ngClass]="{ 'show-error' : forceValidation && control.errors }" 
+          [formControl]="control" 
+          (change)="updateValueDataSource($event.target.value)" >          
+          <option [ngValue]="null">{{'common.generic.select' | phxTranslate}}</option>
+          <option *ngFor="let detail of dataSourceDetails"
+              [selected]="detail.Id == customFieldValue.CustomFieldDataSourceDetailId ? true : null"
+              value="{{detail.Id}}">
+              {{ detail.Value  }}
+          </option>
+        </select>
+      </div>
+
+      <!-- OpenText -->
+      <div *ngIf="customFieldValue.CustomFieldVersionConfiguration?.UIControlTypeId == 2">
+        
+        <input               
+            [ngClass]="{ 'show-error' : forceValidation && control.errors }"
+            [formControl]="control" 
+            [placeholder]="'common.phxCustomFieldValue.openTextFieldPlaceholder' | phxTranslate : customFieldValue.CustomFieldVersionConfiguration?.DisplayName"
+            type="text"
+            class="form-control" 
+            (change)="updateValueText($event.target.value)" />
+      </div>
+
+      <!-- Radio -->
+      <div *ngIf="customFieldValue.CustomFieldVersionConfiguration?.UIControlTypeId == 4 &&
+                customFieldValue.CustomFieldVersionConfiguration.CustomFieldDataSourceDetails"
+      >
+          <label class="radio-inline" *ngFor="let radio of customFieldValue.CustomFieldVersionConfiguration.CustomFieldDataSourceDetails">
+            <input type="radio" 
+              [checked]="radio.Id === customFieldValue.CustomFieldDataSourceDetailId"
+              value="radio.Id"
+              name="{{nameAttribute}}"
+              [formControl]="control" 
+              (click)="updateValueDataSource(radio.Id)"    
+            />
+            {{ radio.Value }}
+          </label>
+      </div> 
+  
+  </phx-form-control>
+
+</div>

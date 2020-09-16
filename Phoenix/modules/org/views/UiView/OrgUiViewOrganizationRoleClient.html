@@ -1,0 +1,240 @@
+﻿<div class="panel panel-internal mln mrn" data-ng-form="formClientRole">
+	<div class="form-group">
+		<div class="col-lg-10">
+			<h4>Role Details</h4>
+		</div>
+	</div>
+	<div class="form-group" ng-if="scopeOrg.entity.OrganizationClientRoles[0].Id!=0">
+		<label data-for-property="OrganizationRoleStatusId" for="OrganizationRoleStatusId" data-model-property="scopeOrg.entity.OrganizationClientRoles[0].OrganizationRoleStatusId"
+		 class="col-lg-3 control-label label-to-right req-lab-right" data-original-title="" title="">Role Status</label>
+		<div class="col-lg-7">
+			<ui-select name="OrganizationRoleStatusId" theme="select2" class="form-control" required="required" data-ng-model="scopeOrg.entity.OrganizationClientRoles[0].OrganizationRoleStatusId"
+			 data-pt-field-view="scopeOrg.ptFieldViewConfigOnChangeStatusId" data-pt-field-view-model-validation="{ { scopeOrg.entity.OrganizationClientRoles[0] } }">
+				<ui-select-match placeholder="-- Select One --">{{$select.selected.text}}</ui-select-match>
+				<ui-select-choices repeat="item.id as item in scopeOrg.lists.organizationRoleStatusTypeList | uiSelectChoicesFilter: $select.search: 'text'">
+					<span data-ng-bind-html="item.text | highlight: $select.search"></span>
+				</ui-select-choices>
+			</ui-select>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-lg-3 control-label" data-original-title="" title="" data-ng-class="scopeOrg.actionScope.event.role.client.hasOrganizationClientRoleLOB ? 'req-lab-right-valid' : 'req-lab-right'">Line Of Business</label>
+		<div class="col-lg-7">
+			<div data-ng-repeat="lob in scopeOrg.entity.OrganizationClientRoles[0].OrganizationClientRoleLOBs">
+				<input type="checkbox" data-ng-model="lob.IsSelected" data-pt-field-view="scopeOrg.ptFieldViewConfigOnChangeStatusId" data-ng-required="!scopeOrg.actionScope.event.role.client.hasOrganizationClientRoleLOB"
+				 data-ng-change="scopeOrg.actionScope.event.role.client.onChangeOrganizationClientRoleLOBs()" />
+				<span>&nbsp;{{lob.LineOfBusinessId|lookupnocache:scopeOrg.lists.lineOfBusinessesList:'id':'text'}}</span>
+			</div>
+		</div>
+	</div>
+	<div class="form-group" data-ng-show="!scopeOrg.entity.OrganizationClientRoles[0].OrganizationClientRoleNationalAccountManagers||scopeOrg.entity.OrganizationClientRoles[0].OrganizationClientRoleNationalAccountManagers.length==0">
+		<label for-property="NationalAccountManager" for="NationalAccountManager" class="col-lg-3 control-label" data-original-title=""
+		 title="">National Account Manager</label>
+		<div class="col-lg-7">
+			<div class="btn-group pull-right">
+				<button type="button" class="btn btn-default btn-material" data-ng-if="scopeOrg.actionScope.show.organizationClientRoleEditNationalAccountManager"
+				 data-ng-click="scopeOrg.actionScope.event.role.client.addNationalAccountManager()">
+					<i class="material-icons">add</i>
+				</button>
+			</div>
+		</div>
+	</div>
+	<div data-ng-repeat="nationalAccountManager in scopeOrg.entity.OrganizationClientRoles[0].OrganizationClientRoleNationalAccountManagers">
+		<div class="form-group">
+			<label for-property="NationalAccountManager" for="NationalAccountManager" class="col-lg-3 control-label label-to-right req-lab-right"
+			 data-model-property="nationalAccountManager.UserProfileInternalId" data-original-title="" title="">National Account Manager</label>
+			<!--<label for-property="NationalAccountManager" for="NationalAccountManager" class="col-md-3 control-label label-to-right req-lab-right" data-model-property="nationalAccountManager.UserProfileInternalId" data-original-title="" title="" data-ng-if="!$first">&nbsp;</label>-->
+			<div class="col-xs-11 col-lg-7">
+				<div class="input-group select2-bootstrap-append">
+					<ui-select name="NationalAccountManager" data-ng-model="nationalAccountManager.UserProfileInternalId" theme="select2" class="form-control"
+					 data-pt-field-view="scopeOrg.ptFieldViewConfigOnChangeStatusId" required data-pt-field-view-custom="{ { nationalAccountManager.UserProfileInternalId | lookupnocache:scopeOrg.userProfileInternalList:'Id':'Contact.FullName' } }">
+						<ui-select-match placeholder="-- Select One --">{{$select.selected.Contact.FullName}} - {{$select.selected.Contact.Id}}</ui-select-match>
+						<ui-select-choices repeat="item.Id as item in scopeOrg.userProfileInternalList | uiSelectChoicesFilteredByUsage: $select.search:scopeOrg.entity.OrganizationClientRoles[0].OrganizationClientRoleNationalAccountManagers:nationalAccountManager:'UserProfileInternalId':'Id': 'Contact.FullName'">
+							<span data-ng-bind-html="item.Contact.FullName | highlight: $select.search"></span>
+							<span data-ng-bind-html="' - ' + item.Contact.Id  | highlight: $select.search"></span>
+						</ui-select-choices>
+					</ui-select>
+					<span class="input-group-btn">
+						<button tabindex="-1" data-ng-click="scopeOrg.actionScope.event.role.client.clearNationalAccountManager(nationalAccountManager)"
+						 data-ng-if="scopeOrg.actionScope.show.organizationClientRoleEditNationalAccountManager" class="btn btn-default">
+							<i class="material-icons md-18">clear</i>
+						</button>
+					</span>
+				</div>
+			</div>
+			<div class="col-xs-1 no-padding">
+				<button type="button" class="btn btn-default btn-material" data-ng-if="scopeOrg.actionScope.show.organizationClientRoleEditNationalAccountManager"
+				 data-ng-click="scopeOrg.actionScope.event.role.client.removeNationalAccountManager(nationalAccountManager)">
+					<i class="material-icons">delete</i>
+				</button>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-xs-11 col-lg-10 no-padding-h"></div>
+			<div class="col-xs-1 no-padding-h" data-ng-if="$last">
+				<button type="button" class="btn btn-default btn-material padding-10" data-ng-if="scopeOrg.actionScope.show.organizationClientRoleEditNationalAccountManager&&$last"
+				 data-ng-click="scopeOrg.actionScope.event.role.client.addNationalAccountManager()">
+					<i class="material-icons">add</i>
+				</button>
+			</div>
+		</div>
+	</div>
+	<div class="form-group">
+		<label data-for-property="StartDate" for="StartDate" data-model-property="scopeOrg.entity.OrganizationClientRoles[0].StartDate"
+		 class="col-lg-3 control-label" data-original-title="" title="">MSA Start Date</label>
+		<div class="col-lg-7">
+			<pt-date-picker name="StartDate" data-datepicker-options="{'showWeeks': false, 'closeOnDateSelection': true}" data-ng-model="scopeOrg.entity.OrganizationClientRoles[0].StartDate"
+			 data-pt-field-view="scopeOrg.ptFieldViewConfigOnChangeStatusId" position-top="-10" position-left="170" />
+		</div>
+	</div>
+	<div class="form-group">
+		<label data-for-property="ExpiryDate" for="ExpiryDate" data-model-property="scopeOrg.entity.OrganizationClientRoles[0].ExpiryDate"
+		 class="col-lg-3 control-label" data-original-title="" title="">MSA Expiry Date</label>
+		<div class="col-lg-7">
+			<pt-date-picker name="ExpiryDate" data-ng-model="scopeOrg.entity.OrganizationClientRoles[0].ExpiryDate" data-pt-field-view="scopeOrg.ptFieldViewConfigOnChangeStatusId"
+			 position-top="-10" position-left="170" />
+		</div>
+	</div>
+	<!--<div class="form-group">
+		<div class="col-lg-8">
+			<h4>Client Sales Taxes</h4>
+		</div>
+	</div>-->
+	<div class="form-group">
+		<label data-for-property="IsChargeSalesTax" for="IsChargeSalesTax" data-model-property="scopeOrg.entity.OrganizationClientRoles[0].IsChargeSalesTax"
+		 class="col-lg-3 control-label req-lab-right" data-original-title="" title="">Charge Sales Tax?</label>
+		<div class="col-lg-7">
+			<pt-input-radio name="IsChargeSalesTax" ng-model="scopeOrg.entity.OrganizationClientRoles[0].IsChargeSalesTax" options="[{key:true,value:'Yes'},{key:false,value:'No'}]"
+			 template-type="input-radio" data-pt-field-view="scopeOrg.ptFieldViewConfigOnChangeStatusId" data-ng-required="scopeOrg.entity.AreComplianceFieldsRequired?true:false"
+			/>
+		</div>
+	</div>
+	<div class="form-group">
+		<label data-for-property="IsChargeableExpenseSalesTax" for="IsChargeableExpenseSalesTax" data-model-property="scopeOrg.entity.OrganizationClientRoles[0].IsChargeableExpenseSalesTax"
+		 class="col-lg-3 control-label req-lab-right" data-original-title="" title="">Ignore Entered Sales Tax</label>
+		<div class="col-lg-7" style="position:relative;">
+			<pt-input-radio name="IsChargeableExpenseSalesTax" ng-model="scopeOrg.entity.OrganizationClientRoles[0].IsChargeableExpenseSalesTax"
+			 options="[{key:true,value:'Yes'},{key:false,value:'No'}]" template-type="input-radio" data-pt-field-view="scopeOrg.ptFieldViewConfigOnChangeStatusId"
+			 data-ng-required="scopeOrg.entity.AreComplianceFieldsRequired?true:false" />
+		</div>
+	</div>
+	<div class="form-group" ng-if="scopeOrg.entity.OrganizationClientRoles[0].IsChargeSalesTax">
+		<label data-for-property="ClientSalesTaxDefaultId" for="ClientSalesTaxDefaultId" data-model-property="scopeOrg.entity.OrganizationClientRoles[0].ClientSalesTaxDefaultId"
+		 class="col-lg-3 control-label req-lab-right" data-original-title="" title="">Default Sales Tax Territory</label>
+		<div class="col-lg-5">
+			<div class="input-group select2-bootstrap-append">
+				<ui-select name="ClientSalesTaxDefaultId" data-ng-model="scopeOrg.entity.OrganizationClientRoles[0].ClientSalesTaxDefaultId"
+				 theme="select2" class="form-control" data-pt-field-view="scopeOrg.ptFieldViewConfigOnChangeStatusId" data-ng-required="scopeOrg.entity.AreComplianceFieldsRequired?true:false">
+					<ui-select-match placeholder="-- Select One --">{{$select.selected.text}}</ui-select-match>
+					<ui-select-choices repeat="item.id as item in scopeOrg.lists.clientSalesTaxDefaultList | uiSelectChoicesFilter: $select.search: 'text'">
+						<span data-ng-bind-html="item.text | highlight: $select.search"></span>
+					</ui-select-choices>
+				</ui-select>
+				<span class="input-group-btn">
+					<button tabindex="-1" data-ng-click="scopeOrg.entity.OrganizationClientRoles[0].ClientSalesTaxDefaultId=undefined" class="btn btn-default">
+						<i class="material-icons md-18">clear</i>
+					</button>
+				</span>
+			</div>
+		</div>
+		<div class="col-lg-4"></div>
+	</div>
+	<div class="form-group">
+		<label data-for-property="IsBypassZeroUnitTimeSheetApproval" for="IsBypassZeroUnitTimeSheetApproval" data-model-property="scopeOrg.entity.OrganizationClientRoles[0].IsBypassZeroUnitTimeSheetApproval"
+		 class="col-lg-3 control-label req-lab-right" data-original-title="" title="">Auto-approve 0 unit timesheets</label>
+		<div class="col-lg-7" style="position:relative;">
+			<pt-input-radio ng-model="scopeOrg.entity.OrganizationClientRoles[0].IsBypassZeroUnitTimeSheetApproval" options="[{key:true,value:'Yes'},{key:false,value:'No'}]"
+			 template-type="input-radio" data-pt-field-view="scopeOrg.ptFieldViewConfigOnChangeStatusId" />
+		</div>
+	</div>
+	<div class="form-group">
+		<label data-for-property="IsSuppressZeroAmountInvoiceRelease" for="IsSuppressZeroAmountInvoiceRelease" data-model-property="scopeOrg.entity.OrganizationClientRoles[0].IsSuppressZeroAmountInvoiceRelease"
+		 class="col-lg-3 control-label req-lab-right" data-original-title="" title="">Suppress release of 0 value invoices</label>
+		<div class="col-lg-7" style="position:relative;">
+			<pt-input-radio ng-model="scopeOrg.entity.OrganizationClientRoles[0].IsSuppressZeroAmountInvoiceRelease" options="[{key:true,value:'Yes'},{key:false,value:'No'}]"
+			 template-type="input-radio" data-pt-field-view="scopeOrg.ptFieldViewConfigOnChangeStatusId" />
+		</div>
+	</div>
+</div>
+
+<div class="panel panel-internal mln mrn" data-ng-form="formEmployerAccrualsAndLiabilities">
+	<div class="form-group">
+		<div class="col-lg-10">
+			<h4>Employer Accruals and Liabilities</h4>
+		</div>
+	</div>
+	<div class="form-group">
+		<label for-property="AccrueMaxedOutCanadaPensionPlanforTemp" for="AccrueMaxedOutCanadaPensionPlanforTemp" data-model-property="scopeOrg.entity.OrganizationClientRoles[0].IsAccrueMaxedOutCanadaPensionPlanForTemp"
+		 class="col-lg-4 control-label label-to-right req-lab-right" data-original-title="" title="">
+			Temp – Accrue Employer CPP/QPP after Max Deductions
+		</label>
+		<div class="col-lg-8">
+			<pt-input-radio name="AccrueMaxedOutCanadaPensionPlanforTemp" data-ng-required="scopeOrg.entity.AreComplianceFieldsRequired?true:false"
+			 data-template-type="input-radio" data-ng-model="scopeOrg.entity.OrganizationClientRoles[0].IsAccrueMaxedOutCanadaPensionPlanForTemp"
+			 data-options="[{ key: true, value: 'Yes' },{ key: false, value: 'No' }]" data-pt-field-view="scopeOrg.ptFieldViewConfigOnChangeStatusId"
+			/>
+		</div>
+	</div>
+	<div class="form-group">
+		<label for-property="AccrueMaxedOutCanadaPensionPlanforSP" for="AccrueMaxedOutCanadaPensionPlanforSP" data-model-property="scopeOrg.entity.OrganizationClientRoles[0].IsAccrueMaxedOutCanadaPensionPlanForSP"
+		 class="col-lg-4 control-label label-to-right req-lab-right" data-original-title="" title="">
+			Canadian SP – Accrue Employer CPP/QPP after Max Deductions
+		</label>
+		<div class="col-lg-8">
+			<pt-input-radio name="AccrueMaxedOutCanadaPensionPlanforSP" data-ng-required="scopeOrg.entity.AreComplianceFieldsRequired?true:false"
+			 data-template-type="input-radio" data-ng-model="scopeOrg.entity.OrganizationClientRoles[0].IsAccrueMaxedOutCanadaPensionPlanForSP"
+			 data-options="[{ key: true, value: 'Yes' },{ key: false, value: 'No' }]" data-pt-field-view="scopeOrg.ptFieldViewConfigOnChangeStatusId"
+			/>
+		</div>
+	</div>
+	<div class="form-group">
+		<label for-property="AccrueMaxedOutEmploymentInsuranceForTemp" for="AccrueMaxedOutEmploymentInsuranceForTemp" data-model-property="scopeOrg.entity.OrganizationClientRoles[0].IsAccrueMaxedOutEmploymentInsuranceForTemp"
+		 class="col-lg-4 control-label label-to-right req-lab-right" data-original-title="" title="">
+			Temp – Accrue Employer EI after Max Deductions
+		</label>
+		<div class="col-lg-8">
+			<pt-input-radio name="AccrueMaxedOutEmploymentInsuranceForTemp" data-ng-required="scopeOrg.entity.AreComplianceFieldsRequired?true:false"
+			 data-template-type="input-radio" data-ng-model="scopeOrg.entity.OrganizationClientRoles[0].IsAccrueMaxedOutEmploymentInsuranceForTemp"
+			 data-options="[{ key: true, value: 'Yes' },{ key: false, value: 'No' }]" data-pt-field-view="scopeOrg.ptFieldViewConfigOnChangeStatusId"
+			/>
+		</div>
+	</div>
+	<div class="form-group">
+		<label for-property="AccrueMaxedOutEmploymentInsuranceForSP" for="AccrueMaxedOutEmploymentInsuranceForSP" data-model-property="scopeOrg.entity.OrganizationClientRoles[0].IsAccrueMaxedOutEmploymentInsuranceForSP"
+		 class="col-lg-4 control-label label-to-right req-lab-right" data-original-title="" title="">
+			Canadian SP – Accrue Employer EI after Max Deductions
+		</label>
+		<div class="col-lg-8">
+			<pt-input-radio name="AccrueMaxedOutEmploymentInsuranceForSP" data-ng-required="scopeOrg.entity.AreComplianceFieldsRequired?true:false"
+			 data-template-type="input-radio" data-ng-model="scopeOrg.entity.OrganizationClientRoles[0].IsAccrueMaxedOutEmploymentInsuranceForSP"
+			 data-options="[{ key: true, value: 'Yes' },{ key: false, value: 'No' }]" data-pt-field-view="scopeOrg.ptFieldViewConfigOnChangeStatusId"
+			/>
+		</div>
+	</div>
+	<div class="form-group">
+		<label data-for-property="AccrueMaxedOutQuebecParentalInsurancePlanForTemp" for="AccrueMaxedOutQuebecParentalInsurancePlanForTemp"
+		 data-model-property="scopeOrg.entity.OrganizationClientRoles[0].IsAccrueMaxedOutQuebecParentalInsurancePlanForTemp" class="col-lg-4 control-label req-lab-right"
+		 data-original-title="" title="">
+			Temp - Accrue Employer PIP after Max Deductions
+		</label>
+		<div class="col-lg-8">
+			<pt-input-radio name="AccrueMaxedOutQuebecParentalInsurancePlanForTemp" data-ng-required="scopeOrg.entity.AreComplianceFieldsRequired?true:false"
+			 data-template-type="input-radio" data-ng-model="scopeOrg.entity.OrganizationClientRoles[0].IsAccrueMaxedOutQuebecParentalInsurancePlanForTemp"
+			 data-options="[{key:true,value:'Yes'},{key:false,value:'No'}]" data-pt-field-view="scopeOrg.ptFieldViewConfigOnChangeStatusId"
+			/>
+		</div>
+	</div>
+	<div class="form-group">
+		<label data-for-property="AccrueMaxedOutQuebecParentalInsurancePlanForSP" for="AccrueMaxedOutQuebecParentalInsurancePlanForSP"
+		 data-model-property="scopeOrg.entity.OrganizationClientRoles[0].IsAccrueMaxedOutQuebecParentalInsurancePlanForSP" class="col-lg-4 control-label req-lab-right"
+		 data-original-title="" title="">
+			Canadian SP - Accrue Employer PIP after Max Deductions
+		</label>
+		<div class="col-lg-8">
+			<pt-input-radio name="AccrueMaxedOutQuebecParentalInsurancePlanForSP" data-ng-required="scopeOrg.entity.AreComplianceFieldsRequired?true:false"
+			 data-template-type="input-radio" data-ng-model="scopeOrg.entity.OrganizationClientRoles[0].IsAccrueMaxedOutQuebecParentalInsurancePlanForSP"
+			 data-options="[{key:true,value:'Yes'},{key:false,value:'No'}]" data-pt-field-view="scopeOrg.ptFieldViewConfigOnChangeStatusId"
+			/>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,30 @@
+<app-phx-panel [headerTitle]="invoiceModuleResourceKeys.detail.invoiceNotesTitle| phxTranslate">
+  <div class="form-horizontal" *ngIf="invoice">
+    <form [formGroup]="form">
+      <phx-form-control [control]="form.controls['InvoiceNote1']" [labelText]="invoiceModuleResourceKeys.detail.note1Label| phxTranslate" [editable]="editable" viewModeText="{{invoice?.InvoiceNote1}}">
+        <input type="text" *ngIf="this.notes1.length === 0" class="form-control" maxlength="128" formControlName="InvoiceNote1" />
+        <app-phx-select-box *ngIf="this.notes1.length" (customItemCreating)="onCustomItemCreating('InvoiceNote1',$event)" [items]="notes1"
+          [acceptCustomValue]="true" [maxLength]="128" formControlName="InvoiceNote1">
+        </app-phx-select-box>
+      </phx-form-control>
+      <phx-form-control [control]="form.controls['InvoiceNote2']" [labelText]="invoiceModuleResourceKeys.detail.note2Label| phxTranslate" [editable]="editable" viewModeText="{{invoice?.InvoiceNote2}}">
+        <input type="text" *ngIf="this.notes2.length === 0" class="form-control" maxlength="128" formControlName="InvoiceNote2" />
+        <app-phx-select-box *ngIf="this.notes2.length" (customItemCreating)="onCustomItemCreating('InvoiceNote2',$event)" [items]="notes2"
+          [acceptCustomValue]="true" [maxLength]="128" formControlName="InvoiceNote2">
+        </app-phx-select-box>
+      </phx-form-control>
+      <phx-form-control [control]="form.controls['InvoiceNote3']" [labelText]="invoiceModuleResourceKeys.detail.note3Label| phxTranslate" [editable]="editable" viewModeText="{{invoice?.InvoiceNote3}}">
+        <input type="text" *ngIf="this.notes3.length === 0" class="form-control" maxlength="128" formControlName="InvoiceNote3" />
+        <app-phx-select-box *ngIf="this.notes3.length" (customItemCreating)="onCustomItemCreating('InvoiceNote3',$event)" [items]="notes3"
+          [acceptCustomValue]="true" [maxLength]="128" formControlName="InvoiceNote3">
+        </app-phx-select-box>
+      </phx-form-control>
+      <phx-form-control [control]="form.controls['InvoiceNote4']" [labelText]="invoiceModuleResourceKeys.detail.note4Label| phxTranslate" [editable]="editable" viewModeText="{{invoice?.InvoiceNote4}}">
+        <input type="text" *ngIf="this.notes4.length === 0" class="form-control" maxlength="128" formControlName="InvoiceNote4" />
+        <app-phx-select-box *ngIf="this.notes4.length" (customItemCreating)="onCustomItemCreating('InvoiceNote4',$event)" [items]="notes4"
+          [acceptCustomValue]="true" [maxLength]="128" formControlName="InvoiceNote4">
+        </app-phx-select-box>
+      </phx-form-control>
+    </form>
+  </div>
+</app-phx-panel>

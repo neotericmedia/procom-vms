@@ -1,0 +1,53 @@
+<div class="panel panel-default headstone">
+  <div class="row">
+    <div class="col col-lg-5">
+      <div class="form-group">
+        <label class="control-label ">Client</label>
+        <div>{{clientName}}</div>
+      </div>
+    </div>
+    <div class="col col-lg-5">
+      <div class="form-group">
+        <label class="control-label ">Internal Organization</label>
+        <div>{{internalOrganizationLegalName}}</div>
+      </div>
+    </div>
+    <div class="col col-lg-2">
+      <div class="form-group">
+        <label class="control-label ">Currency</label>
+        <div>{{currencyId | CodeValue:codeValueGroups.Currency:'code'}}</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-billing-transaction *ngIf="loadBillingTransactions" (selectionChanged)="onSelectionChanged($event)" [invoicePresentationStyle]="BillingInvoicePresentationStyle?.Consolidated"
+  [organizationIdInternal]="internalOrganizationId" [clientId]="clientId" [currencyId]="currencyId"></app-billing-transaction>
+
+<div class="row">
+  <div class="col-xs-12 col-sm-12 col-md-8">
+    <div class="row" *ngIf="totalSelectedRows !== 0">
+      <div class="col-xs-12 col-sm-12 col-md-6">
+        <span class="total-label">Number Of Selected Rows </span>
+        <span class="total-value">{{totalSelectedRows}}</span>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-6">
+        <span class="total-label">Total Selected Amount</span>
+        <span class="total-value"> {{totalSelectedAmount | number:'1.2'}} {{currencyId | CodeValue:codeValueGroups.Currency:'code'}}</span>
+      </div>
+    </div>
+  </div>
+  <div class="col-xs-12 col-sm-12 col-md-4 ">
+    <div class="btn-toolbar pull-right">
+<!--       
+      <button type="button" class="btn btn-default " (click)="cancelAddTransactionToInvoice()" title="Back to Invoice">Cancel</button>
+      <button type="button" [disabled]="totalSelectedRows === 0" class="btn btn-primary" (click)="addTransactionToInvoice()"
+      title="Add transaction to Invoice">Add</button>
+-->
+
+      
+      <app-phx-state-action-buttons [stateActions]="stateActions" [availableStateActions]="availableStateActions"></app-phx-state-action-buttons>
+
+    </div>
+  </div>
+</div>

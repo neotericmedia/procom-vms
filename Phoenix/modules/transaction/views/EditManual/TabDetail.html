@@ -1,0 +1,729 @@
+﻿<style>
+    .border-vertical-left {
+        border-left: 1px solid #dddddd;
+    }
+
+    .border-vertical-right {
+        border-right: 1px solid #dddddd;
+    }
+</style>
+
+<div data-ng-form="formTransactionHeaderManualDetail">
+    <div>
+        <!--<show-busy-controlled associate="viewLoading"></show-busy-controlled>-->
+        <div class="form-horizontal">
+            <div class="form-group">
+                <div class="panel panel-heading">
+                    <div class="col-lg-5">
+                        <div class="col-sm-4 control-label form-group">
+                            <div class="text-gray text-center">Billing(s)</div>
+                            <div class="text-gray text-center">Pre Tax</div>
+                            <p class="h4 text-center">
+                                {{model.transactionCalculation.AmountSummary.Amount_BillsTotalPreTax|currency:model.transactionHeader.CurrencyCode + " $"}}
+                            </p>
+                        </div>
+                        <div class="col-sm-4 control-label form-group">
+                            <div class="text-gray text-center">Billing(s)</div>
+                            <div class="text-gray text-center">Sales Tax</div>
+                            <p class="h4 text-center">
+                                {{model.transactionCalculation.AmountSummary.Amount_BillsTotalSalesTax|currency:model.transactionHeader.CurrencyCode + " $"}}
+                            </p>
+                        </div>
+                        <div class="col-sm-4 control-label form-group">
+                            <div class="text-gray text-center">Billing(s)</div>
+                            <div class="text-gray text-center">Total</div>
+                            <p class="h4 text-center">
+                                {{model.transactionCalculation.AmountSummary.Amount_BillsTotalAll|currency:model.transactionHeader.CurrencyCode + " $"}}
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-lg-7">
+                        <div class="col-sm-3 control-label form-group">
+                            <div class="text-gray text-center">Payment(s)</div>
+                            <div class="text-gray text-center">Pre Tax</div>
+                            <p class="h4 text-center">
+                                {{model.transactionCalculation.AmountSummary.Amount_PayeesTotalPreTax|currency:model.transactionHeader.CurrencyCode + " $"}}
+                            </p>
+                        </div>
+                        <div class="col-sm-3 control-label form-group">
+                            <div class="text-gray text-center">Payment(s)</div>
+                            <div class="text-gray text-center">Sales Tax</div>
+                            <p class="h4 text-center">
+                                {{model.transactionCalculation.AmountSummary.Amount_PayeesTotalSalesTax|currency:model.transactionHeader.CurrencyCode + " $"}}
+                            </p>
+                        </div>
+                        <div class="col-sm-3 control-label form-group">
+                            <div class="text-gray text-center">Payment(s)</div>
+                            <div class="text-gray text-center">Deductions</div>
+                            <p class="h4 text-center">
+                                {{model.transactionCalculation.AmountSummary.Amount_PayeesTotalDeductionsAndAdvancesAndGarneshees|currency:model.transactionHeader.CurrencyCode + " $"}}
+                            </p>
+                        </div>
+                        <div class="col-sm-3 control-label form-group">
+                            <div class="text-gray text-center">Payment(s)</div>
+                            <div class="text-gray text-center">Total</div>
+                            <p class="h4 text-center">
+                                {{model.transactionCalculation.AmountSummary.Amount_PayeesTotalAll|currency:model.transactionHeader.CurrencyCode + " $"}}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="content-group">
+                <div class="col-xxxl-8">
+                    <div class="panel-internal" style="margin: 0 -5px; min-height: 105px">
+                        <div class="panel-body">
+                            <div class="col-lg-12">
+                                <p class="h4 center">Transaction Notes</p>
+                            </div>
+                            <div class="col-lg-6" style="padding: 0">
+                                <div class="form-group">
+                                    <label class="col-lg-4 control-label" data-original-title="" title="">Invoice Note 1</label>
+                                    <div class="col-lg-8">
+                                        <input class="form-control ng-scope" type="text" name="InvoiceNote1" data-ng-model="model.transactionHeader.BillingTransactions[0].InvoiceNote1" data-ng-maxlength="128" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-lg-4 control-label" data-original-title="" title="">Invoice Note 2</label>
+                                    <div class="col-lg-8">
+                                        <input class="form-control ng-scope" type="text" name="InvoiceNote2" data-ng-model="model.transactionHeader.BillingTransactions[0].InvoiceNote2" data-ng-maxlength="128" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6" style="padding: 0">
+                                <div class="form-group">
+                                    <label class="col-lg-4 control-label" data-original-title="" title="">Invoice Note 3</label>
+                                    <div class="col-lg-8">
+                                        <input class="form-control ng-scope" type="text" name="InvoiceNote3" data-ng-model="model.transactionHeader.BillingTransactions[0].InvoiceNote3" data-ng-maxlength="128" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-lg-4 control-label" data-original-title="" title="">Invoice Note 4</label>
+                                    <div class="col-lg-8">
+                                        <input class="form-control ng-scope" type="text" name="InvoiceNote4" data-ng-model="model.transactionHeader.BillingTransactions[0].InvoiceNote4" data-ng-maxlength="128" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6" style="padding: 0">
+                                <div class="form-group">
+                                    <label for-property="IsInternalTransaction" for="IsInternalTransaction" data-model-property="CurrentWorkOrderVersion.IsInternalTransaction"
+                                            class="col-lg-4 control-label label-to-right req-lab-right" data-original-title="" title="">Is Internal?</label>
+                                    <div class="col-lg-8">
+                                        <pt-input-radio name="IsInternalTransaction"
+                                                        data-ng-required="true"
+                                                        data-template-type="input-radio"
+                                                        data-ng-model="model.transactionHeader.BillingTransactions[0].IsInternalTransaction"
+                                                        data-options="[{ key: true, value: 'Yes' },{ key: false, value: 'No' }]" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Stat Holiday -->
+                    <div class="panel-internal" style="margin: 0 -5px;" ng-repeat="paymentTransaction in model.transactionHeader.PaymentTransactions">
+                        <div ng-repeat="statLineItem in paymentTransaction.PaymentTransactionLines | filter: { RateTypeId: ApplicationConstants.RateType.Stat }">
+                            <div class="panel-body">
+                                <div class="col-lg-12">
+                                    <div class="col-lg-6">
+                                        <p class="h4 center">Stat Holiday Line</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel-body">
+                                <div class="col-lg-12">
+                                    <div class="form-group trn-manual-rate">
+                                        <label class="col-lg-2 control-label">Rate Type</label> <!-- req-lab-right" data-original-title="" title=""-->
+                                        <div class="col-lg-10">
+                                            <div class="text-lg-left text-md-left text-sm-left" style="padding-top: 6px;">
+                                                Stat
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="col-lg-4"></div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <label class="col-lg-2 control-label">Description</label>
+                                        <div class="col-lg-10">
+                                            <div class="text-lg-left text-md-left text-sm-left" style="padding-top: 6px;">
+                                                {{statLineItem.Description }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <label class="col-lg-2 control-label">Stat Date</label>
+                                        <div class="col-lg-10">
+                                            <div class="text-lg-left text-md-left text-sm-left" style="padding-top: 6px;">
+                                                {{statLineItem.Date | date:ApplicationConstants.formatDate}}
+                                            </div>
+                                            <!--<pt-date-picker data-ng-model="statLineItem.Date" name="Date" data-ng-required="true" data-required-message="Required" data-ng-show="!viewLoading" />-->
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label class="col-lg-6 control-label" title="">Calculated Units</label>
+                                            <div class="col-lg-6">
+                                                <div class="text-lg-left text-md-left text-sm-left" style="padding-top: 6px;">
+                                                    {{statLineItem.Units || '0.0'}}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-lg-6 control-label req-lab-right" for-property="UnitsOverwrite" for="UnitsOverwrite"
+                                                    data-model-property="statLineItem.UnitsOverwrite" data-original-title="" title="">Units</label>
+                                            <div class="col-lg-6">
+                                                <input type="text" name="UnitsOverwrite"
+                                                        data-input-by-float-range="{from:-9999999.99, to:9999999.99, decimalplaces:2, doesemptytozero:true}"
+                                                        placeholder="Units" ng-model="statLineItem.UnitsOverwrite"
+                                                        data-required-message="Required" data-ng-required="true" class="form-control form-control ng-scope" required="required"
+                                                        data-ng-change="resetTaxesAndCalculate(payment.transactionLine)" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-8">
+                                        <div class="col-lg-3">
+                                            <div class="form-group">
+                                                <div class="text-lg-right text-md-left text-sm-left">
+                                                    <label class="control-label" data-original-title="" title="">Rate</label>
+                                                </div>
+                                                <div style="padding-top:15px;">
+                                                    <div class="text-lg-right text-md-left text-sm-left">
+                                                        {{statLineItem.Rate|currency}}&nbsp;/&nbsp;{{statLineItem.RateUnitId | lookup : lists.rateUnitList}}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-9">
+                                            <div class="col-lg-3">
+                                                <div class="control-label form-group">
+                                                    <div class="text-lg-right text-md-left text-sm-left">
+                                                        <label>Pre-Tax</label>
+                                                    </div>
+                                                    <div class="row" style="min-height: 9px"></div>
+                                                    <div class="text-lg-right text-md-left text-sm-left">
+                                                        {{statLineItem.Total|currency}}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-3">
+                                            </div>
+                                            <div class="col-lg-3">
+                                                <div class="control-label form-group">
+                                                    <div class="text-lg-right text-md-left text-sm-left">
+                                                        <label>Total</label>
+                                                    </div>
+                                                    <div class="row" style="min-height: 9px"></div>
+                                                    <div class="text-lg-right text-md-left text-sm-left">
+                                                        {{statLineItem.Total|currency}}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Transaction Line(s) -->
+                    <div class="panel-internal" style="margin: 10px -5px;" data-ng-repeat="lineNumberItem in model.groupedTransactionLinesByLineNumber track by $index" data-ng-form="formTransactionLine">
+                        <div class="panel-body" data-ng-if="$index==0">
+                            <div class="col-lg-6">
+                                <p class="h4 center">Transaction Line(s)</p>
+                            </div>
+                            <div class="col-lg-6" style="min-height:35px">
+                                <button type="button" class="btn btn-clouds pull-right"
+                                        data-ng-if="actionButton.show.transactionLineAdd"
+                                        data-ng-click="actionButton.onClick.transactionLineAdd()"
+                                        title="Add Transaction Line">
+                                    Add
+                                </button>
+                                <button type="button" class="btn btn-clouds pull-right"
+                                        data-ng-if="actionButton.show.transactionLineAdd"
+                                        data-ng-click="actionButton.onClick.transactionLineAddAction()"
+                                        title="Add Transaction Line (New)">
+                                    Add (New)
+                                </button>
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <div class="col-lg-6">
+                                <p class="h4">Line {{lineNumberItem.lineNumber}}</p>
+                            </div>
+                            <div class="col-lg-6">
+                                <button type="button" class="btn btn-clouds fontello-icon-trash pull-right"
+                                        data-ng-if="actionButton.show.transactionLineRemove && model.countOfGroupedTransactionLinesByLineNumber>1"
+                                        data-ng-click="actionButton.onClick.transactionLineRemove(lineNumberItem.lineNumber)" title="Remove Line {{lineNumberItem.lineNumber}}"></button>
+                                <button type="button" class="btn btn-clouds fontello-icon-trash pull-right"
+                                        data-ng-if="actionButton.show.transactionLineRemove && model.countOfGroupedTransactionLinesByLineNumber>1"
+                                        data-ng-click="actionButton.onClick.transactionLineRemoveAction(lineNumberItem.lineNumber)" title="Remove Line (New) {{lineNumberItem.lineNumber}}"></button>
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <div class="form-group trn-manual-rate">
+                                <label for-property="RateTypeId" for="RateTypeId" model-property="lineNumberItem.rateTypeId" class="col-lg-2 control-label req-lab-right" data-original-title="" title="">Rate Type</label>
+                                <div class="input-group select2-bootstrap-append col-lg-5 trn-manual-rate-drp">
+                                    <ui-select name="RateTypeId" data-ng-model="lineNumberItem.rateTypeId" theme="select2" class="form-control" required data-ng-change="onChangeRateType(lineNumberItem)">
+                                        <ui-select-match>{{$select.selected.text}}</ui-select-match>
+                                        <ui-select-choices repeat="item.id as item in lineNumberItem.rateTypeList  | uiSelectChoicesFilter: $select.search: 'text'">
+                                            <span data-ng-bind-html="item.text | highlight: $select.search"></span>
+                                        </ui-select-choices>
+                                    </ui-select>
+                                    <span class="input-group-btn">
+                                        <button tabindex="-1" data-ng-click="onEraseRateType(lineNumberItem)" class="btn btn-default"><i class="material-icons md-18">clear</i></button>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-lg-4"></div>
+                        </div>
+                        <div class="panel-body" data-ng-repeat="billing in lineNumberItem.billings" data-ng-form="formBillingTransactionLine">
+                            <div class="col-lg-12">
+                                <p style="border-bottom: 1px solid #c9c9c9; margin-left: 10px; margin-right: 10px;"></p>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-lg-2 control-label" data-original-title="" title="">Client</label>
+                                <div class="col-lg-10 form-control-static">
+                                    <a data-ui-sref="org.edit.details({organizationId: billing.OrganizationIdClient })">{{billing.OrganizationClientDisplayName}} - {{billing.OrganizationIdClient}}</a>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-lg-2 control-label req-lab-right" for-property="billingTransactionLineDescription" for="billingTransactionLineDescription" data-model-property="billing.transactionLine.Description" data-original-title="" title="">Description</label>
+                                <div class="col-lg-10">
+                                    <input class="form-control ng-scope" type="text" name="billingTransactionLineDescription" placeholder="Transaction Line Description" ng-model="billing.transactionLine.Description" required="required"
+                                            data-ng-change="onBillingDescriptionChange(lineNumberItem, billing.transactionLine.Description, '{{billing.transactionLine.Description}}')" />
+                                </div>
+                            </div>
+                            <div class="col-lg-4" style="padding: 0">
+                                <div class="form-group">
+                                    <label class="col-lg-6 control-label req-lab-right" for-property="Units" for="Units" data-model-property="billing.transactionLine.Units" data-original-title="" title="">Units</label>
+                                    <div class="col-lg-6">
+                                        <input type="text" name="Units"
+                                                data-input-by-float-range="{from:-9999999.99, to:9999999.99, decimalplaces:2, doesemptytozero:true}"
+                                                placeholder="Units" ng-model="billing.transactionLine.Units"
+                                                data-required-message="Required" data-ng-required="true" class="form-control form-control ng-scope" required="required"
+                                                data-ng-change="onBillingUnitsChange(lineNumberItem, billing.transactionLine.Units, '{{billing.transactionLine.Units}}')" />
+                                        <!--ng-model-options="{debounce: { 'default': 500} }"-->
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-lg-6 control-label">Currency</label>
+                                    <div class="col-lg-6 form-control-static">
+                                        {{billing.CurrencyId | lookup:lists.currencyList:'id':'code'}}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-8" style="padding: 0">
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <div class="text-lg-right text-md-left text-sm-left">
+                                            <label class="control-label req-lab-right" for-property="billingRate" for="billingRateHidden" data-model-property="billing.transactionLine.Rate"
+                                                    data-original-title="" data-multi="{'billing.transactionLine.RateUnitId': 'billingRateUnitIdHidden'}" title="">Rate</label>
+                                            <input class="form-control scope" type="hidden" name="billingRateHidden" required="required" ng-model="billing.transactionLine.Rate" />
+                                            <input class="form-control scope" type="hidden" name="billingRateUnitIdHidden" data-ng-required="true" required="required" data-hidden-select="true" ng-model="billing.transactionLine.RateUnitId" />
+                                        </div>
+                                        <div class="row" style="min-height: 9px"></div>
+                                        <div>
+                                            <div class="text-lg-right text-md-left text-sm-left" data-ng-if="lineNumberItem.rateTypeId!=5">
+                                                {{billing.transactionLine.Rate|currency}}&nbsp;/&nbsp;{{billing.transactionLine.RateUnitId | lookup : lists.rateUnitList}}
+                                            </div>
+                                            <div class="row" data-ng-if="lineNumberItem.rateTypeId==5">
+                                                <div class="input-group col-lg-10 manualRateUnit">
+                                                    <span class="input-group-addon" style="padding:9px 7px;">$</span>
+                                                    <input class="form-control ng-scope" type="text" name="billingRate"
+                                                            data-input-by-float-range="{from:-9999999.99, to:9999999.99, decimalplaces:2, doesemptytozero:true}"
+                                                            placeholder="Rate" ng-model="billing.transactionLine.Rate"
+                                                            data-required-message="Required" data-ng-required="true" required="required"
+                                                            on-none-change="resetTaxesAndCalculate()"
+                                                            data-ng-change="resetTaxesAndCalculate(billing.transactionLine)" style="padding:7px;" />
+                                                </div>
+                                                <div class="col-lg-2">
+                                                    <span>/</span>
+                                                </div>
+                                                <div class="input-group select2-bootstrap-append col-lg-10 manualRateUnit">
+                                                    <ui-select name="billingRateUnitId" data-ng-model="billing.transactionLine.RateUnitId"
+                                                                theme="select2" class="form-control" required
+                                                                on-none-change="resetTaxesAndCalculate()"
+                                                                data-ng-change="resetTaxesAndCalculate(billing.transactionLine)">
+                                                        <ui-select-match placeholder="--Unit--">{{$select.selected.text}}</ui-select-match>
+                                                        <ui-select-choices repeat="item.id as item in lists.rateUnitList | uiSelectChoicesFilter: $select.search: 'text'">
+                                                            <span data-ng-bind-html="item.text | highlight: $select.search"></span>
+                                                        </ui-select-choices>
+                                                    </ui-select>
+                                                    <span class="input-group-btn">
+                                                        <button tabindex="-1" data-ng-click="billing.transactionLine.RateUnitId=undefined" class="btn btn-default"><i class="material-icons md-18">clear</i></button>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="control-label form-group">
+                                        <div class="text-lg-right text-md-left text-sm-left">
+                                            <label>Pre-Tax</label>
+                                        </div>
+                                        <div class="row" style="min-height: 9px"></div>
+                                        <div class="text-lg-right text-md-left text-sm-left">
+                                            {{billing.PreTaxTotal|currency}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="control-label form-group">
+                                        <div class="text-lg-right text-md-left text-sm-left">
+                                            <label>Sales Tax</label>
+                                        </div>
+                                        <div class="row" style="min-height: 9px"></div>
+                                        <div class="text-lg-right text-md-left text-sm-left">
+                                            <div class="dropdown">
+                                                <div ng-if="!!billing.SalesTaxTotal">
+                                                    <a href="javascript:void(0);" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                        {{billing.SalesTaxTotal|currency}}
+                                                    </a>
+                                                    <table class="dropdown-menu app-salestax-popup">
+                                                        <tbody>
+                                                            <tr data-ng-repeat="tlst in billing.BillingTransactionLineSalesTaxes">
+                                                                <td>{{tlst.SalesTaxName}}</td>
+                                                                <td class="text-right">{{tlst.Amount|currency:""}}</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                                <div ng-if="!billing.SalesTaxTotal">
+                                                    {{billing.SalesTaxTotal|currency}}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="control-label form-group">
+                                        <div class="text-lg-right text-md-left text-sm-left">
+                                            <label>Total</label>
+                                        </div>
+                                        <div class="row" style="min-height: 9px"></div>
+                                        <div class="text-lg-right text-md-left text-sm-left">
+                                            {{billing.Total|currency}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel-body" data-ng-repeat="payment in lineNumberItem.payments" data-ng-form="formPaymentTransactionLine">
+                            <div class="col-lg-12">
+                                <p style="border-bottom: 1px solid #c9c9c9; margin-left: 10px; margin-right: 10px;"></p>
+                            </div>
+                            <div class="form-group" data-ng-if="payment.PayeeOrganizationIdSupplier>0 
+                                    && (model.worker.ProfileTypeId==ApplicationConstants.UserProfileType.WorkerCanadianInc 
+                                    || model.worker.ProfileTypeId==ApplicationConstants.UserProfileType.WorkerSubVendor 
+                                    || model.worker.ProfileTypeId==ApplicationConstants.UserProfileType.WorkerUnitedStatesLLC)">
+                                <label class="col-lg-2 control-label" data-original-title="" title="">Supplier</label>
+                                <div class="col-lg-10 form-control-static">
+                                    <a data-ui-sref="org.edit.details({organizationId: payment.PayeeOrganizationIdSupplier })">{{payment.PayeeName}} - {{payment.PayeeOrganizationIdSupplier}}</a>
+                                </div>
+                            </div>
+                            <div class="form-group" data-ng-if="model.worker.ProfileTypeId==ApplicationConstants.UserProfileType.WorkerTemp">
+                                <label class="col-lg-2 control-label" data-original-title="" title="">Worker:</label>
+                                <div class="col-lg-10 form-control-static">
+                                    <a data-ui-sref="EditWorkerTempProfile({ contactId:model.worker.ContactId, profileId: model.worker.Id })">{{model.worker.Contact.PreferredFirstName}} {{model.worker.Contact.PreferredLastName}} - {{model.worker.ContactId}} (Worker Temp - {{model.worker.Id}})</a>
+                                </div>
+                            </div>
+                            <div class="form-group" data-ng-if="model.worker.ProfileTypeId==ApplicationConstants.UserProfileType.WorkerCanadianSp">
+                                <label class="col-lg-2 control-label" data-original-title="" title="">Worker:</label>
+                                <div class="col-lg-10 form-control-static">
+                                    <a data-ui-sref="EditWorkerCanadianSPProfile({ contactId:model.worker.ContactId, profileId: model.worker.Id })">{{model.worker.Contact.PreferredFirstName}} {{model.worker.Contact.PreferredLastName}} - {{model.worker.ContactId}} (Worker Canadian SP - {{model.worker.Id}})</a>
+                                </div>
+                            </div>
+                            <div class="form-group" data-ng-if="model.worker.ProfileTypeId==ApplicationConstants.UserProfileType.WorkerUnitedStatesW2">
+                                <label class="col-lg-2 control-label" data-original-title="" title="">Worker:</label>
+                                <div class="col-lg-10 form-control-static">
+                                    <a data-ui-sref="EditWorkerUnitedStatesW2Profile({ contactId:model.worker.ContactId, profileId: model.worker.Id })">{{model.worker.Contact.PreferredFirstName}} {{model.worker.Contact.PreferredLastName}} - {{model.worker.ContactId}} (Worker W2 - {{model.worker.Id}})</a>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-lg-2 control-label req-lab-right" for-property="paymentTransactionLineDescription" for="paymentTransactionLineDescription" data-model-property="payment.transactionLine.Description" data-original-title="" title="">Description</label>
+                                <div class="col-lg-10">
+                                    <input class="form-control ng-scope" type="text" name="paymentTransactionLineDescription" placeholder="Transaction Line Description" ng-model="payment.transactionLine.Description" required="required" />
+                                </div>
+                            </div>
+                            <div class="col-lg-4" style="padding: 0">
+                                <div class="form-group">
+                                    <label class="col-lg-6 control-label req-lab-right" for-property="Units" for="Units" data-model-property="payment.transactionLine.Units" data-original-title="" title="">Units</label>
+                                    <div class="col-lg-6">
+                                        <input type="text" name="Units"
+                                                data-input-by-float-range="{from:-9999999.99, to:9999999.99, decimalplaces:2, doesemptytozero:true}"
+                                                placeholder="Units" ng-model="payment.transactionLine.Units"
+                                                data-required-message="Required" data-ng-required="true" class="form-control form-control ng-scope" required="required"
+                                                data-ng-change="resetTaxesAndCalculate(payment.transactionLine)" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-lg-6 control-label">Currency</label>
+                                    <div class="col-lg-6 form-control-static">
+                                        {{payment.CurrencyId | lookup:lists.currencyList:'id':'code'}}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-8" style="padding: 0">
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <div class="text-lg-right text-md-left text-sm-left">
+                                            <label class="control-label req-lab-right" for-property="paymentRate" for="paymentRateHidden" data-model-property="payment.transactionLine.Rate"
+                                                    data-original-title="" data-multi="{'payment.transactionLine.RateUnitId': 'paymentRateUnitIdHidden'}" title="">Rate</label>
+                                            <input class="form-control scope" type="hidden" name="paymentRateHidden" data-ng-required="true" required="required" ng-model="payment.transactionLine.Rate" />
+                                            <input class="form-control scope" type="hidden" name="paymentRateUnitIdHidden" data-ng-required="true" required="required" data-hidden-select="true" ng-model="payment.transactionLine.RateUnitId" />
+                                        </div>
+                                        <div class="row" style="min-height: 9px"></div>
+                                        <div>
+                                            <div class="text-lg-right text-md-left text-sm-left" data-ng-if="lineNumberItem.rateTypeId!=5">
+                                                {{payment.transactionLine.Rate|currency}}&nbsp;/&nbsp;{{payment.transactionLine.RateUnitId | lookup : lists.rateUnitList}}
+                                            </div>
+                                            <div class="row" data-ng-if="lineNumberItem.rateTypeId==5">
+                                                <div class="input-group col-lg-10 manualRateUnit">
+                                                    <span class="input-group-addon" style="padding:9px 7px;">$</span>
+                                                    <input class="form-control ng-scope" type="text" name="paymentRate"
+                                                            data-input-by-float-range="{from:-9999999.99, to:9999999.99, decimalplaces:2, doesemptytozero:true}"
+                                                            placeholder="Rate" ng-model="payment.transactionLine.Rate"
+                                                            data-required-message="Required" data-ng-required="true" required="required"
+                                                            data-ng-change="resetTaxesAndCalculate(payment.transactionLine)" style="padding:7px;" />
+                                                </div>
+                                                <div class="col-lg-2">
+                                                    <span>/</span>
+                                                </div>
+                                                <div class="input-group select2-bootstrap-append col-lg-10 manualRateUnit">
+                                                    <ui-select name="paymentRateUnitId" data-ng-model="payment.transactionLine.RateUnitId"
+                                                                theme="select2" class="form-control" required
+                                                                on-none-change="resetTaxesAndCalculate()"
+                                                                data-ng-change="resetTaxesAndCalculate(payment.transactionLine)">
+                                                        <ui-select-match placeholder="--Unit--">{{$select.selected.text}}</ui-select-match>
+                                                        <ui-select-choices repeat="item.id as item in lists.rateUnitList | uiSelectChoicesFilter: $select.search: 'text'">
+                                                            <span data-ng-bind-html="item.text | highlight: $select.search"></span>
+                                                        </ui-select-choices>
+                                                    </ui-select>
+                                                    <span class="input-group-btn">
+                                                        <button tabindex="-1" data-ng-click="payment.transactionLine.RateUnitId=null" class="btn btn-default"><i class="material-icons md-18">clear</i></button>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="control-label form-group">
+                                        <div class="text-lg-right text-md-left text-sm-left">
+                                            <label>Pre-Tax</label>
+                                        </div>
+                                        <div class="row" style="min-height: 9px"></div>
+                                        <div class="text-lg-right text-md-left text-sm-left">
+                                            {{payment.PreTaxTotal|currency}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="control-label form-group">
+                                        <div class="text-lg-right text-md-left text-sm-left">
+                                            <label>Sales Tax</label>
+                                        </div>
+                                        <div class="row" style="min-height: 9px"></div>
+                                        <div class="text-lg-right text-md-left text-sm-left">
+                                            <div class="dropdown">
+                                                <div ng-if="!!payment.SalesTaxTotal">
+                                                    <a href="javascript:void(0);" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                        {{payment.SalesTaxTotal|currency}}
+                                                    </a>
+                                                    <table class="dropdown-menu app-salestax-popup">
+                                                        <tbody>
+                                                            <tr data-ng-repeat="tlst in payment.PaymentTransactionLineSalesTaxes">
+                                                                <td>{{tlst.SalesTaxName}}</td>
+                                                                <td class="text-right">{{tlst.Amount|currency:""}}</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                                <div ng-if="!payment.SalesTaxTotal">
+                                                    {{payment.SalesTaxTotal|currency}}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="control-label form-group">
+                                        <div class="text-lg-right text-md-left text-sm-left">
+                                            <label>Total</label>
+                                        </div>
+                                        <div class="row" style="min-height: 9px"></div>
+                                        <div class="text-lg-right text-md-left text-sm-left">
+                                            {{payment.Total|currency}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="minheight50 visible-xxxl">
+                        <div style="float: right; margin-right: 15px;">
+                            <button type="button" class="btn btn-default" data-ng-if="actionButton.show.TransactionHeaderManualDiscard" data-ng-click="actionButton.onClick.TransactionHeaderManualDiscard()">Discard</button>
+                            <button type="button" class="btn btn-default" data-ng-if="actionButton.show.TransactionHeaderManualDiscard" data-ng-click="actionButton.onClick.TransactionHeaderManualDiscardAction()">Discard (New)</button>
+                            <button type="button" class="btn btn-default" data-ng-if="actionButton.show.transactionSave" data-ng-click="actionButton.onClick.transactionSave()">Save</button>
+                            <button type="button" class="btn btn-default" data-ng-if="actionButton.show.transactionSave" data-ng-click="actionButton.onClick.transactionSaveAction()">Save (New)</button>
+                            <button type="button" class="btn btn-primary" data-ng-if="actionButton.show.transactionSubmit" data-ng-click="actionButton.onClick.transactionSubmit()"
+                                    data-ng-disabled="!formTransactionHeaderManualDetail.$valid || !formTransactionHeaderManualRoot.$valid">
+                                Submit
+                            </button>
+                            <button type="button" class="btn btn-primary" data-ng-if="actionButton.show.transactionSubmit" data-ng-click="actionButton.onClick.transactionSubmitAction()"
+                                    data-ng-disabled="!formTransactionHeaderManualDetail.$valid || !formTransactionHeaderManualRoot.$valid">
+                                Submit (New)
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xxxl-4">
+                    <div class="panel-internal" style="margin: 0 -5px; min-height: 105px">
+                        <div class="panel-body">
+                            <div class="col-lg-12">
+                                <p class="h4 center">Purchase Order</p>
+                            </div>
+                            <div class="col-lg-12">
+                                <a data-ng-if="actionButton.show.transactionPOLink"
+                                data-ui-sref="purchaseorder.edit.details.line({purchaseOrderId: model.transactionHeader.BillingTransactions[0].PurchaseOrderLine.PurchaseOrderId, purchaseOrderLineId:model.transactionHeader.BillingTransactions[0].PurchaseOrderLine.Id })"
+                                style="cursor: pointer;">{{model.transactionHeader.BillingTransactions[0].PurchaseOrderLine.PurchaseOrderNumber}}Line{{model.transactionHeader.BillingTransactions[0].PurchaseOrderLine.PurchaseOrderLineNumber}}</a>
+                                <button type="button" class="btn btn-link"
+                                        data-ng-if="actionButton.show.transactionPOChange"
+                                        data-ng-click="actionButton.onClick.transactionPoNavigationOpen()"
+                                        title="Change Purchase Order">
+                                    Change PO
+                                </button>
+                                <button type="button" class="btn btn-link"
+                                        data-ng-if="actionButton.show.transactionPORemove"
+                                        data-ng-click="actionButton.onClick.transactionPORemove()"
+                                        title="Remove Purchase Order">
+                                    Remove PO
+                                </button>
+                                <button type="button" class="btn btn-clouds pull-left"
+                                        data-ng-if="actionButton.show.transactionPOAdd"
+                                        data-ng-click="actionButton.onClick.transactionPoNavigationOpen()"
+                                        title="Add Purchase Order">
+                                    Add Purchase Order
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div data-ui-view="transactionAmountSummary" style="margin-top: 10px;" data-autoscroll="false"></div>
+                </div>
+            </div>
+        </div>
+        <div class="minheight50 hidden-xxxl">
+            <div style="float: right; margin-right: 24px;">
+                <button type="button" class="btn btn-default" data-ng-if="actionButton.show.TransactionHeaderManualDiscard" data-ng-click="actionButton.onClick.TransactionHeaderManualDiscard()">Discard</button>
+                <button type="button" class="btn btn-default" data-ng-if="actionButton.show.TransactionHeaderManualDiscard" data-ng-click="actionButton.onClick.TransactionHeaderManualDiscardState()">Discard (New)</button>
+                <button type="button" class="btn btn-default" data-ng-if="actionButton.show.transactionSave" data-ng-click="actionButton.onClick.transactionSave()">Save</button>
+                <button type="button" class="btn btn-default" data-ng-if="actionButton.show.transactionSave" data-ng-click="actionButton.onClick.transactionSaveAction()">Save (New)</button>
+                <button type="button" class="btn btn-primary" data-ng-if="actionButton.show.transactionSubmit" data-ng-click="actionButton.onClick.transactionSubmit()"
+                        data-ng-disabled="!formTransactionHeaderManualDetail.$valid || !formTransactionHeaderManualRoot.$valid">
+                    Submit
+                </button>
+                <button type="button" class="btn btn-primary" data-ng-if="actionButton.show.transactionSubmit" data-ng-click="actionButton.onClick.transactionSubmitAction()"
+                        data-ng-disabled="!formTransactionHeaderManualDetail.$valid || !formTransactionHeaderManualRoot.$valid">
+                    Submit (New)
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="form-group" data-ng-if="actionButton.show.transactionPoNavigation">
+        <div class="col-lg-12">
+            <div class="file-upload">
+                <div class="file-upload-modal-backdrop" data-ng-click="actionButton.onClick.transactionPoNavigationClose()"></div>
+                <div class="file-upload-modal-frontdrop">
+                    <div class="col-lg-12 header" style="padding-top: 10px; height: 50px;">
+                        PO Selection
+                        <div class="btn pull-right" data-ng-click="actionButton.onClick.transactionPoNavigationClose()"><i class="fontello-icon-cancel-circle"></i></div>
+                    </div>
+                    <div class="body">
+                        <div class="col-lg-1"></div>
+                        <div class="col-lg-10 content-group form-horizontal">
+                            <div class="form-group">
+                                <div class="smart-table-wrapper">
+                                    <div class="row" data-cg-busy="model.purchaseOrderLines.loadPurchaseOrderLinesPromise">
+                                        <table class="table table-striped table-content table-hover" data-st-table="model.purchaseOrderLines.items"
+                                               data-st-pagination-scroll="model.purchaseOrderLines.pageSize" data-st-pipe="callServer" data-st-column-widths="[10, 10, 10, 15, 15, 15, 15, 10]">
+                                            <thead>
+                                                <tr>
+                                                    <th data-st-sort="PurchaseOrderLineId" data-st-sort-default="reverse">ID</th>
+                                                    <th data-st-sort="PurchaseOrderNumber">PO Number</th>
+                                                    <th data-st-sort="PurchaseOrderLineNumber">Line Number</th>
+                                                    <th data-st-sort="AmountCommited">Funds</th>
+                                                    <th data-st-sort="AmountReserved">Funds Committed</th>
+                                                    <th data-st-sort="AmountSpent">Funds Spent</th>
+                                                    <th data-st-sort="AmountRemaining">Funds Remaining</th>
+                                                    <th data-st-sort="StatusId">Status</th>
+                                                </tr>
+                                                <tr>
+                                                    <th>
+                                                        <input data-st-advanced-search="{property: 'PurchaseOrderLineId', ignoreQuotes: true}" placeholder=""
+                                                               class="input-sm form-control numberType" data-safe-restrict-input="[^0123456789]" />
+                                                    </th>
+                                                    <th>
+                                                        <input data-st-advanced-search="'PurchaseOrderNumber'" placeholder="" class="input-sm form-control" type="search" />
+                                                    </th>
+                                                    <th>
+                                                        <input data-st-advanced-search="{property: 'PurchaseOrderLineNumber', ignoreQuotes: true}" placeholder="" class="input-sm form-control" type="search" data-safe-restrict-input="[^0123456789]" />
+                                                    </th>
+                                                    <th>
+                                                        <input data-st-advanced-search="{property: 'Amount', ignoreQuotes: true, valueSuffix: 'M'}" placeholder=""
+                                                               class="input-sm form-control numberType" data-safe-restrict-input="[^0123456789.]" />
+                                                    </th>
+                                                    <th>
+                                                        <input data-st-advanced-search="{property: 'AmountCommited', ignoreQuotes: true, valueSuffix: 'M'}" placeholder=""
+                                                               class="input-sm form-control numberType" data-safe-restrict-input="[^0123456789.]" />
+                                                    </th>
+                                                    <th>
+                                                        <input data-st-advanced-search="{property: 'AmountSpent', ignoreQuotes: true, valueSuffix: 'M'}" placeholder=""
+                                                               class="input-sm form-control numberType" data-safe-restrict-input="[^0123456789.]" />
+                                                    </th>
+                                                    <th>
+                                                        <input data-st-advanced-search="{property: 'AmountRemaining', ignoreQuotes: true, valueSuffix: 'M'}" placeholder=""
+                                                               class="input-sm form-control numberType" data-safe-restrict-input="[^0123456789.]" />
+                                                    </th>
+                                                    <th>
+                                                        <select data-st-advanced-search="{property: 'StatusId'}" class="input-sm form-control" id="transactionIsDraft"
+                                                                data-st-as-options-override="lists.workOrderPurchaseOrderLineStatusList"></select>
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr data-ng-repeat="pol in model.purchaseOrderLines.items" data-ng-click="actionButton.onClick.transactionPOAssign(pol)" style="cursor: pointer">
+                                                    <td class="text-right">{{pol.PurchaseOrderLineId}}</td>
+                                                    <td class="text-right">{{pol.PurchaseOrderNumber}}</td>
+                                                    <td class="text-right">{{pol.PurchaseOrderLineNumber}}</td>
+                                                    <td class="text-right">{{pol.Amount|currency}}</td>
+                                                    <td class="text-right">{{pol.AmountCommited|currency}}</td>
+                                                    <td class="text-right">{{pol.AmountSpent|currency}}</td>
+                                                    <td class="text-right">{{pol.AmountRemaining|currency}}</td>
+                                                    <td class="text-right">{{pol.PurchaseOrderLineStatusName}}</td>
+                                                </tr>
+                                            </tbody>
+                                            <tfoot>
+                                                <tr>
+                                                    <td colspan="9" style="text-align: left">
+                                                        <span>Total Count: {{ model.purchaseOrderLines.totalItemCount || 0}}; Items Loaded: {{ model.purchaseOrderLines.items ? model.purchaseOrderLines.items.length : 0}}</span>
+                                                    </td>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-1"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>

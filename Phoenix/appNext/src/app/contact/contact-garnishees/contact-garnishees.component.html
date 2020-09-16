@@ -1,0 +1,17 @@
+<div class="col-lg-12">
+  <app-phx-data-table #grid [columns]="columns" [configuration]="dataTableConfiguration" [dataSourceUrl]="dataSourceUrl" [dataSourceParams]="odataParams"
+    componentName="ContactGarnishees" (rowClick)="onRowClick($event)">
+    <div *dxTemplate="let d of 'viewFormattedPayAmount'">
+        $ {{d.data.PayAmount| pxCurrency}} {{displayCurrency(d.data.CurrencyId)}}
+      </div>
+    <div *dxTemplate="let d of 'viewFormattedPayAmountMaximum'">
+      $ {{d.data.PayAmountMaximum | pxCurrency}} {{displayCurrency(d.data.CurrencyId)}}
+    </div>
+    <div *dxTemplate="let d of 'viewFormattedPaidAmount'">
+      $ {{d.data.PaidAmount | pxCurrency}} {{displayCurrency(d.data.CurrencyId)}}
+    </div>
+    <div *dxTemplate="let d of 'viewFormattedPaybackRemainder'">
+      $ {{d.data.PaybackRemainder | pxCurrency}} {{displayCurrency(d.data.CurrencyId)}}
+    </div>
+  </app-phx-data-table>
+</div>

@@ -1,0 +1,82 @@
+<div class="content-group form-horizontal" data-ng-form="formDetails">
+    <div [formGroup]="inputFormGroup" *ngIf="inputFormGroup && readOnlyStorage" class="panel">
+        <div class="panel-body">
+            <div class="col-lg-8">
+
+                <phx-form-control labelText="Document Type" *ngIf="readOnlyStorage.IsEditable && inputFormGroup.value.ComplianceDocumentRuleUserDefinedDocumentTypes?.length === 0"
+                    [editable]="readOnlyStorage.IsEditable" [control]="inputFormGroup.controls.DocumentType"
+                    viewModeText="{{inputFormGroup.value.DocumentType}}">
+                    <app-phx-select-box [items]="html.listDocumentList" textField="Name" valueField="Id"
+                        [formControl]="inputFormGroup.controls.DocumentType" (valueChanged)="documentTypeChanged($event)"
+                        placeholder="-- Select One --">
+                    </app-phx-select-box>
+                </phx-form-control>
+
+                <br/>
+                <br/>
+
+                <div class="table-responsive">
+                    <table *ngIf="inputFormGroup.value.ComplianceDocumentRuleUserDefinedDocumentTypes?.length > 0"
+                        class="table table-striped table-content table-hover" style="background-color: white;">
+                        <thead>
+                            <tr>
+                                <th scope="col">ID<span class="column-sorter"></span></th>
+                                <th scope="col">Document Type<span class="column-sorter"></span></th>
+                                <th scope="col">Document Type Status<span class="column-sorter"></span></th>
+                                <th scope="col">Sample File<span class="column-sorter"></span></th>
+                                <th scope="col" class="text-center">Action<span class="column-sorter"></span></th>
+                            </tr>
+                        </thead>
+                        <tr *ngFor="let item of documentTypesFormArray.value; trackBy: trackbyFn" data-ng-click="scopeUiRoot.onGo(item)">
+                            <td class="col-lg-1" style="vertical-align: middle;">
+                                {{item.Id === 0 ? '' : item.Id}}
+                            </td>
+                            <td class="col-lg-2" style="vertical-align: middle;">
+                                {{item.UserDefinedCodeComplianceDocumentTypeId | lookupNoCache: html.listDocumentList
+                                :'Id':'Name'}}
+                            </td>
+                            <td class="col-lg-2" style="vertical-align: middle;">
+                                {{ (item.UserDefinedCodeComplianceDocumentTypeId | lookupNoCache: html.listDocumentList
+                                :'Id':'StatusId') | CodeValue:
+                                codeValueGroups.UserDefinedCodeComplianceDocumentTypeStatus }}
+                            </td>
+                            <td class="col-lg-1" style="vertical-align: middle;">
+                                <!-- {{item.SampleFile}} -->
+                            </td>
+                            <td class="col-lg-1 text-center" style="vertical-align: middle;">
+                                <button type="button" class="btn btn-material" (click)="removeDocumentType($event)"
+                                    *ngIf="readOnlyStorage.IsEditable"><i class="material-icons">delete</i></button>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <br>
+                <div class="form-group sub-user-row-details">
+                    <h1 class="col-lg-11 panel-title">Document Details</h1>
+                </div>
+                <br>
+                <phx-form-control labelText="Client Organization" *ngIf="currentDocumentRule?.ComplianceDocumentRuleAreaTypeId ===
+                phxConstants.ComplianceDocumentRuleAreaType.OrganizationClient"
+                    [editable]="readOnlyStorage.IsEditable" [control]="inputFormGroup.controls.OrganizationIdClient"
+                    viewModeText="{{inputFormGroup.value.OrganizationIdClient | lookupNoCache: html.listOrgClients : 'Id' : 'DisplayName'  }}">
+                    <app-phx-select-box [items]="html.listOrgClients" textField="DisplayName" valueField="Id"
+                        [formControl]="inputFormGroup.controls.OrganizationIdClient" placeholder="-- Select One --">
+                    </app-phx-select-box>
+                </phx-form-control>
+
+                <phx-form-control [control]="inputFormGroup.controls.DisplayName" labelText="Name" [editable]="readOnlyStorage.IsEditable"
+                    viewModeText="{{inputFormGroup.value.DisplayName}}">
+                    <input type="text" class="form-control"
+                        formControlName="DisplayName" />
+                </phx-form-control>
+
+                <phx-form-control [control]="inputFormGroup.controls.Description" labelText="Description" [editable]="readOnlyStorage.IsEditable"
+                    viewModeText="{{inputFormGroup.value.Description}}">
+                    <input type="text" class="form-control"
+                        formControlName="Description" />
+                </phx-form-control>
+
+            </div>
+        </div>
+    </div>
+</div>

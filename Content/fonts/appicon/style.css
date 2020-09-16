@@ -1,0 +1,753 @@
+@font-face {
+	font-family: 'appicon';
+	src:url('./fonts/appicon.eot');
+	src:url('./fonts/appicon.eot?#iefix') format('embedded-opentype'),
+		url('./fonts/appicon.woff') format('woff'),
+		url('./fonts/appicon.ttf') format('truetype'),
+		url('./fonts/appicon.svg#appicon') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+/* Use the following CSS code if you want to use data attributes for inserting your icons */
+[data-icon]:before {
+	font-family: 'appicon';
+	content: attr(data-icon);
+	speak: none;
+	font-weight: normal;
+	font-variant: normal;
+	text-transform: none;
+	line-height: 1;
+	-webkit-font-smoothing: antialiased;
+}
+
+/* Use the following CSS code if you want to have a class per icon */
+/*
+Instead of a list of all class selectors,
+you can use the generic selector below, but it's slower:
+[class*="appicon-"] {
+*/
+.appicon-checkbox-9, .appicon-checkbox-8, .appicon-checkbox-7, .appicon-checkbox-6, .appicon-checkbox-5, .appicon-checkbox-4, .appicon-checkbox-3, .appicon-checkbox-2, .appicon-checkbox-1, .appicon-home-2, .appicon-home-1, .appicon-help-4, .appicon-help-3, .appicon-help-2, .appicon-help-1, .appicon-gear-2, .appicon-gear-1, .appicon-fullscreen-3, .appicon-fullscreen-2, .appicon-fullscreen-1, .appicon-forbidden-3, .appicon-forbidden-2, .appicon-forbidden-1, .appicon-folder-remove-2, .appicon-folder-remove-1, .appicon-folder-4, .appicon-folder-3, .appicon-folder-2, .appicon-folder-1, .appicon-flag-7, .appicon-flag-6, .appicon-flag-5, .appicon-flag-4, .appicon-flag-3, .appicon-flag-2, .appicon-flag-1, .appicon-filter-1, .appicon-file-text-4, .appicon-file-text-3, .appicon-file-text-2, .appicon-file-text-1, .appicon-file-new-1, .appicon-file-image-1, .appicon-favorite-6, .appicon-favorite-5, .appicon-favorite-4, .appicon-favorite-3, .appicon-favorite-2, .appicon-favorite-1, .appicon-eye-2, .appicon-eye-1, .appicon-email-6, .appicon-email-5, .appicon-email-4, .appicon-email-3, .appicon-email-2, .appicon-email-1, .appicon-edit-2, .appicon-edit-1, .appicon-document-file-2, .appicon-document-file-1, .appicon-crosshair-3, .appicon-crosshair-2, .appicon-crosshair-1, .appicon-copy-2, .appicon-copy-1, .appicon-caret-2a, .appicon-caret-2, .appicon-caret-1, .appicon-calendar-3, .appicon-calendar-2, .appicon-calendar-1, .appicon-bookmark-8, .appicon-bookmark-7, .appicon-bookmark-6, .appicon-bookmark-5, .appicon-bookmark-4, .appicon-bookmark-3, .appicon-bookmark-2, .appicon-bookmark-1, .appicon-arrow-17, .appicon-arrow-16, .appicon-arrow-15, .appicon-arrow-14, .appicon-arrow-13, .appicon-arrow-12, .appicon-arrow-11, .appicon-arrow-10, .appicon-arrow-9, .appicon-arrow-8, .appicon-arrow-7, .appicon-arrow-6, .appicon-arrow-5, .appicon-arrow-4, .appicon-arrow-3, .appicon-arrow-2, .appicon-arrow-1, .appicon-add-folder-2, .appicon-add-folder-1, .appicon-trash-can-7, .appicon-trash-can-6, .appicon-trash-can-5, .appicon-trash-can-4, .appicon-trash-can-3, .appicon-trash-can-2, .appicon-trash-can-1, .appicon-tag-2, .appicon-tag-1, .appicon-printer-4, .appicon-printer-3, .appicon-printer-2, .appicon-printer-1, .appicon-plus-2, .appicon-plus-1, .appicon-pin-4, .appicon-pin-3, .appicon-pin-2, .appicon-pin-1, .appicon-pencil-6, .appicon-pencil-2, .appicon-note-16, .appicon-note-15, .appicon-note-14, .appicon-note-13, .appicon-note-12, .appicon-note-11, .appicon-note-10, .appicon-note-9, .appicon-note-8, .appicon-note-7, .appicon-note-6, .appicon-note-5, .appicon-note-4, .appicon-note-3, .appicon-note-2, .appicon-note-1, .appicon-minus-2, .appicon-minus-1, .appicon-magnifier-1r, .appicon-magnifier-1f, .appicon-magnifier-1, .appicon-magic-6, .appicon-magic-5, .appicon-magic-4, .appicon-magic-3, .appicon-magic-2, .appicon-magic-1, .appicon-logout-3, .appicon-logout-2, .appicon-logout-1, .appicon-login-3, .appicon-login-2, .appicon-login-1, .appicon-lock-6, .appicon-lock-5, .appicon-lock-4, .appicon-lock-3, .appicon-lock-2, .appicon-lock-1, .appicon-link-1, .appicon-key-4, .appicon-key-3, .appicon-key-2, .appicon-key-1, .appicon-info-4, .appicon-info-3, .appicon-info-2, .appicon-info-1, .appicon-inbox-5, .appicon-inbox-4, .appicon-inbox-3, .appicon-inbox-2, .appicon-inbox-1, .appicon-chevron-2-up, .appicon-chevron-2-right, .appicon-chevron-2-left, .appicon-chevron-2-down, .appicon-chevron-1-up, .appicon-chevron-1-right, .appicon-chevron-1-left, .appicon-chevron-1-down, .appicon-check-mark-5, .appicon-check-mark-4, .appicon-check-mark-3, .appicon-check-mark-2, .appicon-check-mark-1, .appicon-checkbox-20, .appicon-checkbox-19, .appicon-checkbox-18, .appicon-checkbox-17, .appicon-checkbox-16, .appicon-checkbox-15, .appicon-checkbox-14, .appicon-checkbox-13, .appicon-checkbox-12, .appicon-checkbox-11, .appicon-checkbox-10, .appicon-save-7, .appicon-save-6, .appicon-save-5, .appicon-save-4, .appicon-save-3, .appicon-save-2, .appicon-save-1, .appicon-plus-3, .appicon-map-1, .appicon-map-2, .appicon-time-5, .appicon-time-4, .appicon-time-3, .appicon-time-2, .appicon-time-1, .appicon-tools-5, .appicon-tools-4, .appicon-tools-3, .appicon-tools-2, .appicon-tools-1, .appicon-warning-3, .appicon-warning-2, .appicon-warning-1, .appicon-warning-4, .appicon-user-13, .appicon-user-15, .appicon-user-14, .appicon-user-12, .appicon-user-11, .appicon-user-10, .appicon-user-9, .appicon-user-8, .appicon-user-7, .appicon-user-6, .appicon-user-5, .appicon-user-4, .appicon-user-3, .appicon-user-2, .appicon-user-1, .appicon-caret-2-up, .appicon-caret-2-down {
+	font-family: 'appicon';
+	speak: none;
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	text-transform: none;
+	line-height: 1;
+	-webkit-font-smoothing: antialiased;
+}
+.appicon-checkbox-9:before {
+	content: "\e000";
+}
+.appicon-checkbox-8:before {
+	content: "\e001";
+}
+.appicon-checkbox-7:before {
+	content: "\e002";
+}
+.appicon-checkbox-6:before {
+	content: "\e003";
+}
+.appicon-checkbox-5:before {
+	content: "\e004";
+}
+.appicon-checkbox-4:before {
+	content: "\e005";
+}
+.appicon-checkbox-3:before {
+	content: "\e006";
+}
+.appicon-checkbox-2:before {
+	content: "\e007";
+}
+.appicon-checkbox-1:before {
+	content: "\e008";
+}
+.appicon-home-2:before {
+	content: "\e009";
+}
+.appicon-home-1:before {
+	content: "\e00a";
+}
+.appicon-help-4:before {
+	content: "\e00b";
+}
+.appicon-help-3:before {
+	content: "\e00c";
+}
+.appicon-help-2:before {
+	content: "\e00d";
+}
+.appicon-help-1:before {
+	content: "\e00e";
+}
+.appicon-gear-2:before {
+	content: "\e00f";
+}
+.appicon-gear-1:before {
+	content: "\e010";
+}
+.appicon-fullscreen-3:before {
+	content: "\e011";
+}
+.appicon-fullscreen-2:before {
+	content: "\e012";
+}
+.appicon-fullscreen-1:before {
+	content: "\e013";
+}
+.appicon-forbidden-3:before {
+	content: "\e014";
+}
+.appicon-forbidden-2:before {
+	content: "\e015";
+}
+.appicon-forbidden-1:before {
+	content: "\e016";
+}
+.appicon-folder-remove-2:before {
+	content: "\e017";
+}
+.appicon-folder-remove-1:before {
+	content: "\e018";
+}
+.appicon-folder-4:before {
+	content: "\e019";
+}
+.appicon-folder-3:before {
+	content: "\e01a";
+}
+.appicon-folder-2:before {
+	content: "\e01b";
+}
+.appicon-folder-1:before {
+	content: "\e01c";
+}
+.appicon-flag-7:before {
+	content: "\e01d";
+}
+.appicon-flag-6:before {
+	content: "\e01e";
+}
+.appicon-flag-5:before {
+	content: "\e01f";
+}
+.appicon-flag-4:before {
+	content: "\e020";
+}
+.appicon-flag-3:before {
+	content: "\e021";
+}
+.appicon-flag-2:before {
+	content: "\e022";
+}
+.appicon-flag-1:before {
+	content: "\e023";
+}
+.appicon-filter-1:before {
+	content: "\e024";
+}
+.appicon-file-text-4:before {
+	content: "\e025";
+}
+.appicon-file-text-3:before {
+	content: "\e026";
+}
+.appicon-file-text-2:before {
+	content: "\e027";
+}
+.appicon-file-text-1:before {
+	content: "\e028";
+}
+.appicon-file-new-1:before {
+	content: "\e029";
+}
+.appicon-file-image-1:before {
+	content: "\e02a";
+}
+.appicon-favorite-6:before {
+	content: "\e02b";
+}
+.appicon-favorite-5:before {
+	content: "\e02c";
+}
+.appicon-favorite-4:before {
+	content: "\e02d";
+}
+.appicon-favorite-3:before {
+	content: "\e02e";
+}
+.appicon-favorite-2:before {
+	content: "\e02f";
+}
+.appicon-favorite-1:before {
+	content: "\e030";
+}
+.appicon-eye-2:before {
+	content: "\e031";
+}
+.appicon-eye-1:before {
+	content: "\e032";
+}
+.appicon-email-6:before {
+	content: "\e033";
+}
+.appicon-email-5:before {
+	content: "\e034";
+}
+.appicon-email-4:before {
+	content: "\e035";
+}
+.appicon-email-3:before {
+	content: "\e036";
+}
+.appicon-email-2:before {
+	content: "\e037";
+}
+.appicon-email-1:before {
+	content: "\e038";
+}
+.appicon-edit-2:before {
+	content: "\e039";
+}
+.appicon-edit-1:before {
+	content: "\e03a";
+}
+.appicon-document-file-2:before {
+	content: "\e03b";
+}
+.appicon-document-file-1:before {
+	content: "\e03c";
+}
+.appicon-crosshair-3:before {
+	content: "\e03d";
+}
+.appicon-crosshair-2:before {
+	content: "\e03e";
+}
+.appicon-crosshair-1:before {
+	content: "\e03f";
+}
+.appicon-copy-2:before {
+	content: "\e040";
+}
+.appicon-copy-1:before {
+	content: "\e041";
+}
+.appicon-caret-2a:before {
+	content: "\e042";
+}
+.appicon-caret-2:before {
+	content: "\e043";
+}
+.appicon-caret-1:before {
+	content: "\e044";
+}
+.appicon-calendar-3:before {
+	content: "\e045";
+}
+.appicon-calendar-2:before {
+	content: "\e046";
+}
+.appicon-calendar-1:before {
+	content: "\e047";
+}
+.appicon-bookmark-8:before {
+	content: "\e048";
+}
+.appicon-bookmark-7:before {
+	content: "\e049";
+}
+.appicon-bookmark-6:before {
+	content: "\e04a";
+}
+.appicon-bookmark-5:before {
+	content: "\e04b";
+}
+.appicon-bookmark-4:before {
+	content: "\e04c";
+}
+.appicon-bookmark-3:before {
+	content: "\e04d";
+}
+.appicon-bookmark-2:before {
+	content: "\e04e";
+}
+.appicon-bookmark-1:before {
+	content: "\e04f";
+}
+.appicon-arrow-17:before {
+	content: "\e050";
+}
+.appicon-arrow-16:before {
+	content: "\e051";
+}
+.appicon-arrow-15:before {
+	content: "\e052";
+}
+.appicon-arrow-14:before {
+	content: "\e053";
+}
+.appicon-arrow-13:before {
+	content: "\e054";
+}
+.appicon-arrow-12:before {
+	content: "\e055";
+}
+.appicon-arrow-11:before {
+	content: "\e056";
+}
+.appicon-arrow-10:before {
+	content: "\e057";
+}
+.appicon-arrow-9:before {
+	content: "\e058";
+}
+.appicon-arrow-8:before {
+	content: "\e059";
+}
+.appicon-arrow-7:before {
+	content: "\e05a";
+}
+.appicon-arrow-6:before {
+	content: "\e05b";
+}
+.appicon-arrow-5:before {
+	content: "\e05c";
+}
+.appicon-arrow-4:before {
+	content: "\e05d";
+}
+.appicon-arrow-3:before {
+	content: "\e05e";
+}
+.appicon-arrow-2:before {
+	content: "\e05f";
+}
+.appicon-arrow-1:before {
+	content: "\e060";
+}
+.appicon-add-folder-2:before {
+	content: "\e061";
+}
+.appicon-add-folder-1:before {
+	content: "\e062";
+}
+.appicon-trash-can-7:before {
+	content: "\e063";
+}
+.appicon-trash-can-6:before {
+	content: "\e064";
+}
+.appicon-trash-can-5:before {
+	content: "\e065";
+}
+.appicon-trash-can-4:before {
+	content: "\e066";
+}
+.appicon-trash-can-3:before {
+	content: "\e067";
+}
+.appicon-trash-can-2:before {
+	content: "\e068";
+}
+.appicon-trash-can-1:before {
+	content: "\e069";
+}
+.appicon-tag-2:before {
+	content: "\e06a";
+}
+.appicon-tag-1:before {
+	content: "\e06b";
+}
+.appicon-printer-4:before {
+	content: "\e06c";
+}
+.appicon-printer-3:before {
+	content: "\e06d";
+}
+.appicon-printer-2:before {
+	content: "\e06e";
+}
+.appicon-printer-1:before {
+	content: "\e06f";
+}
+.appicon-plus-2:before {
+	content: "\e070";
+}
+.appicon-plus-1:before {
+	content: "\e071";
+}
+.appicon-pin-4:before {
+	content: "\e072";
+}
+.appicon-pin-3:before {
+	content: "\e073";
+}
+.appicon-pin-2:before {
+	content: "\e074";
+}
+.appicon-pin-1:before {
+	content: "\e075";
+}
+.appicon-pencil-6:before {
+	content: "\e076";
+}
+.appicon-pencil-2:before {
+	content: "\e077";
+}
+.appicon-note-16:before {
+	content: "\e078";
+}
+.appicon-note-15:before {
+	content: "\e079";
+}
+.appicon-note-14:before {
+	content: "\e07a";
+}
+.appicon-note-13:before {
+	content: "\e07b";
+}
+.appicon-note-12:before {
+	content: "\e07c";
+}
+.appicon-note-11:before {
+	content: "\e07d";
+}
+.appicon-note-10:before {
+	content: "\e07e";
+}
+.appicon-note-9:before {
+	content: "\e07f";
+}
+.appicon-note-8:before {
+	content: "\e080";
+}
+.appicon-note-7:before {
+	content: "\e081";
+}
+.appicon-note-6:before {
+	content: "\e082";
+}
+.appicon-note-5:before {
+	content: "\e083";
+}
+.appicon-note-4:before {
+	content: "\e084";
+}
+.appicon-note-3:before {
+	content: "\e085";
+}
+.appicon-note-2:before {
+	content: "\e086";
+}
+.appicon-note-1:before {
+	content: "\e087";
+}
+.appicon-minus-2:before {
+	content: "\e088";
+}
+.appicon-minus-1:before {
+	content: "\e089";
+}
+.appicon-magnifier-1r:before {
+	content: "\e08a";
+}
+.appicon-magnifier-1f:before {
+	content: "\e08b";
+}
+.appicon-magnifier-1:before {
+	content: "\e08c";
+}
+.appicon-magic-6:before {
+	content: "\e08d";
+}
+.appicon-magic-5:before {
+	content: "\e08e";
+}
+.appicon-magic-4:before {
+	content: "\e08f";
+}
+.appicon-magic-3:before {
+	content: "\e090";
+}
+.appicon-magic-2:before {
+	content: "\e091";
+}
+.appicon-magic-1:before {
+	content: "\e092";
+}
+.appicon-logout-3:before {
+	content: "\e093";
+}
+.appicon-logout-2:before {
+	content: "\e094";
+}
+.appicon-logout-1:before {
+	content: "\e095";
+}
+.appicon-login-3:before {
+	content: "\e096";
+}
+.appicon-login-2:before {
+	content: "\e097";
+}
+.appicon-login-1:before {
+	content: "\e098";
+}
+.appicon-lock-6:before {
+	content: "\e099";
+}
+.appicon-lock-5:before {
+	content: "\e09a";
+}
+.appicon-lock-4:before {
+	content: "\e09b";
+}
+.appicon-lock-3:before {
+	content: "\e09c";
+}
+.appicon-lock-2:before {
+	content: "\e09d";
+}
+.appicon-lock-1:before {
+	content: "\e09e";
+}
+.appicon-link-1:before {
+	content: "\e09f";
+}
+.appicon-key-4:before {
+	content: "\e0a0";
+}
+.appicon-key-3:before {
+	content: "\e0a1";
+}
+.appicon-key-2:before {
+	content: "\e0a2";
+}
+.appicon-key-1:before {
+	content: "\e0a3";
+}
+.appicon-info-4:before {
+	content: "\e0a4";
+}
+.appicon-info-3:before {
+	content: "\e0a5";
+}
+.appicon-info-2:before {
+	content: "\e0a6";
+}
+.appicon-info-1:before {
+	content: "\e0a7";
+}
+.appicon-inbox-5:before {
+	content: "\e0a8";
+}
+.appicon-inbox-4:before {
+	content: "\e0a9";
+}
+.appicon-inbox-3:before {
+	content: "\e0aa";
+}
+.appicon-inbox-2:before {
+	content: "\e0ab";
+}
+.appicon-inbox-1:before {
+	content: "\e0ac";
+}
+.appicon-chevron-2-up:before {
+	content: "\e0ad";
+}
+.appicon-chevron-2-right:before {
+	content: "\e0ae";
+}
+.appicon-chevron-2-left:before {
+	content: "\e0af";
+}
+.appicon-chevron-2-down:before {
+	content: "\e0b0";
+}
+.appicon-chevron-1-up:before {
+	content: "\e0b1";
+}
+.appicon-chevron-1-right:before {
+	content: "\e0b2";
+}
+.appicon-chevron-1-left:before {
+	content: "\e0b3";
+}
+.appicon-chevron-1-down:before {
+	content: "\e0b4";
+}
+.appicon-check-mark-5:before {
+	content: "\e0b5";
+}
+.appicon-check-mark-4:before {
+	content: "\e0b6";
+}
+.appicon-check-mark-3:before {
+	content: "\e0b7";
+}
+.appicon-check-mark-2:before {
+	content: "\e0b8";
+}
+.appicon-check-mark-1:before {
+	content: "\e0b9";
+}
+.appicon-checkbox-20:before {
+	content: "\e0ba";
+}
+.appicon-checkbox-19:before {
+	content: "\e0bb";
+}
+.appicon-checkbox-18:before {
+	content: "\e0bc";
+}
+.appicon-checkbox-17:before {
+	content: "\e0bd";
+}
+.appicon-checkbox-16:before {
+	content: "\e0be";
+}
+.appicon-checkbox-15:before {
+	content: "\e0bf";
+}
+.appicon-checkbox-14:before {
+	content: "\e0c0";
+}
+.appicon-checkbox-13:before {
+	content: "\e0c1";
+}
+.appicon-checkbox-12:before {
+	content: "\e0c2";
+}
+.appicon-checkbox-11:before {
+	content: "\e0c3";
+}
+.appicon-checkbox-10:before {
+	content: "\e0c4";
+}
+.appicon-save-7:before {
+	content: "\e0c5";
+}
+.appicon-save-6:before {
+	content: "\e0c6";
+}
+.appicon-save-5:before {
+	content: "\e0c7";
+}
+.appicon-save-4:before {
+	content: "\e0c8";
+}
+.appicon-save-3:before {
+	content: "\e0c9";
+}
+.appicon-save-2:before {
+	content: "\e0ca";
+}
+.appicon-save-1:before {
+	content: "\e0cb";
+}
+.appicon-plus-3:before {
+	content: "\e0cc";
+}
+.appicon-map-1:before {
+	content: "\e0cd";
+}
+.appicon-map-2:before {
+	content: "\e0ce";
+}
+.appicon-time-5:before {
+	content: "\e0cf";
+}
+.appicon-time-4:before {
+	content: "\e0d0";
+}
+.appicon-time-3:before {
+	content: "\e0d1";
+}
+.appicon-time-2:before {
+	content: "\e0d2";
+}
+.appicon-time-1:before {
+	content: "\e0d3";
+}
+.appicon-tools-5:before {
+	content: "\e0d4";
+}
+.appicon-tools-4:before {
+	content: "\e0d5";
+}
+.appicon-tools-3:before {
+	content: "\e0d6";
+}
+.appicon-tools-2:before {
+	content: "\e0d7";
+}
+.appicon-tools-1:before {
+	content: "\e0d8";
+}
+.appicon-warning-3:before {
+	content: "\e0d9";
+}
+.appicon-warning-2:before {
+	content: "\e0da";
+}
+.appicon-warning-1:before {
+	content: "\e0db";
+}
+.appicon-warning-4:before {
+	content: "\e0dc";
+}
+.appicon-user-13:before {
+	content: "\e0dd";
+}
+.appicon-user-15:before {
+	content: "\e0de";
+}
+.appicon-user-14:before {
+	content: "\e0df";
+}
+.appicon-user-12:before {
+	content: "\e0e0";
+}
+.appicon-user-11:before {
+	content: "\e0e1";
+}
+.appicon-user-10:before {
+	content: "\e0e2";
+}
+.appicon-user-9:before {
+	content: "\e0e3";
+}
+.appicon-user-8:before {
+	content: "\e0e4";
+}
+.appicon-user-7:before {
+	content: "\e0e5";
+}
+.appicon-user-6:before {
+	content: "\e0e6";
+}
+.appicon-user-5:before {
+	content: "\e0e7";
+}
+.appicon-user-4:before {
+	content: "\e0e8";
+}
+.appicon-user-3:before {
+	content: "\e0e9";
+}
+.appicon-user-2:before {
+	content: "\e0ea";
+}
+.appicon-user-1:before {
+	content: "\e0eb";
+}
+.appicon-caret-2-up:before {
+	content: "\e0ec";
+}
+.appicon-caret-2-down:before {
+	content: "\e0ed";
+}

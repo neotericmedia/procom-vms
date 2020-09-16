@@ -1,0 +1,44 @@
+<div class="app-accordion-container app-accordion-container-28">
+<div *ngIf="batchLength > 0">
+  <div class="app-accordion-level-one" *ngFor="let org of batchList">
+      <div class="app-accordion-level-one-item" (click)="showRecords(org)">
+          <i class="app-accordion-chevron" [ngClass]="{'icon-chevron-right': !org.isOpen, 'icon-chevron-down': org.isOpen}"></i>
+          <span>{{org.InternalOrgDisplayName}}</span>
+      </div>
+      <div class="app-accordion-level-three" *ngIf="org.isOpen" >
+          <div class="app-accordion-level-three-item" (click)="gotoProfile(org.OrganizationIdInternal,'Timesheet')">
+              Timesheet
+              <span class="badge badge-warning app-badge" *ngIf="org.VmsTimesheetPendingBatchCount > 0">{{org.VmsTimesheetPendingBatchCount}}</span>
+          </div>
+
+          <div class="app-accordion-level-three-item" (click)="gotoProfile(org.OrganizationIdInternal,'Discount')">
+              Discount
+              <span class="badge badge-warning app-badge" *ngIf="org.VmsDiscountPendingBatchCount > 0">{{org.VmsDiscountPendingBatchCount}}</span>
+          </div>
+
+          <div class="app-accordion-level-three-item" (click)="gotoProfile(org.OrganizationIdInternal,'SourceDeduction')">
+              United States Source Deduction
+              <span class="badge badge-warning app-badge" *ngIf="org.VmsUnitedStatesSourceDeductionPendingBatchCount > 0">{{org.VmsUnitedStatesSourceDeductionPendingBatchCount}}</span>
+          </div>
+
+          <div class="app-accordion-level-three-item" (click)="gotoProfile(org.OrganizationIdInternal,'Expense')">
+              Expense
+              <span class="badge badge-warning app-badge" *ngIf="org.VmsExpensePendingBatchCount > 0">{{org.VmsExpensePendingBatchCount}}</span>
+          </div>
+
+          <div class="app-accordion-level-three-item" (click)="gotoProfile(org.OrganizationIdInternal,'Commission')">
+              Commission
+              <span class="badge badge-warning app-badge" *ngIf="org.VmsCommissionPendingBatchCount > 0">{{org.VmsCommissionPendingBatchCount}}</span>
+          </div>
+
+          <div class="app-accordion-level-three-item" (click)="gotoProfile(org.OrganizationIdInternal,'FixedPrice')">
+              Fixed Price
+              <span class="badge badge-warning app-badge" *ngIf="org.VmsFixedPricePendingBatchCount > 0">{{org.VmsFixedPricePendingBatchCount}}</span>
+          </div>
+      </div>
+  </div>
+</div>
+  <p *ngIf="batchLength===0" class="text-center" style="font-size:16px;">
+      There are no VMS items to show
+  </p>
+</div>

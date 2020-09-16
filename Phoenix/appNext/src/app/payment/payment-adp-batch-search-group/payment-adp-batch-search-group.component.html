@@ -1,0 +1,13 @@
+<div class="app-accordion-container app-accordion-container-28">
+  <app-phx-accordion>
+      <app-phx-accordion-group *ngFor="let company of companies; let i = index" [showBorders]="false" [isOpen]="company.isOpen">
+          <div accordion-heading>{{company.InternalOrganizationLegalName}} ({{company.PendingCount}} pending items)</div>
+              <div class="panel-heading" *ngFor="let currency of company.currencies; let j = index">
+                  <div class="currencyHeader" (click)="goToAdpBatchSearchByCurrency(company.OrganizationIdInternal, currency.CurrencyId)">
+                      <span class="currencyName">{{currency.CurrencyId | CodeValue:codeValueGroups.Currency:'code'}}</span>
+                      <span class="badge badge-warning currencyBadge">{{currency.PendingCount}}</span>                        
+                  </div>          
+              </div>
+      </app-phx-accordion-group>
+  </app-phx-accordion>
+</div>

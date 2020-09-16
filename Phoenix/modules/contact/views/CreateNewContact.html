@@ -1,0 +1,107 @@
+<div data-ng-form="create.entityForm">
+    <div class="row">
+        <div class="panel panel-tabbable col-md-7 col-xl-6 col-xxl-5">
+            <div class="panel-heading">
+                <div class="row worker-panel-header">
+                    <h3 class="panel-title">{{contact.newProfile.title.heading}}</h3>
+                </div>
+            </div>
+            <div class="panel-body">
+                <div class="panel">
+                    <div class="row form-horizontal" role="form" data-ng-form="myForm">
+                        <div class="form-group">
+                            <label class="req-lab-right col-md-3 control-label" for-property="create.newProfile.PrimaryEmail" for="PrimaryEmail" data-model-property="create.newProfile.primaryEmail">Email</label>
+                            <div class="col-md-9">
+                                <input class="form-control ng-invalid" validate-email type="email" placeholder="Primary Email" data-ng-model="create.newProfile.primaryEmail"
+                                    name="PrimaryEmail" data-required-message="Required" required="required" data-ng-change="create.changeAction()">
+                            </div>
+                        </div>
+                        <div class="form-group" data-ng-if="create.worker">
+                            <label class="req-lab-right col-md-3 control-label" for-property="create.newProfile.profileTypeId" for="ProfileTypeId" data-model-property="create.newProfile.profileTypeId">Profile Type</label>
+                            <div class="col-md-9">
+                                <div class="input-group select2-bootstrap-append">
+                                    <ui-select name="ProfileTypeId" data-ng-model="create.newProfile.profileTypeId" theme="select2" class="form-control" required
+                                        data-ng-change="create.workerTypeChanged(create.newProfile.profileTypeId)">
+                                        <ui-select-match placeholder="Select One">{{$select.selected.text}}</ui-select-match>
+                                        <ui-select-choices repeat="item.id as item in create.workerTypes | uiSelectChoicesFilter: $select.search: 'text'">
+                                            <span data-ng-bind-html="item.text | highlight: $select.search"></span>
+                                        </ui-select-choices>
+                                    </ui-select>
+                                    <span class="input-group-btn">
+                                        <button tabindex="-1" data-ng-click="create.newProfile.profileTypeId=undefined; create.Continue = false;" class="btn btn-default">
+                                            <i class="material-icons md-18">clear</i>
+                                        </button>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group" data-ng-if="create.organizational">
+                            <label class="control-label req-lab-right col-md-3" for="OrganizationId" for-property="OrganizationId" data-model-property="create.newProfile.organizationId">Organization</label>
+                            <div class="col-md-3" ng-show="create.newProfile.organization">
+                                <p class="form-control-static">
+                                    <a data-ui-sref="org.edit.details({organizationId: create.newProfile.organization.Id })">{{create.newProfile.organization.Id}} - {{create.newProfile.organization.DisplayName}}</a>
+                                </p>
+                            </div>
+                            <div class="col-md-9" ng-show="!create.newProfile.organization">
+                                <div class="input-group select2-bootstrap-append">
+                                    <ui-select name="OrganizationId" data-ng-model="create.newProfile.organizationId" theme="select2" class="form-control" required>
+                                        <ui-select-match placeholder="Select One">{{$select.selected.DisplayName}} - {{$select.selected.Id}}</ui-select-match>
+                                        <ui-select-choices repeat="item.Id as item in create.organizations | uiSelectChoicesFilter: $select.search: 'DisplayName': 'Id'">
+                                            <span data-ng-bind-html="item.DisplayName | highlight: $select.search"></span>
+                                            <span data-ng-bind-html="' - ' + item.Id | highlight: $select.search"></span>
+                                        </ui-select-choices>
+                                    </ui-select>
+                                    <span class="input-group-btn">
+                                        <button tabindex="-1" data-ng-click="create.newProfile.organizationId=undefined" class="btn btn-default">
+                                            <i class="material-icons md-18">clear</i>
+                                        </button>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="user-profile-warning" data-ng-show="create.Continue && create.newProfile.profiles.length>0 && create.message.length>0">
+                            <p>{{create.message}}</p>
+                        </div>
+                        <div class="user-profile-warning" data-ng-show="create.Continue && create.newProfile.profiles.length==0 && create.message.length>0">
+                            <p>{{create.message}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="btn-toolbar">
+                <button type="button" class="btn btn-primary pull-right" data-ng-show="!create.Continue" data-ng-disabled="!create.entityForm.$valid || create.submitted || create.checkingDuplicateEmails"
+                    data-ng-click="create.continueAction()">Continue</button>
+            </div>
+
+            <div ng-if="create.checkingDuplicateEmails" class="pull-right text-right text-primary error-box">
+                <strong>Looking for matching emails...</strong>
+            </div>
+            <div class="panel-footer user-profile-footer" data-ng-show="create.Continue && create.newProfile.profiles.length > 0">
+                <div class="row">
+                    <div class="pull-right user-profile-create-button">
+                        <a type="button" class="btn btn-primary" data-ng-click="create.createAction()">Create New</a>
+                    </div>
+                    <div class="user-profile-table" data-ng-show="create.newProfile.profiles.length>0">
+                        <div class="row bg-gray-strong col-md-12 user-profile-table-header">
+                            <div class="col-md-3 user-profile-cell text-black">Name</div>
+                            <div class="col-md-3 user-profile-cell text-black">Organization</div>
+                            <div class="col-md-2 user-profile-cell text-black">Profile Type</div>
+                            <div class="col-md-2 user-profile-cell text-black">Profile Status</div>
+                            <div class="col-md-2 user-profile-cell text-black">Action</div>
+                        </div>
+                        <div class="row col-md-12" data-ng-repeat="profile in create.newProfile.profiles">
+                            <div class="col-md-3 text-black user-profile-cell">{{profile.Contact.FirstName}} &nbsp;{{profile.Contact.LastName}}</div>
+                            <div class="col-md-3 text-black user-profile-cell">{{profile.Organization ? profile.Organization.DisplayName : 'N/A'}}</div>
+                            <div class="col-md-2 text-black user-profile-cell">{{profile.profileTypeText}}</div>
+                            <div class="col-md-2 text-black user-profile-cell">{{profile.profileStatus}}</div>
+                            <div class="col-md-2 text-black user-profile-cell">
+                                <a class="user-profile-action" data-ng-click="create.openProfile(profile)">Select</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

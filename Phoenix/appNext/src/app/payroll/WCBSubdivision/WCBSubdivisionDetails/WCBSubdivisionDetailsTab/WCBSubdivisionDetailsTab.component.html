@@ -1,0 +1,69 @@
+<div class="tab-pane active">{{updateParent()}}
+    <div class="panel">
+        <div class="" *ngFor="let d of selectedVersion?.WCBSubdivisionDetail; let i = index;">
+            <div class="content-group form-horizontal ">
+                <div class="panel-internal no-margin col-lg-12">
+                    <div class=" wcb-sub-tab-content">
+                        <div class="col-lg-1"></div>
+                        <div class="padding-10 col-lg-8">
+                            <div class="form-group ">{{showWait()}}
+                                <h4 class="no-margin">Details</h4>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-4" [ngClass]="{'form-invalid':!WC.valid}">Worker Classification</label>
+                                <div class="col-sm-8">
+                                    <app-phx-select-box
+                                        *ngIf="canChooseClassification(d) && selectableWorkerCompensations"
+                                        [value]="d.WorkerCompensationId"
+                                        [items]="selectableWorkerCompensations"
+                                        textField="Name" valueField="Id"
+                                        (valueChanged)="d.WorkerCompensationId = $event.value; changeClassifiaction($event, d)"
+                                        >
+                                    </app-phx-select-box>    
+                                    <input class="form-control" type="hidden" class="form-control" required [(ngModel)]="d.WorkerCompensationId" [phxFormModel]="parentForm" [registerModel]="WC"
+                                        name="WC" [ctrlName]="'WC' + getTics() " #WC="ngModel">
+                                    <div class="dx-field-label" *ngIf="!canChooseClassification(d)">{{d.WorkerCompensation?.Name}} </div>
+                                </div>
+                            </div>  
+                            <div class="form-group">
+                                <label class="control-label col-sm-4">Code</label>
+                                <div class="col-sm-8 viewMode">{{d.WorkerCompensation?.Code}}</div>
+                            </div> 
+                            <div  class="form-group" *ngFor="let o of d.WCBSubdivisionDetailOrganizationInternalRole;  let j = index;">
+                                <label class="control-label col-sm-4">{{o.LegalName}}</label>
+                                <div class="col-sm-8 ">
+                                    <div class="input-group">                                       
+                                        <input class="form-control" type="number" [(ngModel)]="o.RatePercent" #PCTG="ngModel" *ngIf="editMode" pattern="^(?:100$|\d{1,2})(?:\.\d{1,8})?$" phxPercentFormatter>
+                                        <span *ngIf="editMode" class="input-group-addon">%</span>
+                                        <div class="viewMode" *ngIf="!editMode">{{(o.RatePercent == null || o.RatePercent.length==0 ? 'N/A' : ((o.RatePercent / 100) | percent:'1.4-4'))}}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="form-group" >  
+                                    <label class="control-label  col-sm-4">Worker Type Applicable</label> 
+                            </div>
+                             <div class="form-group" >   
+                                <div class="col-sm-8 col-sm-offset-4" *ngFor="let pt of d.WCBSubdivisionDetailWorkerTypeDefault | orderBy:'Value'; let i = index;">
+                                    <dx-check-box [(value)]="pt.IsSelected" text="{{pt.Value}}" [disabled]="!editMode" (onValueChanged)="changeProfiles($event,pt,i)"></dx-check-box>                          
+                                </div>                                
+                            </div>
+                            <!--<div class="btnRemove" *ngIf="selectedVersion.WCBSubdivisionDetail.length > 1">
+                                <dx-button icon="trash" (onClick)="removeDetail(d)" *ngIf="editMode"></dx-button>
+                            </div>-->
+                            <div class="form-group" *ngIf="selectedVersion.WCBSubdivisionDetail.length > 1">
+                                <div class="col-lg-12">
+                                    <button type="button" (click)="removeDetail(d)" class="btn btn-material btn-default del-wcb-btn pull-right" *ngIf="editMode">
+                                        <i class="material-icons">delete</i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <app-phx-validation-messages [messages]="validationMessages"></app-phx-validation-messages>
+    <br>
+</div>

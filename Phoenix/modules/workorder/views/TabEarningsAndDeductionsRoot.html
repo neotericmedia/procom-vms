@@ -1,0 +1,279 @@
+﻿<style>
+    .template-stat-description {
+        width: 300px;
+    }    
+</style>
+<script type="text/ng-template" id="statHolidayDescriptionTooltipTemplate.html">
+    <div style="text-align:left;">
+        <p>Statutory wages for Ontario are calculated based on the sum of units worked in the previous work period (excluding OT) divided by the business days in that period.</p>
+        <p>If the average units exeed the standard hours per day, then the units are capped at the standard hours per day.</p>
+        <p>Statutory wages are paid using the Primary Rate amount.</p>
+    </div>
+</script>
+<div class="content-group form-horizontal" data-ng-form="formWorkOrderEarningsAndDeductions">
+    <div class="content-left">
+        <div class="panel-internal" data-ng-form="formOtherEarnings" data-ng-if="(model.entity.workerProfileTypeId==ApplicationConstants.UserProfileType.WorkerTemp)">
+            <div data-ng-repeat="paymentInfo in CurrentWorkOrderVersion.PaymentInfoes" data-ng-form="paymentInfoForm">
+                <div data-ng-if="paymentInfo.OrganizationIdSupplier==null">
+                    <div role="form" ng-show="$index == 0">
+                        <div class="form-group">
+                            <div class="col-lg-12">
+                                <h4>Other Earnings</h4>
+                            </div>
+                        </div>
+                        <div data-ng-form="formSourceDeductio">
+                            <div data-ng-if="paymentInfo.PaymentOtherEarnings.length>0">
+                                <div data-ng-repeat="paymentOtherEarning in paymentInfo.PaymentOtherEarnings">
+                                    <div class="form-group">
+                                        <label for-property="IsApplied" for="IsApplied" data-model-property="paymentOtherEarning.IsApplied" class="col-lg-4 control-label req-lab-right"
+                                            data-original-title="" title="">Apply {{paymentOtherEarning.PaymentOtherEarningTypeId | lookup:lists.paymentOtherEarningTypeList:'id':'text'}}</label>
+                                        <div class="col-lg-4">
+                                            <pt-input-radio name="IsApplied" data-ng-required="false" data-template-type="input-radio" data-ng-model="paymentOtherEarning.IsApplied"
+                                                data-options="[{ key: true, value: 'Yes' },{ key: false, value: 'No' }]" data-pt-field-view="model.ptFieldViewConfigOnChangeStatusId"
+                                                data-ng-click="paymentOtherEarningIsAppliedOnChange(paymentInfo, paymentOtherEarning)"
+                                            />
+                                        </div>
+                                        <div class="col-lg-4 no-padd-h-l-lg" data-ng-if="paymentOtherEarning.IsApplied">
+                                            <div class="input-group">
+                                                <input type="text" data-float-between-input="{from:0, to:100, decimalplaces:4, doesemptytozero:'false'}" ng-model="paymentOtherEarning.RatePercentage"
+                                                    ng-blur="paymentOtherEarning.RatePercentage=floatApplySpecifiedNumberOfDecimalPlaces(paymentOtherEarning.RatePercentage,4)"
+                                                    name="RatePercentage" data-required-message="Required" data-pt-field-view="model.ptFieldViewConfigOnChangeStatusId"
+                                                    ng-required="CurrentWorkOrderVersion.ValidateComplianceDraft" class="form-control form-control ng-scope"
+                                                />
+                                                <span class="input-group-addon input-align-right">%</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- IS ACCRUED-->
+                                    <div class="form-group" data-ng-if="paymentOtherEarning.PaymentOtherEarningTypeId==ApplicationConstants.PaymentOtherEarningType.VacationPay && paymentOtherEarning.IsApplied">
+                                        <label for-property="IsAccrued" for="IsAccrued" data-model-property="paymentOtherEarning.IsApplied" class="col-lg-4 control-label req-lab-right"
+                                            data-original-title="" title="">Accrue {{paymentOtherEarning.PaymentOtherEarningTypeId | lookup:lists.paymentOtherEarningTypeList:'id':'text'}}</label>
+                                        <div class="col-lg-4">
+                                            <pt-input-radio name="IsAccrued" data-ng-required="false" data-template-type="input-radio" data-ng-model="paymentOtherEarning.IsAccrued"
+                                                data-options="[{ key: true, value: 'Yes' },{ key: false, value: 'No' }]" data-pt-field-view="model.ptFieldViewConfigOnChangeStatusId"
+                                            />
+                                        </div>
+
+                                    </div>
+                                    <!-- IS ACCRUED-->
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel-internal" data-ng-form="formEmployerBurdens">
+            <div class="form-group">
+                <div class="col-lg-12">
+                    <h4>Workplace Safety Insurance</h4>
+                </div>
+            </div>
+            <!--<div class="form-group col-lg-12">
+                <label for-property="WCBIsITWorker" for="WCBIsITWorker" data-model-property="CurrentWorkOrderVersion.WCBIsITWorker" class="col-lg-4 control-label label-to-right req-lab-right" data-original-title="" title="">Is IT Worker</label>
+                <div class="col-lg-8">
+                    <pt-input-radio name="WCBIsITWorker"
+                                    ng-required="CurrentWorkOrderVersion.ValidateComplianceDraft"
+                                    data-template-type="input-radio"
+                                    data-ng-model="CurrentWorkOrderVersion.WCBIsITWorker"
+                                    data-ng-click="onChangeCurrentWorkOrderVersionWCBIsITWorker()"
+                                    data-options="[{ key: true, value: 'Yes' },{ key: false, value: 'No' }]"
+                                    data-pt-field-view="model.ptFieldViewConfigOnChangeStatusId" />
+                </div>
+            </div>-->
+            <div class="form-group">
+                <label for-property="WorkerCompensationId" for="WorkerCompensationId" data-model-property="CurrentWorkOrderVersion.WorkerCompensationId"
+                    class="col-lg-4 control-label label-to-right req-lab-right" data-watch-property="lists.wcbCodeList.length"
+                    data-required-condition="CurrentWorkOrderVersion.ValidateComplianceDraft && lists && lists.wcbCodeList &&  lists.wcbCodeList.length>0" data-original-title=""
+                    title="">Worker Classification</label>
+                <div class="col-lg-8">
+                    <div class="input-group select2-bootstrap-append">
+                        <ui-select name="WorkerCompensationId" data-ng-model="CurrentWorkOrderVersion.WorkerCompensationId" theme="select2" class="form-control"
+                            data-pt-field-view="model.ptFieldViewConfigOnChangeStatusId" ng-required="CurrentWorkOrderVersion.ValidateComplianceDraft && lists && lists.wcbCodeList &&  lists.wcbCodeList.length>0"
+                            data-ng-change="onChangeCurrentWorkOrderVersionWCBHeaderId()" data-pt-field-view-custom="{ {CurrentWorkOrderVersion.WorkerCompensationId | lookupnocache:lists.wcbCodeList:'WorkerCompensationId'} }&nbsp;">
+                            <ui-select-match placeholder=" -- select one --">{{$select.selected.text}}</ui-select-match>
+                            <ui-select-choices repeat="item.WorkerCompensation.Id as item in lists.wcbCodeList | uiSelectChoicesFilter: $select.search: 'text'">
+                                <span data-ng-bind-html="item.WorkerCompensation.Name | highlight: $select.search"></span>
+                            </ui-select-choices>
+                        </ui-select>
+                        <span class="input-group-btn">
+                            <button tabindex="-1" data-ng-click="CurrentWorkOrderVersion.WorkerCompensationId=undefined;onChangeCurrentWorkOrderVersionWCBHeaderId()"
+                                class="btn btn-default">
+                                <i class="material-icons md-18">clear</i>
+                            </button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for-property="WCBIsApplied" for="WCBIsApplied" data-model-property="CurrentWorkOrderVersion.WCBIsApplied" class="col-lg-4 control-label label-to-right req-lab-right"
+                    data-watch-property="lists.wcbCodeList.length" data-required-condition="CurrentWorkOrderVersion.ValidateComplianceDraft && lists && lists.wcbCodeList &&  lists.wcbCodeList.length>0"
+                    data-original-title="" title="">Apply Worker's Compensation</label>
+                <div class="col-lg-8">
+                    <pt-input-radio name="WCBIsApplied" ng-required="CurrentWorkOrderVersion.ValidateComplianceDraft && lists && lists.wcbCodeList &&  lists.wcbCodeList.length>0"
+                        data-template-type="input-radio" data-ng-model="CurrentWorkOrderVersion.WCBIsApplied" data-options="[{ key: true, value: 'Yes' },{ key: false, value: 'No' }]"
+                        data-pt-field-view="model.ptFieldViewConfigOnChangeStatusId" />
+                </div>
+            </div>
+        </div>
+
+        <div class="panel-internal" data-ng-form="formStatHoliday" data-ng-if="(model.entity.workerProfileTypeId==ApplicationConstants.UserProfileType.WorkerTemp)">
+            <div class="form-group">
+                <div class="col-lg-12">
+                    <h4>Statutory Holiday</h4>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for-property="ApplyFlatStatPay" for="ApplyFlatStatPay" data-model-property="CurrentWorkOrderVersion.ApplyFlatStatPay"
+                       class="col-lg-4 control-label label-to-right req-lab-right" data-original-title="" title="">
+                    <span>Apply flat stat pay instead of calculating stat pay</span>
+                    <span>
+                        <a href="javascript:;" uib-tooltip-template="'statHolidayDescriptionTooltipTemplate.html'" tooltip-placement="top-left" tooltip-class="template-stat-description">
+                            <i class="material-icons" style="color:#333333; font-size: 18px;">info</i>
+                        </a>
+                    </span>
+                </label>
+                <div class="col-lg-8">
+                    <pt-input-radio name="ApplyFlatStatPay" ng-required="CurrentWorkOrderVersion.ValidateComplianceDraft" data-template-type="input-radio"
+                        data-ng-model="CurrentWorkOrderVersion.ApplyFlatStatPay" data-options="[{ key: true, value: 'Yes' },{ key: false, value: 'No' }]"
+                        data-pt-field-view="model.ptFieldViewConfigOnChangeStatusId" />
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="content-right">
+        <div data-ng-form="formDeductions">
+            <div data-ng-repeat="paymentInfo in CurrentWorkOrderVersion.PaymentInfoes" data-ng-form="paymentInfoForm">
+                <div data-ng-if="paymentInfo.OrganizationIdSupplier==null&&(model.entity.workerProfileTypeId==ApplicationConstants.UserProfileType.WorkerTemp||model.entity.workerProfileTypeId==ApplicationConstants.UserProfileType.WorkerCanadianSp)">
+                    <div role="form" ng-show="$index == 0">
+                        <div class="panel-internal" data-ng-form="formSourceDeductio">
+                            <div class="form-group">
+                                <div class="col-lg-12">
+                                    <h4>Source Deductions</h4>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for-property="SubdivisionIdSourceDeduction" for="SubdivisionIdSourceDeduction" data-model-property="paymentInfo.SubdivisionIdSourceDeduction"
+                                    class="col-lg-4 control-label req-lab-right" data-original-title="" title="">Deduction Province/State</label>
+                                <div class="col-lg-8">
+                                    <div class="input-group select2-bootstrap-append">
+                                        <ui-select name="SubdivisionIdSourceDeduction" data-ng-model="paymentInfo.SubdivisionIdSourceDeduction" theme="select2" class="form-control"
+                                            data-pt-field-view="model.ptFieldViewConfigOnChangeStatusId" ng-required="CurrentWorkOrderVersion.ValidateComplianceDraft" data-ng-change="onChangeSourceDeductionSubdivision(paymentInfo);getSubDivisionSourceDeductions(paymentInfo)">
+                                            <ui-select-match placeholder=" -- select one --">{{$select.selected.text}}</ui-select-match>
+                                            <ui-select-choices repeat="item.id as item in lists.workOrderSalesTaxTerritories | uiSelectChoicesFilter: $select.search: 'text'">
+                                                <span data-ng-bind-html="item.text | highlight: $select.search"></span>
+                                            </ui-select-choices>
+                                        </ui-select>
+                                        <span class="input-group-btn">
+                                            <button tabindex="-1" data-ng-click="onClickClearSubDivisionSourceDeductions(paymentInfo);getSubDivisionSourceDeductions(paymentInfo);"
+                                                class="btn btn-default">
+                                                <i class="material-icons md-18">clear</i>
+                                            </button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for-property="IsUseUserProfileWorkerSourceDeduction" for="IsUseUserProfileWorkerSourceDeduction" data-model-property="paymentInfo.IsUseUserProfileWorkerSourceDeduction"
+                                    class="col-lg-4 control-label req-lab-right" data-original-title="" title="">Use deductions from Worker Profile?</label>
+                                <div class="col-lg-8">
+                                    <div>
+                                        <phx-input-radio name="IsUseUserProfileWorkerSourceDeduction" data-ng-required="false" data-template-type="input-radio" data-ng-model="paymentInfo.IsUseUserProfileWorkerSourceDeduction"
+                                            data-options="[{ key: true, value: 'Yes' },{ key: false, value: 'No' }]" data-change-callback="onClickIsUseUserProfileWorkerSourceDeduction"
+                                            data-pt-field-view="model.ptFieldViewConfigOnChangeStatusId" />
+                                    </div>
+                                    <div ng-if="paymentInfo.IsUseUserProfileWorkerSourceDeduction">
+                                        <strong ng-if="html.show.t4AForm" class="form-group">Profile has T4A form. No deductions will be applied from {{ html.t4AEffectiveYear }} onward</strong>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <!-- changes -->
+                        <div class="panel-internal" data-ng-if="paymentInfo.PaymentSourceDeductions.length>0 || paymentInfo.IsUseUserProfileWorkerSourceDeduction">
+                            <div class="form-group" data-ng-if="(paymentInfo.PaymentSourceDeductions | filter:filterOnPaymentSourceDeductionsByIncomeTaxes).length > 0">
+                                <div class="col-lg-12">
+                                    <h4>Income Taxes</h4>
+                                </div>
+                            </div>
+                            <div class="form-group" data-ng-repeat="paymentSourceDeduction in paymentInfo.PaymentSourceDeductions| orderByCodeTableSortOrderWithoutCache:'SourceDeductionTypeId':lists.sourceDeductionTypeList | filter:filterOnPaymentSourceDeductionsByIncomeTaxes"
+                                data-ng-if="paymentSourceDeduction.ToShow">
+                                <label for-property="IsApplied" for="IsApplied" data-model-property="paymentSourceDeduction.IsApplied" class="col-lg-4 control-label req-lab-right"
+                                    data-original-title="" title="">{{paymentSourceDeduction.SourceDeductionTypeId != ApplicationConstants.SourceDeductionType.AdditionalTax
+                                    ? 'Apply ' : ''}}{{paymentSourceDeduction.SourceDeductionTypeId | lookup:lists.sourceDeductionTypeList:'id':'text'}}</label>
+                                <div class="col-lg-4" data-ng-if="paymentSourceDeduction.IsOverWritable">
+                                    <pt-input-radio name="IsApplied" data-ng-required="false" data-template-type="input-radio" data-ng-model="paymentSourceDeduction.IsApplied"
+                                        data-options="[{ key: true, value: 'Yes' },{ key: false, value: 'No' }]" data-ng-click="paymentSourceDeductionOnClick(paymentSourceDeduction)"
+                                        data-pt-field-view="model.ptFieldViewConfigOnChangeStatusId" />
+                                </div>
+                                <div class="col-lg-4" style="padding-top: 7px;" data-ng-if="!paymentSourceDeduction.IsOverWritable">{{paymentSourceDeduction.IsApplied ? 'Yes' : 'No'}}</div>
+                                <div class="col-lg-4" data-ng-if="paymentSourceDeduction.RatePercentage!=null">
+                                    <div class="input-group">
+                                        <input type="text" data-float-between-input="{from:0, to:100, decimalplaces:4, doesemptytozero:'false'}" placeholder="Percentage Rate"
+                                            ng-model="paymentSourceDeduction.RatePercentage" ng-blur="paymentSourceDeduction.RatePercentage=floatApplySpecifiedNumberOfDecimalPlaces(paymentSourceDeduction.RatePercentage,4)"
+                                            name="RatePercentage" data-required-message="Required" data-pt-field-view="model.ptFieldViewConfigOnChangeStatusId"
+                                            ng-required="CurrentWorkOrderVersion.ValidateComplianceDraft" class="form-control form-control ng-scope"
+                                        />
+                                        <span class="input-group-addon input-align-right">%</span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 no-padd-h-l-lg" data-ng-if="paymentSourceDeduction.IsApplied && paymentSourceDeduction.SourceDeductionTypeId == ApplicationConstants.SourceDeductionType.AdditionalTax">
+                                    <div class="input-group">
+                                        <span class="input-group-addon input-align-right">$</span>
+                                        <input type="text" ng-required="CurrentWorkOrderVersion.ValidateComplianceDraft" data-ng-pattern="ApplicationConstants.Regex.CurrencyGreaterThanZero"
+                                            data-float-between-input="{from:0, to:9999999999999.99, decimalplaces:2, doesemptytozero:'false'}"
+                                            placeholder="Amount" ng-model="paymentSourceDeduction.RateAmount" name="RateAmount"
+                                            class="form-control input-align-right" data-pt-field-view="model.ptFieldViewConfigOnChangeStatusId"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel-internal" data-ng-if="(paymentInfo.PaymentSourceDeductions | filter:filterOnPaymentSourceDeductionsByPayrollTaxes).length > 0">
+                            <div class="form-group">
+                                <div class="col-lg-12">
+                                    <h4>Payroll Taxes</h4>
+                                </div>
+                            </div>
+                            <div class="form-group" data-ng-repeat="paymentSourceDeduction in paymentInfo.PaymentSourceDeductions| orderByCodeTableSortOrderWithoutCache:'SourceDeductionTypeId':lists.sourceDeductionTypeList | filter:filterOnPaymentSourceDeductionsByPayrollTaxes"
+                                data-ng-if="paymentSourceDeduction.ToShow">
+                                <label for-property="IsApplied" for="IsApplied" data-model-property="paymentSourceDeduction.IsApplied" class="col-lg-4 control-label req-lab-right"
+                                    data-original-title="" title="">{{paymentSourceDeduction.SourceDeductionTypeId != ApplicationConstants.SourceDeductionType.AdditionalTax
+                                    ? 'Apply ' : ''}}{{paymentSourceDeduction.SourceDeductionTypeId | lookup:lists.sourceDeductionTypeList:'id':'text'}}</label>
+                                <div class="col-lg-4" data-ng-if="paymentSourceDeduction.IsOverWritable">
+                                    <pt-input-radio name="IsApplied" data-ng-required="false" data-template-type="input-radio" data-ng-model="paymentSourceDeduction.IsApplied"
+                                        data-options="[{ key: true, value: 'Yes' },{ key: false, value: 'No' }]" data-ng-click="paymentSourceDeductionOnClick(paymentSourceDeduction)"
+                                        data-pt-field-view="model.ptFieldViewConfigOnChangeStatusId" />
+                                </div>
+                                <div class="col-lg-4" style="padding-top: 7px;" data-ng-if="!paymentSourceDeduction.IsOverWritable">{{paymentSourceDeduction.IsApplied ? 'Yes' : 'No'}}</div>
+                                <div class="col-lg-4" data-ng-if="paymentSourceDeduction.RatePercentage!=null">
+                                    <div class="input-group">
+                                        <span class="input-group-addon input-align-right">$</span>
+                                        <input type="text" data-float-between-input="{from:0, to:100, decimalplaces:4, doesemptytozero:'false'}" placeholder="Percentage Rate"
+                                            ng-model="paymentSourceDeduction.RatePercentage" ng-blur="paymentSourceDeduction.RatePercentage=floatApplySpecifiedNumberOfDecimalPlaces(paymentSourceDeduction.RatePercentage,4)"
+                                            name="RatePercentage" data-required-message="Required" data-pt-field-view="model.ptFieldViewConfigOnChangeStatusId"
+                                            ng-required="CurrentWorkOrderVersion.ValidateComplianceDraft" class="form-control form-control ng-scope"
+                                        />
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 no-padd-h-l-lg" data-ng-if="paymentSourceDeduction.IsApplied && paymentSourceDeduction.SourceDeductionTypeId == ApplicationConstants.SourceDeductionType.AdditionalTax">
+                                    <div class="input-group">
+                                        <span class="input-group-addon input-align-right">$</span>
+                                        <input type="text" ng-required="CurrentWorkOrderVersion.ValidateComplianceDraft" data-ng-pattern="ApplicationConstants.Regex.CurrencyGreaterThanZero"
+                                            data-float-between-input="{from:0, to:9999999999999.99, decimalplaces:2, doesemptytozero:'false'}"
+                                            placeholder="Amount" ng-model="paymentSourceDeduction.RateAmount" name="RateAmount"
+                                            class="form-control input-align-right" data-pt-field-view="model.ptFieldViewConfigOnChangeStatusId"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

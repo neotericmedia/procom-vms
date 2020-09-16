@@ -1,0 +1,21 @@
+<div>
+  <div class="col-md-8">
+    <i class="material-icons md-48 col-md-1 userGuideHeaderIcon">{{userGuidesHeader.UserGuidesHeaderIcon}}</i>
+    <h1>{{userGuidesHeader.UserGuidesHeaderText}}
+      <div *ngIf="showAdministrationView" class="btn pull-right  btn-default btn-material btn-borderless add-restriction-close"
+        (click)="startUpload()">
+        <i class="material-icons">add</i>
+      </div>
+    </h1>
+  </div>
+  <div class="col-md-8">
+    <span class="col-md-offset-1">{{userGuidesHeader.UserGuidesHeaderDescription}}</span>
+  </div>
+  <div class="col-md-8">
+    <hr class="col-md-offset-1 userGuideSeparator">
+  </div>
+
+  <ng-container *ngFor="let userGuide of userGuidesHeader.UserGuides">
+    <app-user-guides-file [userGuidesFile]="userGuide" [showAdministrationView]="showAdministrationView" (deletedFile)="deletedFile($event)"></app-user-guides-file>
+  </ng-container>
+</div>

@@ -1,0 +1,91 @@
+<div class="form-group col-lg-12">
+  <label class="col-lg-2 control-label h4 bold po-lines-lbl">Lines</label>
+</div>
+<div class="form-group">
+  <div class="col-lg-2">
+  </div>
+  <div class="col-lg-10 table-responsive">
+    <table class="table table-striped table-content table-hover" *ngIf="showLines || true==true">
+      <thead class="align-table-cells-center">
+        <tr>
+          <th scope="col">Line
+            <span class="column-sorter"></span>
+          </th>
+          <th scope="col">Total Funds
+            <span class="column-sorter"></span>
+          </th>
+          <th scope="col">Funds Committed
+            <span class="column-sorter"></span>
+          </th>
+          <th scope="col">Funds Reserved
+            <span class="column-sorter"></span>
+          </th>
+          <th scope="col">Funds Spent
+            <span class="column-sorter"></span>
+          </th>
+          <th scope="col">PO Line Ref
+            <span class="column-sorter"></span>
+          </th>
+          <th scope="col">Description
+            <span class="column-sorter"></span>
+          </th>
+          <th scope="col">Status
+            <span class="column-sorter"></span>
+          </th>
+          <th scope="col">Action</th>
+        </tr>
+      </thead>
+      <tbody class="align-table-cells-center">
+        <tr *ngFor="let pol of purchaseOrderLines; let i = index" (click)="onEditLines(i, pol)">
+          <td>
+            <span *ngIf="pol.Id>0">{{pol.PurchaseOrderLineNumber}}</span>
+          </td>
+          <td>
+            <span>{{pol.Amount | phxDisplayCurrency}} {{pol.CurrencyId | lookup: listCurrency:'id':'code'}}</span>
+          </td>
+          <td>
+            <span>{{amountCommitedTotal(pol) | phxDisplayCurrency}} {{pol.CurrencyId | lookup: listCurrency:'id':'code'}}</span>
+          </td>
+          <td>
+            <span>{{amountResevedTotal(pol) | phxDisplayCurrency}} {{pol.CurrencyId | lookup: listCurrency:'id':'code'}}</span>
+          </td>
+          <td>
+            <span>{{amountSpentTotal(pol) | phxDisplayCurrency}} {{pol.CurrencyId | lookup: listCurrency:'id':'code'}}</span>
+          </td>
+          <td style="max-width:150px;word-wrap: break-word">
+            <span>{{pol.PurchaseOrderLineReference || 'N/A'}}</span>
+          </td>
+          <td style="max-width:150px;word-wrap: break-word">
+            <span>{{pol.Description || 'N/A'}}</span>
+          </td>
+          <td>
+            <span [ngClass]="{'text-warning': pol.StatusId===phxConstants.PurchaseOrderStatus.Active}">{{pol.StatusId | lookup: purchaseOrderStatuses}}</span>
+          </td>
+          <td (click)="$event.stopPropagation()">
+            <button type="button" class="btn btn-default btn-material pull-left" (click)="removeLine(i,true)" title="removeLine" *ngIf="showDeleteLine && pol.StatusId!=phxConstants.PurchaseOrderStatus.Active">
+              <i class="material-icons">delete</i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<div class="form-group">
+  <div class="col-lg-12">
+    <button type="button" class="btn btn-default btn-material pull-right" (click)="addLine()" title="addLine" *ngIf="showAddLine || true==true">
+      <i class="material-icons">add</i>
+    </button>
+  </div>
+</div>
+<app-phx-modal #modal [buttons]="modalFabButtons" title="Delete Line">
+  <div class="attachment-container">
+    This Line will be Deleted. Continue?
+  </div>
+</app-phx-modal>
+
+<app-phx-modal title="" #modalLineEdit (closeModal)="closeModalPOLines($event)" [showCloseButton]="false">
+  <app-purchase-order-edit-modal [LineId]="lineId" [poLineNum]="poLineId" [POmodal]="modalLineEdit" (CancelEvent)="onCancel($event)"
+    (outputEvent)="onOutputEvent($event)" (draftStatusEvent)="onDraftStatus($event)">
+  </app-purchase-order-edit-modal>
+</app-phx-modal>

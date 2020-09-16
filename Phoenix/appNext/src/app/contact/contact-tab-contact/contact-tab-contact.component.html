@@ -1,0 +1,141 @@
+<form *ngIf="inputFormGroup" [formGroup]="inputFormGroup">
+  <div *ngIf="profile">
+    <div class="contact-form text-right" *ngIf="!profile.Contact.SourceId && profile.Contact.UserStatusId !== phxConstants.UserStatus.Active">
+      <div class="alert alert-info alert-dismissable error-box" style="display: inline-block;">
+        <a class="close" data-dismiss="alert" aria-label="close">
+          <i class="material-icons">clear</i>
+        </a>
+        <div class="row text-right" style="padding-right: 40px;">
+          <div class="col-xs-12">
+            <strong>Information!</strong> You cannot edit this contact or create new profiles until all pending changes have been approved.
+          </div>
+        </div>
+      </div>
+    </div>
+    <app-contact-details [inputFormGroup]="inputFormGroup.controls.TabContactDetail" [readOnlyStorage]="readOnlyStorage"
+      (outputEvent)="onOutputEvent()"></app-contact-details>
+
+    <div class="contact-form" *ngIf="isBlockVisible && !profile.IsDraft">
+      <div class="row profile-collapse-wrapper">
+        <div class="profile-collapse col-lg-12 col-xs-12 app-col-original">
+          <div class="col-lg-6 col-xs-6">
+            <span class="profile-title">Profiles</span>
+          </div>
+          <div class="col-lg-6 col-xs-6">
+            <button class="btn btn-default btn-material contact-block-expand-btn pull-right" (click)="isProfiles=!isProfiles"
+              title="Expand to see details">
+              <i class="material-icons">
+                {{isProfiles ? 'remove' : 'add'}}
+              </i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="isProfiles">
+      <app-contact-profiles [inputFormGroup]="inputFormGroup.controls.TabProfiles" [readOnlyStorage]="readOnlyStorage"
+        (outputEvent)="onOutputEvent($event)" (updateBreadcrumb)="onUpdateBreadcrumb()" [contact]="profile.Contact">
+      </app-contact-profiles>
+    </div>
+    <div class="contact-form" *ngIf="(profile.ProfileStatusId === phxConstants.ProfileStatus.Active || profile.ProfileStatusId === phxConstants.ProfileStatus.PendingChange) && isWorkerProfile">
+      <div class="row profile-collapse-wrapper advance-garnishee-wrapper">
+        <div class="profile-collapse col-lg-12 col-xs-12">
+          <div class="col-lg-6 col-xs-6">
+            <span class="profile-title">Worker Documents</span>
+          </div>
+          <div class="col-lg-6 col-xs-6">
+            <button class="btn btn-default btn-material contact-block-expand-btn pull-right" (click)="isDocuments=!isDocuments"
+              title="Expand to see details">
+              <i class="material-icons">
+                {{isDocuments ? 'remove' : 'add'}}
+              </i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="(profile.ProfileStatusId === phxConstants.ProfileStatus.Active || profile.ProfileStatusId === phxConstants.ProfileStatus.PendingChange) && isDocuments">
+      <app-contact-worker-documents [readOnlyStorage]="readOnlyStorage" [currentProfile]="profile">
+      </app-contact-worker-documents>
+    </div>
+    <div class="contact-form" *ngIf="isBlockVisible && (profile.ProfileStatusId === phxConstants.ProfileStatus.Active || profile.ProfileStatusId === phxConstants.ProfileStatus.PendingChange)">
+      <div class="row profile-collapse-wrapper advance-garnishee-wrapper">
+        <div class="profile-collapse col-lg-12 col-xs-12">
+          <div class="col-lg-6 col-xs-6">
+            <span class="profile-title">Advances</span>
+            <span class="badge badge-success count-badge badge-adv" *ngIf="profile.ActiveAdvancesCount>0">{{profile.ActiveAdvancesCount}}</span>
+          </div>
+          <div class="col-lg-6 col-xs-6" *ngIf="showAdvance">
+            <button class="btn btn-default btn-material contact-block-expand-btn pull-right" (click)="isAdvances=!isAdvances"
+              title="Expand to see details">
+              <i class="material-icons">
+                {{isAdvances ? 'remove' : 'add'}}
+              </i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="contact-form contact-advance-search" *ngIf="isAdvances && isBlockVisible && (profile.ProfileStatusId === phxConstants.ProfileStatus.Active || profile.ProfileStatusId === phxConstants.ProfileStatus.PendingChange) && showAdvance">
+      <div class="">
+        <div class="col-lg-12 advance-search-table" style="padding-bottom: 20px;">
+          <app-contact-advances-search [profile]="profile" (outputResponse)="onOutputResponse($event)"></app-contact-advances-search>
+        </div>
+      </div>
+    </div>
+    <div class="contact-form" *ngIf="isBlockVisible && (profile.ProfileStatusId === phxConstants.ProfileStatus.Active || profile.ProfileStatusId === phxConstants.ProfileStatus.PendingChange)">
+      <div class="row profile-collapse-wrapper advance-garnishee-wrapper">
+        <div class="profile-collapse col-lg-12 col-xs-12">
+          <div class="col-lg-6 col-xs-6">
+            <span class="profile-title">Garnishees</span>
+            <span class="badge badge-success count-badge" *ngIf="profile.ActiveGarnisheesCount>0">{{profile.ActiveGarnisheesCount}}</span>
+          </div>
+          <div class="col-lg-6 col-xs-6" *ngIf="showGarnishee">
+            <button class="btn btn-default btn-material contact-block-expand-btn pull-right" (click)="isGarnishees=!isGarnishees"
+              title="Expand to see details">
+              <i class="material-icons">
+                {{isGarnishees ? 'remove' : 'add'}}
+              </i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="contact-form contact-garnishee-search" style="margin-top: 20px;" *ngIf="isGarnishees && isBlockVisible && (profile.ProfileStatusId === phxConstants.ProfileStatus.Active || profile.ProfileStatusId === phxConstants.ProfileStatus.PendingChange) && showGarnishee">
+      <app-contact-garnishee-search [profile]="profile" (outputResponse)="onOutputResponse($event)"></app-contact-garnishee-search>
+    </div>
+    <div class="contact-form" *ngIf="profile.ProfileTypeId===phxConstants.ProfileType.Internal && profile.ProfileStatusId === phxConstants.ProfileStatus.Active">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="panel panel-internal panel-contact">
+            <div class="contact-name">
+              <h4>Subscriptions</h4>
+              <table class="table">
+                <thead class="my-thead">
+                  <tr>
+                    <th>Subscription type</th>
+                    <th>Subscribed to</th>
+                    <th>Restrictions</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of subscriptions" style="cursor:pointer" (click)="onClickSubscription(item.Id)">
+                    <td> {{item.AccessSubscriptionTypeId | lookup:listSubscriptionType}}</td>
+                    <td>{{item.SubscribedTo}}</td>
+                    <td>{{item.HasRestrictions ? 'Yes' : 'No'}}</td>
+                    <td>{{item.StartDate| date: phxConstants.DateFormat.mediumDate}}</td>
+                    <td>{{item.EndDate| date: phxConstants.DateFormat.mediumDate}}</td>
+                    <td>{{item.AccessSubscriptionStatusId | lookup:listSubscriptionStatuses}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

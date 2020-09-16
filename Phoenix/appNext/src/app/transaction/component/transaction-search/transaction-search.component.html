@@ -1,0 +1,12 @@
+﻿<div>
+    <app-phx-data-table [columns]="columns" [configuration]="dataTableConfiguration" [dataSourceUrl]="'transactionHeader'" [dataSourceParams]='odataParams'
+        [exportFileName]="'transactions'" [componentName]="'TransactionSearch'" (rowClick)="onRowSelected($event)" (contextMenuPreparing)="onContextMenuPreparing($event)">
+        <div *dxTemplate="let d of 'billTaxCellTemplate'">
+            <span *ngIf="d.data.TransactionTypeId!==phxConstants.TransactionType.Advance && d.data.TransactionTypeId!==phxConstants.TransactionType.Adjustment && d.data.TransactionTypeId!==phxConstants.TransactionType.VacationPayment">{{(d.value || 0) | number:'.2'}}</span>
+            <span *ngIf="d.data.TransactionTypeId===phxConstants.TransactionType.Advance || d.data.TransactionTypeId===phxConstants.TransactionType.Adjustment || d.data.TransactionTypeId===phxConstants.TransactionType.VacationPayment">{{ d.value | number:'.2'}}</span>
+        </div>
+        <!-- <div *dxTemplate="let s of 'currencyTemplate'">
+            <span class="current-value">{{s.value | number:'1.2-2'}} {{displayCurrencyCode(s)}}</span>
+        </div> -->
+    </app-phx-data-table>
+</div>

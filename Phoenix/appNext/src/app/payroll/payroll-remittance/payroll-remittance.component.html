@@ -1,0 +1,39 @@
+<div class="app-accordion-container app-accordion-container-28">
+    <app-phx-accordion>
+        <app-phx-accordion-group *ngFor="let company of companies; let i = index" [showBorders]="false" [isOpen]="company.isOpen">
+            <div accordion-heading>{{company.companyName}} ({{company.pendingItems}} pending items)</div>
+            <app-phx-accordion>
+                <app-phx-accordion-group panelClass="currencyGroup" *ngFor="let currency of company.currencies; let j = index" [showBorders]="false"
+                    [(isOpen)]="currency.open" [showToggle]="false">
+                    <div accordion-heading class="currencyBlock">
+                        <div class="currencyHeader">
+                            <span class="currencyName">{{currency.currencyCode | CodeValue:codeValueGroups.Currency:'code'}}</span>
+                            <span class="badge badge-warning currencyBadge">{{currency.count}}</span>
+                            <i class="pull-right" [ngClass]="{'icon-chevron-up': currency.open, 'icon-chevron-down': !currency.open}"></i>
+                        </div>
+                    </div>
+                    <div class="entityBlock">
+                        <div *ngFor="let sourceDeduction of currency.sourcedeductions; let j = index" (click)="goToPendingRemittanceByType(company, currency, sourceDeduction)">
+                            <div class="divRelease navWithLink">
+                                <span>Pending {{sourceDeduction.SourceDeductionTypeId}} Remittances</span>
+                                <span class="badge badge-warning currencyBadge">{{sourceDeduction.count}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </app-phx-accordion-group>
+                <div class="entityBlock">
+                    <div (click)="goToRemittedBatches(company)">
+                        <div class="divRelease navWithLink">
+                            <span>Remitted Batches</span>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="divRelease navWithLink">
+                            <span>Remittance Report</span>
+                        </div>
+                    </div>
+                </div>
+            </app-phx-accordion>
+        </app-phx-accordion-group>
+    </app-phx-accordion>
+</div>

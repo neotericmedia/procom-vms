@@ -1,0 +1,101 @@
+<app-phx-panel headerTitle="Organization Header/Footer Images">
+    <app-phx-document-file-upload #fileUpload [showAddButton]="false" [(configuration)]="html.complianceDocumentFileUploadConfiguration"
+        (onSuccessItem)="onSuccessItem($event)" [editable]="this.readOnlyStorage?.IsEditable" (onCompleteAll)="documentUploadCallbackOnDone()"></app-phx-document-file-upload>
+    <div class="form-group">
+        <label class="col-lg-3 control-label label-to-right ">Portrait Header Image (7.5in x 1in)</label>
+        <div class="col-lg-9">
+            <div [ngClass]="{'col-sm-9' : isEditable, 'col-sm-12' : !isEditable }">
+
+                <div class="fieldViewMode form-control-static">
+                    <a class="doc-anchor" [title]="model.DocumentHeaderName" target="_blank" [href]="createDocumentLink(model.DocumentHeaderPublicId)">
+                        {{model.DocumentHeaderName}}</a>
+                    <div *ngIf="model.DocumentIdHeader === null">File has not been uploaded</div>
+                </div>
+
+            </div>
+            <div class="col-sm-3" *ngIf="isEditable">
+                <button class="btn btn-default btn-material " *ngIf="model.DocumentIdHeader !== 0" (click)="uploadDocument(PhxConstants.DocumentType.InternalOrganizationPortraitHeader)">
+                    <i *ngIf="model.DocumentIdHeader == null" class="material-icons">add</i>
+                    <i *ngIf="model.DocumentIdHeader != null" class="material-icons">edit</i>
+                </button>
+                <button class="btn btn-default btn-material" *ngIf="model.DocumentIdHeader !== 0 && model.DocumentIdHeader != null"
+                    (click)="deleteImage(model.Id, PhxConstants.DocumentType.InternalOrganizationPortraitHeader)">
+                    <i class="material-icons">delete</i>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-lg-3 control-label label-to-right ">Portrait Footer Image (7.5in x 1in)</label>
+        <div class="col-lg-9">
+            <div [ngClass]="{'col-sm-9' : isEditable, 'col-sm-12' : !isEditable }">
+
+                <div class="fieldViewMode form-control-static">
+                    <a class="doc-anchor" [title]="model.DocumentFooterName" target="_blank" [href]="createDocumentLink(model.DocumentFooterPublicId)">
+                        {{model.DocumentFooterName}}</a>
+
+                    <div *ngIf="model.DocumentIdFooter == null">File has not been uploaded</div>
+                </div>
+
+            </div>
+            <div class="col-sm-3" *ngIf="isEditable">
+                <button class="btn btn-default btn-material" *ngIf="model.DocumentIdFooter !== 0" (click)="uploadDocument(PhxConstants.DocumentType.InternalOrganizationPortraitFooter)">
+                    <i class="material-icons" *ngIf="model.DocumentIdFooter === null">add</i>
+                    <i class="material-icons" *ngIf="model.DocumentIdFooter !== null">edit</i>
+                </button>
+                <button class="btn btn-default btn-material " *ngIf="model.DocumentIdFooter !== 0 && model.DocumentIdFooter !== null"
+                    (click)="deleteImage(model.Id, PhxConstants.DocumentType.InternalOrganizationPortraitFooter)">
+                    <i class="material-icons">delete</i>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-lg-3 control-label label-to-right ">Landscape Header Image (10in x 0.5in)</label>
+        <div class="col-lg-9">
+            <div [ngClass]="{'col-sm-9' : isEditable, 'col-sm-12' : !isEditable }">
+
+                <div class="fieldViewMode form-control-static">
+                    <a class="doc-anchor" [title]="model.DocumentLandscapeHeaderName" target="_blank" [href]="createDocumentLink(model.DocumentLandscapeHeaderPublicId)">{{model.DocumentLandscapeHeaderName}}</a>
+
+                    <div *ngIf="model.DocumentIdLandscapeHeader == null">File has not been uploaded</div>
+                </div>
+
+            </div>
+            <div class="col-sm-3" *ngIf="isEditable">
+                <button class="btn btn-default btn-material " *ngIf="model.DocumentIdLandscapeHeader !== 0" (click)="uploadDocument(PhxConstants.DocumentType.InternalOrganizationLandscapeHeader)">
+                    <i class="material-icons" *ngIf="model.DocumentIdLandscapeHeader === null">add</i>
+                    <i class="material-icons" *ngIf="model.DocumentIdLandscapeHeader !== null">edit</i>
+                </button>
+                <button class="btn btn-default btn-material " *ngIf="model.DocumentIdLandscapeHeader !== 0 && model.DocumentIdLandscapeHeader !== null"
+                    (click)="deleteImage(model.Id, PhxConstants.DocumentType.InternalOrganizationLandscapeHeader)">
+                    <i class="material-icons">delete</i>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-lg-3 control-label label-to-right ">Landscape Footer Image (10in x 0.5in)</label>
+        <div class="col-lg-9">
+            <div [ngClass]="{'col-sm-9' : isEditable, 'col-sm-12' : !isEditable }">
+
+                <div class="fieldViewMode form-control-static">
+                    <a class="doc-anchor" title="{{model.DocumentLandscapeFooterName}}" target="_blank" [href]="createDocumentLink(model.DocumentLandscapeFooterPublicId)">{{model.DocumentLandscapeFooterName}}</a>
+                    <div *ngIf="model.DocumentIdLandscapeFooter == null">File has not been uploaded</div>
+                </div>
+
+            </div>
+            <div class="col-sm-3" *ngIf="isEditable">
+                <button class="btn btn-default btn-material " *ngIf="model.DocumentIdLandscapeFooter !== 0" (click)="uploadDocument(PhxConstants.DocumentType.InternalOrganizationLandscapeFooter)">
+                    <i class="material-icons" *ngIf="model.DocumentIdLandscapeFooter === null">add</i>
+                    <i class="material-icons" *ngIf="model.DocumentIdLandscapeFooter !== null">edit</i>
+                </button>
+                <button class="btn btn-default btn-material " *ngIf="model.DocumentIdLandscapeFooter !== 0 && model.DocumentIdLandscapeFooter !== null"
+                    (click)="deleteImage(model.Id, PhxConstants.DocumentType.InternalOrganizationLandscapeFooter)">
+                    <i class="material-icons">delete</i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+</app-phx-panel>

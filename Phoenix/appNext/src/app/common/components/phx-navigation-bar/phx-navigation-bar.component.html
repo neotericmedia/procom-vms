@@ -1,0 +1,42 @@
+<ul class="nav nav-tabs responsive-tabs">
+  <ng-container *ngFor="let tab of navigationBarContent; trackBy: trackByFn">
+    <li *ngIf="!tab.IsHidden" class="text-center" (click)="onTabSelect(tab)" [ngClass]="{ 'active': activeTab === tab}">
+      <a class="" [routerLink]="[tab.Path]">
+        <i class="fa fa-2x" [ngClass]="tab.Icon"></i>
+        <span>{{tab.DisplayText}}</span>
+        <!-- <i *ngIf="tab.Valid===false" class="material-icons md-18">warning</i> -->
+        <i *ngIf="tab.Valid===false" class="fontello-icon-warning"></i>
+        <span *ngIf="tab.BadgeCount" class="badge badge-warning">{{tab.BadgeCount}}</span>
+      </a>
+    </li>
+  </ng-container>
+</ul>
+
+<ul class="list-inline sub-nav col-xs-10">
+  <li role="presentation" *ngFor="let subMenu of activeTab?.SubMenu" class="text-center" (click)="onSubMenuSelect(subMenu)"
+    [ngClass]="{ 'active': subMenu === activeSubMenu}">
+    <a class="" [routerLink]="[subMenu.Path]">
+      <i class="material-icons md-18">{{subMenu.Icon}}</i>
+      <span>{{subMenu.DisplayText}}</span>
+      <!-- <i *ngIf="subMenu.Valid===false" class="material-icons md-18">warning</i> -->
+      <i *ngIf="subMenu.Valid===false" class="fontello-icon-warning"></i>
+      <span *ngIf="subMenu.BadgeCount" class="badge badge-warning">{{subMenu.BadgeCount}}</span>
+    </a>
+  </li>
+</ul>
+
+<div class="scrollmenu">
+  <div>
+    <ng-container *ngFor="let tab of navigationBarContent">
+      <div *ngIf="!tab.IsHidden" (click)="onTabSelect(tab)" [ngClass]="{ 'active': activeTab === tab}">
+        <a class="" [routerLink]="[tab.Path]">
+          <i class="material-icons">{{tab.Icon}}</i>
+          <span>{{tab.DisplayText}}</span>
+          <!-- <i *ngIf="tab.Valid===false" class="material-icons md-18">warning</i> -->
+          <i *ngIf="tab.Valid===false" class="fontello-icon-warning"></i>
+          <span *ngIf="tab.BadgeCount" class="badge badge-warning">{{tab.BadgeCount}}</span>
+        </a>
+      </div>
+    </ng-container>
+  </div>
+</div>

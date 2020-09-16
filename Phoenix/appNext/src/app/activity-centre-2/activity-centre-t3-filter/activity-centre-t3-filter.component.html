@@ -1,0 +1,192 @@
+<div class="form-group clearfix t3-container">
+  <div class="close-filter" (click)="closeFilter()">
+    <i class="fa fa-times"></i>
+  </div>
+  <div class="col-lg-6 filter-border">
+    <div class="dropdown t3-filter-dropdown" id="toolTip">
+      <button class="btn btn-primary dropdown-toggle btn-caret" data-toggle="dropdown" type="button"
+        aria-expanded="false">
+        {{'activityCentre2.navbar.filtersBtn' | phxTranslate}}
+        <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu filter-rt" *ngIf="savedT3FilterStateList.length">
+        <li *ngFor="let item of savedT3FilterStateList" [ngClass]="[item.filterSelected ? 'active' : '' ]">
+          <div class="save-filter-block">
+            <a (click)="getSavedT3FilterState(item)" class="save-filter-item">{{item.StateName}}</a>
+            <i (click)="deleteSavedT3FilterState(item)" class="fa fa-close filter-item-delete"></i>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <app-phx-tool-tip *ngIf="showToolTip" targetId="#toolTip" position="bottom">
+    <div class="tooltip-block toop-tip-ui">
+      <p>{{'activityCentre2.t3Filter.FilterToolTip' | phxTranslate}}</p>
+      <button (click)="showToolTip = !showToolTip" class="btn btn-sm btn-default tooltip-btn">
+        {{'common.generic.okay' | phxTranslate}}
+      </button>
+    </div>
+  </app-phx-tool-tip>
+  <div class="col-lg-6 t3-save-container">
+    <div class="t3-save-search text-center show-save-search">
+      <a class="btn-save-search" (click)="saveSearch()">{{'activityCentre2.t3Filter.SaveSearchBtn' | phxTranslate}}</a>
+    </div>
+    <div class="show-save-button">
+      <button class="save-btn"
+        (click)="saveSearch()">{{'activityCentre2.t3Filter.SaveSearchBtn' | phxTranslate}}</button>
+    </div>
+  </div>
+</div>
+<div class="sm-t2-filter visible-xs visible-sm visible-md filter-sm">
+  <ng-content select="app-activity-centre-t2-filter"></ng-content>
+</div>
+<form [formGroup]="formGroup" class="form-horizontal">
+  <div class="form-group" style="display: none;">
+    <div class="col-lg-12">
+      <div class="form-group has-feedback">
+        <phx-form-control [control]="formGroup.controls.KeyWord"
+          labelText="{{'activityCentre2.t3Filter.SearchLabel' | phxTranslate}}" [editable]="true"
+          [layoutType]="layoutType.Stacked">
+          <input formControlName="KeyWord" type="text" class="form-control" placeholder="Keyboard" />
+          <span class="glyphicon glyphicon-search form-control-feedback"></span>
+        </phx-form-control>
+      </div>
+    </div>
+  </div>
+  <div class="form-group t3-entity-block">
+    <div class="t3-entity-title">
+      {{'activityCentre2.t3Filter.EntityLabel' | phxTranslate}}
+    </div>
+    <div class="form-group">
+      <div class="col-lg-12 t3-entity-item">
+        <phx-form-control [editable]="true" [layoutType]="layoutType.InputOnly"
+          [control]="formGroup.controls.AllEntities">
+          <label class="radio-inline chk-box">
+            <input class="form-check-input" formControlName="AllEntities" type="checkbox">
+            {{'activityCentre2.t3Filter.SelectAll' | phxTranslate}} ({{totalEntityCount}})
+            <span class="checkmark"></span>
+          </label>
+        </phx-form-control>
+      </div>
+    </div>
+    <div formArrayName="EntityItems">
+      <div class="col-lg-12 t3-entity-item" *ngFor="let entity of formGroup.get('EntityItems').controls;index as i">
+        <div [formGroupName]="i" [ngClass]="[!entity.controls.Count.value ? 'invalid-entity' : '' ]">
+          <phx-form-control [editable]="true" [layoutType]="layoutType.InputOnly"
+            [control]="entity.controls.FilterSelected">
+            <label class="radio-inline chk-box">
+              <input class="form-check-input" formControlName="FilterSelected" type="checkbox">
+              {{entity.controls.EntityTypeId.value | lookup:entityCodeList:'id':'text'}}
+              ({{entity.controls.Count.value}})
+              <span class="checkmark"></span>
+            </label>
+          </phx-form-control>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="col-lg-12 padding-0">
+      <div class="col-lg-6 col-sm-12">
+        <phx-form-control [control]="formGroup.controls.StartDate" editable="true"
+          labelText="{{'activityCentre2.t3Filter.StartDateLabel' | phxTranslate}}" [layoutType]="layoutType.Stacked">
+          <app-phx-date-box type="date" [formControl]="formGroup.controls.StartDate"
+            [displayFormat]="phxConstants.DateFormat.MMM_dd_yyyy"></app-phx-date-box>
+        </phx-form-control>
+      </div>
+      <div class="col-lg-6 col-sm-12">
+        <phx-form-control [control]="formGroup.controls.EndDate" editable="true"
+          labelText="{{'activityCentre2.t3Filter.EndDateLabel' | phxTranslate}}" [layoutType]="layoutType.Stacked">
+          <app-phx-date-box type="date" [formControl]="formGroup.controls.EndDate"
+            [displayFormat]="phxConstants.DateFormat.MMM_dd_yyyy"></app-phx-date-box>
+        </phx-form-control>
+      </div>
+    </div>
+  </div>
+  <div class="form-group" *ngIf="isClientListVisible">
+    <div class="col-lg-12">
+      <phx-form-control labelText="{{'activityCentre2.t3Filter.ClientLabel' | phxTranslate}}" [editable]="true"
+        [control]="formGroup.controls.Client" [layoutType]="layoutType.Stacked">
+        <app-phx-tag-box [dataSource]="clientList" valueExpr="Id" displayExpr="DisplayName" showSelectionControls="true"
+          [searchEnabled]="true" [applyValueMode]="instantly"
+          placeholder="{{'activityCentre2.t3Filter.ClientPlaceholder' | phxTranslate}}"
+          [formControl]="formGroup.controls.Client" [maxDisplayedTags]="1">
+        </app-phx-tag-box>
+      </phx-form-control>
+    </div>
+  </div>
+  <!-- Keep the Inline style until next release-->
+  <div style="display: none;" class="form-group"
+    *ngIf="t1Status === taskData.inProgress || t1Status === taskData.completed">
+    <div class="col-lg-12">
+      <phx-form-control labelText="{{'activityCentre2.t3Filter.TaskOwnerPlaceholder' | phxTranslate}}" [editable]="true"
+        [control]="formGroup.controls.TaskOwner" [layoutType]="layoutType.Stacked">
+        <app-phx-select-box [items]="taskOwnerList" textField="FullName" valueField="Id"
+          [formControl]="formGroup.controls.TaskOwner" placeholder=" Select Task Owner">
+        </app-phx-select-box>
+      </phx-form-control>
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="btn-set clearfix">
+      <div class="col-xs-12">
+        <div class="col-xs-6 btn-applyfilter">
+          <button class="filter-btn"
+            (click)="applyFilterButton()">{{'activityCentre2.t3Filter.ApplyFiltersBtn' | phxTranslate}}</button>
+        </div>
+        <div class="col-lg-12 col-xs-6">
+          <button class="reset-btn"
+            (click)="resetFilters()">{{'activityCentre2.t3Filter.ResetFilterBtn' | phxTranslate}}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <app-phx-modal title="{{'activityCentre2.t3Filter.SaveFilterTitle' | phxTranslate}}" #SaveT3FilterModal>
+    <div class="slider-content">
+      <div class="slider-body">
+        <div class="form-group">
+          <div class="col-lg-12">
+            <phx-form-control [control]="formGroup.controls.FilterName"
+              labelText="{{'activityCentre2.t3Filter.FilterNameLabel' | phxTranslate}}" [editable]="true"
+              [layoutType]="layoutType.Stacked">
+              <input formControlName="FilterName" type="text" class="form-control" placeholder="Untitled Filter" />
+            </phx-form-control>
+          </div>
+        </div>
+      </div>
+      <div class="slider-footer">
+        <div class="row">
+          <div class="pull-right">
+            <button type="button" class="btn-cancel-modal"
+              (click)="cancelModal()">{{'activityCentre2.t3Filter.cancelBtn' | phxTranslate}}</button>
+            <button type="button" [disabled]="!formGroup.controls.FilterName.value" class="btn-save-modal"
+              (click)="saveT3FilterState()">{{'activityCentre2.t3Filter.saveBtn' | phxTranslate}}</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </app-phx-modal>
+</form>
+
+<app-phx-modal title="{{'activityCentre2.t3Filter.DeleteFilterTitle' | phxTranslate}}" #DeleteT3StateModal>
+  <div class="slider-content">
+    <div class="slider-body">
+      <div class="form-group">
+        <div class="col-lg-12">
+          <h4 *ngIf="filterForDeletion">
+            {{'activityCentre2.t3Filter.DeleteFilterBody' | phxTranslate : filterForDeletion.StateName }} </h4>
+        </div>
+      </div>
+    </div>
+    <div class="slider-footer">
+      <div class="row">
+        <div class="pull-right">
+          <button type="button" class="btn-cancel-modal"
+            (click)="hideFilterDeleteModal()">{{'common.generic.no' | phxTranslate}}</button>
+          <button type="button" class="btn-save-modal"
+            (click)="deleteT3State()">{{'common.generic.yes' | phxTranslate}}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</app-phx-modal>

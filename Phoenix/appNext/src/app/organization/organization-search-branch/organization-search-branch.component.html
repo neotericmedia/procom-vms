@@ -1,0 +1,16 @@
+<button type="button" class="btn btn-clouds" (click)="createNewOrgBranch()">New</button>
+<app-phx-data-table 
+    [configuration]="dataTableConfiguration" 
+    [dataSourceUrl]="dataSourceUrl" 
+    [columns]="columns" 
+    [summary]="summary"
+    [exportFileName]="'workorder'" 
+    [componentName]="dataGridComponentName" 
+    (selectionChanged)="onRowSelected($event)"
+    (contextMenuOpenTab)="onContextMenuOpenTab($event)">
+    <div *dxTemplate="let d of 'viewOrgBranchListDetailsCellTemplate'">
+      <div class="btn-group">
+        <button type="button" class="btn btn-xs btn-clouds btn-row-action no-padding-bottom-right" title="View" (click)="viewOrgBranchDetails(d.data)"><i class="fontello-icon-eye-1"></i>&nbsp;</button>
+      </div>
+    </div>
+</app-phx-data-table>

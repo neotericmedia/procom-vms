@@ -1,0 +1,367 @@
+﻿<div class="content-group form-horizontal" data-ng-form="formWorkOrderCore">
+    <div class="content-left">
+        <div class="panel-internal">
+            <div class="form-group">
+                <div class="col-lg-12">
+                    <h4>Details</h4>
+                </div>
+            </div>
+            <div class="form-group" data-ng-if="model.entity.AtsPlacementId>0">
+                <label class="col-lg-4 control-label label-to-right" data-original-title="" title="">ATS Id</label>
+                <div class="col-lg-8 form-control-static">
+                    {{model.entity.AtsPlacementId}}
+                </div>
+            </div>
+            <div class="form-group" data-ng-if="model.entity.StartDate">
+                <label class="col-lg-4 control-label label-to-right" data-original-title="" title="">Assignment Start Date</label>
+                <div class="col-lg-8 form-control-static">
+                    {{model.entity.StartDate | date:ApplicationConstants.formatDate}}
+                </div>
+            </div>
+            <div class="form-group" data-ng-if="displayWorkOrderStartDateState()">
+                <label for-property="WorkOrderStartDateState" for="WorkOrderStartDateState" data-model-property="CurrentWorkOrderVersion.WorkOrderStartDateState" class="col-lg-4 control-label label-to-right req-lab-right" data-original-title="" title="">Start Date</label>
+                <div class=" col-lg-8">
+                    <pt-date-picker data-ng-model="CurrentWorkOrderVersion.WorkOrderStartDateState" data-ng-required="true" data-required-message="Required" ng-change="datePickerCallbackOnDoneStartDate()" data-pt-field-view="model.ptFieldViewConfigOnChangeStatusId" />
+                </div>
+            </div>
+
+            <div class="form-group" data-ng-if="!displayWorkOrderStartDateState()">
+                <label for-property="StartDate" for="StartDate" data-model-property="CurrentWorkOrder.StartDate" class="col-lg-4 control-label label-to-right req-lab-right" data-original-title="" title="">Start Date</label>
+                <div class="col-lg-8">
+                    <pt-date-picker data-ng-model="CurrentWorkOrder.StartDate" data-pt-field-view="model.ptFieldViewConfigOnChangeStatusId" data-ng-required="true" data-required-message="Required" ng-change="datePickerCallbackOnDoneStartDate()" />
+                </div>
+            </div>
+
+            <div class="form-group" data-ng-if="displayWorkOrderEndDateState()">
+                <label for-property="WorkOrderEndDateState" for="WorkOrderEndDateState" data-model-property="CurrentWorkOrderVersion.WorkOrderEndDateState" class="col-lg-4 control-label label-to-right req-lab-right" data-original-title="" title="">End Date</label>
+                <div class=" col-lg-8">
+                    <pt-date-picker data-ng-model="CurrentWorkOrderVersion.WorkOrderEndDateState" data-ng-required="true" data-required-message="Required" data-pt-field-view="model.ptFieldViewConfigOnChangeStatusId" ng-change="datePickerCallbackOnDoneEndDate()" />
+                </div>
+            </div>
+
+            <div class="form-group" data-ng-if="!displayWorkOrderEndDateState()">
+                <label for-property="EndDate" for="EndDate" data-model-property="CurrentWorkOrder.EndDate" class="col-lg-4 control-label label-to-right req-lab-right" data-original-title="" title="">End Date</label>
+                <div class="col-lg-8">
+                    <pt-date-picker data-ng-model="CurrentWorkOrder.EndDate" data-pt-field-view="model.ptFieldViewConfigOnChangeStatusId" data-ng-required="true" data-required-message="Required" ng-change="datePickerCallbackOnDoneEndDate()" />
+                </div>
+            </div>
+
+            <div class="form-group" data-ng-if="CurrentWorkOrder.TerminationDate">
+                <label data-model-property="CurrentWorkOrder.TerminationDate" class="col-lg-4 control-label label-to-right req-lab-right" data-original-title="" title="">Termination Date</label>
+                <div class="col-lg-8">
+                    <div class="fieldViewMode form-control-static">
+                        {{CurrentWorkOrder.TerminationDate | date:ApplicationConstants.formatDate}}
+                    </div> 
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for-property="LineOfBusinessId" for="LineOfBusinessId" data-model-property="CurrentWorkOrderVersion.LineOfBusinessId" class="col-lg-4 control-label label-to-right req-lab-right" data-original-title="" title="">Line Of Business</label>
+                <div class="col-lg-8">
+                    <div class="input-group select2-bootstrap-append">
+                        <ui-select name="LineOfBusinessId" data-ng-model="CurrentWorkOrderVersion.LineOfBusinessId" theme="select2" class="form-control"
+                                   data-pt-field-view="model.ptFieldViewConfigOnChangeStatusId"
+                                   data-pt-field-view-model-validation="{ { CurrentWorkOrderVersion } }"
+                                   required
+                                   data-ng-change="onChangeCurrentWorkOrderVersionLineOfBusinessId()">
+                            <ui-select-match placeholder=" -- select one --" >{{$select.selected.text}}</ui-select-match>
+                            <ui-select-choices repeat="item.id as item in lists.lineOfBusinesses | uiSelectChoicesFilter: $select.search: 'text'"><span data-ng-bind-html="item.text | highlight: $select.search"></span></ui-select-choices>
+                        </ui-select>
+                        <span class="input-group-btn">
+                            <button tabindex="-1" data-ng-click="CurrentWorkOrderVersion.LineOfBusinessId=undefined;onChangeCurrentWorkOrderVersionLineOfBusinessId();" class="btn btn-default"><i class="material-icons md-18">clear</i></button>
+                        </span>
+                        <!--<ng-selecter style="width: 100%" class="input-group select2-bootstrap-append" style="width: 100%;" [allowclear]="true"
+                                 [items]="lists.InternalOrganizationDefinition1List"
+                                 [selectparams]="{ Text: '*text* - *code*', ValueField: 'id', Order: 'sortOrder', 'DecreasingOrder': false}"
+                                 
+                                 (selected)="onChangeCurrentWorkOrderVersionInternalOrganizationDefinition1Id()"
+                                 (removed)="CurrentWorkOrderVersion.InternalOrganizationDefinition1Id=undefined;
+                             onChangeCurrentWorkOrderVersionInternalOrganizationDefinition1Id()">
+                        </ng-selecter>-->
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for-property="InternalOrganizationDefinition1Id" for="InternalOrganizationDefinition1Id" data-model-property="CurrentWorkOrderVersion.InternalOrganizationDefinition1Id" class="col-lg-4 control-label label-to-right req-lab-right" data-original-title="" title="">Branch</label>
+                <div class="col-lg-8">
+                    <div class="input-group select2-bootstrap-append">
+            
+                        <ui-select name="InternalOrganizationDefinition1Id" data-ng-model="CurrentWorkOrderVersion.InternalOrganizationDefinition1Id" theme="select2" class="form-control" data-pt-field-view="model.ptFieldViewConfigOnChangeStatusId" required
+                                   data-ng-change="onChangeCurrentWorkOrderVersionInternalOrganizationDefinition1Id()">
+                            <ui-select-match placeholder=" -- select one --">{{$select.selected.text}} - {{$select.selected.code}}</ui-select-match>
+                            <ui-select-choices repeat="item.id as item in lists.InternalOrganizationDefinition1List | uiSelectChoicesFilter: $select.search: 'text'">
+                                <span data-ng-bind-html="item.text | highlight: $select.search"></span>
+                                <span data-ng-bind-html="' - ' + item.code | highlight: $select.search"></span>
+                            </ui-select-choices>
+                        </ui-select>
+                        <span class="input-group-btn">
+                            <button tabindex="-1" data-ng-click="CurrentWorkOrderVersion.InternalOrganizationDefinition1Id=undefined;onChangeCurrentWorkOrderVersionInternalOrganizationDefinition1Id();" class="btn btn-default"><i class="material-icons md-18">clear</i></button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for-property="WorksiteId" for="WorksiteId" data-model-property="CurrentWorkOrderVersion.WorksiteId" class="col-lg-4 control-label label-to-right req-lab-right"   data-original-title="" title="">Work Site</label>
+                <div class="col-lg-8">
+                    <div class="input-group select2-bootstrap-append">
+                        <ui-select name="WorksiteId" data-ng-model="CurrentWorkOrderVersion.WorksiteId" theme="select2" class="form-control" data-pt-field-view="model.ptFieldViewConfigOnChangeStatusId" required
+                                   data-ng-change="onChangeCurrentWorkOrderVersionWorksiteId()">
+                            <ui-select-match placeholder=" -- select one --">{{$select.selected.text}}</ui-select-match>
+                            <ui-select-choices repeat="item.id as item in lists.workOrderWorkLocations | uiSelectChoicesFilter: $select.search: 'text'"><span data-ng-bind-html="item.text | highlight: $select.search"></span></ui-select-choices>
+                        </ui-select>
+                        <span class="input-group-btn">
+                            <button tabindex="-1" data-ng-click="CurrentWorkOrderVersion.WorksiteId=undefined;onChangeCurrentWorkOrderVersionWorksiteId()" class="btn btn-default"><i class="material-icons md-18">clear</i></button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for-property="OrganizationIdInternal" for="OrganizationIdInternal" class="col-lg-4 control-label label-to-right req-lab-right"
+                       data-model-property="model.entity.OrganizationIdInternal"
+                       data-original-title="" title="">Internal Company</label>
+                <div class="col-lg-8">
+                    <div class="input-group select2-bootstrap-append">
+                        
+                        <ui-select name="OrganizationIdInternal" theme="select2" class="form-control" required
+                                   data-ng-model="model.entity.OrganizationIdInternal"
+                                   data-pt-field-view="model.ptFieldViewConfigOnChangeStatusId"
+                                   data-pt-field-view-custom="{{model.entity.OrganizationIdInternal|lookupnocache:lists.listOrganizationInternal:'Id':'DisplayName':'Id'}}"
+                                   data-ng-change="onChangeInternalOrganization()">
+                            <ui-select-match placeholder=" -- select one --">{{$select.selected.DisplayName}} - {{$select.selected.Id}}</ui-select-match>
+                            <ui-select-choices repeat="item.Id as item in  lists.listOrganizationInternal | uiSelectChoicesFilter: $select.search: 'DisplayName': 'Id'">
+                                <span data-ng-bind-html="item.DisplayName | highlight: $select.search"></span>
+                                <span data-ng-bind-html="' - ' + item.Id | highlight: $select.search"></span>
+                            </ui-select-choices>
+                        </ui-select>
+                        <span class="input-group-btn">
+                            <button tabindex="-1" data-ng-click="model.entity.OrganizationIdInternal=undefined;onChangeInternalOrganization()" class="btn btn-default"><i class="material-icons md-18">clear</i></button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for-property="PositionTitleId" for="PositionTitleId" data-model-property="CurrentWorkOrderVersion.PositionTitleId" class="col-lg-4 control-label label-to-right req-lab-right" data-original-title="" title="">Position Title</label>
+                <div class="col-lg-8">
+                    <div class="input-group select2-bootstrap-append">
+                        <ui-select name="PositionTitleId" data-ng-model="CurrentWorkOrderVersion.PositionTitleId" theme="select2" class="form-control" data-pt-field-view="model.ptFieldViewConfigOnChangeStatusId" required>
+                            <ui-select-match placeholder=" -- select one --">{{$select.selected.text}}</ui-select-match>
+                            <ui-select-choices repeat="item.id as item in lists.workOrderPositionTitles | uiSelectChoicesFilter: $select.search: 'text'"><span data-ng-bind-html="item.text | highlight: $select.search"></span></ui-select-choices>
+                        </ui-select>
+                        <span class="input-group-btn">
+                            <button tabindex="-1" data-ng-click="CurrentWorkOrderVersion.PositionTitleId=undefined" class="btn btn-default"><i class="material-icons md-18">clear</i></button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel-internal">
+            <div class="form-group">
+                <div class="col-lg-12">
+                    <h4>Collaborators</h4>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for-property="AssignedToUserProfileId" for="AssignedToUserProfileId" data-model-property="CurrentWorkOrderVersion.AssignedToUserProfileId" class="col-lg-4 control-label label-to-right req-lab-right" data-original-title="" title="">Assigned To</label>
+                <div class="col-lg-8">
+                    <div class="input-group select2-bootstrap-append">
+                        <ui-select name="AssignedToUserProfileId" data-ng-model="CurrentWorkOrderVersion.AssignedToUserProfileId" theme="select2" class="form-control" data-pt-field-view="model.ptFieldViewConfigOnChangeStatusId" required 
+                            data-pt-field-view-custom="{{CurrentWorkOrderVersion.AssignedToUserProfileId | lookupnocache:lists.userProfileAssignedTo:'Id':'Contact.FullName'}} {{ CurrentWorkOrderVersion.AssignedToUserProfileId && ' - ' }} {{CurrentWorkOrderVersion.AssignedToUserProfileId | lookupnocache:lists.userProfileAssignedTo:'Id':'Contact.Id'}}">
+                           
+                            <ui-select-match placeholder=" -- select one --">{{$select.selected.Contact.FullName}} - {{$select.selected.Contact.Id}}</ui-select-match>
+                            <ui-select-choices repeat="item.Id as item in lists.userProfileAssignedTo | uiSelectChoicesFilter: $select.search: 'Contact.FullName': 'Contact.Id'">
+                                <span data-ng-bind-html="item.Contact.FullName | highlight: $select.search"></span>
+                                <span data-ng-bind-html="' - ' + item.Contact.Id  | highlight: $select.search"></span>
+                            </ui-select-choices>
+
+                        </ui-select>
+                        <span class="input-group-btn">
+                            <button tabindex="-1" data-ng-click="CurrentWorkOrderVersion.AssignedToUserProfileId=undefined" class="btn btn-default"><i class="material-icons md-18">clear</i></button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="content-right" data-ng-if="!ApplicationConstants.ProductionHideFunctionality">
+        <div class="panel-internal">
+            <div class="form-group">
+                <div class="col-lg-12">
+                    <h4>Commissions</h4>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for-property="SalesPattern" for="SalesPattern" data-model-property="model.entity.SalesPattern" class="col-lg-4 control-label label-to-right" data-original-title="" title="">Sales Pattern</label>
+                <div class="col-lg-8">
+                    <div class="input-group select2-bootstrap-append">
+                        <ui-select name="SalesPattern" data-ng-model="CurrentWorkOrderVersion.SalesPatternId" theme="select2" class="form-control" data-pt-field-view="model.ptFieldViewConfigOnChangeStatusId" data-ng-change="onChangeSalesPattern()"
+                                   data-pt-field-view-custom="{ { CurrentWorkOrderVersion.SalesPatternId | lookupnocache:lists.salesPatterns:'Id':'Description' } }">
+                            <ui-select-match placeholder=" -- select one --">{{$select.selected.Description}}</ui-select-match>
+                            <ui-select-choices repeat="item.Id as item in lists.salesPatternsActive | uiSelectChoicesFilter: $select.search: 'Description'"><span data-ng-bind-html="item.Description | highlight: $select.search"></span></ui-select-choices>
+                        </ui-select>
+                        <span class="input-group-btn">
+                            <button tabindex="-1" data-ng-click="CurrentWorkOrderVersion.SalesPatternId=undefined;onChangeSalesPattern()" class="btn btn-default"><i class="material-icons md-18">clear</i></button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div data-ng-show="CurrentWorkOrderVersion.SalesPatternId">
+                <div class="form-group">
+                    <label for-property="JobOwner" for="JobOwner" data-model-property="model.entity.JobOwner" class="col-lg-4 control-label label-to-right" data-original-title="" title="">Job Owner</label>
+                    <div class="col-lg-8">
+                        <div class="fieldViewMode form-control-static ">
+                            {{CurrentWorkOrderVersion.JobOwner.FullName}}
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group" data-ng-repeat="support in CurrentWorkOrderVersion.SupportingJobOwners">
+                    <label for-property="SupportingJobOwner" for="SupportingJobOwner" data-model-property="model.entity.SupportingJobOwner" class="col-lg-4 control-label label-to-right" data-original-title="" title="" data-ng-show="$first">Support</label>
+                    <div class="col-lg-4" data-ng-show="!$first"></div>
+                    <div class="col-lg-8">
+                        <div class="fieldViewMode form-control-static ">
+                            {{support.FullName}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div data-ng-show="!CurrentWorkOrderVersion.SalesPatternId">
+                <div class="form-group">
+                    <label for-property="UsesSupport" for="UsesSupport" data-model-property="CurrentWorkOrderVersion.JobOwnerUsesSupport" class="col-lg-4 control-label label-to-right req-lab-right" data-original-title="" title="">Job Owner Uses Support?</label>
+                    <div class="col-lg-8 wo-uses-supp">
+                        <pt-input-radio name="UsesSupport"
+                                        data-ng-required="true"
+                                        data-template-type="input-radio"
+                                        data-ng-model="CurrentWorkOrderVersion.JobOwnerUsesSupport"
+                                        data-options="[{ key: true, value: 'Yes' },{ key: false, value: 'No' }]"
+                                        data-pt-field-view="model.ptFieldViewConfigOnChangeStatusId"
+                                        data-change-callback="onChangeJobOwnerUsesSupport" />
+                    </div>
+
+                </div>
+                <div class="form-group job-owner-use-support">
+                    <label for-property="JobOwner" for="JobOwner" data-model-property="CurrentWorkOrderVersion.JobOwner.UserProfileIdSales" class="col-lg-4 control-label label-to-right req-lab-right" data-original-title="" title="">Job Owner</label>
+                    <div class="col-lg-8">
+                        <div class="input-group select2-bootstrap-append">
+                            <ui-select name="JobOwner" data-ng-model="CurrentWorkOrderVersion.JobOwner.UserProfileIdSales" theme="select2" class="form-control" data-pt-field-view="model.ptFieldViewConfigOnChangeStatusId" required data-ng-change="getCommissionRates()"
+                                       data-pt-field-view-custom="{ { CurrentWorkOrderVersion.JobOwner.UserProfileIdSales | lookupnocache:lists.UserProfileCommissions:'Id':'Contact.FullName' } }">
+                                <ui-select-match placeholder=" -- select one --">{{$select.selected.Contact.FullName}}</ui-select-match>
+                                <ui-select-choices repeat="item.Id as item in lists.JobOwners | uiSelectChoicesFilter: $select.search: 'Contact.FullName'"><span data-ng-bind-html="item.Contact.FullName | highlight: $select.search"></span></ui-select-choices>
+                            </ui-select>
+                            <span class="input-group-btn">
+                                <button tabindex="-1" data-ng-click="clearJobOwner()" class="btn btn-default"><i class="material-icons md-18">clear</i></button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div data-ng-show="CurrentWorkOrderVersion.JobOwnerUsesSupport===true">
+                    <div class="form-group" data-ng-show="!CurrentWorkOrderVersion.SupportingJobOwners||CurrentWorkOrderVersion.SupportingJobOwners.length==0">
+                        <label for-property="SupportingJobOwner" for="SupportingJobOwner" data-model-property="model.entity.SupportingJobOwner" class="col-lg-4 control-label label-to-right small-label" data-original-title="" title="">Support</label>
+                        <div class="col-lg-8">
+                            <div class="pull-right">
+                                <button type="button" class="btn btn-sm btn-default btn-material" data-ng-if="actionButton.show.workOrderAddRemoveSubEntities" data-ng-click="addSupportingJobOwner()"><i class="material-icons">add</i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group" data-ng-repeat="support in CurrentWorkOrderVersion.SupportingJobOwners">
+                        <div class="col-lg-4" data-ng-if="!$first"></div>
+                        <label for-property="SupportingJobOwner" for="SupportingJobOwner" data-model-property="support.UserProfileIdSales" class="col-lg-4 control-label label-to-right req-lab-right small-label" data-original-title="" title="" data-ng-show="$first">Support</label>
+                        <div class="col-xs-10 col-sm-11 col-lg-6 col-xl-7">
+                            <div class="input-group select2-bootstrap-append">
+                                <ui-select name="SupportingJobOwner" data-ng-model="support.UserProfileIdSales" theme="select2" class="form-control" data-pt-field-view="model.ptFieldViewConfigOnChangeStatusId" required data-ng-change="getCommissionRates()"
+                                           data-pt-field-view-custom="{ { support.UserProfileIdSales | lookupnocache:lists.UserProfileCommissions:'Id':'Contact.FullName' } }">
+                                    <ui-select-match placeholder=" -- select one --">{{$select.selected.Contact.FullName}}</ui-select-match>
+                                    <ui-select-choices repeat="item.Id as item in lists.SupportJobOwners | uiSelectChoicesFilteredByUsage: $select.search:CurrentWorkOrderVersion.SupportingJobOwners:support:'UserProfileIdSales':'Id': 'Contact.FullName'"><span data-ng-bind-html="item.Contact.FullName | highlight: $select.search"></span></ui-select-choices>
+                                </ui-select>
+                                <span class="input-group-btn">
+                                    <button tabindex="-1" data-ng-click="clearSupportingJobOwner(support)" class="btn btn-default"><i class="material-icons md-18">clear</i></button>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-xs-1 pull-right">                            
+                                <button type="button" class="btn btn-sm btn-default btn-material supp-del pull-right" data-ng-click="removeSupportingJobOwner(support)" data-ng-if="actionButton.show.workOrderAddRemoveSubEntities"><i class="material-icons">delete</i></button>                            
+                        </div>
+                        <div class="col-lg-2 pull-right">                            
+                                <button type="button" class="btn btn-sm btn-default btn-material supp-add pull-right" data-ng-if="actionButton.show.workOrderAddRemoveSubEntities&&$last" data-ng-click="addSupportingJobOwner()" style="margin-top: 5px;"><i class="material-icons">add</i></button>                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div data-ng-if="CurrentWorkOrderVersion.LineOfBusinessId==ApplicationConstants.LineOfBusiness.Regular">
+                <div data-ng-init="initRecruiter()" class="form-group" data-ng-show="!CurrentWorkOrderVersion.Recruiters||CurrentWorkOrderVersion.Recruiters.length==0">
+                    <label for-property="Recruiter" for="Recruiter" data-model-property="model.entity.Recruiter" class="col-lg-4 control-label label-to-right" data-original-title="" title="">Recruiter(s)</label>
+                    <div class="col-lg-8">
+                        <div class="fieldViewMode form-control-static label-to-left">No Recruiter on this Work Order</div>
+                        <div class="pull-right">
+                            <button type="button" class="btn btn-sm btn-default btn-material" data-ng-if="actionButton.show.workOrderAddRemoveSubEntities" data-ng-click="addRecruiter()" ><i class="material-icons">add</i></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group" data-ng-repeat="recruiter in CurrentWorkOrderVersion.Recruiters">                    
+                    <div name="Recruiters" type="hidden" data-ng-class="{'ng-invalid': isRecruiterRequired(), 'ng-valid': !isRecruiterRequired()}" data-ng-if="$first"></div>
+                    <label for-property="Recruiter" for="Recruiters" data-model-property="model.entity.Recruiter" class="col-lg-4 control-label label-to-right req-lab-right" data-original-title="" title="" data-ng-if="$first">Recruiter(s)</label>
+                    <div class="col-lg-4" data-ng-if="!$first"></div>
+                    <div class="col-xs-10 col-sm-11 col-lg-6 col-xl-7">
+                        <div class="input-group select2-bootstrap-append">
+                            <ui-select name="Recruiter" data-ng-model="recruiter.UserProfileIdSales" theme="select2" class="form-control" data-pt-field-view="model.ptFieldViewConfigOnChangeStatusId" data-ng-change="getCommissionRates()"
+                                        data-pt-field-view-custom="{ { recruiter.UserProfileIdSales | lookupnocache:lists.Recruiters:'Id':'Contact.FullName' } }" required>
+                                <ui-select-match placeholder=" -- select one --">{{$select.selected.Contact.FullName}}</ui-select-match>
+                                <ui-select-choices repeat="item.Id as item in lists.Recruiters | uiSelectChoicesFilteredByUsage: $select.search:CurrentWorkOrderVersion.Recruiters:recruiter:'UserProfileIdSales':'Id': 'Contact.FullName'"><span data-ng-bind-html="item.Contact.FullName | highlight: $select.search"></span></ui-select-choices>
+                            </ui-select>
+                            <span class="input-group-btn">
+                                <button tabindex="-1" data-ng-click="clearRecruiter(recruiter)" class="btn btn-default"><i class="material-icons md-18">clear</i></button>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-xs-1 pull-right">
+                        <button type="button" class="btn btn-sm btn-default btn-material supp-del pull-right" data-ng-if="actionButton.show.workOrderAddRemoveSubEntities" data-ng-click="removeRecruiter(recruiter)"><i class="material-icons">delete</i></button>                            
+                    </div>
+                    <div class="col-lg-2 pull-right">
+                        <button type="button" class="btn btn-sm btn-default btn-material supp-add pull-right" data-ng-if="actionButton.show.workOrderAddRemoveSubEntities && $last" data-ng-click="addRecruiter()" style="margin-top: 5px;"><i class="material-icons">add</i></button>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group" data-ng-show="CurrentWorkOrderVersion.WorkOrderVersionCommissions.length>0 && canViewCommissionRates()">
+                <div class="col-lg-12">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>
+                                    <span class="col-lg-4 text-right">Name&nbsp;&nbsp;</span>
+                                    <span class="col-lg-8">Commission Description</span>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr data-ng-repeat="commission in CurrentWorkOrderVersion.WorkOrderVersionCommissions| filter:{IsApplicable: true} |orderBy:CommissionOrderBy">
+                                <td class="wo-commission-supporter-td">
+                                    <label class="col-lg-4 control-label wo-commission-supporter-lbl" for-property="CommissionRate" for="CommissionRate"
+                                        data-model-property="commission.CommissionRateHeaderId"
+                                        data-ng-class="(CurrentWorkOrderVersion.IsDraftStatus && +commission.CommissionRates.length > 1) ? 'req-lab-right' : 'req-lab-right-valid' ">
+                                        {{commission.FullName}} 
+                                    </label>
+                                    <div class="col-lg-8 input-group select2-bootstrap-append" data-ng-show="commission.CommissionRates.length>1">
+                                        <ui-select name="CommissionRate" data-ng-model="commission.CommissionRateHeaderId" theme="select2" class="form-control"
+                                                data-pt-field-view-custom="{{ commission.CommissionRateHeaderId | lookupnocache:CurrentWorkOrderVersion.WorkOrderVersionCommissions:'CommissionRateHeaderId':'Description' }}" required>
+                                            <ui-select-match placeholder=" -- select one --">{{$select.selected.Description}}</ui-select-match>
+                                            <ui-select-choices repeat="item.CommissionRateHeaderId as item in commission.CommissionRates | uiSelectChoicesFilter: $select.search: 'Description'"><span data-ng-bind-html="item.Description | highlight: $select.search"></span></ui-select-choices>
+                                        </ui-select>
+                                        <span class="input-group-btn">
+                                            <button tabindex="-1" data-ng-click="commission.CommissionRateHeaderId=undefined" class="btn btn-default"><i class="material-icons md-18">clear</i></button>
+                                        </span>
+                                    </div>
+                                    <div class="wo-commission-supporter-div1" data-ng-if="commission.CommissionRates.length===1">
+                                        &nbsp;&nbsp;&nbsp;{{commission.CommissionRates[0].Description}}
+                                    </div>
+                                    <div data-ng-if="!commission.CommissionRates.length&&!commission.CommissionRates.CommissionRateHeaderId" class="text-warning wo-commission-supporter-div">
+                                        &nbsp;&nbsp;&nbsp;No Rates Applicable
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

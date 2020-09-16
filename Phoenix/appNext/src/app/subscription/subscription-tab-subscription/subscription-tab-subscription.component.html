@@ -1,0 +1,120 @@
+<form [formGroup]="inputFormGroup" *ngIf="inputFormGroup && readOnlyStorage">
+  <div class="tab-content">
+    <div class="tab-pane active">
+      <div class="panel">
+        <!-- data-ng-if="!edit.IsNotSubscriberPage" -->
+        <div>
+          <div class="panel-body sub-user-body">
+            <div class="row">
+              <div class="form-horizontal" role="form">
+                <div class="form-group sub-user-row">
+                  <div>
+                    <phx-form-control [control]="inputFormGroup.controls.UserProfileIdSubscriber" labelText="Subscriber" [editable]="readOnlyStorage.IsEditable"
+                      viewModeText="{{inputFormGroup.controls.UserProfileIdSubscriber.value | lookupNoCache: html.InternalUsers : 'Id': 'Contact.FullName'}}">
+                      <app-phx-select-box [formControl]="inputFormGroup.controls.UserProfileIdSubscriber" (valueChanged)="subscriberChanged($event)"
+                        [items]="html.InternalUsers" textField="Contact.FullName" valueField="Id" placeholder=" -- select one --">
+                      </app-phx-select-box>
+                    </phx-form-control>
+                  </div>
+                </div>
+
+                <div class="form-group sub-user-row sub-user-radio2">
+                  <phx-form-control [control]="inputFormGroup.controls.IsTimeRestricted" labelText="Subscription Time Period" [editable]="readOnlyStorage.IsEditable"
+                    viewModeText="{{inputFormGroup.controls.IsTimeRestricted.value ? 'Limited' : 'On Going'}}">
+                    <label class="radio-inline">
+                      <input class="form-check-input" type="radio" formControlName="IsTimeRestricted" [value]="true">Limited</label>
+                    <label class="radio-inline">
+                      <input class="form-check-input" type="radio" formControlName="IsTimeRestricted" [value]="false">On Going</label>
+                  </phx-form-control>
+                  <div class="col-lg-4"></div>
+                </div>
+                <div class="form-group sub-user-row" *ngIf="inputFormGroup.controls.IsTimeRestricted.value" style="padding: 0">
+                  <phx-form-control name="startDate" labelText="Start Date" [control]="inputFormGroup.controls.StartDate" [editable]="readOnlyStorage.IsEditable"
+                    viewModeText="{{inputFormGroup.controls.StartDate.value | date:phxConstants.DateFormat.mediumDate}}">
+                    <div class="col-lg-3 col-xxl-5">
+                      <app-phx-date-box type="date" [formControl]="inputFormGroup.controls.StartDate"
+                        (onValueChanged)="datePickerCallback()" [displayFormat]="phxConstants.DateFormat.MMM_dd_yyyy"></app-phx-date-box>
+                    </div>
+                  </phx-form-control>
+                </div>
+                <div class="form-group sub-user-row" *ngIf="inputFormGroup.controls.IsTimeRestricted.value" style="padding: 0">
+                  <phx-form-control name="EndDate" labelText="End Date" [control]="inputFormGroup.controls.EndDate" [editable]="readOnlyStorage.IsEditable"
+                    viewModeText="{{inputFormGroup.controls.EndDate.value | date:phxConstants.DateFormat.mediumDate}}">
+                    <div class="col-lg-3 col-xxl-5">
+                      <app-phx-date-box type="date" [formControl]="inputFormGroup.controls.EndDate"
+                        (onValueChanged)="datePickerCallback()" [displayFormat]="phxConstants.DateFormat.MMM_dd_yyyy"></app-phx-date-box>
+                    </div>
+                  </phx-form-control>
+                </div>
+
+                <div class="form-group sub-user-row">
+                  <h4 class="col-lg-12">Subscription Details</h4>
+                </div>
+
+                <div class="form-group sub-user-row">
+                  <div>
+                    <phx-form-control [control]="inputFormGroup.controls.AccessSubscriptionTypeId" labelText="Subscription Type" [editable]="readOnlyStorage.IsEditable"
+                      viewModeText="{{inputFormGroup.controls.AccessSubscriptionTypeId.value | lookupNoCache: subscriptionTypes}}">
+                      <app-phx-select-box [formControl]="inputFormGroup.controls.AccessSubscriptionTypeId" [items]="subscriptionTypes" textField="text"
+                        valueField="id" placeholder=" -- select one --">
+                      </app-phx-select-box>
+                    </phx-form-control>
+                  </div>
+                  <div class="col-lg-4"></div>
+                </div>
+
+                <div class="form-group sub-user-row" *ngIf="inputFormGroup.controls.AccessSubscriptionTypeId.value === phxConstants.AccessSubscriptionType.Client">
+                  <phx-form-control [control]="inputFormGroup.controls.OrganizationIdClient" labelText="Subscribe  To" [editable]="readOnlyStorage.IsEditable"
+                    viewModeText="{{inputFormGroup.controls.OrganizationIdClient.value | lookupNoCache: html.clientOrganizations}}">
+                    <app-phx-select-box [formControl]="inputFormGroup.controls.OrganizationIdClient"
+                      [items]="html.clientOrganizations" textField="text" valueField="id" placeholder=" -- select one --">
+                    </app-phx-select-box>
+                  </phx-form-control>
+                  <div class="col-lg-4"></div>
+                </div>
+                <div class="form-group sub-user-row" *ngIf="inputFormGroup.controls.AccessSubscriptionTypeId.value === phxConstants.AccessSubscriptionType.Branch">
+                  <phx-form-control [control]="inputFormGroup.controls.InternalOrganizationDefinition1Id" labelText="Subscribe  To" [editable]="readOnlyStorage.IsEditable"
+                    viewModeText="{{inputFormGroup.controls.InternalOrganizationDefinition1Id.value | lookupNoCache: branches}}">
+                    <app-phx-select-box [formControl]="inputFormGroup.controls.InternalOrganizationDefinition1Id" [items]="branches"
+                      textField="text" valueField="id" placeholder=" -- select one --">
+                    </app-phx-select-box>
+                  </phx-form-control>
+                  <div class="col-lg-4"></div>
+                </div>
+                <div class="form-group sub-user-row sub-user-select" *ngIf="readOnlyStorage.IsEditable">
+                  <app-restriction-dropdown [labelText]="'Restrictions'" #refDropDown [dropdowmitems]="html.restrictionItems" [(selectedItems)]="html.selectedItems"
+                    [items]="html.items" (restrictionItemClick)="onClickRestrictionItem($event)" (selectedItemsChanged)="onItemsSelect($event)"></app-restriction-dropdown>
+                </div>
+                <div class="col-lg-12" *ngIf="inputFormGroup.controls.AccessSubscriptionRestrictions.value.length>0">
+                  <div class="row panel-heading">
+                    <div class="col-xs-3 col-lg-offset-2" style="padding: 0">
+                      <label>Type</label>
+                    </div>
+                    <div class="col-xs-6 co-lg-6">
+                      <label>Restrictions</label>
+                    </div>
+                  </div>
+                  <div class="panel-body">
+                    <div class="row panel-row" *ngFor="let restrictionGroup of filterGroupBySubscriptionRestrictionTypeId(inputFormGroup.controls.AccessSubscriptionRestrictions.value);let i = index; trackBy: trackByFn ">
+                      <div class="col-xs-3 col-lg-offset-2" style="padding-left: 5px" *ngIf="readOnlyStorage.IsEditable" style="cursor:pointer;" (click)="addRestriction(restrictionGroup)">
+                        {{restrictionGroup.AccessSubscriptionRestrictionTypeId| lookup: subRestrictionTypes }}
+                      </div>
+                      <div class="col-xs-3 col-lg-offset-2" style="padding-left: 5px" *ngIf="!readOnlyStorage.IsEditable">
+                        {{restrictionGroup.AccessSubscriptionRestrictionTypeId| lookup: subRestrictionTypes }}
+                      </div>
+                      <div class="col-xs-6 col-lg-6">
+                        <span *ngFor=" let restriction of fnAccessSubscriptionRestrictions(inputFormGroup.controls.AccessSubscriptionRestrictions,restrictionGroup.AccessSubscriptionRestrictionTypeId);
+                        let j = index; trackBy: trackByFn;">
+                          <span *ngIf="j>0">, </span>{{restriction.Name}}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

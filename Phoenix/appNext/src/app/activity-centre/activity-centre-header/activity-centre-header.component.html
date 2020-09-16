@@ -1,0 +1,38 @@
+<div class="activity-centre-header-containter">
+  <ng-container *ngIf="cardTotals.length;else feedbackMsg">
+    <ng-container *ngFor="let total of cardTotals; let i = index">
+      <div class="circle-container" *ngIf="total.total > 0" [ngClass]="{'circleNone': cardTotals.length > 6 && isMobile && i >= 5 && isHidden}">
+
+        <!-- display empty circle until the polling mechanism can detect new count deletion -->
+        <span *ngIf="total.showBadge" class="badge new-count-circle"> </span>
+
+        <button (click)="onDrillDown(total)">
+          <div class="circle" [ngClass]="{'active': total.isActive}">
+            <span class="circle-total">
+              {{total.total}}
+            </span>
+          </div>
+          <p>{{total.description}}</p>
+        </button>
+      </div>
+    </ng-container>
+    <div class="circle-container" *ngIf="cardTotals.length > 6 && isMobile">
+      <button (click)="showMore()">
+        <div class="circle" [ngClass]=" isHidden ? 'showMore' : 'showLess' "></div>
+        <p>{{isHidden ? ('common.generic.more' | phxTranslate) : ('common.generic.less' | phxTranslate) }}</p>
+      </button>
+    </div>
+  </ng-container>
+  <ng-template #feedbackMsg>
+    <div *ngIf="isCardTotalsLoaded;else tasksLoading" class="feedback-complete">
+      <img src="/assets/error_check.png" />
+      <div class="msg">
+        <span>{{ 'activityCentre.header.noTasksTitle' | phxTranslate }}</span>
+        <span>{{ 'activityCentre.header.noTasksMsg' | phxTranslate }}</span>
+      </div>
+    </div>
+    <ng-template #tasksLoading>
+      <app-loading-spinner color="gray"></app-loading-spinner>
+    </ng-template>
+  </ng-template>
+</div>

@@ -1,0 +1,110 @@
+﻿<div>
+    <show-busy-controlled associate="isCalculating" message="Calculating ..." non-intrusive="true"></show-busy-controlled>
+    <div data-ng-form="formTransactionHeaderManualRoot">
+        <div class="row">
+            <div class="tabbable panel panel-tabbable">
+                <div class="tab-content">
+                    <div class="tab-pane active">
+                        <div class="panel">
+                            <div class="panel-heading headstone" ng-class="{'header-red': model.transactionCalculation.AmountSummary.Amount_GrossProfit < 0}">
+                                <div class="row">
+                                    <div class="col-sm-6 col-lg-3">
+                                        <label for-property="TransactionCategoryId" for="TransactionCategoryId" data-model-property="model.transactionHeader.TransactionCategoryId" class="control-label req-lab-right" data-original-title="" title="">Transaction Category:</label>
+                                        <div class="input-group select2-bootstrap-append trn-category-select">
+                                            <ui-select name="TransactionCategoryId" data-ng-model="model.transactionHeader.TransactionCategoryId" theme="select2" class="form-control" required>
+                                                <ui-select-match>{{$select.selected.text}}</ui-select-match>
+                                                <ui-select-choices repeat="item.id as item in lists.transactionCategoryList  | uiSelectChoicesFilter: $select.search: 'text'">
+                                                    <span data-ng-bind-html="item.text | highlight: $select.search"></span>
+                                                </ui-select-choices>
+                                            </ui-select>
+                                            <span class="input-group-btn">
+                                                <button tabindex="-1" data-ng-click="model.transactionHeader.TransactionCategoryId = null" class="btn btn-default"><i class="material-icons md-18">clear</i></button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12 col-lg-9">
+                                        <div style="float: left; margin-right: 20px;">
+                                            <label for-property="StartDate" for="StartDate" data-model-property="model.transactionHeader.StartDate" class="control-label req-lab-right" data-original-title="" title="">Work Period from:</label>
+                                            <p>
+                                                <pt-date-picker data-ng-model="model.transactionHeader.StartDate" data-ng-required="true" data-required-message="Required" data-ng-show="!viewLoading" />
+                                            </p>
+                                        </div>
+                                        <div style="float: left;">
+                                            <label for-property="EndDate" for="EndDate" data-model-property="model.transactionHeader.EndDate" class="control-label req-lab-right" data-original-title="" title="">Work Period to:</label>
+                                            <p>
+                                                <pt-date-picker data-ng-model="model.transactionHeader.EndDate" data-ng-required="true" data-required-message="Required" data-ng-show="!viewLoading" />
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-lg-3">
+                                        <label class="control-label" data-original-title="" title="">Work Order</label>
+                                        <p><a data-ui-sref="workorder.edit.core({ assignmentId:model.transactionHeader.AssignmentId, workOrderId:model.transactionHeader.WorkOrderId, workOrderVersionId: 0 })">{{model.transactionHeader.AssignmentId}}.{{model.transactionHeader.WorkOrderNumber}}.x</a></p>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <label class="control-label" data-original-title="" title="">Worker</label>
+                                        <p>
+                                            <a data-ng-if="model.worker.ProfileTypeId==ApplicationConstants.UserProfileType.Organizational" data-ui-sref="EditOrganizationalProfile({ contactId:model.worker.ContactId, profileId: model.worker.Id})">{{model.worker.Contact.PreferredFirstName}} {{model.worker.Contact.PreferredLastName}} - {{model.worker.ContactId}} (Organizational - {{model.worker.Id}})</a>
+                                            <a data-ng-if="model.worker.ProfileTypeId==ApplicationConstants.UserProfileType.Internal" data-ui-sref="EditInternalProfile({ contactId:model.worker.ContactId, profileId: model.worker.Id })">{{model.worker.Contact.PreferredFirstName}} {{model.worker.Contact.PreferredLastName}} - {{model.worker.ContactId}} (Internal - {{model.worker.Id}})</a>
+                                            <a data-ng-if="model.worker.ProfileTypeId==ApplicationConstants.UserProfileType.WorkerTemp" data-ui-sref="EditWorkerTempProfile({ contactId:model.worker.ContactId, profileId: model.worker.Id })">{{model.worker.Contact.PreferredFirstName}} {{model.worker.Contact.PreferredLastName}} - {{model.worker.ContactId}} (Worker Temp - {{model.worker.Id}})</a>
+                                            <a data-ng-if="model.worker.ProfileTypeId==ApplicationConstants.UserProfileType.WorkerCanadianSp" data-ui-sref="EditWorkerCanadianSPProfile({ contactId:model.worker.ContactId, profileId: model.worker.Id })">{{model.worker.Contact.PreferredFirstName}} {{model.worker.Contact.PreferredLastName}} - {{model.worker.ContactId}} (Worker Canadian SP - {{model.worker.Id}})</a>
+                                            <a data-ng-if="model.worker.ProfileTypeId==ApplicationConstants.UserProfileType.WorkerCanadianInc" data-ui-sref="EditWorkerCanadianIncProfile({ contactId:model.worker.ContactId, profileId: model.worker.Id })">{{model.worker.Contact.PreferredFirstName}} {{model.worker.Contact.PreferredLastName}} - {{model.worker.ContactId}} (Worker Canadian Inc - {{model.worker.Id}})</a>
+                                            <a data-ng-if="model.worker.ProfileTypeId==ApplicationConstants.UserProfileType.WorkerSubVendor" data-ui-sref="EditWorkerSubVendorProfile({ contactId:model.worker.ContactId, profileId: model.worker.Id })">{{model.worker.Contact.PreferredFirstName}} {{model.worker.Contact.PreferredLastName}} - {{model.worker.ContactId}} (Worker Sub-Vendor - {{model.worker.Id}})</a>
+                                            <a data-ng-if="model.worker.ProfileTypeId==ApplicationConstants.UserProfileType.WorkerUnitedStatesW2" data-ui-sref="EditWorkerUnitedStatesW2Profile({ contactId:model.worker.ContactId, profileId: model.worker.Id })">{{model.worker.Contact.PreferredFirstName}} {{model.worker.Contact.PreferredLastName}} - {{model.worker.ContactId}} (Worker W2 - {{model.worker.Id}})</a>
+                                            <a data-ng-if="model.worker.ProfileTypeId==ApplicationConstants.UserProfileType.WorkerUnitedStatesLLC" data-ui-sref="EditWorkerUnitedStatesLLCProfile({ contactId:model.worker.ContactId, profileId: model.worker.Id })">{{model.worker.Contact.PreferredFirstName}} {{model.worker.Contact.PreferredLastName}} - {{model.worker.ContactId}} (Worker LLC - {{model.worker.Id}})</a>
+                                        </p>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <label class="control-label" data-original-title="" title="">Client</label>
+                                        <p>
+                                            <a data-ui-sref="org.edit.details({organizationId: model.transactionHeader.BillingTransactions[0].OrganizationIdClient })">{{model.transactionHeader.BillingTransactions[0].OrganizationClientDisplayName}} - {{model.transactionHeader.BillingTransactions[0].OrganizationIdClient}}</a>
+                                        </p>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <label class="control-label" data-original-title="" title="">Supplier</label>
+                                        <div data-ng-if="model.transactionHeader.PaymentTransactions[0].PayeeOrganizationIdSupplier>0">
+                                            <p>
+                                                <a data-ui-sref="org.edit.details({organizationId: model.transactionHeader.PaymentTransactions[0].PayeeOrganizationIdSupplier })">{{model.transactionHeader.PaymentTransactions[0].PayeeName}} - {{model.transactionHeader.PaymentTransactions[0].PayeeOrganizationIdSupplier}}</a>
+                                            </p>
+                                        </div>
+                                        <div data-ng-if="model.transactionHeader.PaymentTransactions[0].PayeeOrganizationIdSupplier==null">
+                                            <p>
+                                                <a data-ng-if="model.worker.ProfileTypeId==ApplicationConstants.UserProfileType.WorkerTemp" data-ui-sref="EditWorkerTempProfile({ contactId:model.worker.ContactId, profileId: model.worker.Id })">{{model.worker.Contact.PreferredFirstName}} {{model.worker.Contact.PreferredLastName}}</a>
+                                                <a data-ng-if="model.worker.ProfileTypeId==ApplicationConstants.UserProfileType.WorkerCanadianSp" data-ui-sref="EditWorkerCanadianSPProfile({ contactId:model.worker.ContactId, profileId: model.worker.Id })">{{model.worker.Contact.PreferredFirstName}} {{model.worker.Contact.PreferredLastName}}</a>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="bottom-center-header">
+                                    <span class="bottom-center-text">
+                                        <span>Gross Profit</span>&nbsp;
+                                        <span>
+                                            {{model.transactionCalculation.AmountSummary.Amount_GrossProfit|currency:" $"}} {{model.transactionHeader.CurrencyCode}}
+                                        </span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tabbable">
+                    <ul class="nav nav-tabs">
+                        <li data-ng-class="{ active : $state.includes('transaction.manual.detail') } "><a data-ui-sref="transaction.manual.detail">Detail</a></li>
+                        <li data-ng-class="{ active : $state.includes('transaction.manual.notes') } "><a data-ui-sref="transaction.manual.notes">Notes</a></li>
+                        <li data-ng-class="{ active : $state.includes('transaction.manual.billingdocuments') } "><a data-ui-sref="transaction.manual.billingdocuments">Billing Documents</a></li>
+                    </ul>
+                </div>
+                <div class="tab-content">
+                    <div class="tab-pane active">
+                        <div class="panel">
+                            <div class="panel-body" data-ui-view="transactionActiveTabs" data-autoscroll="false"></div>
+                            <div class="panel-body" data-pt-validation-messages="model.validationMessages"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

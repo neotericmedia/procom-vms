@@ -1,0 +1,7 @@
+<div *ngIf="noTimeSheets">
+
+    <app-phx-intercept-panel [mainHeading]="'timesheet.entry.noTimeSheetsTitle' | phxTranslate" [panelType]="PhxInterceptPanelType.error">
+        <p>{{'timesheet.entry.noTimeSheetsMessage' | phxTranslate}}</p>
+    </app-phx-intercept-panel>
+
+</div>

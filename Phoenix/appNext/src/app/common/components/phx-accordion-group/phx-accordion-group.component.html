@@ -1,0 +1,19 @@
+<div class="panel phx-accordion-group card" [ngClass]="panelClass" [class.bordered]="showBorders">
+  <div class="panel-heading card-header" role="tab" (click)="toggleOpen($event)">
+    <div class="panel-title card-title">
+      <div *ngIf="heading" [ngClass]="{'text-muted': isDisabled}">{{heading}}
+      </div>
+      <div role="button" class="accordion-toggle" [attr.aria-expanded]="isOpen">
+        <button class="btn btn-link pull-right float-xs-right toggle-button" [disabled]="isDisabled" *ngIf="showToggle">
+            <i class="glyphicon "  [ngClass]="{'glyphicon-chevron-up': isOpen, 'glyphicon-chevron-down': !isOpen}"></i>
+          </button>
+      </div>
+      <ng-content select="[accordion-heading]"></ng-content>
+    </div>
+  </div>
+  <div class="panel-collapse collapse" role="tabpanel" [collapse]="!isOpen">
+    <div class="panel-body card-block">
+      <ng-content></ng-content>
+    </div>
+  </div>
+</div>

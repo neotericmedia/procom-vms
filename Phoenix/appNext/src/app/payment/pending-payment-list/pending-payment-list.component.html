@@ -1,0 +1,36 @@
+<p class="app-no-items" *ngIf="companies?.length === 0">
+  There are no pending payments.
+</p>
+<div class="app-accordion-container app-accordion-container-28">
+  <app-phx-accordion [closeOthers]="true">
+    <app-phx-accordion-group *ngFor="let company of companies; let i = index" [showBorders]="false" [isOpen]="company.isOpen">
+      <span accordion-heading>{{company.companyName}}</span>
+      <div class="app-accordion-level-two">
+        <app-phx-accordion>
+          <app-phx-accordion-group panelClass="currencyGroup" *ngFor="let currency of company.currencies; let j = index"
+            [(isOpen)]="currency.isOpen" [showToggle]="false">
+            <div accordion-heading class="app-accordion-level-two-item0">
+              <span class="currencyName">{{currency.currencyCode | CodeValue:codeValueGroups.Currency:'code'}}</span>
+              <span class="badge badge-warning currencyBadge">{{currency.count}}</span>
+              <i class="pull-right" [ngClass]="{'icon-chevron-up': currency.open, 'icon-chevron-down': !currency.open}"></i>
+            </div>
+            <div class="entityBlock app-accordion-level-three">
+              <div class="col-lg-20-percent" *ngFor="let paymentMethod of currency.paymentMethods">
+                <div class="app-accordion-column">
+                  <span>{{paymentMethod.methodId | CodeValue:codeValueGroups.PaymentMethodType }}</span>
+                </div>
+                <div *ngFor="let transaction of paymentMethod.transactions">
+                  <div class="app-accordion-level-three-item" [ngClass]="{ 'app-no-link': transaction.count == 0}"
+                    (click)="getPaymentListUrl(transaction)">
+                    <span>{{convertToNumber(transaction.transactionType) | lookup: paymentTransactionStatus: 'id' : 'text'}}</span>
+                    <span class="badge badge-warning app-badge" *ngIf="transaction.count > 0">{{transaction.count}}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </app-phx-accordion-group>
+        </app-phx-accordion>
+      </div>
+    </app-phx-accordion-group>
+  </app-phx-accordion>
+</div>

@@ -1,0 +1,111 @@
+﻿<div data-save-as-template="" data-control="templateControl"></div>
+<div data-cg-busy="loadItemsPromise" data-ng-form="formCommissionRateHeader">
+    <div class="col-lg-12">
+        <div data-ng-if="selfScope.common.workflow.WorkflowAvailableActions.length>0">
+            <div class="btn-group">
+                <button type="button" class="btn btn-clouds dropdown-toggle" data-toggle="dropdown">
+                    <span class="payroll-btn-name">Actions...</span>
+                    <span class="caret ml payroll-btn-caret"></span>
+                </button>
+                <ul class="dropdown-menu">
+                    <li style="cursor: pointer;" data-ng-repeat="action in selfScope.common.workflow.WorkflowAvailableActions | orderBy:'DisplayButtonOrder'"
+                        data-ng-click="selfScope.common.workflow.actionButtonOnClick(selfScope.common.currentVersion, action)">
+                        <a>{{action.Name}}</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-10">
+        <div class="row " data-ng-form="entityForm">
+            <div class="tab-content">
+                <div class="tabbable panel panel-tabbable">
+                    <div class="tab-content">
+                        <div class="tab-pane active">
+                            <div class="panel-heading headstone" data-ng-if="selfScope.common.customStatusId!=selfScope.common.customStatusType.TemplateEdit">
+                                <div class="row">
+                                    <div class="col-lg-1">
+                                        <label class="control-label col-xs-12 ">User Id</label>
+                                        <span class="col-xs-12">{{selfScope.model.CommissionUserProfileId}}</span>
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <label class="control-label col-xs-12 ">User Name</label>
+                                        <span class="col-xs-12">{{selfScope.model.CommissionUserProfileFirstName}} {{selfScope.model.CommissionUserProfileLastName}}</span>
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <label class="control-label col-xs-12 ">User Status</label>
+                                        <span class="col-xs-12" data-ng-class="selfScope.model.CommissionUserProfileStatusName=='Active'?'text-warning':''">{{selfScope.model.CommissionUserProfileStatusName}}</span>
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <label class="control-label col-xs-12 ">Commission Type</label>
+                                        <span class="col-xs-12"> {{selfScope.model.CommissionRateTypeId|lookupnocache:selfScope.common.lists.listCommissionRateType:"id":"text"}}</span>
+                                    </div>
+
+                                    <div class="col-lg-3">
+                                        <label class="control-label col-xs-12 ">Commission Role</label>
+                                        <span class="col-xs-12"> {{selfScope.model.CommissionRoleId|lookupnocache:selfScope.common.lists.listCommissionRole:"id":"text"}}</span>
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <label class="control-label col-xs-12 ">Commisson Status</label>
+                                        <span class="col-xs-12" data-ng-if="!selfScope.common.workflow.WorkflowIsRunning&&selfScope.common.customStatusId == null"
+                                            data-ng-class="selfScope.model.CommissionRateHeaderStatusId==ApplicationConstants.CommissionRateHeaderStatus.Active?'text-warning':''">{{selfScope.model.CommissionRateHeaderStatusId|lookup:selfScope.common.lists.listCommissionRateHeaderStatus}}</span>
+                                        <span class="col-xs-12" data-ng-if="!selfScope.common.workflow.WorkflowIsRunning&&selfScope.common.customStatusId !== null">{{selfScope.common.customStatusId|lookup:selfScope.common.lists.listCustomStatus}}</span>
+                                        <span class="col-xs-12" data-ng-if="selfScope.common.workflow.WorkflowIsRunning">Workflow Is Running</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel-heading headstone" style="padding: 20px;" data-ng-if="selfScope.common.customStatusId==selfScope.common.customStatusType.TemplateEdit">
+                                <div class="row">
+                                    <div class="col-lg-4">
+                                        <label class="control-label col-xs-12 ">Commission Type</label>
+                                        <span class="col-xs-12 ng-binding">{{selfScope.model.CommissionRateTypeId|lookupnocache:selfScope.common.lists.listCommissionRateType:"id":"text"}}</span>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <label class="control-label col-xs-12 ">Commission Role</label>
+                                        <span class="col-xs-12 ng-binding">{{selfScope.model.CommissionRoleId|lookupnocache:selfScope.common.lists.listCommissionRole:"id":"text"}}</span>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <label class="control-label col-xs-12 ">Commisson Status</label>
+                                        <span class="col-xs-12 ng-binding">Template Edit</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tabbable" ng-if="selfScope.tab.configList.length">
+                        <ul class="nav nav-tabs">
+                            <li data-ng-repeat='curTab in selfScope.tab.configList' data-ng-class="{ active : $state.includes(curTab.state) }" data-ng-click="selfScope.tab.onClick(curTab)">
+                                <a data-ui-sref="{{curTab.state}}">
+                                    {{curTab.displayText}} &nbsp;
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="tab-content">
+                        <div class="tab-pane active">
+                            <div class="panel no-border">
+                                <div class="" data-ui-view="commissionRateActiveTab" data-autoscroll="false"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-2">
+        <div class="commissionrate-versions" data-ng-if="selfScope.model.CommissionRateVersions.length>0 && selfScope.common.customStatusId!=selfScope.common.customStatusType.TemplateEdit">
+            <div class="commissionrate-version-group">
+                <div class="version-version-item" data-ng-repeat="version in selfScope.model.CommissionRateVersions | orderBy:'EffectiveDate':true"
+                    data-ng-form="formrate" data-ng-click="selfScope.common.onVersionClick(version)" data-ng-class="(selfScope.common.currentVersion.CommissionRateVersionStatusId != ApplicationConstants.CommissionRateVersionStatus.New && selfScope.common.customStatusId != selfScope.common.customStatusType.ToCorrect && selfScope.common.customStatusId != selfScope.common.customStatusType.ToScheduleChange && selfScope.common.customStatusId != selfScope.common.customStatusType.ToManageRestrictions && version.Id==selfScope.common.currentVersion.Id)?'active':''">
+                    <div>
+                        <div>
+                            <span class="small-text">Effective Date:&nbsp;</span>{{version.EffectiveDate|date:ApplicationConstants.formatDate}}</div>
+                        <span data-ng-class="version.CommissionRateVersionStatusId==ApplicationConstants.CommissionRateVersionStatus.Active?'text-warning':''">
+                            <span class="small-text">Status:&nbsp;</span>{{version.CommissionRateVersionStatusId| lookup:selfScope.common.lists.listCommissionRateVersionStatus}}
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,30 @@
+<form *ngIf="inputFormGroup && readOnlyStorage" [formGroup]="inputFormGroup">
+
+    <phx-form-control labelText="Client Name" [editable]="readOnlyStorage.IsEditable && areComplianceFieldsEditable" 
+        [control]="inputFormGroup.controls.OrganizationIdClient"
+        viewModeText="{{inputFormGroup.value.OrganizationIdClient | lookupNoCache:workerClientOrganizations:'Id':'DisplayName':'Id' }}">
+        <app-phx-select-box [items]="workerClientOrganizations | filterSelectChoicesByUsage: selectedValues: inputFormGroup.value?.OrganizationIdClient: 'OrganizationIdClient': 'Id' : 'DisplayName': 'Id'" textField="DisplayName"
+        valueField="Id" placeholder="-- Select One --"
+            [formControl]="inputFormGroup.controls.OrganizationIdClient">
+        </app-phx-select-box>
+    </phx-form-control>
+
+    <phx-form-control labelText="Ruling Number" [editable]="readOnlyStorage.IsEditable && areComplianceFieldsEditable" [control]="inputFormGroup.controls.RulingNumber"
+        viewModeText="{{inputFormGroup.value.RulingNumber}}">
+        <input class="form-control" formControlName="RulingNumber" />
+    </phx-form-control>
+
+    <phx-form-control [control]="inputFormGroup.controls.EffectiveYearDate" labelText="Effective Year" 
+        [editable]="readOnlyStorage.IsEditable && areComplianceFieldsEditable"
+        viewModeText="{{inputFormGroup.value.EffectiveYear}}">
+        <app-phx-date-box displayFormat="yyyy" pickerType="list" [formControl]="inputFormGroup.controls.EffectiveYearDate"
+            type="date"></app-phx-date-box>
+    </phx-form-control>
+
+    <div class="form-group padding-10-v-t">
+        <button style="margin-right: 11px;" type="button" class="btn btn-material btn-default pull-right" (click)="onClickDeleteRuling($event)"
+            *ngIf="areComplianceFieldsEditable">
+            <i class="material-icons">delete</i>
+        </button>
+    </div>
+</form>

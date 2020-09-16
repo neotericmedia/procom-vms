@@ -1,0 +1,11 @@
+<div *ngIf="showButtonNew" class="row page-control">
+    <div class="page-control-bar col-lg-12">
+        <div class="btn-toolbar">
+            <a href="javascript:;" type="button" class="btn btn-clouds" (click)="createSalesPattern()">New</a>
+        </div>
+    </div>
+</div>
+<app-phx-data-table [columns]="columns" [configuration]="dataTableConfiguration" [dataSourceUrl]="'Commission/getAllSalesPatterns'"
+    [dataSourceParams]='oDataParams' componentName="CommissionSalesPatterns" [summary]="summary" (rowClick)="onRowClick($event)"
+    (contextMenuOpenTab)="onContextMenuOpenTab($event)">
+</app-phx-data-table>

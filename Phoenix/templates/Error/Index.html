@@ -1,0 +1,25 @@
+﻿@using Procom.Phoenix.Web
+@using Procom.Phoenix.Web.Common
+@using Procom.Phoenix.Web.Utility.Serialization
+
+@{
+    ViewBag.Title = "Error";
+    ViewBag.AppName = "PhoenixLanding";
+    Layout = "~/Views/Shared/_LayoutBase.cshtml";
+    ViewBag.Current = "Error";
+}
+
+@section stylesheets{
+
+}
+<div class="account-container stacked">
+    <div class="content clearfix">
+        <p>There was an error</p>
+            @if (RedPhoenixConfig.GetAppSettingsValue("DisplayErrorObject") == "true")
+            {
+                @Serializer.SerializeToJson(TempData[SiteConstants.SessionExceptionObject])
+               
+            }
+       
+    </div>
+</div>

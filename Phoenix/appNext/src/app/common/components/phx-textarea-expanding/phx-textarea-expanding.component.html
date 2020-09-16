@@ -1,0 +1,9 @@
+<textarea #phxTextareaExpanding 
+  class="form-control" 
+  [maxlength]="maxLength" 
+  [placeholder]="placeHolder" 
+  [disabled]="isDisabled" 
+  [(ngModel)]="textValue" 
+  (change)="update($event.target.value)" 
+  (keyup)="update($event.target.value)" >
+</textarea>

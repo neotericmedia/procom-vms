@@ -1,0 +1,124 @@
+<div class="vms-fee-details col-lg-12" *ngIf="rebateFeeData">
+  <div class="col-lg-12 vms-fee-actions-wrapper">
+    <div class="col-lg-3 vms-fee-actions-drp" *ngIf="rebateFeeData.RebateVersion.WorkflowAvailableActions && rebateFeeData.RebateVersion.WorkflowAvailableActions.length">
+      <app-phx-workflow-buttons (callWorkflowCommand)="onClickWorkflowAction($event)" [openDefaultDeclineDialog]="false"
+        [workflowAvailableActions]="rebateFeeData.RebateVersion.WorkflowAvailableActions" [isButtonBar]="false">
+      </app-phx-workflow-buttons>
+    </div>
+  </div>
+  <div class="vms-fee-entity-wrapper col-lg-10">
+    <div class="vms-fee-header panel-heading headstone">
+      <div class="row">
+        <div class="col-lg-1 col-md-1">
+          <label class="control-label col-xs-12 ">ID</label>
+          <span class="col-xs-12">{{rebateFeeData.Id}}</span>
+        </div>
+        <div class="col-lg-5 col-md-5">
+          <label class="control-label col-xs-12 ">Organization</label>
+          <span class=" col-xs-12 ">{{rebateFeeData.OrganizationDisplayName || 'N/A'}}</span>
+        </div>
+        <div class="col-lg-2 col-md-2">
+          <label class="control-label col-xs-12 ">Status</label>
+          <div class="col-xs-12">
+            <span *ngIf="!isWorkflowRunning && !rebateFeeData.selectedActionId" [ngClass]="rebateFeeData.RebateVersion.RebateVersionStatusId==phxConstants.RebateVersionStatus.Active? 'text-warning' : ''">
+              {{rebateFeeData.RebateVersion.RebateVersionStatusId|lookup:rebateVersionStatuses}}</span>
+            <span *ngIf="!isWorkflowRunning && rebateFeeData.selectedActionId">
+              {{rebateFeeData.selectedActionId|lookup: actionStatuses}}</span>
+            <span *ngIf="isWorkflowRunning">Workflow Is Running</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel" [formGroup]="rebateForm" *ngIf="rebateForm">
+      <div class="panel-body">
+        <div class="form-horizontal">
+          <div class="form-group">
+            <phx-form-control [control]="rebateForm.controls.OrganizationId" labelText="Organization" [editable]="funcToCheckViewStatus('rebateFeeData', 'OrganizationId')"
+              viewModeText="{{rebateForm.controls.OrganizationId.value | lookupNoCache: clientOrganizations:'Id':'DisplayName'}}">
+              <app-phx-select-box [formControl]="rebateForm.controls.OrganizationId" [items]="clientOrganizations"
+                textField="DisplayName" valueField="Id" placeholder="-- select one --" [disabled]="rebateForm.controls.OrganizationId.value > 0 && rebateVersionId">
+              </app-phx-select-box>
+            </phx-form-control>
+          </div>
+          <div class="form-group">
+            <phx-form-control [control]="rebateForm.controls.Description" labelText="Description" [editable]="funcToCheckViewStatus('rebateFeeData', 'Description')"
+              viewModeText="{{rebateForm.controls.Description.value}}">
+              <input type="text" class="form-control" formControlName="Description" />
+            </phx-form-control>
+          </div>
+          <div class="form-group">
+            <phx-form-control [control]="rebateForm.controls.LineOfBusinessId" labelText="Line Of Business" [editable]="funcToCheckViewStatus('rebateFeeData.RebateVersion', 'LineOfBusinessId')"
+              viewModeText="{{rebateForm.controls.LineOfBusinessId.value | lookupNoCache: lineOfBusiness:'id':'text'}}">
+              <app-phx-select-box [formControl]="rebateForm.controls.LineOfBusinessId" [items]="lineOfBusiness"
+                textField="text" valueField="id" placeholder="-- select one --">
+              </app-phx-select-box>
+            </phx-form-control>
+          </div>
+          <div class="form-group">
+            <phx-form-control [control]="rebateForm.controls.RebateTypeId" labelText="Rebate Type" [editable]="funcToCheckViewStatus('rebateFeeData.RebateVersion', 'RebateTypeId')"
+              viewModeText="{{rebateForm.controls.RebateTypeId.value | lookupNoCache: rebateTypes:'id':'text'}}">
+              <ng-container *ngIf="funcToCheckViewStatus('rebateFeeData.RebateVersion', 'RebateTypeId')">
+                <app-phx-select-box [formControl]="rebateForm.controls.RebateTypeId" [items]="rebateTypes" textField="text"
+                  valueField="id" placeholder="-- select one --" (valueChanged)="rebateChanged($event)">
+                </app-phx-select-box>
+              </ng-container>
+            </phx-form-control>
+          </div>
+          <div class="form-group" *ngIf="rebateForm.controls.RebateTypeId.value === phxConstants.RebateType.Percentage">
+            <phx-form-control [control]="rebateForm.controls.Rate" labelText="Rate" [editable]="funcToCheckViewStatus('rebateFeeData.RebateVersion', 'Rate')"
+              viewModeText="{{rebateForm.controls.Rate.value}}">
+              <div class="input-group col-lg-6 padding-0">
+                <input [formControl]="rebateForm.controls.Rate" type="text" class="form-control" phxFloatBetweenInput='{"from":0, "to":100, "decimalplaces":4}' />
+                <span class="input-group-addon"><b>%</b></span>
+              </div>
+            </phx-form-control>
+          </div>
+          <div class="form-group" *ngIf="rebateForm.controls.RebateTypeId.value !== phxConstants.RebateType.Percentage">
+            <phx-form-control [control]="rebateForm.controls.Rate" labelText="Rate" [editable]="funcToCheckViewStatus('rebateFeeData.RebateVersion', 'Rate')"
+              viewModeText="{{rebateForm.controls.Rate.value}}">
+              <div class="input-group col-lg-6 padding-0">
+                <span class="input-group-addon"><b>$</b></span>
+                <input [formControl]="rebateForm.controls.Rate" type="text" class="form-control" phxFloatBetweenInput='{"from":0, "to":99999999999999999.99, "decimalplaces":2}' />
+              </div>
+            </phx-form-control>
+          </div>
+          <div class="form-group">
+            <phx-form-control [control]="rebateForm.controls.EffectiveDate" [editable]="funcToCheckViewStatus('rebateFeeData.RebateVersion', 'EffectiveDate')"
+              labelText="Effective Date" viewModeText="{{rebateForm.controls.EffectiveDate.value | date: phxConstants.DateFormat.mediumDate}}">
+              <div class="col-lg-6 padding-0">
+                <app-phx-date-box type="date" [displayFormat]="phxConstants.DateFormat.MMM_dd_yyyy" [formControl]="rebateForm.controls.EffectiveDate"></app-phx-date-box>
+              </div>
+            </phx-form-control>
+          </div>
+        </div>
+      </div>
+      <div class="panel-footer" *ngIf="showAction()">
+        <app-phx-state-action-buttons [stateActions]="stateActions" [displayType]="StateActionDisplayType.BUTTON"></app-phx-state-action-buttons>
+      </div>
+    </div>
+    <div *ngIf="validationMessages.length" class="alert alert-danger alert-dismissable error-box">
+      <div *ngFor="let message of validationMessages">
+        <div>
+          {{message}}
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-2">
+    <div class="vms-fee-versions">
+      <div class="vms-fee-version-group">
+        <div class="version-version-item" *ngFor="let version of rebateFeeData.RebateVersions" (click)="onVersionClick(version)"
+          [ngClass]="(rebateFeeData.RebateVersion.RebateVersionStatusId != phxConstants.RebateVersionStatus.New && rebateFeeData.selectedActionId != actionStatusType.ToScheduleChange && rebateFeeData.selectedActionId != actionStatusType.ToCorrect && version.Id==rebateFeeData.RebateVersion.Id) ? 'active' : ''">
+          <div>
+            <div><span class="small-text">
+                Effective Date:&nbsp;</span>{{version.EffectiveDate|date:phxConstants.DateFormat.mediumDate}}</div>
+            <span [ngClass]="version.RebateVersionStatusId==phxConstants.RebateVersionStatus.Active?'text-warning':''">
+              <span class="small-text">Status:&nbsp;</span>
+              {{version.RebateVersionStatusId| lookup:rebateVersionStatuses}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,21 @@
+<div><div *ngIf="showObj.showTemplate1" #createdChild class="fieldViewMode
+     {{ classOnView && classOnView.length > 0 ? classOnView : '' }} ">
+         {{ htmlResult.htmlPrefix && htmlResult.htmlPrefix.length > 0 ? htmlResult.htmlPrefix : ''}}
+             <div *ngIf="show.showNodeTextCurrency">{{ ngModelAttrValue | currency:"USD"}} </div>
+             <div *ngIf="show.showNodeTextCurrency2Decimals">{{ ngModelAttrValue | currency:"USD":2}} </div>
+             <div *ngIf="show.showNodeTextCurrency4Decimals">{{ ngModelAttrValue | currency:"USD":4}} </div>
+             <div *ngIf="show.showNodeTextOrDate">{{ ngModelAttrValue }} </div>
+             <div *ngIf="show.showResultHtml">{{ htmlResult.html }} </div>
+             <div *ngIf="show.showNodeSelect">{{ ngModelAttrValue | lookupNoCache: resultSelect.html }} </div>
+             <div *ngIf="show.showNodeRadio">{{ ngModelAttrValue | lookupNoCache: optionsAttr :"key":"value"}}</div>
+             <div *ngIf="show.showOption8">{{ ngModelAttrValue | date:"datepickerPopup"}} </div>
+             <div *ngIf="show.resulUiSelectBootstrap">{{ ngModelAttrValue | lookupNoCache: repeatOuterHTML}}&nbsp }} </div>
+                 {{htmlResult.htmlSuffix && htmlResult.htmlSuffix.length > 0 ? ' ' + htmlResult.htmlSuffix : ''}}
+   </div></div>
+   <div><span *ngIf="showObj.showTemplate2" (click)="$event.preventDefault(); $event.stopPropagation();" class="fieldViewMode
+     {{ classOnView && classOnView.length > 0 ? ' ' + classOnView : ''}}
+     {{ show.ngClassShow ? (ngModelAttrValue ? 'fontello-icon-check' : 'fontello-icon-check-empty') : ' ' }}
+     {{ htmlResult.ngClass && htmlResult.ngClass.length > 0 ? ' ' + htmlResult.ngClass : ''}} ">
+     <div *ngIf="show.showSpan">{{ ngModelAttrValue | lookupNoCache: optionsAttr :"key":"value"}}</div>
+     <div *ngIf="show.showEmptySpan">   </div>
+ </span></div>

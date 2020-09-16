@@ -1,0 +1,59 @@
+﻿@model Procom.Phoenix.Web.Models.LoginModel
+
+@{
+    ViewBag.Title = "Log in";
+}
+
+<div ui-modal data-ng-model="showLoginModal" data-ng-controller="AccountController" class="hide fade" data-keyboard="false">
+
+    <div class="modal-header">
+        Login Form
+        <button type="button" class="close" data-ng-click="hideModal()" aria-hidden="true">&times;</button>
+    </div>
+    <div class="modal-body">
+
+        <div class="well well-nice">
+            <section id="loginForm">
+
+                <div class="validation-summary">
+                    <ul data-ng-repeat="errorGroup in errorList">
+                        <li data-ng-repeat="error in errorGroup">{{error}}</li>
+                    </ul>
+                </div>
+                <form class="form-horizontal">
+                    @Html.AntiForgeryToken()
+                    <fieldset>
+                        <legend>Log in Form
+                            <small>Use a local account to log in.</small>
+                        </legend>
+                        <div class="control-group">
+                            @Html.LabelFor(m => m.UserEmail, new { @class = "control-label" })
+                            <div class="controls">@Html.TextBoxFor(m => m.UserEmail, new { ng_model = "user.UserEmail" })
+                                @Html.ValidationMessageFor(m => m.UserEmail)
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            @Html.LabelFor(m => m.Password, new { @class = "control-label" })
+                            <div class="controls">@Html.PasswordFor(m => m.Password, new { ng_model = "user.Password" })
+                                @Html.ValidationMessageFor(m => m.Password)
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <div class="controls">
+                                <label class="checkbox">
+                                    <input type="checkbox" value="true" data-ng-model="user.RememberMe" name="RememberMe" id="RememberMe" data-val-required="The Remember me? field is required." data-val="true">
+                                    Remember me
+                                </label>
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+            </section>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-ng-click="hideModal()">Cancel</button>
+        <button type="button" class="btn btn-primary" data-ng-click="login(user)">Login</button>
+    </div>
+</div>
+

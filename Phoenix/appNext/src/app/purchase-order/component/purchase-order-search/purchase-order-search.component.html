@@ -1,0 +1,13 @@
+<div class="row page-control">
+    <div class="page-control-bar col-lg-12">
+        <div class="btn-toolbar">
+            <a href="javascript:;" type="button" class="btn btn-clouds" (click)="createPurchaseOrder()">New</a>
+        </div>
+    </div>
+</div>
+<app-phx-data-table [columns]="columns" [configuration]="dataTableConfiguration" [dataSourceUrl]="'purchaseorder/getSearch'"
+    [dataSourceParams]='odataParams' componentName="PurchaseOrderSearch" (selectionChanged)="onRowSelected($event)" (contextMenuPreparing)="onContextMenuPreparing($event)">
+    <div *dxTemplate="let d of 'viewCurrencyCodeTemplate'">
+        <div style="text-align: right" *ngIf="d.data.CurrencyId">{{d.data[d.column.dataField] | pxCurrency}} {{displayCurrencyCode(d.data.CurrencyId)}}</div>
+    </div>
+</app-phx-data-table>

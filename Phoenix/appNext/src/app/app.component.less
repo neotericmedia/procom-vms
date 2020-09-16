@@ -1,0 +1,401 @@
+/* Start responsive modal */
+
+.responsiveModal {
+    .modal {
+        z-index: 1041;
+    }
+    .modal-open {
+        overflow-y: hidden;
+    }
+}
+
+// This is used in timesheet and should be removed when timesheet used phx-modal
+.responsiveModal {
+    .modal-dialog.modal-sm,
+    &.modal-dialog.modal-sm {
+        width: 360px;
+        margin: 0 auto;
+        overflow-x: hidden;
+    }
+    .modal-content {
+        -webkit-border-radius: 0px !important;
+        -moz-border-radius: 0px !important;
+        border-radius: 0px !important;
+        position: relative;
+        padding-bottom: 35px;
+        .modal-header {
+            color: #000;
+            background-color: #F7F7F7;
+            font-weight: 900;
+            padding-left: 15px;
+            padding-right: 15px;
+            border-bottom: none;
+            margin-bottom: 5px;
+            padding-bottom: 0;
+            h4 {
+                margin-bottom: 5px;
+                padding-bottom: 0;
+            }
+        }
+        .modal-body {
+            overflow-x: hidden;
+            .caption {
+                color: #989898;
+                font-size: 14px;
+                margin-bottom: 10px;
+            }
+        }
+        .confirm-fab {
+            position: absolute;
+            bottom: 35px;
+            right: 25px;
+            padding-left: 12px;
+            padding-right: 12px;
+            button:hover,
+            button:focus,
+            a:hover,
+            a:focus {
+                color: #23527c;
+                text-decoration: underline;
+            }
+            a,
+            button {
+                color: #337ab7;
+                text-decoration: none;
+            }
+            button {
+                padding: 0;
+                margin-top: 6px;
+                margin-bottom: 6px;
+            }
+            .material-icons {
+                font-size: 56px;
+                display: block;
+            }
+        }
+        .modal-footer {
+            height: auto !important;
+            position: absolute !important;
+            bottom: 0 !important;
+            padding: 0 !important;
+            border-top: none;
+            .btn-row {
+                padding-left: 12px;
+                padding-right: 12px;
+                color: #fff;
+                background-color: #677077;
+            }
+            .btn-link {
+                text-decoration: none !important;
+                color: #fff;
+                font-size: 13px;
+                font-weight: normal;
+            }
+        }
+    }
+    .ui-select-match .btn-link {
+        color: #337ab7;
+    }
+    @media only screen and (max-width: 768px) {
+        .modal-content {
+            max-width: initial;
+        }
+    }
+    @media screen and (max-width:600px) {
+        .modal-dialog,
+        &.modal-dialog {
+            &.modal-sm, &.modal-lg {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+                overflow: hidden;
+            }
+        }
+        .modal-content {
+            height: 100%;
+            min-height: 100%;
+            border-radius: 0;
+            .modal-body {
+                // padding-right: 30px;
+                height: 100%;
+                padding-bottom: 200px;
+            }
+        }
+        .confirm-fab {
+            right: 40px;
+        }
+    }
+}
+
+.modal-dialog.responsive-modal.phx-modal {
+    &.modal-sm {
+        width: 360px;
+        margin: 0 auto;
+        overflow-x: hidden;
+    }
+    .modal-content {
+        -webkit-border-radius: 0px !important;
+        -moz-border-radius: 0px !important;
+        border-radius: 0px !important;
+        position: relative;
+        .modal-header {
+            padding-left: 15px;
+            padding-right: 15px;
+            margin-bottom: 5px;
+            padding-bottom: 0;
+            h4 {
+                margin-bottom: 5px;
+                padding-bottom: 0;
+            }
+        }
+        .modal-body {
+            overflow-x: hidden;
+        }
+    }
+    @media screen and (max-width:600px) {
+        &.responsive-modal {
+            width: 100vw;
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+        .modal-open {
+            overflow-y: hidden;
+        }
+        .modal-content {
+            max-width: initial;
+            height: auto;
+            min-height: 100vh;
+            border-radius: 0;
+            .modal-body {
+                height: calc(~"100vh - 57px");
+                max-height: calc(~"100vh - 57px");
+            }
+        }
+        .modal-dialog .modal-body {
+            max-height: 100vh;
+        }
+    }
+}
+
+.modal-dialog.responsive-modal.phx-full-screen-modal {
+    &.responsive-modal {
+        width: 100vw;
+        height: 100vh;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+    }
+    .modal-open {
+        overflow-y: hidden;
+    }
+    .modal-content {
+        -webkit-border-radius: 0px !important;
+        -moz-border-radius: 0px !important;
+        border-radius: 0px !important;
+        position: relative;
+        max-width: initial;
+        height: auto;
+        min-height: 100vh;
+        border-radius: 0;
+        .modal-body {
+            height: calc(~"100vh - 112px");
+            max-height: calc(~"100vh - 112px");
+            overflow-x: hidden;
+        }
+        .modal-body.no-button {
+            height: calc(~"100vh - 57px");
+            max-height: calc(~"100vh - 57px");
+        }
+        .modal-header {
+            padding-left: 15px;
+            padding-right: 15px;
+            margin-bottom: 5px;
+            padding-bottom: 0;
+            h4 {
+                margin-bottom: 5px;
+                padding-bottom: 0;
+            }
+        }
+    }
+    .modal-dialog .modal-body {
+        max-height: 100vh;
+    }
+}
+
+/* End responsive modal */
+
+/* Start slide-up-modal */
+
+.slide-up-modal {
+    .modal-dialog {
+        width: 100%;
+        height: 75%;
+        position: absolute;
+        bottom: 0;
+        padding-bottom: 0;
+        margin: 0;
+    }
+    .modal-content {
+        -webkit-border-radius: 0px !important;
+        -moz-border-radius: 0px !important;
+        border-radius: 0px !important;
+        height: auto;
+        width: 100%;
+        min-height: 100%;
+        margin-bottom: 0;
+        padding-bottom: 0;
+    }
+    .modal-header {
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            float: left;
+        }
+    }
+    .message-header {
+        padding-bottom: 20px;
+        font-size: 28px;
+        font-family: "Open Sans", sans-serif;
+        font-weight: 500;
+        color: #999999;
+    }
+    .modal.fade .modal-dialog {
+        transition: -webkit-transform .3s ease-out;
+        transition: transform .3s ease-out;
+        transition: transform .3s ease-out, -webkit-transform .3s ease-out;
+        -webkit-transform: translate(0, 25%);
+        transform: translate(0, 25%);
+    }
+    .modal.fade.in .modal-dialog {
+        -webkit-transform: translate(0, 0);
+        transform: translate(0, 0);
+    }
+    @media only screen and (max-width: 768px) {
+        .modal-content {
+            max-width: initial;
+        }
+    }
+}
+
+/* End slide-up-modal */
+
+/* Start favourite asterix checkbox */
+
+input[type=checkbox].favourite-star {
+    display: none;
+}
+
+/* to hide the checkbox itself */
+
+input[type=checkbox].favourite-star+label:before {
+    font-family: 'Material Icons';
+    font-size: 24px;
+    line-height: 18px;
+    display: inline-block;
+}
+
+input[type=checkbox].favourite-star+label:before {
+    content: "\E83A";
+}
+
+/* unchecked icon */
+
+input[type=checkbox]+label:before {
+    letter-spacing: 0px;
+}
+
+/* space between checkbox and label */
+
+input[type=checkbox].favourite-star:checked+label:before {
+    content: "\E838";
+}
+
+/* checked icon */
+
+input[type=checkbox].favourite-star:checked+label:before {
+    letter-spacing: 0px;
+}
+
+/* End favourite asterix checkbox */
+
+.btn.chevron-action {
+    width: 100%;
+    display: block;
+    margin-bottom: 12px;
+    padding-right: 0;
+    &>.material-icons {
+        padding-top: 3px;
+        line-height: 14px !important;
+        margin-top: 2px;
+        margin-bottom: 2px;
+    }
+    &>.action-label {
+        display: inline-block;
+        width: calc(~'100% - 24px');
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+}
+
+.expense-detail {
+    tabset.mobile ul {
+        display: none;
+    }
+}
+
+.btn-phx {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.gridContainer tr.error,
+.gridContainer tr.error td {
+    color: red !important;
+}
+
+.circle {
+    .cropper-crop-box,
+    .cropper-view-box {
+        border-radius: 50%;
+    }
+    .cropper-view-box {
+        box-shadow: 0 0 0 1px #39f;
+        outline: 0;
+    }
+}
+
+.cropper-container {
+    touch-action: none;
+}
+
+.expense-item-modal {
+    width: 450px;
+}
+
+@media screen and (max-width:768px) {
+    .expense-item-modal {
+        width: initial;
+    }
+}
+
+dx-tree-view.dx-treeview {
+    .dx-treeview-node.dx-state-focused>div.dx-item.dx-treeview-item {
+        background-color: #ddd;
+        * {
+            color: #333;
+        }
+        .icon-warning{
+            color:#d35400;
+        }
+        
+        .icon-done{
+            color:#4cae4c;
+        }
+    }
+}

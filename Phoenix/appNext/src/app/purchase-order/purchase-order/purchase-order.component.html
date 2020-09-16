@@ -1,0 +1,69 @@
+<div class="page-content purchaseOrder" *ngIf="purchaseOrder">
+  <div class="purchaseOrder-wrap">
+    <div class="row purchaseOrder-workflow-buttons-row-spacer">
+      <app-phx-workflow-buttons (callWorkflowCommand)="onClickWorkflowAction($event,purchaseOrder)" [workflowAvailableActions]="purchaseOrder.WorkflowAvailableActions"
+        [isButtonBar]="false">
+      </app-phx-workflow-buttons>
+    </div>
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="row">
+          <app-purchase-order-header [purchaseOrder]="purchaseOrder"></app-purchase-order-header>
+        </div>
+        <div class="row">
+          <app-phx-navigation-bar [navigationBarContent]="html.navigationBarContent" [url]="routerState.url" *ngIf="this.html.navigationBarContent">
+          </app-phx-navigation-bar>
+        </div>
+        <div class="row">
+          <app-purchase-order-tab-details *ngIf="routerState.routerPath===html.phxConstants.PurchaseOrderNavigationName.details" [rootModel]="purchaseOrder"
+            [readOnlyStorage]="readOnlyStorage" [inputFormGroup]="rootFormGroup.controls.TabDetails" [activeInEditMode]="activeInEditMode"
+            [showAddLine]="actionButton.showAddLine" [showDeleteLine]="actionButton.showDeleteLine"(outputEvent)="onOutputEvent($event)">
+          </app-purchase-order-tab-details>
+
+          <app-purchase-order-tab-documents *ngIf="routerState.routerPath===html.phxConstants.PurchaseOrderNavigationName.documents" >
+          </app-purchase-order-tab-documents>
+
+          <app-purchase-order-tab-workorder *ngIf="routerState.routerPath===html.phxConstants.PurchaseOrderNavigationName.workOrders"
+            [purchaseOrderId]="rootFormGroup.controls.PurchaseOrderId.value">
+          </app-purchase-order-tab-workorder>
+
+          <app-purchase-order-tab-history *ngIf="routerState.routerPath===html.phxConstants.PurchaseOrderNavigationName.changeHistory">
+          </app-purchase-order-tab-history>
+        </div>
+        <div class="row">
+          <div class="panel-footer">
+            <div class="row">
+              <div class="col-lg-5">
+              </div>
+              <div class="col-lg-7">
+                <div class="pull-right">
+                  <button type="button" class="btn btn-default" (click)="onClickDiscard()" *ngIf="actionButton.discard">Cancel and Discard</button>
+                  <button type="button" class="btn btn-default" (click)="onClickCancel()" *ngIf="actionButton.cancel">Cancel</button>
+                  <button type="button" class="btn btn-default" (click)="save()" *ngIf="actionButton.save">Save</button>
+                  <button type="button" class="btn btn-primary" (click)="onClickEdit()" *ngIf="actionButton.edit">Edit</button>
+                  <button type="button" class="btn btn-primary" (click)="submit()" *ngIf="actionButton.submit" [disabled]="!rootFormGroup.valid">Submit</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <app-phx-validation-messages [messages]="html.validationMessages"></app-phx-validation-messages>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<app-phx-modal #modal [buttons]="modalFabButtons" title="Cancel Modifications">
+  <div class="attachment-container">
+    This Modifications will be Cancelled. Continue?
+  </div>
+</app-phx-modal>
+
+<app-phx-modal #discardModal [buttons]="modalDiscardFabButtons" title="Discard Purchase Order">
+  <div class="attachment-container">
+    This Purchase Order will be deleted. Continue?
+  </div>
+</app-phx-modal>

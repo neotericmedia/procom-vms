@@ -1,0 +1,16 @@
+<div *ngIf="entityId>0">
+  <div class="content-group form-horizontal">
+    <div class="panel">
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-xs-12">
+            <h4>Change History</h4>
+          </div>
+          <div class="col-xs-12">
+            <app-changeHistory [entityTypeId]="entityTypeId" [entityId]="entityId" [blackList]="changeHistoryBlackList"></app-changeHistory>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

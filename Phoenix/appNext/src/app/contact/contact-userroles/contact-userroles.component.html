@@ -1,0 +1,19 @@
+<app-phx-panel headerTitle="User Roles">
+    <form [formGroup]="inputFormGroup" *ngIf="readOnlyStorage && inputFormGroup">
+        <div formArrayName="UserProfileFunctionalRoles">
+            <div class="bottom-line" *ngFor="let instanceOfFormGroupFunctionalRole of formArrayFunctionalRoles().controls; let i = index; trackBy: trackByFn">
+                <div [formGroupName]="i">
+                    <div class="form-group organization-panel-of-array">
+                        <app-contact-userrole [inputFormGroup]="instanceOfFormGroupFunctionalRole" [addressIndex]="i" [readOnlyStorage]="readOnlyStorage"
+                            (outputEvent)="onOutputEvent($event,i)" [selectedFunctionalRoles]="formArrayFunctionalRoles().value"></app-contact-userrole>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <phx-form-control *ngIf="readOnlyStorage.IsEditable" class="padding-10">
+            <button type="button" class="btn btn-default btn-material right pull-right" (click)="onClickAddFunctionalRole()" [disabled]="!inputFormGroup.controls.UserProfileFunctionalRoles.valid">
+                <i class="material-icons">add</i>
+            </button>
+        </phx-form-control>
+    </form>
+</app-phx-panel>

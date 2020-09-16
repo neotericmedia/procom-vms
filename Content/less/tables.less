@@ -1,0 +1,540 @@
+// Core variables and mixins
+@import "variables.less";
+@import "mixins.less";
+
+//
+// Tables
+// --------------------------------------------------
+
+
+// Baseline styles
+// --------------------------------------------------
+table .search_init {
+    color: #aaafbd;
+}
+
+.table {
+    background-color:#fff;
+    // Cells
+    thead,
+    tbody,
+    tfoot {
+        > tr {
+            > th,
+            > td {
+                border-top: none;
+                border-bottom: 1px solid lighten(@table-border-color, 5%);
+                line-height:1.9;
+            }
+        }
+
+        th {
+            font-weight: 600;
+        }
+    }
+        // Bottom align for column headings
+        thead > tr > th {
+            vertical-align: bottom;
+
+            small {
+                color: @brand-primary-accent;
+                font-weight: 400;
+            }
+        }
+
+        thead > tr:first-child > th {
+            font-size: 12px;
+            border-bottom-color: #999999;
+            border-width: 2px;
+        }
+
+    .table & {
+        thead > tr:first-child > th {
+            border-bottom-color: transparent;
+        }
+    }
+
+    thead > tr.filter > th {
+        padding: 8px 8px 4px;
+        background-color: #f9f9f9;
+        border-bottom: 1px solid @border-color;
+
+        .form-control {
+            border-color: darken(#fafafa, 10%);
+        }
+
+        &:last-child {
+            input {
+                display: none;
+            }
+        }
+    }
+
+    caption {
+        font-size: ceil(@font-size-base * 1.21); // ~17px
+        font-weight: 600;
+        text-align: left;
+
+        > small {
+            font-size: @font-size-base;
+            color: @brand-primary-accent;
+        }
+
+        > span {
+            color: @gray-light;
+            font-weight: 400;
+        }
+
+        &.bordered {
+            border-bottom: 1px solid @brand-primary-accent;
+        }
+    }
+
+    tbody > tr {
+
+        .action {
+            text-align: right;
+        }
+
+        .menu-row {
+            margin: (@table-cell-padding * -1) 0;
+            line-height: (@table-cell-padding * 2) + @line-height-computed;
+
+            .btn {
+                padding: 0 8px;
+                font-size: 20px;
+                line-height: 20px;
+                color: @gray-light;
+                background-color: transparent;
+
+                &:hover {
+                    color: @brand-primary;
+                }
+            }
+        }
+
+        &:hover {
+            .menu-row {
+                .btn-hoverow {
+                    color: @brand-primary;
+                }
+            }
+        }
+
+        .toggle-indicator {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            margin-top: 2px;
+            float: left;
+            background: url(/src/assets/img/icon/16/plus-toggle-2.png) 0 0 no-repeat;
+            .opacity(0.2);
+            z-index: 1;
+            .transition(all 400ms ease-in-out);
+
+            &.open {
+                background: url(/src/assets/images/icon/16/minus-toggle-2.png) 0 0 no-repeat;
+                .rotate(180deg);
+                .opacity(1);
+                z-index: 1;
+                -moz-transform-origin: center center;
+            }
+        }
+    }
+}
+
+
+// dotted table / border style for body
+// --------------------------------------------------
+
+.table-dotted {
+    tbody {
+        > tr {
+            > th,
+            > td {
+                border-bottom-style: dotted;
+            }
+        }
+    }
+}
+
+
+// Condensed table w/ half padding
+// --------------------------------------------------
+
+.condensed-mini {
+
+    .table & {
+
+        > tr {
+            > th,
+            > td {
+                padding: (@table-condensed-cell-padding / 2) 8px;
+            }
+        }
+    }
+}
+
+// Bordered version
+// ----------------
+
+// Zebra-striping
+// --------------
+
+// Hover effect
+// ------------
+
+// Placed here since it has to come after the potential zebra striping
+.table-hover {
+    > tbody {
+        > tr:hover {
+            > td,
+            > th {
+                color: #000;
+                background-color: #f5f5f5;
+            }
+        }
+    }
+
+    .table-hover {
+        > tbody {
+            > tr:hover {
+                > td,
+                > th {
+                    color: #000;
+                    background-color: #f5f5f5;
+                }
+            }
+        }
+    }
+}
+
+// Light table style
+.table-light {
+    background-color: #fff;
+
+    > thead,
+    > tbody,
+    > tfoot {
+        > tr {
+            > th,
+            > td {
+                border-color: transparent;
+            }
+        }
+    }
+
+    .table & {
+        background-color: #fff;
+    }
+}
+
+// Control row for table
+.table-control {
+    .table-lenght,
+    .table-search-global {
+        position: relative;
+        display: inline-block;
+        vertical-align: top;
+    }
+
+    .table-lenght {
+        min-width: 75px;
+    }
+
+    .table-search-global {
+    }
+}
+
+// Collapsible - use bootstrap collapse.js
+// --------------------------------------------------
+.table tbody > tr > .collapsible-row {
+    padding: 0;
+    border-bottom: 1px solid transparent;
+
+    &:hover {
+        border-bottom-color: transparent;
+    }
+
+    > .row {
+        margin: 0;
+        padding: 0 15px 0 30px;
+        background-color: lighten(@state-info-bg, 7%);
+        border-bottom: 1px solid @border-color;
+    }
+}
+
+// Sorting (use table or datatable)
+// --------------------------------------------------
+.table > thead {
+    > tr > th {
+        &.sorting,
+        &.sorting_asc,
+        &.sorting_desc {
+            cursor: pointer;
+            position: relative;
+        }
+
+        &.sorting,
+        &.sorting_asc,
+        &.sorting_desc,
+        &.sorting_disabled {
+            &:before {
+                display: block;
+                float: right;
+                .size(20px, 20px);
+                color: inherit;
+                font-family: 'appicon';
+                text-align: center;
+                font-size: ceil(@font-size-base * 1.05);
+                font-weight: normal;
+                line-height: 20px;
+            }
+        }
+
+        &.sorting {
+            &:before {
+                .opacity(.25);
+            }
+        }
+
+        &.sorting_asc,
+        &.sorting_desc {
+            border-bottom-color: @brand-primary-accent;
+            color: @brand-primary-accent;
+        }
+
+        &.sorting_asc {
+            &:before {
+                content: "\e0b1";
+            }
+        }
+
+        &.sorting_desc {
+            &:before {
+                content: "\e0b4";
+            }
+        }
+
+        &.sorting_disabled {
+            cursor: not-allowed;
+            //color: rgba(0,0,0,.5);
+            //.opacity(0);
+        }
+    }
+}
+
+
+// Control bar for table - Datatable
+.table-top-control,
+.table-bottom-control {
+    .clearfix();
+    background-color: #fdfdfd;
+
+    label,
+    .pagination {
+        margin: 0;
+    }
+}
+
+.table-top-control {
+    padding: @grid-gutter-width / 3;
+    margin-top: 1px;
+    border-bottom: 1px solid @border-color;
+}
+
+.table-bottom-control {
+    padding: @line-height-computed (@grid-gutter-width / 2);
+    border-top: 1px solid #f5f5f5;
+}
+
+
+// Datatables
+// --------------------------------------------------
+//
+div.dataTables_length label {
+    float: left;
+    text-align: left;
+}
+
+div.dataTables_length select {
+    width: 75px;
+}
+
+div.dataTables_filter label {
+    float: right;
+}
+
+div.dataTables_info {
+    padding-top: 8px;
+}
+
+div.dataTables_paginate {
+    float: right;
+    margin: 0;
+}
+
+table.datatable {
+    clear: both;
+    margin-bottom: 40px;
+    max-width: none !important;
+}
+
+
+
+// Scrolling
+// -------------------
+div.dataTables_scrollHead table {
+    margin-bottom: 0 !important;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+    div.dataTables_scrollHead table thead tr:last-child th:first-child,
+    div.dataTables_scrollHead table thead tr:last-child td:first-child {
+        border-bottom-left-radius: 0 !important;
+        border-bottom-right-radius: 0 !important;
+    }
+
+div.dataTables_scrollBody table {
+    border-top: none;
+    margin-bottom: 0 !important;
+}
+
+div.dataTables_scrollBody tbody tr:first-child th,
+div.dataTables_scrollBody tbody tr:first-child td {
+    border-top: none;
+}
+
+div.dataTables_scrollFoot table {
+    border-top: none;
+}
+
+
+
+// TableTools styles
+// -------------------
+.table tbody tr.active td,
+.table tbody tr.active th {
+    background-color: #08C;
+    color: white;
+}
+
+.table tbody tr.active:hover td,
+.table tbody tr.active:hover th {
+    background-color: #0075b0 !important;
+}
+
+.table-striped tbody tr.active:nth-child(odd) td,
+.table-striped tbody tr.active:nth-child(odd) th {
+    background-color: #017ebc;
+}
+
+table.DTTT_selectable tbody tr {
+    cursor: pointer;
+    *cursor: hand;
+}
+
+div.DTTT .btn {
+    color: #333 !important;
+    font-size: 12px;
+}
+
+    div.DTTT .btn:hover {
+        text-decoration: none !important;
+    }
+
+
+ul.DTTT_dropdown.dropdown-menu a {
+    color: #333 !important; /* needed only when demo_page.css is included */
+}
+
+ul.DTTT_dropdown.dropdown-menu li:hover a {
+    background-color: #0088cc;
+    color: white !important;
+}
+
+// TableTools information display
+div.DTTT_print_info.modal {
+    height: 150px;
+    margin-top: -75px;
+    text-align: center;
+}
+
+div.DTTT_print_info h6 {
+    font-weight: normal;
+    font-size: 28px;
+    line-height: 28px;
+    margin: 1em;
+}
+
+div.DTTT_print_info p {
+    font-size: 14px;
+    line-height: 20px;
+}
+
+
+
+
+// FixedColumns styles
+// -------------------
+div.DTFC_LeftHeadWrapper table,
+div.DTFC_LeftFootWrapper table,
+table.DTFC_Cloned tr.even {
+    background-color: white;
+}
+
+div.DTFC_LeftHeadWrapper table {
+    margin-bottom: 0 !important;
+    border-top-right-radius: 0 !important;
+    border-bottom-left-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+}
+
+    div.DTFC_LeftHeadWrapper table thead tr:last-child th:first-child,
+    div.DTFC_LeftHeadWrapper table thead tr:last-child td:first-child {
+        border-bottom-left-radius: 0 !important;
+        border-bottom-right-radius: 0 !important;
+    }
+
+div.DTFC_LeftBodyWrapper table {
+    border-top: none;
+    margin-bottom: 0 !important;
+}
+
+div.DTFC_LeftBodyWrapper tbody tr:first-child th,
+div.DTFC_LeftBodyWrapper tbody tr:first-child td {
+    border-top: none;
+}
+
+div.DTFC_LeftFootWrapper table {
+    border-top: none;
+}
+
+
+// TABLE - DATA ROWLINK
+// --------------------------------------------------
+
+tr.rowlink td {
+    cursor: pointer;
+
+    &.nolink {
+        cursor: auto;
+    }
+}
+
+.table tbody tr.rowlink:hover td {
+    background-color: #dce7f2;
+    //border-top-color: #a0c2e5;
+}
+
+a.rowlink {
+    font: inherit;
+    color: inherit;
+    text-decoration: inherit;
+}
+
+
+.input-search{
+    width: 300px !Important;
+} 

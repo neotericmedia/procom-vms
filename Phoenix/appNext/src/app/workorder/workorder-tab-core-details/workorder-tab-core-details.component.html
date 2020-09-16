@@ -1,0 +1,111 @@
+<div class="form-group">
+    <div class="col-lg-12">
+        <h4>Details</h4>
+    </div>
+</div>
+<form [formGroup]="inputFormGroup">
+    
+    <div class="form-group" *ngIf="inputFormGroup.controls.AtsPlacementId.value > 0">
+        <label class="col-lg-4 control-label label-to-right" title="">ATS Id</label>
+        <div class="col-lg-8 form-control-static">
+            {{inputFormGroup.controls.AtsPlacementId.value}}
+        </div>
+    </div>
+
+    <div class="form-group" *ngIf="workOrder?.AssignmentStartDate">
+        <label class="col-lg-4 control-label label-to-right">Assignment Start Date</label>
+        <div class="col-lg-8 form-control-static">
+            {{workOrder.AssignmentStartDate | date: phxConstants.DateFormat.mediumDate}}
+        </div>
+    </div>
+    
+    <div class="form-group" *ngIf="isDisplayWorkOrderStartDateState">
+        <phx-form-control [control]="inputFormGroup.controls.WorkOrderStartDateState" [editable]="readOnlyStorage.IsEditable && checkPtFiledAccessibility('WorkOrderVersion','WorkOrderStartDateState')"
+            labelText="Start Date" viewModeText="{{inputFormGroup.controls.WorkOrderStartDateState.value | date: phxConstants.DateFormat.mediumDate}}">
+            <app-phx-date-box type="date" (onValueChanged)="datePickerCallbackOnDoneStartDate()" [displayFormat]="phxConstants.DateFormat.MMM_dd_yyyy"
+                [formControl]="inputFormGroup.controls.WorkOrderStartDateState"></app-phx-date-box>
+        </phx-form-control>
+    </div>
+
+    <div class="form-group" *ngIf="!isDisplayWorkOrderStartDateState">
+        <phx-form-control [control]="inputFormGroup.controls.StartDate" [editable]="readOnlyStorage.IsEditable && checkPtFiledAccessibility('WorkOrder','StartDate')"
+            labelText="Start Date" viewModeText="{{inputFormGroup.controls.StartDate.value | date: phxConstants.DateFormat.mediumDate}}">
+            <app-phx-date-box type="date" (onValueChanged)="datePickerCallbackOnDoneStartDate()"  [displayFormat]="phxConstants.DateFormat.MMM_dd_yyyy"
+                [formControl]="inputFormGroup.controls.StartDate"></app-phx-date-box>
+        </phx-form-control>
+    </div>
+
+    <div class="form-group" *ngIf="isDisplayWorkOrderEndDateState">
+        <phx-form-control [control]="inputFormGroup.controls.WorkOrderEndDateState" [editable]="readOnlyStorage.IsEditable && checkPtFiledAccessibility('WorkOrderVersion','WorkOrderEndDateState')"
+            labelText="End Date" viewModeText="{{inputFormGroup.controls.WorkOrderEndDateState.value | date: phxConstants.DateFormat.mediumDate}}">
+            <app-phx-date-box type="date" [displayFormat]="phxConstants.DateFormat.MMM_dd_yyyy" (onValueChanged)="datePickerCallbackOnDoneEndDate()"
+            [formControl]="inputFormGroup.controls.WorkOrderEndDateState" [min]="inputFormGroup.controls.StartDate.value"></app-phx-date-box>
+        </phx-form-control>
+    </div>
+
+    <div class="form-group" *ngIf="!isDisplayWorkOrderEndDateState">
+        <phx-form-control [control]="inputFormGroup.controls.EndDate" [editable]="readOnlyStorage.IsEditable && checkPtFiledAccessibility('WorkOrder','EndDate')"
+            labelText="End Date" viewModeText="{{inputFormGroup.controls.EndDate.value | date: phxConstants.DateFormat.mediumDate}}">
+            <app-phx-date-box type="date" [displayFormat]="phxConstants.DateFormat.MMM_dd_yyyy" (onValueChanged)="datePickerCallbackOnDoneEndDate()"
+            [formControl]="inputFormGroup.controls.EndDate" [min]="inputFormGroup.controls.StartDate.value"></app-phx-date-box>
+        </phx-form-control>
+    </div>
+ 
+    <div class="form-group" *ngIf="inputFormGroup.controls.TerminationDate.value">
+        <phx-form-control [control]="inputFormGroup.controls.TerminationDate" labelText="Termination Date"
+            viewModeText="{{inputFormGroup.controls.TerminationDate.value}}">
+            <div class="fieldViewMode form-control-static">{{inputFormGroup.controls.TerminationDate.value | date: phxConstants.DateFormat.mediumDate}}</div>
+        </phx-form-control>
+    </div>
+
+    <div class="form-group">
+        <phx-form-control [control]="inputFormGroup.controls.LineOfBusinessId" labelText="Line Of Business"
+            [editable]="readOnlyStorage.IsEditable && checkPtFiledAccessibility('WorkOrderVersion','LineOfBusinessId', workOrder?.WorkOrderVersion)"
+                viewModeText="{{inputFormGroup.controls.LineOfBusinessId.value | lookupNoCache: html.lists.lineOfBussiness:'id':'text'}}">
+            <app-phx-select-box [formControl]="inputFormGroup.controls.LineOfBusinessId" [items]="html.lists.lineOfBussiness"
+                textField="text" valueField="id" placeholder="-- select one --">
+            </app-phx-select-box>
+        </phx-form-control>
+    </div>
+
+   <div class="form-group">
+        <phx-form-control [control]="inputFormGroup.controls.InternalOrganizationDefinition1Id" labelText="Branch" 
+        [editable]="readOnlyStorage.IsEditable && checkPtFiledAccessibility('WorkOrderVersion','InternalOrganizationDefinition1Id')"
+            viewModeText="{{inputFormGroup.controls.InternalOrganizationDefinition1Id.value | lookupNoCache: html.lists.InternalOrganizationDefinition1List:'id':'text'}}">
+            <app-phx-select-box [formControl]="inputFormGroup.controls.InternalOrganizationDefinition1Id" [items]="html.lists.InternalOrganizationDefinition1List"
+                textField="value" valueField="id" placeholder="-- select one --">
+            </app-phx-select-box>
+        </phx-form-control>
+    </div>
+
+    <div class="form-group">
+        <phx-form-control [control]="inputFormGroup.controls.WorksiteId" [editable]="readOnlyStorage.IsEditable && checkPtFiledAccessibility('WorkOrderVersion','WorksiteId')"
+        labelText="Work Site" viewModeText="{{inputFormGroup.controls.WorksiteId.value | lookupNoCache: html.lists.workOrderWorkLocations:'id':'text'}}">
+            <app-phx-select-box [formControl]="inputFormGroup.controls.WorksiteId" [items]="html.lists.workOrderWorkLocations"
+                textField="text" valueField="id" placeholder="-- select one --">
+            </app-phx-select-box>
+        </phx-form-control>
+    </div>
+
+    <div class="form-group">
+        <phx-form-control [control]="inputFormGroup.controls.OrganizationIdInternal" labelText="Internal Company"
+            [editable]="readOnlyStorage.IsEditable && checkPtFiledAccessibility('WorkOrder','OrganizationIdInternal')"
+            viewModeText="{{inputFormGroup.controls.OrganizationIdInternal.value | lookupNoCache: html.lists.OrganizationInternalList:'OrganizationIdInternal':'Name'}}">
+            <app-phx-select-box [formControl]="inputFormGroup.controls.OrganizationIdInternal" [items]="html.lists.OrganizationInternalList"
+                textField="DisplayValue" valueField="OrganizationIdInternal" placeholder="-- select one --">
+            </app-phx-select-box>
+        </phx-form-control>
+    </div>
+
+    <div class="form-group"> 
+        <phx-form-control [control]="inputFormGroup.controls.PositionTitleId" labelText="Position Title"
+            [editable]="readOnlyStorage.IsEditable && checkPtFiledAccessibility('WorkOrderVersion','PositionTitleId')"
+            viewModeText="{{inputFormGroup.controls.PositionTitleId.value | lookupNoCache: html.lists.workOrderPositionTitles:'id':'text'}}">
+            <app-phx-select-box [formControl]="inputFormGroup.controls.PositionTitleId" [items]="html.lists.workOrderPositionTitles"
+                textField="text" valueField="id" placeholder="-- select one --">
+            </app-phx-select-box>
+        </phx-form-control>
+    </div>
+</form>
+<app-phx-dialog #phxDialogComponent (onCallBack)="dialogAction_CallBackObButtonClick($event)" [config]="phxDialogComponentConfigModel"></app-phx-dialog>
+

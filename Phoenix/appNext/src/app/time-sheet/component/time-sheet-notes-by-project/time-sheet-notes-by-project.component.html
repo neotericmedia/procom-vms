@@ -1,0 +1,13 @@
+<div *ngIf="projectGroupedTimeSheetDetail">
+  <div class="note-sub-header-container" (click)="isCollapsedContent = !isCollapsedContent" [class.collapsed]="isCollapsedContent">
+    <span class="note-sub-header"> {{ getProjectName(projectGroupedTimeSheetDetail.value[0]) }} </span>
+    <span class="badge">{{ projectGroupedTimeSheetDetail.value.length }}</span>
+  </div>
+  <div [collapse]="isCollapsedContent">
+    <div *ngFor="let detail of projectGroupedTimeSheetDetail.value; trackBy: identify;">
+      <app-time-sheet-notes-attachments-edit [isEditable]="timeSheet.IsEditable" [noteText]="detail.Note" [noteLabel]="(getTimeSheetDate(detail, timeSheet) | date: formatDateFull) + ', ' + formatLabel(detail)"
+        [maxLength]="140" (udpatedNote)="onUpdatedNote(detail, $event)">
+      </app-time-sheet-notes-attachments-edit>
+    </div>
+  </div>
+</div>

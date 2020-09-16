@@ -1,0 +1,24 @@
+<app-phx-workflow-event-history *ngIf="transaction" [entityTypeId]="phxConstants.EntityType.TransactionHeader" [entityId]="transaction.Id"
+    [funcGetLastItem]="transactionWorkflowIterator">
+    </app-phx-workflow-event-history>
+
+    <div *ngIf="hasReversedTransaction">
+        <app-phx-workflow-event-history [entityTypeId]="phxConstants.EntityType.TransactionHeader" [entityId]="transaction.Id"
+            [funcGetLastItem]="reversedTransactionWorkflowIterator">
+        </app-phx-workflow-event-history>
+    </div>
+
+    <div *ngFor="let billingTransaction of transaction.BillingTransactions">
+        <div *ngIf="billingTransaction.VmsDiscountProcessedRecordId">
+            <app-phx-workflow-event-history [entityTypeId]="phxConstants.EntityType.VmsDiscountProcessedRecord"
+                [entityId]="billingTransaction.VmsDiscountProcessedRecordId"
+                 [funcGetLastItem]="discountImportIterator">
+            </app-phx-workflow-event-history>
+            <div *ngIf="hasReversedTransaction">
+                <app-phx-workflow-event-history [entityTypeId]="phxConstants.EntityType.VmsDiscountProcessedRecord"
+                    [entityId]="billingTransaction.VmsDiscountProcessedRecordId"
+                    [funcGetLastItem]="reversedDiscountImportIterator">
+                </app-phx-workflow-event-history>
+            </div>
+        </div>
+    </div>

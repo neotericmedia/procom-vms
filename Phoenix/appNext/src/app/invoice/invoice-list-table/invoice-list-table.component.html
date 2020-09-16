@@ -1,0 +1,9 @@
+<app-phx-data-table *ngIf="componentName" #grid [configuration]="configuration" [dataSourceUrl]="dataSourceUrl" [dataSourceParams]="oDataParams"
+  [columns]="columns" exportFileName="invoice" [componentName]="componentName" (selectionChanged)="onSelectionChanged($event)"
+  (contentReady)="onContentReady($event)" (rowClick)="onRowClick($event)" (contextMenuOpenTab)="onContextMenuOpenTab($event)">
+  <div *dxTemplate="let a of 'actionCellTemplate'">
+    <span (click)="view(a.value, 'documents', $event)" class="action-button">
+      <i class="material-icons">insert_drive_file</i>
+    </span>
+  </div>
+</app-phx-data-table>

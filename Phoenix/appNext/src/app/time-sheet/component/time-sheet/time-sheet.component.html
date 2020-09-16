@@ -1,0 +1,65 @@
+<div *ngIf="timeSheet" >
+    <div *ngIf="timeSheetWorkOrderConflicts" >
+        <app-phx-intercept-panel 
+            [mainHeading]="'timesheet.workOrderConflicts.workOrderConflictsTitle' | phxTranslate" 
+            [buttonList]="[conflictButton]"
+            [panelType]="PhxInterceptPanelType.error"
+            (clickEmmiter)="onConflictContinue($event)"
+            >
+            <p>                    
+                {{'timesheet.workOrderConflicts.workOrderConflictsMessage' | phxTranslate}}
+            </p>                
+            <ul>
+                <li *ngIf="hasRateUnitConflict" >
+                    {{'timesheet.workOrderConflicts.workOrderConflictsRateUnit' | phxTranslate}}
+                </li>
+                <li *ngIf="hasProjectConflict" >
+                    {{'timesheet.workOrderConflicts.workOrderConflictsProject' | phxTranslate}}
+                </li>
+                <li *ngIf="hasRateTypeConflict" >
+                    {{'timesheet.workOrderConflicts.workOrderConflictsRateType' | phxTranslate}} 
+                    <span *ngFor="let rateId of rateTypeConflictIds; let isLast = last">
+                        "{{ rateId | CodeValue:commonService.CodeValueGroups.RateType}}"{{isLast ? '' : ', '}}
+                    </span>
+                </li>
+            </ul>
+            <p>
+                {{'timesheet.workOrderConflicts.workOrderConflictsPleaseReview' | phxTranslate}} 
+            </p>
+        </app-phx-intercept-panel>
+
+    </div>
+    <div *ngIf="!timeSheetWorkOrderConflicts" >
+        <app-time-sheet-header [timeSheet]="timeSheet"></app-time-sheet-header>
+        <div class="row">
+            <div class="alert alert-danger alert-day-validation alert-dismissable" *ngIf="timeSheet && timeSheet.Errors && timeSheet.Errors.showErrors" >                
+                <div class="row">
+                    <h3>
+                        <a class="close" aria-label="close" (click)="clearTimeSheetErrors()"><i class="material-icons">clear</i></a>
+                        <div class="col-sm-2 col-lg-1"><strong><i class="material-icons" style="vertical-align: middle; padding-bottom:6px">warning</i></strong></div>
+                        <div class="col-sm-9 col-lg-10">{{uiService.getMessage('validationErrors').body}} </div>
+                    </h3>
+                </div>
+                <div *ngFor="let day of timeSheet.Errors.errorType.TimeSheetDays | keyValue;" class="row">
+                    <div class="col-sm-2 col-lg-1"><strong>{{ uiService.formatCalendarDate(day.value.date) }}</strong></div>
+                    <div class="col-sm-10 col-lg-11">{{ day.value.message }} </div>
+                </div>
+            </div>
+
+            <app-phx-validation-messages [messages]="validationMessages"></app-phx-validation-messages>
+            <app-phx-validation-messages *ngIf="timeSheet.ServerError" [messages]="timeSheet.ServerError"></app-phx-validation-messages>
+        </div>
+        <router-outlet></router-outlet>
+        <div class="panel-footer">
+            <app-phx-state-action-buttons [stateActions]="stateActions" 
+                [availableStateActions]="timeSheet.AvailableStateActions"
+                [displayType] = "StateActionDisplayType.BUTTON">
+            </app-phx-state-action-buttons>
+            <!-- <app-phx-workflow-buttons *ngIf="!timeSheet?.IsWorkflowRunning" [disabled]="isDetailsSaving" [valid]="timeSheet.IsPreviousSubmitted" [isButtonBar]="true" [isMobileCenter]="true" 
+                    (callWorkflowCommand)="callWorkflowCommand($event)" 
+                    [workflowAvailableActions]="timeSheet?.WorkflowAvailableActions"
+                    [getActionButtonCssClass]="getWorkflowButtonCssClass"></app-phx-workflow-buttons> -->
+
+        </div>
+    </div>
+</div>  

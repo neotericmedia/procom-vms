@@ -1,0 +1,12 @@
+﻿@* Builds hierarchy based on $rootScope.navigationItems *@
+<ul class="nav">
+    <li data-ng-repeat="module in navigation.workspace.Menu" class="dropdown" data-ng-class="itemClass(module, navigation.group)">
+        <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown"><span class="fontello-icon-list-1"></span>{{module.Value}}<b class="caret"></b></a>
+        <ul class="dropdown-menu">
+            <li data-ng-repeat="item in module.SubItems" data-ng-class="itemClass(item, navigation.item)">
+                <span data-ui-if="item.ItemType=='Header'" >{{item.Value}}</span>
+                <a href="#{{item.RouteString}}" data-ui-if="item.ItemType=='Navigation' && item.IsSystem == false">{{item.Value}}</a>
+            </li>
+        </ul>
+    </li>
+</ul>

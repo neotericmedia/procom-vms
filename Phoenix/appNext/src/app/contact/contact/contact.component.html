@@ -1,0 +1,100 @@
+<div *ngIf="profile && profile.Contact" class="base-contact-form contact-page-wrapper">
+  <div class="col-lg-12">
+    <div class="col-lg-10">
+      <div class="btn-group contact-btn-profile-add" *ngIf="(profile.Contact.UserStatusId === html.phxConstants.UserStatus.Active) && !isNotProfilePage">
+        <button type="button" class="btn btn-clouds dropdown-toggle" data-toggle="dropdown" *ngIf="profile.ProfileStatusId === html.phxConstants.ProfileStatus.Active">
+          New
+          <span class="caret ml"></span>
+        </button>
+        <ul class="dropdown-menu bordered pull-left">
+          <li *ngFor="let profileType of userProfileTypes">
+            <a href="javascript:;" (click)="createAdditionalProfile(profile.Contact.Id, profileType.id)" *ngIf="canAddProfile(profileType.id)">
+              {{profileType.id | lookup:html.codeValueLists.listProfileTypes}}
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="col-lg-10 margin-10-v-t">
+      <div class="panel col-lg-12">
+        <div class="row">
+          <app-contact-header [profile]="profile"></app-contact-header>
+        </div>
+        <div class="row" style="padding-left:2px; padding-right:1px;">
+          <app-phx-navigation-bar 
+            [navigationBarContent]="html.navigationBarContent" 
+            [url]="routerState.url" 
+            *ngIf="this.html.navigationBarContent">
+          </app-phx-navigation-bar>
+        </div>
+        <div class="row">
+          <app-contact-tab-contact *ngIf="routerState.routerPath===html.phxConstants.ContactNavigationName.contact"
+            (reload)="onReload()" [inputFormGroup]="rootFormGroup?.controls.TabContact" [readOnlyStorage]="readOnlyStorage"
+            (outputEvent)="onOutputEvent($event)" (updateBreadcrumb)="onUpdateBreadcrumb()">
+          </app-contact-tab-contact>
+
+          <app-contact-tab-workorders *ngIf="routerState.routerPath===html.phxConstants.ContactNavigationName.workorders"
+            [contactId]="profile.ContactId"></app-contact-tab-workorders>
+          <app-contact-tab-notes *ngIf="routerState.routerPath===html.phxConstants.ContactNavigationName.notes"
+            [contactId]="profile.ContactId" (refreshNotesCount)="onRefreshNotesCount()"></app-contact-tab-notes>
+          <app-contact-tab-history *ngIf="routerState.routerPath===html.phxConstants.ContactNavigationName.history"></app-contact-tab-history>
+        </div>
+        <div *ngIf="html.validationMessages && html.validationMessages.length > 0" class="alert alert-danger alert-dismissable error-box">
+          <div *ngFor="let message of html.validationMessages">
+            <div>
+              {{message}}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-2">
+      <div class="version-panel notes-panel" style="margin-bottom: 30px;padding-left: 0;" *ngIf="profile.Contact.Id > 0 && profile.Id > 0 && !profile.Contact.SourceId">
+        <app-phx-note-header [entityId]="profile.Id" *ngIf="profile.IdOriginal" (navigateToNote)="onNotesHeaderClicked($event)"
+          [entityTypeId]="html.phxConstants.EntityType.Contact">
+        </app-phx-note-header>
+      </div>
+      <div class="contact-versions" *ngIf="profile">
+        <div class="contact-version-group">
+          <div class="contact-version-item" [ngClass]="{ 'active' : routerParams.profileId == profile.Id  && !profile.SourceId }"
+            (click)="onVersionClick(profile, true)">
+            <div>
+              <div>
+                <span class="small-text">Current Profile</span>
+              </div>
+              <span *ngIf="!profile.SourceId && !profile.ChildId" [ngClass]="{'text-warning' : profile.ProfileStatusId === html.phxConstants.ProfileStatus.Active }">
+                <span class="small-text">Status:&nbsp;&nbsp;&nbsp;</span>
+                {{profile.ProfileStatusId | lookup:html.codeValueLists.listProfileStatuses}}
+              </span>
+              <span *ngIf="profile.SourceId || profile.ChildId">
+                <span class="small-text">Status:&nbsp;&nbsp;&nbsp;</span>Change in Progress
+              </span>
+            </div>
+          </div>
+          <div *ngIf="profile.SourceId" class="contact-version-item" [ngClass]="{ 'active' : ((routerParams.profileId == profile.Id) && profile.SourceId) }"
+            (click)="onVersionClick(profile, false)">
+            <div>
+              <div>
+                <span class="small-text">Proposed Change</span>
+              </div>
+              <span>
+                <span class="small-text">Status:&nbsp;&nbsp;&nbsp;</span>{{profile.ProfileStatusId | lookup:html.codeValueLists.listProfileStatuses}}
+              </span>
+            </div>
+          </div>
+          <div *ngIf="profile.ChildId" class="contact-version-item" [ngClass]="{ 'active' : routerParams.profileId == profile.Id && !profile.ChildId }"
+            (click)="onVersionClick(profile, false)">
+            <div>
+              <div>
+                <span class="small-text">Proposed Change</span>
+              </div>
+              <span>
+                <span class="small-text">Status:&nbsp;&nbsp;&nbsp;</span>{{profile.ChildProfileStatusId | lookup:html.codeValueLists.listProfileStatuses}}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

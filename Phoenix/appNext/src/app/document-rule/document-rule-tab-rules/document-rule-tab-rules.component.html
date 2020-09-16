@@ -1,0 +1,170 @@
+<div *ngIf="document?.ComplianceDocumentRuleStatusId === phxConstants.ComplianceDocumentRuleStatus.Draft" class="text-right">
+    <div class="alert alert-info alert-dismissable" style="display: inline-block; margin-bottom: 0;">
+        <a aria-label="close" class="close" data-dismiss="alert">
+            <i class="material-icons">clear</i>
+        </a>
+        <div class="row" style="padding-right: 40px;">
+            <div class="col-xs-12">
+                Please note that any changes to the document rule may affect the work order.
+            </div>
+        </div>
+    </div>
+</div>
+<div class="content-group form-horizontal" [formGroup]="inputFormGroup" *ngIf="inputFormGroup && readOnlyStorage">
+    <div class="panel">
+        <div class="panel-body">
+            <div class="col-lg-8">
+
+                <div class="form-group sub-user-row-details">
+                    <h1 class="col-lg-11 panel-title">Document Rules</h1>
+                </div>
+                <br/>
+                <phx-form-control [control]="inputFormGroup.controls.ComplianceDocumentRuleEntityTypeId" labelText="Document For"
+                    [editable]="isDocumentForEditable" 
+                    viewModeText="{{inputFormGroup?.value.ComplianceDocumentRuleEntityTypeId | CodeValue: codeValueGroups.ComplianceDocumentRuleEntityType}}">
+                    <app-phx-select-box-code-value [groupName]="codeValueGroups.ComplianceDocumentRuleEntityType"
+                         sortByFieldName="text" [formControl]="inputFormGroup.controls.ComplianceDocumentRuleEntityTypeId">
+                    </app-phx-select-box-code-value>
+                </phx-form-control>
+
+                <phx-form-control [control]="inputFormGroup.controls.ComplianceDocumentRuleRequiredTypeId" labelText="Required Type"
+                    [editable]="readOnlyStorage.IsEditable" viewModeText="{{inputFormGroup?.value.ComplianceDocumentRuleRequiredTypeId | CodeValue: codeValueGroups.ComplianceDocumentRuleRequiredType}}">
+                    <app-phx-select-box-code-value [groupName]="codeValueGroups.ComplianceDocumentRuleRequiredType"
+                         sortByFieldName="text" [formControl]="inputFormGroup.controls.ComplianceDocumentRuleRequiredTypeId">
+                    </app-phx-select-box-code-value>
+                </phx-form-control>
+
+                <phx-form-control [control]="inputFormGroup.controls.ComplianceDocumentRuleExpiryTypeId" labelText="Document Expiry"
+                    [editable]="readOnlyStorage.IsEditable" viewModeText="{{inputFormGroup?.value.ComplianceDocumentRuleExpiryTypeId | CodeValue: codeValueGroups.ComplianceDocumentRuleExpiryType}}">
+                    <app-phx-select-box-code-value [groupName]="codeValueGroups.ComplianceDocumentRuleExpiryType"
+                         sortByFieldName="text" [formControl]="inputFormGroup.controls.ComplianceDocumentRuleExpiryTypeId">
+                    </app-phx-select-box-code-value>
+                </phx-form-control>
+
+                <phx-form-control name="IsRequiredReview" [control]="inputFormGroup.controls.IsRequiredReview"
+                    labelText="Requires Review" [editable]="readOnlyStorage.IsEditable" viewModeText="{{inputFormGroup.value.IsRequiredReview | boolToYesNo}}">
+                    <label class="radio-inline">
+                        <input class="form-check-input" type="radio" formControlName="IsRequiredReview" [value]="true"
+                            required>Yes</label>
+                    <label class="radio-inline">
+                        <input class="form-check-input" type="radio" formControlName="IsRequiredReview" [value]="false"
+                            required>No</label>
+                </phx-form-control>
+
+                <phx-form-control name="ComplianceDocumentRuleRequiredSituations" [control]="inputFormGroup.controls.ComplianceDocumentRuleRequiredSituations" 
+                *ngIf="currentDocumentRule?.ComplianceDocumentRuleEntityTypeId === phxConstants.ComplianceDocumentRuleEntityType.WorkOrder && !readOnlyStorage.IsEditable"
+                    labelText="Required For" [editable]="true">
+
+                    <div formArrayName="ComplianceDocumentRuleRequiredSituations" class="col-lg-8">
+                        <div *ngFor="let item of requiredSituationsFormArray.controls; trackBy: tranckByFn; let i = index;">
+                            <div [formGroupName]="i">
+                                <input type="checkbox" disabled formControlName="IsSelected" [id]="'checkbox_RequiredSituations_' + i" />
+                                <span>&nbsp;
+                                    {{ item.value.ComplianceDocumentRuleRequiredSituationTypeId | CodeValue:
+                                    codeValueGroups.ComplianceDocumentRuleRequiredSituationType}}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </phx-form-control>
+
+                <phx-form-control name="ComplianceDocumentRuleRequiredSituations" [control]="inputFormGroup.controls.ComplianceDocumentRuleRequiredSituations" 
+                *ngIf="currentDocumentRule?.ComplianceDocumentRuleEntityTypeId === phxConstants.ComplianceDocumentRuleEntityType.WorkOrder && readOnlyStorage.IsEditable"
+                    labelText="Required For" [editable]="readOnlyStorage.IsEditable">
+
+                    <div formArrayName="ComplianceDocumentRuleRequiredSituations" class="col-lg-8">
+                        <div *ngFor="let item of requiredSituationsFormArray.controls; trackBy: tranckByFn; let i = index;">
+                            <div [formGroupName]="i">
+                                <input type="checkbox" (change)="onCheckBoxValueChange($event)" formControlName="IsSelected" [id]="'checkbox_RequiredSituations_' + i" />
+                                <span>&nbsp;
+                                    {{ item.value.ComplianceDocumentRuleRequiredSituationTypeId | CodeValue:
+                                    codeValueGroups.ComplianceDocumentRuleRequiredSituationType}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </phx-form-control>
+
+                <phx-form-control name="ComplianceDocumentRuleProfileVisibilities" [control]="inputFormGroup.controls.ComplianceDocumentRuleProfileVisibilities" 
+                *ngIf="!readOnlyStorage.IsEditable"
+                    labelText="Visible For" [editable]="true" >
+
+                    <div formArrayName="ComplianceDocumentRuleProfileVisibilities" class="col-lg-8">
+                        <div *ngFor="let item of profileVisibilitiesFormArray.controls; trackBy: tranckByFn; let i = index;">
+                            <div [formGroupName]="i">
+                                <input type="checkbox" disabled formControlName="IsSelected" [id]="'checkbox_ProfileVisibility_' + i" />
+                                <span>&nbsp;
+                                    {{ item.value.ComplianceDocumentRuleProfileVisibilityTypeId | CodeValue:
+                                    codeValueGroups.ComplianceDocumentRuleProfileVisibilityType}}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </phx-form-control>
+
+                <phx-form-control name="ComplianceDocumentRuleProfileVisibilities" [control]="inputFormGroup.controls.ComplianceDocumentRuleProfileVisibilities" 
+                *ngIf="readOnlyStorage.IsEditable"
+                    labelText="Visible For" [editable]="readOnlyStorage.IsEditable">
+
+                    <div formArrayName="ComplianceDocumentRuleProfileVisibilities" class="col-lg-8">
+                        <div *ngFor="let item of profileVisibilitiesFormArray.controls; trackBy: tranckByFn; let i = index;">
+                            <div [formGroupName]="i">
+                                <input type="checkbox" (change)="onCheckBoxValueChange($event)" formControlName="IsSelected" [id]="'checkbox_ProfileVisibility_' + i" />
+                                <span>&nbsp;
+                                    {{ item.value.ComplianceDocumentRuleProfileVisibilityTypeId | CodeValue:
+                                    codeValueGroups.ComplianceDocumentRuleProfileVisibilityType}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </phx-form-control>
+                <br/>
+                <br/>
+                <div class="form-group sub-user-row-details">
+                    <h1 class="col-lg-11 panel-title">Document Rule Parameters</h1>
+                </div>
+                <br/>
+                <app-restriction-dropdown [labelText]="readOnlyStorage.IsEditable ? 'Parameters' : ''" #refDropDown [(dropdowmitems)]="html.restrictionItems"
+                    [editable]="readOnlyStorage.IsEditable" [(selectedItems)]="html.lists.selectedItems" [items]="html.lists.items"
+                    (restrictionItemClick)="onClickRestrictionItem($event)" (selectedItemsChanged)="onItemsSelect($event)">
+                    <ng-container *ngTemplateOutlet="inclusive"></ng-container>
+                </app-restriction-dropdown>
+                <br />
+                <br />
+                <div class="sub-user-restrictions">
+                    <div>
+                        <app-restriction-summary [selectedRestrictionList]="html.selectedRestrictionList"
+                            [showLabelAsHyperlink]="readOnlyStorage.IsEditable" (restrictionTypeClick)="updateRestriction($event)"></app-restriction-summary>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #inclusive>
+    <div class="content-group no-padding-v-t">
+
+        <label class="modal-title ng-binding"> {{ selectedComplianceDocumentRuleRestrictionTypeId |
+            lookupNoCache: html.lists.complianceDocumentRuleRestrictionType:
+            'id': 'text' }} </label>
+
+        <div class="ng-scope">
+            <!-- ng-if="data.showIsInclusive" -->
+            <div>
+                <div class="radio">
+                    <label>
+                        <input type="radio" [(ngModel)]="html.isInclusive" [checked]="html.isInclusive" class="ng-valid ng-not-empty ng-dirty ng-touched"
+                            [value]="true">
+                        <strong>Included:</strong> Select any items to which this document rule should be applied.
+                    </label>
+                </div>
+                <div class="radio">
+                    <label>
+                        <input type="radio" [(ngModel)]="html.isInclusive" value="false" [checked]="!html.isInclusive"
+                            class="ng-valid ng-not-empty ng-dirty ng-touched ng-valid-parse" [value]="false">
+                        <strong>Excluded:</strong> Select any items to which this document rule should not be applied.
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>

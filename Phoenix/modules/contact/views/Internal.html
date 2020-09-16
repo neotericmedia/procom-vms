@@ -1,0 +1,54 @@
+<div data-ng-form="internal.functionalRoleForm">
+	<div class="panel panel-internal contact-panel" data-ng-form="functionalRolesForm">
+		<div class="form-group">
+			<div class="col-lg-12">
+				<h4>User Roles</h4>
+				
+				</div>
+			</div>
+		</div>
+		<div class="panel-body">
+			<div data-ng-repeat="functionalRole in internal.UserProfileFunctionalRoles" class="panel-row panel-body user-roles" data-ng-form="functionalRoleForm">
+				<div class="panel-body no-padding-v" role="form">
+					<div class="form-group">
+						<label for-property="FunctionalRoleId" for="FunctionalRoleId" data-model-property="functionalRole.FunctionalRoleId" class="col-lg-3 col-xl-4 control-label req-lab-right" data-original-title="" title="">Role</label>
+						<div class="col-lg-7 col-xl-8">
+							<div class="input-group select2-bootstrap-append">
+								<ui-select name="FunctionalRoleId" data-ng-model="functionalRole.FunctionalRoleId" theme="select2" class="form-control" required data-pt-field-view="edit.ptFieldViewStatus">
+									<ui-select-match placeholder="-- Select One --">{{$select.selected.text}}</ui-select-match>
+									<ui-select-choices repeat="item.id as item in internal.functionalRoleList | uiSelectChoicesFilteredByUsage : $select.search : internal.UserProfileFunctionalRoles: functionalRole : 'FunctionalRoleId' : 'id' : 'text'">
+										<span data-ng-bind-html="item.text | highlight: $select.search"></span>
+									</ui-select-choices>
+								</ui-select>
+								<span class="input-group-btn">
+									<button tabindex="-1" data-ng-click="internal.restoreFunctionalRole(functionalRole)" class="btn btn-default btn-contact-drp"><i class="material-icons md-18">clear</i></button>
+								</span>
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-lg-10 col-xl-12">
+							<button class="btn btn-material btn-default pull-right"
+									data-ng-if="edit.currentProfile.IsDraftStatus && internal.UserProfileFunctionalRoles.length > 1"
+									data-ng-click="internal.removeFunctionalRole(functionalRole)">
+								<i class="material-icons">delete</i>
+							</button>
+						</div>
+					</div>
+				</div>
+
+			</div>
+			<div class="panel-body" data-ng-if="edit.currentProfile.IsDraftStatus">
+				<div class="col-xs-12 col-lg-10 col-xl-12 padding-10 no-padding-v no-padding-h-r btn-toolbar" data-ng-if="internal.UserProfileFunctionalRoles.length < internal.functionalRoleList.length">
+					<button type="button" class="btn btn-material btn-default pull-right"
+							data-ng-if="edit.currentProfile.IsDraftStatus"
+							data-ng-hide="scopeOrg.entity.OrganizationTaxNumbers.length==0"
+							data-ng-disabled="!(functionalRolesForm.$valid && internal.UserProfileFunctionalRoles.length<internal.functionalRoleList.length) || edit.hideActions"
+							data-ng-click="internal.addFunctionalRole()"
+							style="margin-right:5px;">
+						<i class="material-icons email-add-button-icon">add</i>
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>

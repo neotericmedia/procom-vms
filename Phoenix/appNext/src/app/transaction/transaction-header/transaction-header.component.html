@@ -1,0 +1,141 @@
+<div class="tab-content" [formGroup]="inputFormGroup" *ngIf="transaction">
+  <div class="tab-pane active">
+    <div class="panel" *ngIf="transaction.TransactionCalculation">
+      <div class="panel-heading headstone" [ngClass]="{'test-headstone': transaction.IsTest, 'header-red': transaction.TransactionCalculation.AmountSummary.Amount_GrossProfit < 0}">
+        <div class="row">
+          <ng-container *ngIf="transaction && transaction.IsDraft">
+            <div class="row col-lg-3">
+              <phx-form-control [control]="inputFormGroup.controls.TransactionCategoryId" labelText="Transaction Category"
+                [layoutType]="layoutType.Stacked" viewModeText="{{inputFormGroup.controls.TransactionCategoryId.value}}">
+                <app-phx-select-box [formControl]="inputFormGroup.controls.TransactionCategoryId" [items]="html.lists.transactionCategoryList"
+                  textField="text" valueField="id">
+                </app-phx-select-box>
+              </phx-form-control>
+            </div>
+            <div class="col-lg-2">
+              <phx-form-control [control]="inputFormGroup.controls.StartDate" editable="true" labelText="Work Period from"
+                [layoutType]="layoutType.Stacked" viewModeText="{{inputFormGroup.controls.StartDate.value | date:phxConstants.DateFormat.mediumDate}}">
+                <app-phx-date-box type="date" [formControl]="inputFormGroup.controls.StartDate" [displayFormat]="phxConstants.DateFormat.MMM_dd_yyyy"
+                  [allowUserInput]="false"></app-phx-date-box>
+              </phx-form-control>
+            </div>
+            <div class="col-lg-2">
+              <phx-form-control [control]="inputFormGroup.controls.EndDate" editable="true" labelText="Work Period to"
+                [layoutType]="layoutType.Stacked" viewModeText="{{inputFormGroup.controls.EndDate.value | date:phxConstants.DateFormat.mediumDate}}">
+                <app-phx-date-box type="date" [formControl]="inputFormGroup.controls.EndDate" [displayFormat]="phxConstants.DateFormat.MMM_dd_yyyy"
+                  [allowUserInput]="false"></app-phx-date-box>
+              </phx-form-control>
+            </div>
+          </ng-container>
+          <ng-container *ngIf="transaction && !transaction.IsDraft">
+            <div class="col-lg-2">
+              <label class="control-label">Transaction Number</label>
+              <p>{{transaction.OrganizationInternalCode}}{{transaction.TransactionReference}}</p>
+            </div>
+            <div class="col-lg-2">
+              <label class="control-label">Transaction Type</label>
+              <p>{{transaction.TransactionType}}</p>
+            </div>
+            <div class="col-lg-2" *ngIf="transaction.TransactionTypeId === phxConstants.TransactionType.Manual">
+              <label class="control-label">Transaction Category</label>
+              <p>{{transaction.TransactionCategoryId |
+                lookupNoCache:html.lists.transactionCategoryList : 'id':'text'}}</p>
+            </div>
+            <div class="col-lg-2">
+              <label class="control-label">Transaction Date</label>
+              <p>{{transaction.TransactionDate | date: phxConstants.DateFormat.mediumDate}}</p>
+            </div>
+            <div class="col-lg-2">
+              <label class="control-label">Transaction Period</label>
+              <p>{{transaction.StartDate | date: phxConstants.DateFormat.mediumDate}} -
+                {{transaction.EndDate | date: phxConstants.DateFormat.mediumDate}}</p>
+            </div>
+            <div class="col-lg-2">
+              <label class="control-label">Billing Document</label>
+              <p>
+                <a routerLink="/next/timesheet/{{transaction.TimeSheetId}}">
+                  {{transaction.TimeSheetId}}</a>
+              </p>
+            </div>
+          </ng-container>
+        </div>
+        <hr>
+        <div class="row" *ngIf="html.worker">
+          <div [ngClass]="{'col-lg-3': transaction.TransactionHeaderStatusId === phxConstants.TransactionHeaderStatus.Draft, 'col-lg-2':  transaction.TransactionHeaderStatusId !== phxConstants.TransactionHeaderStatus.Draft}">
+            <label class="control-label">Work Order</label>
+            <p><a *ngIf="transaction.WorkOrderId" routerLink="/next/workorder/{{transaction.AssignmentId}}/{{transaction.WorkOrderId}}/{{transaction.WorkOrderVersionId}}/{{phxConstants.WorkorderNavigationName.core}}">
+                {{transaction.AssignmentId}}.{{transaction.WorkOrderNumber}}.x</a></p>
+          </div>
+          <div [ngClass]="{'col-lg-3': transaction.TransactionHeaderStatusId === phxConstants.TransactionHeaderStatus.Draft, 'col-lg-2':  transaction.TransactionHeaderStatusId !== phxConstants.TransactionHeaderStatus.Draft}">
+            <label class="control-label">Worker</label>
+            <p>
+              <a *ngIf="html.worker.ProfileTypeId===phxConstants.UserProfileType.Organizational" routerLink="/next/contact/{{html.worker.ContactId}}/profile/organizational/{{html.worker.Id}}">
+                {{html.worker.Contact.PreferredFirstName}}
+                {{html.worker.Contact.PreferredLastName}} - {{html.worker.ContactId}}
+                (Organizational - {{html.worker.Id}})</a>
+              <a *ngIf="html.worker.ProfileTypeId===phxConstants.UserProfileType.Internal" routerLink="/next/contact/{{html.worker.ContactId}}/profile/internal/{{html.worker.Id}}">
+                {{html.worker.Contact.PreferredFirstName}}
+                {{html.worker.Contact.PreferredLastName}} - {{html.worker.ContactId}}
+                (Internal - {{html.worker.Id}})</a>
+              <a *ngIf="html.worker.ProfileTypeId===phxConstants.UserProfileType.WorkerTemp" routerLink="/next/contact/{{html.worker.ContactId}}/profile/workertemp/{{html.worker.Id}}">
+                {{html.worker.Contact.PreferredFirstName}}
+                {{html.worker.Contact.PreferredLastName}} - {{html.worker.ContactId}}
+                (Worker Temp - {{html.worker.Id}})</a>
+              <a *ngIf="html.worker.ProfileTypeId===phxConstants.UserProfileType.WorkerCanadianSp" routerLink="/next/contact/{{html.worker.ContactId}}/profile/workercanadiansp/{{html.worker.Id}}">
+                {{html.worker.Contact.PreferredFirstName}}
+                {{html.worker.Contact.PreferredLastName}} - {{html.worker.ContactId}}
+                (Worker Canadian SP - {{html.worker.Id}})</a>
+              <a *ngIf="html.worker.ProfileTypeId===phxConstants.UserProfileType.WorkerCanadianInc" routerLink="/next/contact/{{html.worker.ContactId}}/profile/workercanadianinc/{{html.worker.Id}}">
+                {{html.worker.Contact.PreferredFirstName}}
+                {{html.worker.Contact.PreferredLastName}} - {{html.worker.ContactId}}
+                (Worker Canadian Inc - {{html.worker.Id}})</a>
+              <a *ngIf="html.worker.ProfileTypeId===phxConstants.UserProfileType.WorkerSubVendor" routerLink="/next/contact/{{html.worker.ContactId}}/profile/workersubvendor/{{html.worker.Id}}">
+                {{html.worker.Contact.PreferredFirstName}}
+                {{html.worker.Contact.PreferredLastName}} - {{html.worker.ContactId}}
+                (Worker Sub-Vendor - {{html.worker.Id}})</a>
+              <a *ngIf="html.worker.ProfileTypeId===phxConstants.UserProfileType.WorkerUnitedStatesW2" routerLink="/next/contact/{{html.worker.ContactId}}/profile/workerunitedstatesw2/{{html.worker.Id}}">
+                {{html.worker.Contact.PreferredFirstName}}
+                {{html.worker.Contact.PreferredLastName}} - {{html.worker.ContactId}}
+                (Worker W2 - {{html.worker.Id}})</a>
+              <a *ngIf="html.worker.ProfileTypeId===phxConstants.UserProfileType.WorkerUnitedStatesLLC" routerLink="/next/contact/{{html.worker.ContactId}}/profile/workerunitedstatesllc/{{html.worker.Id}}">
+                {{html.worker.Contact.PreferredFirstName}}
+                {{html.worker.Contact.PreferredLastName}} - {{html.worker.ContactId}}
+                (Worker LLC - {{html.worker.Id}})</a>
+            </p>
+          </div>
+          <div [ngClass]="{'col-lg-3': transaction.TransactionHeaderStatusId === phxConstants.TransactionHeaderStatus.Draft, 'col-lg-2':  transaction.TransactionHeaderStatusId !== phxConstants.TransactionHeaderStatus.Draft}"
+            *ngIf="transaction.BillingTransactions.length && transaction.BillingTransactions[0].OrganizationIdClient>0">
+            <label class="control-label">Client</label>
+            <p><a routerLink="/next/organization/{{transaction.BillingTransactions[0].OrganizationIdClient}}/details">
+                {{transaction.BillingTransactions[0].OrganizationClientDisplayName}}
+                - {{transaction.BillingTransactions[0].OrganizationIdClient}}</a>
+            </p>
+          </div>
+          <div [ngClass]="{'col-lg-3': transaction.TransactionHeaderStatusId === phxConstants.TransactionHeaderStatus.Draft, 'col-lg-2':  transaction.TransactionHeaderStatusId !== phxConstants.TransactionHeaderStatus.Draft}"
+            *ngIf="transaction.PaymentTransactions.length">
+            <label class="control-label">Supplier(s)</label>
+            <p class="form-control-static" *ngIf="transaction.PaymentTransactions[0].PayeeOrganizationIdSupplier>0">
+              <a routerLink="/next/organization/{{transaction.PaymentTransactions[0].PayeeOrganizationIdSupplier}}/details">
+                {{transaction.PaymentTransactions[0].PayeeName}}
+                -
+                {{transaction.PaymentTransactions[0].PayeeOrganizationIdSupplier}}</a>
+            </p>
+            <p *ngIf="transaction.PaymentTransactions[0].PayeeOrganizationIdSupplier==null && transaction.PaymentTransactions[0].PayeeUserProfileWorkerId>0">
+              <a routerLink="/next/contact/{{html.worker.ContactId}}/profile/{{phxConstants.UserProfileType[html.worker.ProfileTypeId]}}/{{html.worker.Id}}">
+                {{html.worker.Contact.PreferredFirstName}}
+                {{html.worker.Contact.PreferredLastName}}</a>
+            </p>
+          </div>
+        </div>
+        <div class="bottom-center-header">
+          <span class="bottom-center-text">
+            <span>Gross Profit</span>&nbsp;
+            <span *ngIf="transaction?.TransactionCalculation">
+              {{transaction.TransactionCalculation.AmountSummary.Amount_GrossProfit|currency:transaction.CurrencyCode:'symbol-narrow'}}&nbsp;{{transaction.CurrencyCode}}
+            </span>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,165 @@
+@active: #D35400;
+.nav-tabs {
+    margin-top: 12px;
+    background-color: #f6f6f6;
+}
+
+div.scrollmenu {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 99;
+    background-color: #677077;
+    white-space: nowrap;
+    overflow-x: visible;
+    overflow-y: hidden;
+    text-align: -webkit-center;
+    text-align: center;
+}
+
+div.scrollmenu div div {
+    display: inline-block;
+    text-align: center;
+    padding: 4px 20px;
+}
+
+div.scrollmenu a {
+    color: #fff;
+    text-decoration: none;
+}
+
+div.scrollmenu .material-icons {
+    display: block;
+}
+
+div.scrollmenu a:hover {
+    color: @active;
+}
+
+div.scrollmenu div.active {
+    border-top: 3px solid @active;
+}
+
+.nav.nav-tabs.responsive-tabs .material-icons {
+    display: none;
+}
+
+.nav.nav-tabs {
+    margin-top: -19px !important;
+}
+
+.sub-nav {
+    margin-top: 10px;
+}
+
+.sub-nav a {
+    text-decoration: none;
+    padding: 0 8px;
+}
+
+.sub-nav a i {
+    padding-right: 10px;
+    color: #666666
+}
+
+.sub-nav a span {
+    color: #959595;
+    font-weight: 400;
+}
+
+.sub-nav li {
+    margin-right: 24px;
+}
+
+.sub-nav li:hover>a i,
+.sub-nav li:hover>a span,
+.sub-nav li.active>a i,
+.sub-nav li.active>a span {
+    color: @active
+}
+
+.sub-nav a .material-icons {
+    vertical-align: text-bottom;
+}
+
+.badge {
+    margin-left: 5px;
+}
+
+@media only screen and (min-width: 768px) {
+    .scrollmenu {
+        display: none;
+    }
+}
+
+@media only screen and (max-width: 767px) {
+    .nav-tabs,
+    .sub-nav {
+        display: none;
+    }
+    /*
+    .nav.nav-tabs.responsive-tabs {
+        position: fixed;
+        right: 0;
+        bottom: 0;
+        left: 0;                
+        z-index: 998;
+        background-color: #6d6d6d;
+        white-space: nowrap;       
+        height: 60px;
+        overflow-x: scroll;
+        overflow-y: hidden;
+        display: -webkit-box;
+        display: -moz-box;
+
+    } 
+    .nav.nav-tabs.responsive-tabs .material-icons{
+        display:block;
+        color: #fff;
+    }
+
+    .fa-2x { font-size: 150%; }
+
+    .sub-nav {
+        display: none;
+    }
+*/
+    /* hides scrollbars on desktop but deactivates scrolling unless
+
+    .nav.nav-tabs.responsive-tabs {
+        -ms-overflow-style: none;  // IE 10+
+        overflow: -moz-scrollbars-none;  // Firefox
+    }
+    .nav.nav-tabs.responsive-tabs::-webkit-scrollbar { 
+        display: none;  // Safari and Chrome
+    }
+
+    */
+    /*
+    .nav.nav-tabs.responsive-tabs>li{
+        float: none;
+        padding-top:5px;
+    }
+    .nav.nav-tabs.responsive-tabs>li>a{
+        margin-top:0;
+        padding-top:0;
+        color: #fff;
+    }
+
+    .nav.nav-tabs.responsive-tabs>li.active>a,
+    .nav.nav-tabs.responsive-tabs>li>a:hover{
+        color: #fff;
+        background-color: #6d6d6d;
+    }
+
+    .nav.nav-tabs.responsive-tabs>li>a{
+        -webkit-border-radius: 0;
+        -moz-border-radius: 0;
+        border-radius: 0;
+        border:none;        
+        text-align: center;
+        z-index: 998;
+    }
+    */
+}

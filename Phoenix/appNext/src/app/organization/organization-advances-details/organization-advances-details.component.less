@@ -1,0 +1,47 @@
+
+.p-0 {
+    padding: 0 !important;
+}
+.advance-trn-no-repayments {
+    font-style: italic;
+    font-size: 15px;
+    color: #D35400 !important;
+}
+
+.advance-view-body {
+    margin-bottom: 0;
+    background-color: #fafafa;
+    min-height: 220px;
+}
+
+:host ::ng-deep {
+    .control-label {
+        padding-top: 3px;
+        .asterisk {
+            position: absolute;
+            padding-left: 5px;
+        }
+    }
+    .advance-payee-details {
+        @media (min-width: 1200px) {
+            .form-group .col-lg-4 {
+                padding: 0;
+                min-width: 40% !important;
+            }
+            .form-group .col-lg-8 {
+                max-width: 60% !important;
+            }
+        }
+    }
+    .advance-payment-details {
+        @media (min-width: 1200px) {
+            .form-group .col-lg-4 {
+                padding: 0;
+                min-width: 50% !important;
+            }
+            .form-group .col-lg-8 {
+                max-width: 50% !important;
+            }
+        }
+    }
+}

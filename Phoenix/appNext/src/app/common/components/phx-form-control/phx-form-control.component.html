@@ -1,0 +1,67 @@
+<ng-template #formControlTemplate>
+    <ng-content></ng-content>
+</ng-template>
+
+<ng-template #formLabelTemplate>
+    <ng-content select="phx-form-control-label" *ngIf="!labelText"></ng-content>
+    <div *ngIf="labelText">
+        <phx-form-control-label [control]="control" [name]="name" [enableAsterisk]="enableLabelAsterisk && editable" (click)="onLabelClick()"
+            [showLabelAsHyperlink]="showLabelAsHyperlink">{{labelText}}</phx-form-control-label>
+    </div>
+</ng-template>
+
+<ng-template #formValidationTemplate>
+    <phx-form-control-validation *ngIf="(control && !control.pristine && showValidationMessages ) || forceValidation" [control]="control"></phx-form-control-validation>
+</ng-template>
+
+<ng-template #formViewTextTemplate>
+    <div class="fieldViewMode form-control-static">{{viewModeText}}</div>
+</ng-template>
+
+<!-- responsive/inline -->
+<div class="form-group" *ngIf="layoutType === PhxFormControlLayoutType.Responsive || layoutType === PhxFormControlLayoutType.Inline">
+    <div [class.col-lg-4]="layoutType === PhxFormControlLayoutType.Responsive" [class.col-xs-4]="layoutType === PhxFormControlLayoutType.Inline">
+        <div class="text-right hidden-md hidden-sm hidden-xs ">
+            <ng-container *ngTemplateOutlet="formLabelTemplate"></ng-container>
+        </div>
+        <div class="hidden-lg hidden-xl hidden-xxl hidden-xxxl">
+            <ng-container *ngTemplateOutlet="formLabelTemplate"></ng-container>
+        </div>
+    </div>
+    <div [class.col-lg-8]="layoutType === PhxFormControlLayoutType.Responsive" [class.col-xs-8]="layoutType === PhxFormControlLayoutType.Inline"
+        *ngIf="!editable">
+        <ng-container *ngTemplateOutlet="formViewTextTemplate"></ng-container>
+    </div>
+    <div [class.col-lg-8]="layoutType === PhxFormControlLayoutType.Responsive" [class.col-xs-8]="layoutType === PhxFormControlLayoutType.Inline"
+        *ngIf="editable">
+        <ng-container *ngTemplateOutlet="formControlTemplate"></ng-container>
+        <ng-container *ngTemplateOutlet="formValidationTemplate"></ng-container>
+    </div>
+</div>
+
+<!-- stacked-->
+<div class="form-group" *ngIf="layoutType === PhxFormControlLayoutType.Stacked">
+    <div class="col-xs-12">
+        <div>
+            <ng-container *ngTemplateOutlet="formLabelTemplate"></ng-container>
+        </div>
+        <div *ngIf="!editable">
+            <ng-container *ngTemplateOutlet="formViewTextTemplate"></ng-container>
+        </div>
+        <div *ngIf="editable">
+            <ng-container *ngTemplateOutlet="formControlTemplate"></ng-container>
+            <ng-container *ngTemplateOutlet="formValidationTemplate"></ng-container>
+        </div>
+    </div>
+</div>
+
+<!-- control only-->
+<span *ngIf="layoutType === PhxFormControlLayoutType.InputOnly">
+    <div *ngIf="!editable">
+        <ng-container *ngTemplateOutlet="formViewTextTemplate"></ng-container>
+    </div>
+    <div *ngIf="editable">
+        <ng-container *ngTemplateOutlet="formControlTemplate"></ng-container>
+        <ng-container *ngTemplateOutlet="formValidationTemplate"></ng-container>
+    </div>
+</span>

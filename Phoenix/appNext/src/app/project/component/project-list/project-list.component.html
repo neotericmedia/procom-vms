@@ -1,0 +1,35 @@
+<app-project-edit-modal *ngIf="projectManagement" [isEditable]="isEditable" [assignmentId]="assignmentId"></app-project-edit-modal>
+<div *ngIf="projectManagement?.Projects">
+    <app-phx-data-table 
+        (cellClick)="onCellClick($event)"
+        [configuration]="dataTableConfiguration" [dataSource]="projectList"
+        [columns]="columns" [summary]="summary" [componentName]="'projects'">
+        <div *dxTemplate="let i of 'isFavouriteCellTemplate'">
+            <button [disabled]="isEditable !== true" class="btn btn-link">
+                <i class="material-icons" aria-hidden="true">{{ i.value ? 'star' : 'star_border' }}</i>
+            </button>
+        </div>
+        <div *dxTemplate="let actions of 'actionCellTemplate'">
+            <div *ngFor="let a of projectManagement.AccessActions" class="action-button">
+                <span [ngSwitch]="a.AccessAction">            
+
+                    <ng-template [ngSwitchCase]="EntityAccessAction.ProjectDiscard"> 
+                        <button type="button" 
+                            (click)="deactivateProject(actions.data)" 
+                            class="btn btn-link">
+                            <i class="material-icons">clear</i>   
+                        </button>
+                    </ng-template>
+                    <ng-template [ngSwitchCase]="EntityAccessAction.ProjectView">
+                        <button type="button" 
+                            (click)="edit(actions.data)"   
+                            class="btn btn-link">
+                            <i class="material-icons">remove_red_eye</i>
+                        </button>
+                    </ng-template>
+                </span>
+            </div>
+        </div>
+    </app-phx-data-table>
+</div>
+

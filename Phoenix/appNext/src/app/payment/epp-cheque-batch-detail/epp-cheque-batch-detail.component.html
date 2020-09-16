@@ -1,0 +1,28 @@
+<div class="row">
+  <div class="btn-toolbar">
+    <button *ngIf="eppChequeBatch" type="button" class="btn btn-default back-button" (click)="goToEPPBatches()" title="Back">
+      <i class="material-icons">keyboard_arrow_left</i>Back
+    </button>
+  </div>
+</div>
+<div class="row">
+  <app-phx-data-table [configuration]="dataTableConfiguration" dataSourceUrl="payment/cheque" [dataSourceParams]="odataParams"
+    [columns]="columns" exportFileName="epp-cheque-batch-detail" componentName="epp-cheque-batch-detail" (responseReceived)="dataReceived($event)">
+  </app-phx-data-table>
+</div>
+<div class="fixed-bottom-footer">
+  <div *ngIf="eppChequeBatch" class="toolbar">
+    <div class="col-sm-6">
+      <span>Created Date</span>
+      <strong>{{eppChequeBatch.CreatedDatetime | date : dateFormat}}</strong>
+      <span>by</span>
+      <strong>{{eppChequeBatch.CreatedByName}}</strong>
+    </div>
+    <div class="col-sm-6">
+      <div class="btn-toolbar pull-right hidden-xs">
+        <button type="button" class="btn btn-primary" (click)="downloadBatchFile()" title="Process">Download</button>
+      </div>
+    </div>
+    <app-phx-fab [fabButtons]="fabButtons" class="visible-xs-inline-block"></app-phx-fab>
+  </div>
+</div>

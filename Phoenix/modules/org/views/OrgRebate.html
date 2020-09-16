@@ -1,0 +1,179 @@
+<style>
+    .label-to-right {
+        padding-top: initial;
+    }
+
+    .req-lab-right, .req-lab-right-valid {
+        background-position-y: initial;
+    }
+</style>
+<div data-ng-form="formRebate" class="rebate-details col-lg-12">
+    <div class="col-lg-12 rebate-actions-wrapper">
+        <div class="col-lg-3 rebate-actions-drp" data-ng-if="rebate.currentVersion.WorkflowAvailableActions.length>0">
+            <ui-select data-ng-model="rebate.rebateActionId" theme="select2" class="form-control" data-ng-change="rebate.actionChanged({{$select.selected}}, rebate.currentVersion)">
+                <ui-select-match placeholder="Actions">{{$select.selected.Name}}</ui-select-match>
+                <ui-select-choices repeat="item.Id as item in rebate.currentVersion.WorkflowAvailableActions | orderBy:'DisplayButtonOrder' | uiSelectChoicesFilter: $select.search: 'Name': 'Id'">
+                    <span data-ng-bind-html="item.Name | highlight: $select.search"></span>
+                </ui-select-choices>
+            </ui-select>
+        </div>
+    </div>
+    <div class="rebate-entity-wrapper panel col-lg-10">
+        <div class="vms-fee-header panel-heading headstone">
+			<div class="row">
+				<div class="col-lg-1 col-md-1">
+					<label class="control-label col-xs-12 ">ID</label>
+					<span class="col-xs-12" >{{rebate.rebateHeader.Id}}</span>
+				</div>
+				<div class="col-lg-5 col-md-5">
+					<label class="control-label col-xs-12 ">Organization</label>
+					<span class=" col-xs-12 ">{{rebate.rebateHeader.OrganizationDisplayName || 'N/A'}}</span>
+				</div>
+				<div class="col-lg-2 col-md-2">
+					<label class="control-label col-xs-12 ">Status</label>
+					<div class="col-xs-12">
+						<span data-ng-if="!rebate.isWorkflowRunning && rebate.selectedActionId == null" data-ng-class="{'text-warning': rebate.currentVersion.RebateVersionStatusId==ApplicationConstants.RebateVersionStatus.Active}">{{rebate.currentVersion.RebateVersionStatusId|lookup:rebate.rebateCodeValueList.rebateVersionStatuses}}</span>
+						<span data-ng-if="!rebate.isWorkflowRunning && rebate.selectedActionId !== null">{{rebate.selectedActionId|lookup:rebate.rebateCodeValueList.actionStatuses}}</span>
+						<span data-ng-if="fee.isWorkflowRunning">Workflow Is Running</span>
+					</div>
+				</div>
+			</div>
+        </div>
+        <div class="panel">
+            <div class="panel-body">
+                <div class="rebate-body">
+                    <div class="form-group col-lg-12">
+                        <label for-property="OrgId" for="OrgId" data-model-property="rebate.rebateHeader.OrganizationId" class="col-lg-3 control-label label-to-right req-lab-right rebate-lbl" data-original-title="" title="" style="">Organization</label>
+                        <div class="col-lg-7">
+                            <div class="input-group select2-bootstrap-append">
+                                <ui-select name="OrgId" data-ng-model="rebate.rebateHeader.OrganizationId" theme="select2" class="form-control" required 
+                                           data-ng-disabled="rebate.orgId>0"
+                                           data-pt-field-view="rebate.ptFieldViewConfigOnChangeStatusId"
+                                           data-pt-field-view-custom="{{rebate.rebateHeader.OrganizationId|lookupnocache:rebate.clientOrganizations:'Id':'DisplayName'}}">
+                                    <ui-select-match placeholder="-- Select One --">{{$select.selected.DisplayName}}</ui-select-match>
+                                    <ui-select-choices repeat="item.Id as item in rebate.clientOrganizations | uiSelectChoicesFilter : $select.search : 'DisplayName'">
+                                        <span data-ng-bind-html="item.DisplayName | highlight: $select.search"></span>
+                                    </ui-select-choices>
+                                </ui-select>
+                                <span class="input-group-btn" style="vertical-align:middle;">
+                                    <button tabindex="-1" data-ng-click="rebate.rebateHeader.OrganizationId=undefined" class="btn btn-default btn-rebate-drp" data-ng-disabled="$stateParams.orgId"><i class="material-icons md-18">clear</i></button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-12">
+                        <label for-property="Description" for="Description" data-model-property="rebate.rebateHeader.Description" class="col-lg-3 control-label label-to-right req-lab-right rebate-lbl" data-original-title="" title="">Description</label>
+                        <div class="col-lg-7">
+                            <input type="text"
+                                   data-ng-model="rebate.rebateHeader.Description"
+                                   name="Description"
+                                   data-required-message="Required"
+                                   data-pt-field-view="rebate.ptFieldViewConfigOnChangeStatusId"
+                                   data-ng-required="true"
+                                   data-ng-maxlength="100" input-text-limit-to-max-length="100"
+                                   class="form-control form-control ng-scope"
+                                   required="required">
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-12">
+                        <label for-property="LineOfBusinessId" for="LineOfBusinessId" data-model-property="rebate.currentVersion.LineOfBusinessId" class="col-lg-3 control-label label-to-right req-lab-right rebate-lbl" data-original-title="" title="" style="">Line Of Business</label>
+                        <div class="col-lg-7">
+                            <div class="input-group select2-bootstrap-append">
+                                <ui-select name="LineOfBusinessId" data-ng-model="rebate.currentVersion.LineOfBusinessId" theme="select2" class="form-control" data-pt-field-view="rebate.ptFieldViewConfigOnChangeStatusId" required>
+                                    <ui-select-match placeholder="-- Select One --">{{$select.selected.text}}</ui-select-match>
+                                    <ui-select-choices repeat="item.id as item in rebate.rebateCodeValueList.lineOfBusiness | uiSelectChoicesFilter: $select.search: 'text'">
+                                        <span data-ng-bind-html="item.text | highlight: $select.search"></span>
+                                    </ui-select-choices>
+                                </ui-select>
+                                <span class="input-group-btn">
+                                    <button tabindex="-1" data-ng-click="rebate.currentVersion.LineOfBusinessId=undefined" class="btn btn-default btn-rebate-drp"><i class="material-icons md-18">clear</i></button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-12">
+                        <label for-property="RebateTypeId" for="RebateTypeId" data-model-property="rebate.currentVersion.RebateTypeId" class="col-lg-3 control-label label-to-right req-lab-right rebate-lbl" data-original-title="" title="" style="">Rebate Type</label>
+                        <div class="col-lg-7">
+                            <div class="input-group select2-bootstrap-append">
+                                <ui-select name="RebateTypeId" data-ng-model="rebate.currentVersion.RebateTypeId" theme="select2" class="form-control" data-pt-field-view="rebate.ptFieldViewConfigOnChangeStatusId" required data-ng-change="rebate.rebateChanged($select.selected.id)">
+                                    <ui-select-match placeholder="-- Select One --">{{$select.selected.text}}</ui-select-match>
+                                    <ui-select-choices repeat="item.id as item in rebate.rebateCodeValueList.rebateTypes | uiSelectChoicesFilter: $select.search: 'text'">
+                                        <span data-ng-bind-html="item.text | highlight: $select.search"></span>
+                                    </ui-select-choices>
+                                </ui-select>
+                                <span class="input-group-btn">
+                                    <button tabindex="-1" data-ng-click="rebate.currentVersion.RebateTypeId=undefined" class="btn btn-default btn-rebate-drp"><i class="material-icons md-18">clear</i></button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-12" data-ng-if="rebate.currentVersion.RebateTypeId == ApplicationConstants.RebateType.Percentage">
+                        <label data-for-property="Rate" for="Rate" data-model-property="rebate.currentVersion.Rate" class="col-lg-3 control-label label-to-right req-lab-right rebate-lbl" data-original-title="" title="">Rate</label>
+                        <div class="col-lg-3">
+                            <div class="input-group">
+                                <input type="text" name="Rate" class="form-control form-control ng-scope"
+                                       data-float-between-input="{from:0, to:100, decimalplaces:4, doesemptytozero:'false'}"
+                                       data-ng-model="rebate.currentVersion.Rate"
+                                       data-required-message="Required" data-pt-field-view="rebate.ptFieldViewConfigOnChangeStatusId"
+                                       data-ng-required="true">
+                                <span class="input-group-addon"><b>%</b></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-12" data-ng-if="rebate.currentVersion.RebateTypeId != ApplicationConstants.RebateType.Percentage">
+                        <label data-for-property="Rate" for="Rate" data-model-property="rebate.currentVersion.Rate" class="col-lg-3 control-label label-to-right req-lab-right rebate-lbl" data-original-title="" title="">Rate</label>
+                        <div class="col-lg-3">
+                            <div class="input-group">
+                                <span class="input-group-addon rebate-addon"><b>$</b></span>
+                                <input type="text" name="Rate" class="form-control form-control ng-scope"
+                                       data-float-between-input="{from:0, to:99999999999999999.99, decimalplaces:2, doesemptytozero:'false'}"
+                                       data-ng-model="rebate.currentVersion.Rate"
+                                       data-required-message="Required" data-pt-field-view="rebate.ptFieldViewConfigOnChangeStatusId"
+                                       data-ng-required="true">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-12 rebate-effective-date">
+                        <label for-property="EffectiveDate" for="EffectiveDate" data-model-property="rebate.currentVersion.EffectiveDate" class="col-lg-3 control-label label-to-right req-lab-right rebate-lbl" data-original-title="" title="">Effective Date</label>
+                        <div class="col-lg-3">
+                            <pt-date-picker data-ng-model="rebate.currentVersion.EffectiveDate" data-pt-field-view="rebate.ptFieldViewConfigOnChangeStatusId" data-ng-required="true" data-required-message="Required" data-func-callback-on-done="rebate.datePickerCallbackOnDoneEffectiveDate()" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-footer" data-ng-if="rebate.currentVersion.RebateVersionStatusId == ApplicationConstants.RebateVersionStatus.New || rebate.selectedActionId == rebate.rebateCodeValueList.actionStatusType.ToCorrect || rebate.selectedActionId == rebate.rebateCodeValueList.actionStatusType.ToScheduleChange">
+                <div class="row">
+                    <div class="col-lg-6"></div>
+                    <div class="col-lg-6 rebate-btns" style="min-height:30px;">
+                        <div class="pull-right">
+                            
+                            <button type="button" class="btn btn-default" data-ng-click="rebate.rebateButtonsHandler('CancelNew', rebate.currentVersion, rebate.rebateHeader.OrganizationId, rebate.rebateHeader.Description, rebate.rebateHeader.RebateHeaderStatusId)" data-ng-if="rebate.currentVersion.RebateVersionStatusId == ApplicationConstants.RebateVersionStatus.New">Cancel</button>
+							<button type="button" class="btn btn-primary" data-ng-click="rebate.rebateButtonsHandler('Created', rebate.currentVersion, rebate.rebateHeader.OrganizationId, rebate.rebateHeader.Description, rebate.rebateHeader.RebateHeaderStatusId)" data-ng-if="rebate.currentVersion.RebateVersionStatusId == ApplicationConstants.RebateVersionStatus.New" data-ng-disabled="!formRebate.$valid">Create</button>
+                                              
+							<button type="button" class="btn btn-default" data-ng-click="rebate.rebateButtonsHandler('Cancelled', rebate.currentVersion, rebate.rebateHeader.OrganizationId, rebate.rebateHeader.Description, rebate.rebateHeader.RebateHeaderStatusId)" data-ng-if="rebate.selectedActionId == rebate.rebateCodeValueList.actionStatusType.ToCorrect || rebate.selectedActionId == rebate.rebateCodeValueList.actionStatusType.ToScheduleChange">Cancel</button>
+                            <button type="button" class="btn btn-primary" data-ng-click="rebate.rebateButtonsHandler('Corrected', rebate.currentVersion, rebate.rebateHeader.OrganizationId, rebate.rebateHeader.Description, rebate.rebateHeader.RebateHeaderStatusId)" data-ng-if="rebate.selectedActionId == rebate.rebateCodeValueList.actionStatusType.ToCorrect" data-ng-disabled="!formRebate.$valid">Correct</button>
+                            <button type="button" class="btn btn-primary" data-ng-click="rebate.rebateButtonsHandler('Schedule Changed', rebate.currentVersion, rebate.rebateHeader.OrganizationId, rebate.rebateHeader.Description, rebate.rebateHeader.RebateHeaderStatusId)" data-ng-if="rebate.selectedActionId == rebate.rebateCodeValueList.actionStatusType.ToScheduleChange" data-ng-disabled="!formRebate.$valid">Schedule Change</button>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-12 panel-body" data-pt-validation-messages="rebate.validationMessages" data-ng-if="rebate.validationMessages"></div>
+    </div>
+    <div class="col-lg-2">
+        <div class="rebate-versions">
+            <div class="rebate-version-group">
+                <div class="version-version-item"
+                     data-ng-repeat="version in rebate.rebateHeader.RebateVersions | orderBy:'EffectiveDate':true"
+                     data-ng-click="rebate.onVersionClick(version)"
+                     data-ng-class="{ 'active' : (rebate.currentVersion.RebateVersionStatusId != ApplicationConstants.RebateVersionStatus.New && rebate.selectedActionId != rebate.rebateCodeValueList.actionStatusType.ToScheduleChange && rebate.selectedActionId != rebate.rebateCodeValueList.actionStatusType.ToCorrect && version.Id==rebate.currentVersion.Id)}">
+                    <div>
+                        <div><span class="small-text">Effective Date:&nbsp;</span>{{version.EffectiveDate|date:ApplicationConstants.formatDate}}</div>
+                        <span data-ng-class="version.RebateVersionStatusId==ApplicationConstants.RebateVersionStatus.Active?'text-warning':''"><span class="small-text">Status:&nbsp;</span>{{version.RebateVersionStatusId| lookup:rebate.rebateCodeValueList.rebateVersionStatuses}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

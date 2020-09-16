@@ -1,0 +1,47 @@
+﻿<div class="content-group form-horizontal" data-ng-form="formWorkOrderActivity">
+    <div class="col-lg-12">
+        <div class="panel-internal">
+            <div class="form-group">
+                <div class="col-lg-12">
+                    <h4 style="display: inline-block;">Documents</h4>
+
+                    <div style="float: right; margin: 5px 2px 0 0;" class="btn-group">
+                        <button data-toggle="dropdown" class="btn btn-default dropdown-toggle btn-narrow" type="button">Add</button>
+                        <ul class="dropdown-menu bordered">
+                            <li style="cursor: pointer;" data-ng-repeat="docType in getDocumentTypes()" data-toggle="collapse" data-target="#documentUpload-wo" data-ng-click="uploadDocument(docType.id)"><a>{{docType.text}}</a></li>
+                        </ul>
+                    </div>
+
+                    <div data-pt-document-list=""
+                        data-access-validate-check="accessCheck"
+                        data-entity-type-id="ApplicationConstants.EntityType.WorkOrder"
+                        data-entity-id="CurrentWorkOrder.Id"
+                        data-func-get-documents-length="getDocumentsLength"
+                        data-func-get-document-id-to-preview="getDocumentIdToPreview"
+                        data-template-url="/Phoenix/templates/Template/Components/Document/DocumentListDefault.html">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="documentUpload-wo" class="panel-collapse collapse">
+        <div class="form-group">
+            <div class="col-lg-12">
+                <div data-pt-document-upload=""
+                     data-holder-id="documentUpload-wo"
+                     data-entity-type-id="ApplicationConstants.EntityType.WorkOrder"
+                     data-entity-id="CurrentWorkOrder.Id"
+                     data-show-description-input="true"
+                     data-enable-image-resize="false"
+                     data-max-file-size="20971520"
+                     data-accept-file-types=""
+                     data-limit-multi-file-uploads="5"
+                     data-func-callback-on-done="documentUploadCallbackOnDone"
+                     data-header-text="Upload a supporting document to your work order"
+                     data-content-text1="Accepted file types: PNG, JPG, JPEG, TIF, BMP, PDF, DOC, DOCX"
+                     data-content-text2="20 MB file size limit">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

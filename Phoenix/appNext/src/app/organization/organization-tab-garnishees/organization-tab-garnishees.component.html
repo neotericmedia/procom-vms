@@ -1,0 +1,126 @@
+<div>
+  <div *ngIf="html.access.organizationIndependentContractorRoleGarnisheeView">
+    <div class="btn-group btn-garnishee-search-nav" *ngIf="!activeGarnisheesCount && html.access.organizationIndependentContractorRoleGarnisheeNew">
+      <div class="garnishee-btn-wrapper">
+        <button type="button" class="btn btn-clouds dropdown-toggle" data-toggle="dropdown">
+          <span class="garnishee-btn-name">Actions</span>
+          <span class="caret ml garnishee-btn-caret"></span>
+        </button>
+        <ul class="dropdown-menu bordered">
+          <li>
+            <a (click)="onClickAddNewGarnishee()" class="btn-add-garnishee" style="cursor: pointer;">Add Garnishee</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="smart-table-wrapper garnishee-search-table">
+      <div style="position: relative;">
+        <table class="table table-striped table-content table-hover fixed-columns ng-isolate-scope table-layout-fixed">
+          <thead>
+            <tr>
+              <th (click)="sortBy(html.organizationGarnisheeColumnsKey.Id)" style="width: 12%;"
+                [ngClass]="(html.tableState.sort.predicate === html.organizationGarnisheeColumnsKey.Id && sortNumber === 0)
+                ? 'st-sort-ascent': (html.tableState.sort.predicate === html.organizationGarnisheeColumnsKey.Id && sortNumber === 1
+                ? 'st-sort-descent': '')">ID</th>
+              <th (click)="sortBy(html.organizationGarnisheeColumnsKey.Description)" style="width: 25%;"
+                [ngClass]="(html.tableState.sort.predicate === html.organizationGarnisheeColumnsKey.Description)
+                ? (sortNumber === 0 ? 'st-sort-ascent':(sortNumber === 1 ? 'st-sort-descent': '')): ''">Description</th>
+              <th (click)="sortBy(html.organizationGarnisheeColumnsKey.PayAmountMaximum)" style="width: 23%;"
+                [ngClass]="(html.tableState.sort.predicate === html.organizationGarnisheeColumnsKey.PayAmountMaximum)
+                ? (sortNumber === 0 ? 'st-sort-ascent':(sortNumber === 1 ? 'st-sort-descent': '')): ''">Garnish Amount</th>
+              <th (click)="sortBy(html.organizationGarnisheeColumnsKey.PayAmountMaximum)" style="width: 23%;"
+                [ngClass]="(html.tableState.sort.predicate === html.organizationGarnisheeColumnsKey.PayAmountMaximum)
+                ? (sortNumber === 0 ? 'st-sort-ascent':(sortNumber === 1 ? 'st-sort-descent': '')): ''">Garnish Amount Maximum</th>
+              <th (click)="sortBy(html.organizationGarnisheeColumnsKey.PaidAmount)" style="width: 20%;"
+                [ngClass]="(html.tableState.sort.predicate === html.organizationGarnisheeColumnsKey.PaidAmount)
+                ? (sortNumber === 0 ? 'st-sort-ascent':(sortNumber === 1 ? 'st-sort-descent': '')): ''">Amount Paid</th>
+              <th (click)="sortBy(html.organizationGarnisheeColumnsKey.PaybackRemainder)" style="width: 20%;"
+                [ngClass]="(html.tableState.sort.predicate === html.organizationGarnisheeColumnsKey.PaybackRemainder)
+                ? (sortNumber === 0 ? 'st-sort-ascent':(sortNumber === 1 ? 'st-sort-descent': '')): ''">Amount Remaining</th>
+              <th (click)="sortBy(html.organizationGarnisheeColumnsKey.GarnisheeStatusId)" style="width: 20%;"
+                [ngClass]="(html.tableState.sort.predicate === html.organizationGarnisheeColumnsKey.GarnisheeStatusId)
+                ? (sortNumber === 0 ? 'st-sort-ascent':(sortNumber === 1 ? 'st-sort-descent': '')): ''">Status</th>
+            </tr>
+            <tr>
+              <th style="width: 12%; overflow: visible;">
+                <app-phx-advance-filter [inputFilter]="inputFilterForId" (onColumnClick)="onColumnClicked($event)"
+                (onClose)="closeAllFilterPopup($event)" (onGo)="onGo($event)" (onClear)="onClear($event)" [canShow]="html.filterSelectedStatus.isIdClicked"
+                [columnId]="this.html.organizationGarnisheeColumnsKey.Id"></app-phx-advance-filter>
+              </th>
+              <th style="width: 25%; overflow: visible;">
+                <app-phx-advance-filter [inputFilter]="inputFilterForDescription" (onColumnClick)="onColumnClicked($event)" (onClose)="closeAllFilterPopup($event)"
+                  (onGo)="onGo($event)" (onClear)="onClear($event)" [canShow]="html.filterSelectedStatus.isDescriptionClicked"
+                  [columnId]="this.html.organizationGarnisheeColumnsKey.Description"></app-phx-advance-filter>
+              </th>
+              <th style="width: 23%; overflow: visible;">
+                  <app-phx-advance-filter [inputFilter]="inputFilterForPayAmount" (onColumnClick)="onColumnClicked($event)" (onClose)="closeAllFilterPopup($event)"
+                  (onGo)="onGo($event)" (onClear)="onClear($event)" [canShow]="html.filterSelectedStatus.isPayAmountClicked"
+                  [columnId]="this.html.organizationGarnisheeColumnsKey.PayAmount"></app-phx-advance-filter>
+                </th>
+              <th style="width: 23%; overflow: visible;">
+                <app-phx-advance-filter [inputFilter]="inputFilterForPayAmountMax" (onColumnClick)="onColumnClicked($event)" (onClose)="closeAllFilterPopup($event)"
+                (onGo)="onGo($event)" (onClear)="onClear($event)" [canShow]="html.filterSelectedStatus.isPayAmountMaxClicked"
+                [columnId]="this.html.organizationGarnisheeColumnsKey.PayAmountMaximum"></app-phx-advance-filter>
+              </th>
+              <th style="width: 20%; overflow: visible;">
+                <app-phx-advance-filter [inputFilter]="inputFilterForPaidAmount" (onColumnClick)="onColumnClicked($event)" (onClose)="closeAllFilterPopup($event)"
+                (onGo)="onGo($event)" (onClear)="onClear($event)" [canShow]="html.filterSelectedStatus.isPaidAmountClicked"
+                [columnId]="this.html.organizationGarnisheeColumnsKey.PaidAmount"></app-phx-advance-filter>
+              </th>
+              <th style="width: 20%; overflow: visible;">
+                <app-phx-advance-filter [inputFilter]="inputFilterForPaybackRemainder" (onColumnClick)="onColumnClicked($event)" (onClose)="closeAllFilterPopup($event)"
+                (onGo)="onGo($event)" (onClear)="onClear($event)" [canShow]="html.filterSelectedStatus.isPaybackRemainderClicked"
+                [columnId]="this.html.organizationGarnisheeColumnsKey.PaybackRemainder"></app-phx-advance-filter>
+              </th>
+              <th style="width: 20%; overflow: visible;">
+                <app-phx-advance-filter [inputFilter]="inputFilterForStatus" (onColumnClick)="onColumnClicked($event)" (onClose)="closeAllFilterPopup($event)"
+                (onGo)="onGo($event)" (onClear)="onClear($event)" [canShow]="html.filterSelectedStatus.isStatusClicked"
+                [columnId]="this.html.organizationGarnisheeColumnsKey.GarnisheeStatusId"></app-phx-advance-filter>
+              </th>
+            </tr>
+          </thead>
+          <tbody style="max-height: 615px; width:101%;" infiniteScroll [infiniteScrollDistance]="html.scrollConfig.infiniteScrollDistance" [scrollWindow]="html.scrollConfig.scrollWindow"
+            [infiniteScrollThrottle]="html.scrollConfig.infiniteScrollThrottle" (scrolled)="onScroll()" *ngIf="html.commonLists.garnisheeList.Items?.length > 0">
+            <tr *ngFor="let item of html.commonLists.garnisheeList.Items" class="ng-scope" (click)="onClickEditGarnishee(item.Id);">
+              <td style="width: 12%; padding-left:15px;" class="ng-binding">{{item.Id}}</td>
+              <td style="width: 25%; padding-left:15px;" class="ng-binding">{{item.Description}}</td>
+              <td style="width: 23%; padding-left:15px;" class="ng-binding">
+                  {{item.PayAmount ? (item.CurrencyId | lookup: listCurrency:'id':'code') : ''}} {{item.PayAmount ? (item.PayAmount | phxDisplayCurrency) : 'N/A'}}
+                </td>
+              <td style="width: 23%; padding-left:15px;" class="ng-binding">
+                {{item.PayAmountIsMaximum ? (item.CurrencyId | lookup: listCurrency:'id':'code') : ''}} {{item.PayAmountIsMaximum ? (item.PayAmountMaximum | phxDisplayCurrency) : 'Unlimited'}}
+              </td>
+              <td style="width: 20%; padding-left:15px;" class="ng-binding">{{item.CurrencyId | lookup:listCurrency:'id':'code'}} {{item.PaidAmount | phxDisplayCurrency}}</td>
+              <td style="width: 20%; padding-left:15px;" class="ng-binding">
+                {{item.PayAmountIsMaximum ? (item.CurrencyId | lookup: listCurrency:'id':'code') : ''}} {{item.PayAmountIsMaximum ? (item.PaybackRemainder | phxDisplayCurrency) : 'N/A'}}
+              </td>
+              <td style="width: 20%; padding-left:15px;" class="ng-binding">
+                <span>{{item.GarnisheeStatusId | lookupNoCache:html.commonLists.garnisheeStatusesList}}
+                </span>
+              </td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr>
+              <td colspan="2" style="padding: 20px 0;">
+                <span class="ng-binding">Total Count: {{html.commonLists.garnisheeList.Count}}; Items Loaded: {{ html.commonLists.garnisheeList.Items
+                  ? html.commonLists.garnisheeList.Items.length: 0}}
+                </span>
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+  </div>
+  <app-phx-modal [buttons]="modalFabButtons" title="" #modalGarnisheeNew>
+    <app-organization-tab-garnishees-new [organizationId]="organizationId" [modal]="modalGarnisheeNew" (outputEvent)="onOutputEvent($event)">
+    </app-organization-tab-garnishees-new>
+  </app-phx-modal>
+
+  <app-phx-modal [buttons]="modalFabButtons" title="" #modalGarnisheeEdit>
+    <app-organization-tab-garnishees-details [organizationId]="organizationId" [modal]="modalGarnisheeEdit" [garnisheeId]="garnisheeId"
+      [activeAny]="activeAny" (outputEvent)="onOutputEvent($event)">
+    </app-organization-tab-garnishees-details>
+  </app-phx-modal>
+</div>

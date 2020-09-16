@@ -1,0 +1,30 @@
+﻿<div class="content-group form-horizontal">
+    <div class="panel">
+        <div class="panel-body">
+            <div class="row">
+                <div class="form-group">
+                    <h4>Change History</h4>
+                </div>
+            </div>
+            <div class="row">
+                <utility-data-change-tracker data-entity-type-id="ApplicationConstants.EntityType.Organization"
+                                             data-culture-id="scopeOrg.cultureId"
+                                             data-entity-id="scopeOrg.entity.Id"
+                                             data-black-list="scopeOrg.changeHistoryBlackList"></utility-data-change-tracker>
+            </div>
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="form-group">
+                    <h4>Workflow History</h4>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <app-phx-workflow-event-history [entity-type-id]="ApplicationConstants.EntityType.Organization"
+                                             [entity-id]="scopeOrg.entity.Id"></app-phx-workflow-event-history >
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

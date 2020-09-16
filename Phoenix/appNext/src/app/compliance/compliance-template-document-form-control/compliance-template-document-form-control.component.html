@@ -1,0 +1,30 @@
+<phx-form-control [control]="control" [labelText]="labelText" [editable]="true" [enableLabelAsterisk]="editable" [viewModeText]="documentName">
+    <div class="row">
+      <div [class.col-sm-9]="editable" [class.col-sm-12]="!editable">
+
+        <div class="fieldViewMode form-control-static">
+          <a class="doc-anchor" [title]="documentName" [href]="createPdfDocumentLink(documentPublicId)"
+            target="_blank">{{ documentName }}</a>
+
+          <div *ngIf="documentId == null">File has not been uploaded</div>
+        </div>
+
+      </div>
+      <div class="col-sm-3"  *ngIf="editable">
+
+        <button class="btn btn-default btn-material " *ngIf="documentId == null" (click)="openFileUpload()">
+          <i class="material-icons">add</i>
+        </button>
+        <button class="btn btn-default btn-material " *ngIf="documentId != null" (click)="openFileUpload()">
+          <i class="material-icons">edit</i>
+        </button>
+        <button class="btn btn-default btn-material " *ngIf="documentId != null" (click)="delete()">
+          <i class="material-icons">delete</i>
+        </button>
+      </div>
+    </div>
+
+    <app-phx-document-file-upload #fileUpload [editable]="true" [showAddButton]="false" [(configuration)]="uploadConfiguration"
+      [fileUploaderOptions]="uploadOptions" (onShowUploader)="onShowFileUploader()" (onCompleteAll)="onFileUploadComplete()"
+      (onSuccessItem)="getUploadCompleteNotification($event)"></app-phx-document-file-upload>
+  </phx-form-control>

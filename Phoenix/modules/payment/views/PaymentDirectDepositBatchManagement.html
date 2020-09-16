@@ -1,0 +1,148 @@
+﻿<div class="col-lg-12">
+	<div class="col-lg-12">
+		<div class="row">
+			<div class="col-lg-3">
+				<div class="btn-toolbar">
+					<div class="btn-group">
+						<button type="button" class="btn btn-clouds dropdown-toggle" data-toggle="dropdown">
+							Batch Actions...<span class="caret ml"></span>
+						</button>
+						<ul class="dropdown-menu bordered">
+							<li style="cursor: pointer;" data-ng-if="model.BatchStatusId === ApplicationConstants.PaymentReleaseBatchStatus.Finalized" data-ng-click="onActionClick(ApplicationConstants.StateAction.PaymentReleaseBatchTransferToBankAction)"> <a>{{ApplicationConstants.StateAction.PaymentReleaseBatchTransferToBankAction | lookup:lists.stateActionList}}</a> </li>
+							<li style="cursor: pointer;" data-ng-if="model.BatchStatusId === ApplicationConstants.PaymentReleaseBatchStatus.Finalized || model.BatchStatusId === ApplicationConstants.PaymentReleaseBatchStatus.Transferred" data-ng-click="onActionClick(ApplicationConstants.StateAction.PaymentReleaseBatchRecallAction)"> <a>{{ApplicationConstants.StateAction.PaymentReleaseBatchRecallAction | lookup:lists.stateActionList}}</a> </li>
+							<li style="cursor: pointer;" data-ng-if="model.BatchStatusId === ApplicationConstants.PaymentReleaseBatchStatus.Finalized || model.BatchStatusId === ApplicationConstants.PaymentReleaseBatchStatus.Transferred" data-ng-click="onActionClick(ApplicationConstants.StateAction.GenerateFile)"> <a>{{ApplicationConstants.StateAction.GenerateFile | lookup:lists.stateActionList}}</a> </li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-lg-12">
+		<div class="tab-content">
+			<div class="tabbable panel panel-tabbable">
+				<div class="panel">
+					<div class="panel-heading headstone">
+						<div class="row">
+							<div class="col-lg-1 col-md-1">
+								<label class="text-gray col-xs-12">Batch Number</label>
+								<span class="col-xs-12">{{model.BatchNumber}}</span>
+							</div>
+							<div class="col-lg-4 col-md-4">
+								<label class="text-gray col-xs-12">Internal Organization</label>
+								<span class="col-xs-12">{{model.InternalOrganizationLegalName}}</span>
+							</div>
+							<div class="col-lg-2 col-md-2">
+								<label class="text-gray col-xs-12">Bank Account</label>
+								<span class="col-xs-12">{{model.fullBankName}}</span>
+							</div>
+							<div class="col-lg-2 col-md-2">
+								<label class="text-gray col-xs-12">Create Date</label>
+								<span class="col-xs-12">{{model.CreateDate | date:ApplicationConstants.formatDate}}</span>
+							</div>
+							<div class="col-lg-2 col-md-2">
+								<label class="text-gray col-xs-12">Deposit Date</label>
+								<span class="col-xs-12">{{model.DepositDate | date:ApplicationConstants.formatDate}}</span>
+							</div>
+							<div class="col-lg-1 col-md-1">
+								<label class="text-gray col-xs-12">Status</label>
+								<span class="col-xs-12">{{model.BatchStatusId | lookup:lists.paymentReleaseBatchStatusList}}</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-lg-12">
+		<div class="smart-table-wrapper" data-ng-show="!refreshTable">
+			<div data-cg-busy="loadItemsPromise">
+				<table class="table table-striped table-content" data-st-table="items" data-st-pagination-scroll="pageSize" data-st-pipe="callServer" data-st-fixed-header="" data-st-column-widths="[5, 10, 10, 20, 20, 10, 15, 10]">
+					<thead>
+						<tr>
+							<th></th>
+							<th data-st-sort="Id" data-st-sort-default="">ID</th>
+							<th data-st-sort="PaymentNumber">Payment Number</th>
+							<th data-st-sort="PaymentPayeeName">Payee</th>
+							<th data-st-sort="GroupedWorkerName">Worker</th>
+							<th data-st-sort="PaymentStatusId">Status</th>
+							<th data-st-sort="Amount"><span class="pull-right">Payment Amount</span></th>
+							<th></th>
+						</tr>
+						<tr>
+							<th></th>
+							<th><input data-st-advanced-search="{property: 'Id', ignoreQuotes: true}" placeholder="" class="input-sm form-control  numberType" data-safe-restrict-input="[^0123456789.]" /></th>
+							<th><input data-st-advanced-search="'PaymentNumber'" placeholder="" class="input-sm form-control" type="search" /></th>
+							<th><input data-st-advanced-search="'PaymentPayeeName'" placeholder="" class="input-sm form-control" type="search" /></th>
+							<th><input data-st-advanced-search="'GroupedWorkerName'" placeholder="" class="input-sm form-control" type="search" /></th>
+							<th><select data-st-advanced-search="{property: 'PaymentStatusId', ignoreQuotes: true}" class="input-sm form-control" data-st-as-options-override="lists.paymentStatusList"></select></th>
+							<th><input data-st-advanced-search="{property: 'Amount', ignoreQuotes: true, valueSuffix: 'M'}" placeholder="" class="input-sm form-control  numberType" type="search" data-safe-restrict-input="[^0123456789.]" /></th>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr data-ng-repeat-start="payment in items"
+							ng-class="{'even-group': payment.$even, 'odd-group': !payment.$even, 'hover' : payment.isHovering }"
+							data-ng-init="payment.$even = $even;"
+							ng-mouseenter="payment.isHovering = true" ng-mouseleave="payment.isHovering = false"
+							class="first-member" data-ng-click="payment.isVisible=!payment.isVisible">
+							<td>
+								<span class="btn btn-material">
+									<i class="material-icons">
+										
+										{{payment.isVisible ? 'keyboard_arrow_up':	'keyboard_arrow_down'}}
+									</i>
+								</span>
+							</td>
+							<td>{{payment.Id}}</td>
+							<td>{{payment.PaymentNumber}}</td>
+							<td>{{payment.PaymentPayeeName}}</td>
+							<td>{{payment.GroupedWorkerName}}</td>
+							<td>{{payment.PaymentStatusId | lookup:lists.paymentStatusList}}</td>
+							<td><span class="pull-right">{{payment.Amount|currency:""}} {{payment.CurrencyId | lookup:lists.currencyList:'id':'code'}}</span></td>
+							<td>
+								<a data-ng-if="payment.workflow.WorkflowAvailableActions && payment.workflow.WorkflowAvailableActions.length==1" href="" data-ng-click="payment.workflow.actionButtonOnClick(payment.workflow.WorkflowAvailableActions[0])">{{payment.workflow.WorkflowAvailableActions[0].Name}}</a>
+								<ui-select data-ng-model="payment.workflow.SelectedActionId" theme="select2" class="form-control" data-ng-change="payment.workflow.actionButtonOnClick({{$select.selected}})" data-ng-if="payment.workflow.WorkflowAvailableActions&&payment.workflow.WorkflowAvailableActions.length>1">
+									<ui-select-match placeholder="Actions">{{$select.selected.Name}}</ui-select-match>
+									<ui-select-choices repeat="item.Id as item in payment.workflow.WorkflowAvailableActions | orderBy:'DisplayButtonOrder' | uiSelectChoicesFilter: $select.search: 'Name': 'Id'">
+										<span data-ng-bind-html="item.Name | highlight: $select.search"></span>
+									</ui-select-choices>
+								</ui-select>
+							</td>
+						</tr>
+						<tr data-ng-repeat-end=""
+							ng-class="{'even-group': payment.$even, 'odd-group': !payment.$even, 'hover' : payment.isHovering }"
+							ng-mouseenter="payment.isHovering = true" ng-mouseleave="payment.isHovering = false"
+							data-ng-if="payment.isVisible" style="background-color: #ffffff;">
+							<td></td>
+							<td colspan="5" class="ignore-st-column-width noselect" style="width:90%" data-ng-if="payment.PaymentTransactions">
+								<div class="row bg-gray-strong col-md-12">
+									<div class="col-md-2 text-gray">Tr. Number</div>
+									<div class="col-md-2 text-gray">Supplier</div>
+									<div class="col-md-2 text-gray">Worker</div>
+									<div class="col-md-2 text-gray">Work Site</div>
+									<div class="col-md-2 text-gray">Start - End Date</div>
+									<div class="col-md-2 text-gray"><span class="pull-right">Amount</span></div>
+								</div>
+								<div class="row col-md-12" data-ng-repeat="pt in payment.PaymentTransactions">
+									<div class="col-md-2 text-gray">{{pt.PaymentTransactionNumber}}</div>
+									<div class="col-md-2 text-gray">{{pt.PaymentTransactionPayeeName}}</div>
+									<div class="col-md-2 text-gray">{{pt.WorkerName}}</div>
+									<div class="col-md-2 text-gray">{{pt.WorksiteId ? (pt.WorksiteId | lookup:lists.workOrderWorkLocations) : 'N/A'}}</div>
+									<div class="col-md-2 text-gray">{{pt.StartDate | date:ApplicationConstants.formatDate}}-{{pt.EndDate | date:ApplicationConstants.formatDate}}</div>
+									<div class="col-md-2 text-gray"><span class="pull-right">{{pt.Amount|currency:""}} {{pt.CurrencyId | lookup:lists.currencyList:'id':'code'}}</span></div>
+								</div>
+							</td>
+						</tr>
+					</tbody>
+					<tfoot>
+						<tr>
+							<td colspan="6">
+								<span>Total Count: {{totalItemCount || 0}}; Items Loaded: {{ items ? items.length : 0}}</span>
+							</td>
+						</tr>
+					</tfoot>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>

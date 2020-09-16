@@ -1,0 +1,67 @@
+﻿<div data-ng-form="formTaxNumbers" data-ng-init="labelwidth=labelwidth||3; inputwidth=inputwidth||7; fullwidth=fullwidth||false">
+    <div class="form-group">
+        <div class="col-xs-9">
+            <h4>Sales Taxes</h4>
+        </div>
+        <div class="col-xs-2 padding-10">
+            <div class="btn-toolbar" data-ng-show="scopeOrg.actionScope.show.editTaxNumber">
+                <button type="button" class="btn btn-material btn-default"
+                        data-ng-show="scopeOrg.entity.OrganizationTaxNumbers.length==0"
+                        data-ng-click="scopeOrg.actionScope.event.organizationTaxNumber.add()"
+                        title="used {{scopeOrg.entity.OrganizationTaxNumbers.length}} from {{scopeOrg.lists.salesTaxList.length}} available taxes">
+					<i class="material-icons email-add-button-icon">add</i>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div data-ng-repeat="taxNumber in scopeOrg.entity.OrganizationTaxNumbers" class="panel-organization-tax-number" data-ng-form="taxNumberForm">
+        <div class="form-group">
+            <label data-for-property="SalesTaxId" for="SalesTaxId" data-model-property="taxNumber.SalesTaxId" class="col-lg-{{labelwidth}} control-label req-lab-right" data-original-title="" title="">Type</label>
+            <div class="col-lg-{{inputwidth}}">
+                <div class="input-group select2-bootstrap-append">
+                    <ui-select name="SalesTaxId" data-ng-model="taxNumber.SalesTaxId" theme="select2" class="form-control" data-pt-field-view="scopeOrg.ptFieldViewConfigOnChangeStatusId" required="required">
+                        <ui-select-match placeholder="-- Select One --">{{$select.selected.text}}</ui-select-match>
+                        <ui-select-choices repeat="item.id as item in scopeOrg.lists.salesTaxList | uiSelectChoicesFilteredByUsage : $select.search: scopeOrg.entity.OrganizationTaxNumbers : taxNumber: 'SalesTaxId': 'id' : 'text'">
+                            <span data-ng-bind-html="item.text | highlight: $select.search"></span>
+                        </ui-select-choices>
+                    </ui-select>
+                    <span class="input-group-btn">
+                        <button tabindex="-1" data-ng-click="taxNumber.SalesTaxId=undefined" class="btn btn-default"><i class="material-icons md-18">clear</i></button>
+                    </span>
+                </div>
+            </div>
+            
+        </div>
+        <div class="form-group">
+            <label data-for-property="SalesTaxNumber" for="SalesTaxNumber" data-model-property="taxNumber.SalesTaxNumber" class="col-lg-{{labelwidth}} control-label req-lab-right" data-original-title="" title="">Number</label>
+            <div class="col-lg-{{inputwidth}}">
+                <input type="text" data-ng-model="taxNumber.SalesTaxNumber" name="SalesTaxNumber" data-required-message="Required" data-ng-required="true" data-ng-minlength="1"
+                       data-ng-maxlength="64" data-length-message="LengthRange" class="form-control ng-valid-maxlength ng-valid-minlength" required="required" maxlength="64"
+                       data-pt-field-view="scopeOrg.ptFieldViewConfigOnChangeStatusId">
+            </div>
+			<div class="col-xs-1 pull-right padding-10" ng-if="!fullwidth">
+				<button type="button" class="btn btn-material btn-default pull-right" data-ng-click="scopeOrg.actionScope.event.organizationTaxNumber.remove(taxNumber)" data-ng-show="scopeOrg.actionScope.show.editTaxNumber">
+					<i class="material-icons">delete</i>
+				</button>
+			</div>
+        </div>
+		<div class="form-group" ng-if="fullwidth">
+			<div class="col-lg-10">
+				<button type="button" class="btn btn-material btn-default pull-right" data-ng-click="scopeOrg.actionScope.event.organizationTaxNumber.remove(taxNumber)" data-ng-show="scopeOrg.actionScope.show.editTaxNumber">
+					<i class="material-icons">delete</i>
+				</button>
+			</div> 			
+		</div>
+    </div>
+	<div ng-class="fullwidth ? 'col-lg-10 padding-10' : 'col-xs-12 padding-10'" data-ng-if="scopeOrg.actionScope.show.editTaxNumber">
+		<div class="btn-toolbar pull-right">
+			<button type="button" class="btn btn-material btn-default"
+					data-ng-hide="scopeOrg.entity.OrganizationTaxNumbers.length==0"
+					data-ng-disabled="!formTaxNumbers.$valid || scopeOrg.entity.OrganizationTaxNumbers.length>=scopeOrg.lists.salesTaxList.length"
+					data-ng-click="scopeOrg.actionScope.event.organizationTaxNumber.add()"
+					title="used {{scopeOrg.entity.OrganizationTaxNumbers.length}} from {{scopeOrg.lists.salesTaxList.length}} available taxes">
+				<i class="material-icons email-add-button-icon">add</i>
+			</button>
+		</div>
+	</div>
+</div>

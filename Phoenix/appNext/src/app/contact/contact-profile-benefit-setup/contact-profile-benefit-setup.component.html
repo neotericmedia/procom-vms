@@ -1,0 +1,127 @@
+<app-phx-panel headerTitle="Benefit Setup">
+  <form [formGroup]="inputFormGroup" *ngIf="inputFormGroup">
+    <phx-form-control [control]="inputFormGroup.controls.IsApplyBenefit" labelText="Apply Benefit" [editable]="readOnlyStorage.IsEditable && isEditable"
+      viewModeText="{{inputFormGroup.controls.IsApplyBenefit.value | boolToYesNo}}">
+      <label class="radio-inline">
+        <input class="form-check-input" type="radio" (click)="onApplyBenefit()" formControlName="IsApplyBenefit"
+          [value]="true">Yes</label>
+      <label class="radio-inline">
+        <input class="form-check-input" type="radio" formControlName="IsApplyBenefit" [value]="false">No</label>
+    </phx-form-control>
+    <div class="panel panel-internal panel-contact" *ngIf="inputFormGroup.controls.IsApplyBenefit.value === true">
+      <label class="control-label" data-original-title="" title="">Benefits</label>
+      <div class="col-lg-12 no-padding-h-r">
+
+        <table class="table" *ngIf="inputFormGroup.value.UserProfileWorkerBenefits.length > 0">
+          <thead class="my-thead">
+            <tr>
+              <th>Description</th>
+              <th>Operating Company</th>
+              <th class="text-right">Employee Amount</th>
+              <th class="text-right">Employer Amount</th>
+              <th class="text-right">Total Amount</th>
+              <th>Effective Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="cursor:pointer" *ngFor="let benefit of benefitSetupList; let i = index; trackBy: trackByFn"
+              ng-click="edit.currentProfile.IsDraftStatus && self.currentProfile.ProfileTypeId != ApplicationConstants.UserProfileType.WorkerUnitedStatesW2
+             && self.currentProfile.ProfileTypeId != ApplicationConstants.UserProfileType.WorkerTemp ? profile.addBenefits(benefit) : ''"
+              (click)="onBenefitClick(benefit)" [ngClass]="{ 'bg-danger' : !benefit.controls.IsActive.value}">
+              <td>{{benefit.controls.BenefitTypeId.value | CodeValue: codeValueGroups.ProfileWorkerBenefitType }}</td>
+              <td>{{benefit.controls.OrganizationIdInternal.value | lookupNoCache:
+                html.internalOrgList:'Id':'DisplayName'}}</td>
+              <td class="text-right">{{benefit.controls.EmployeeAmount.value}}</td>
+              <td class="text-right">{{benefit.controls.EmployerAmount.value}}</td>
+              <td class="text-right">{{ (toFloat(benefit.controls.EmployeeAmount.value,
+                benefit.controls.EmployerAmount.value))}}</td>
+              <td>{{benefit.controls.EffectiveDate.value | date: phxConstants.DateFormat.MMM_ddComma_yyyy}}</td>
+            </tr>
+          </tbody>
+        </table>
+        <div>
+          <!--<div class="btn-toolbar" data-ng-class="profile.currentProfile.UserProfileWorkerBenefits.length > 0 ? 'pull-right': ''" data-ng-show="profile.showAddBenefitsButton()">-->
+          <div class="btn-toolbar pull-right" *ngIf="profile.IsDraftStatus && profile.ProfileTypeId !== phxConstants.UserProfileType.WorkerUnitedStatesW2
+            && profile.ProfileTypeId !== phxConstants.UserProfileType.WorkerTemp">
+            <button type="button" class="btn btn-material btn-default" (click)="addBlankBenefitSetup()">
+              <i class="material-icons">add</i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+
+</app-phx-panel>
+
+<app-phx-modal #benefitSetupModal [buttons]="html.benefitSteupDialogConfig" title="Consultant Benefits" [fullScreen]="false"
+  (closeModal)="onBenefitsModalHide()">
+  <div class="modal-content">
+    <form [formGroup]="inputFormGroup" *ngIf="inputFormGroup">
+      <div *ngIf="html.selectedBenefitSetup" class="modal-body">
+        <div [formGroup]="html.selectedBenefitSetup" class="content-group form-horizontal">
+
+          <phx-form-control [control]="html.selectedBenefitSetup.controls.BenefitTypeId" labelText="Description"
+            [editable]="readOnlyStorage.IsEditable && isEditable" viewModeText="{{html.selectedBenefitSetup.controls.BenefitTypeId.value | CodeValue:codeValueGroups.ProfileWorkerBenefitType}}">
+            <app-phx-select-box-code-value [groupName]="codeValueGroups.ProfileWorkerBenefitType" sortByFieldName="text"
+              [formControl]="html.selectedBenefitSetup.controls.BenefitTypeId">
+            </app-phx-select-box-code-value>
+          </phx-form-control>
+
+          <phx-form-control [control]="html.selectedBenefitSetup.controls.OrganizationIdInternal" labelText="Internal Organization"
+            [editable]="readOnlyStorage.IsEditable && isEditable" viewModeText="{{html.selectedBenefitSetup.controls.OrganizationIdInternal.value | lookupNoCache: html.internalOrgList:'Id':'DisplayName'}}">
+            <app-phx-select-box [items]="html.internalOrgList" valueField="Id" textField="DisplayName" sortByFieldName="DisplayName"
+              [formControl]="html.selectedBenefitSetup.controls.OrganizationIdInternal">
+            </app-phx-select-box>
+          </phx-form-control>
+
+          <phx-form-control [showValidationMessages]="false" name="EmployerAmount" labelText="Monthly Employer Benefit Amount"
+            [editable]="readOnlyStorage.IsEditable && isEditable" [control]="html.selectedBenefitSetup.controls.EmployerAmount"
+            viewModeText="{{html.selectedBenefitSetup.value.EmployerAmount | phxDisplayCurrency}}">
+
+            <div class="col-lg-6 padding-0">
+              <input type="number" phxFloatBetweenInput='{"from":0, "to":999999999999.99, "decimalplaces":2}' class="form-control ng-scope"
+                name="EmployerAmount" formControlName="EmployerAmount" />
+            </div>
+
+          </phx-form-control>
+
+          <phx-form-control [showValidationMessages]="false" name="EmployeeAmount" labelText="Monthly Employee Benefit Amount"
+            [editable]="readOnlyStorage.IsEditable && isEditable" [control]="html.selectedBenefitSetup.controls.EmployeeAmount"
+            viewModeText="{{html.selectedBenefitSetup.value.EmployeeAmount | phxDisplayCurrency}}">
+
+            <div class="col-lg-6 padding-0">
+              <input type="number" phxFloatBetweenInput='{"from":0, "to":999999999999.99, "decimalplaces":2}' class="form-control ng-scope"
+                name="EmployeeAmount" formControlName="EmployeeAmount" />
+            </div>
+
+          </phx-form-control>
+
+          <phx-form-control [control]="html.selectedBenefitSetup.controls.IsActive" labelText="Status" [editable]="readOnlyStorage.IsEditable && isEditable"
+            viewModeText="{{html.selectedBenefitSetup.value.IsActive | boolToYesNo}}">
+            <label class="radio-inline">
+              <input class="form-check-input" type="radio" [formControl]="html.selectedBenefitSetup.controls.IsActive"
+                [value]="true">Active</label>
+            <label class="radio-inline">
+              <input class="form-check-input" type="radio" [formControl]="html.selectedBenefitSetup.controls.IsActive"
+                [value]="false">Inactive</label>
+          </phx-form-control>
+
+          <phx-form-control [control]="html.selectedBenefitSetup.controls.EffectiveDate" labelText="Effective Date"
+            [editable]="readOnlyStorage.IsEditable" viewModeText="{{html.selectedBenefitSetup.value.EffectiveDate | date:phxConstants.DateFormat.mediumDate}}">
+            <app-phx-date-box [formControl]="html.selectedBenefitSetup.controls.EffectiveDate" [min]="html.today"
+              (onValueChanged)="datePickerCallback()" type="date"></app-phx-date-box>
+          </phx-form-control>
+
+          <!-- <div class="emptyBankList col-lg-12" *ngIf="html.errorMessage">
+              <div class="row" >
+                <span class="col-lg-4"></span>
+                <span class="col-lg-8">{{html.errorMessage}}</span>
+              </div>
+            </div>
+     -->
+        </div>
+      </div>
+    </form>
+  </div>
+</app-phx-modal>

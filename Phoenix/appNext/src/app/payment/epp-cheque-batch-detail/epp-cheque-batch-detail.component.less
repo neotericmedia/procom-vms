@@ -1,0 +1,39 @@
+.back-button {
+    width: initial;
+    .material-icons {
+        float: left;
+        display: block;
+        height: 18px;
+        margin-top: -1px;
+        margin-left: -10px;
+    }
+}
+
+:host .fixed-bottom-footer {
+    @media only screen and (max-width: 991px) {
+        width: 100%;
+        min-height: 78px;
+        left: 0;
+        border: none;
+    }
+
+    border-top: 1px solid #F7F7F7;
+    padding: 10px 0;
+    background-color: #ffffff;
+    position: fixed;
+    width: calc(~"97% - 245px");
+    left: 265px;
+    bottom: 0;
+
+    /deep/ .fab-fixed {
+        bottom: 30px;
+        right: 30px;
+    }
+}
+
+@media only screen and (max-width: 767px) {
+    .row {
+        margin-left: -10px;
+        margin-right: -10px;
+    }
+}

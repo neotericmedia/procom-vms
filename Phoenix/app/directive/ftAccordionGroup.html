@@ -1,0 +1,8 @@
+﻿<div class="paymentGroup">
+    <div>
+        <div ng-click="isOpen = !isOpen" ft-accordion-transclude="heading">{{heading}}</div>
+    </div>
+    <div uib-collapse="!isOpen">
+        <div ng-transclude></div>
+    </div>
+</div>

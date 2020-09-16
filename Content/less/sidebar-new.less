@@ -1,0 +1,1018 @@
+// Core variables and mixins
+@import "variables.less";
+@import "mixins.less";
+
+.sidebar {
+    width: @sidebar-width;
+    float: left;
+    position: absolute;
+    //why not simply position:absolute?
+    //because we need the page height to be at least as high as the sidebar in case the page content is too small
+    border: 1px solid @sidebar-border-right;
+    border-width: 0 1px 0 0;
+    background-color: @sidebar-bg;
+
+    &:before { /* the grey background of sidebar */
+        content: "";
+        display: block;
+        width: @sidebar-width;
+        position: fixed;
+        bottom: 0;
+        height: 100%;
+        top: 0;
+        z-index: -1;
+        background-color: @sidebar-bg;
+        border: 1px solid @sidebar-border-right;
+        border-width: 0 1px 0 0;
+        box-shadow: 5px 0 15px rgba(0, 0, 0, 0.2);
+    }
+
+    &.fixed, &.sidebar-fixed {
+        position: fixed;
+        z-index: @zindex-navbar-fixed - 1;
+        top: @navbar-mh;
+        left: 0;
+
+        &:before {
+            left: 0;
+            right: auto;
+        }
+    }
+}
+
+/* side navigation */
+li [class^="icon-"], li [class*=" icon-"] {
+    &, .nav-list & {
+        width: auto;
+    }
+}
+
+.nav-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;    
+    width: @menu-width;
+    background-color: @menu-bg;
+    height:100%;
+    .open > a,
+    .open > a:hover,
+    .open > a:focus {
+            background-color: @menu-selected-background-color;
+        
+    }
+
+    > li > a,
+    .nav-header {
+        margin: 0;
+    }
+
+    > li {
+        display: block;
+        padding: 0;
+        margin: 0;
+        border: none;
+        position: relative;
+        text-overflow: ellipsis;
+        white-space: no-wrap;        
+        width: @menu-width;
+        &:first-child {
+            border-top: none;
+        }
+
+        > a {
+            display: block;
+            height: 46px;
+            line-height: 42px;
+            padding: 8px 8px 0 7px;
+            background-color: @menu-bg;
+            color: @menu-color;
+            text-shadow: none !important;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            white-space: nowrap;
+
+
+            > [class*="icon-"]:first-child {
+                display: inline-block;
+                vertical-align: middle;
+                min-width: 30px;
+                text-align: center;
+                font-size: 18px;
+                font-weight: normal;
+                margin-right: 2px;
+                margin-top: 0;
+            }
+
+            .menu-text {
+                opacity: 1;
+                margin-left: 10px;
+                padding-bottom: 10px;
+                margin-top: -7px;
+            }
+
+
+            &:focus {
+                background-color: @menu-focus-bg-color;
+                color: @menu-focus-color;
+                width: @menu-width;
+            }
+
+            &:hover {
+                background-color: @menu-focus-bg-color;
+                color: @menu-focus-color;
+                //font-weight: bold;
+                width: @menu-width; 
+                        //color: @submenu-item-hover;
+                        color: #c7c7c7;
+                        //font-weight: 600;
+            
+            }
+        }
+        /* the submenu indicator arrow */
+
+        a > .arrow {
+            display: inline-block;
+            position: absolute;
+            right: 11px;
+            top: 11px;
+            padding: 0;
+                &:before {
+                    font-family: "Material Icons"; 
+                    content: "\E145";
+                    
+        }
+        }
+
+        a > .arrow.arrowExpanded {
+            &:before {
+                        font-family: "Material Icons"; 
+                        content: "\E15B";
+                        
+                    }       
+         }
+
+
+        a:active > .arrow {         
+            color: @menu-focus-color;
+        }
+
+         a:focus > .arrow {
+            color: @menu-focus-color;                   
+        }
+
+        &.active > a > .arrow {         
+            color: @menu-focus-color;              
+        } 
+        &.open > a > .arrow {
+            color: @menu-focus-color;                                         
+        }
+
+        &.separator {
+            height: 3px;
+            background-color: transparent;
+            position: static;
+            margin: 1px 0;
+            .box-shadow(none);
+        }
+        /* menu active/open states */
+        &.open > a {
+            background-color: @menu-open-bg;
+            color: @menu-focus-color;
+            width: @menu-width;
+        }
+
+        &.active {
+            background-color: @menu-active-bg;
+
+            > a {
+                &, &:hover, &:focus, &:active {
+                    background-color: @menu-active-bg;
+                    color: @menu-active-color;
+                    font-weight: bold;
+                    font-size: 14px;
+                }
+
+                > [class*="icon-"] {
+                    font-weight: normal;
+                }
+
+                &:hover:before { /* no left side menu item border on active state */
+                    display: none;
+                }
+            }
+            //////
+            &:after { /* the border on right of active item */
+                display: inline-block;
+                content: "";
+                position: absolute;
+                right: -2px;
+                top: -1px;
+                bottom: 0;
+                z-index: 1;
+                border: 2px solid @menu-active-color;
+                border-width: 0 2px 0 0;
+            }
+        }
+            /* submenu */
+            &.active .submenu {
+                display: block;
+            }
+
+        a.dropdown-toggle {
+
+            span.menu-text {
+                /*margin-left: 10px;*/
+            }
+        }
+
+        .submenu {
+            display: none;
+            list-style: none;
+            width: @menu-width;
+            margin: 0;
+            padding: 0;
+            position: relative;
+            background-color: @submenu-bg;
+
+            > li {
+                margin-left: 0;
+                position: relative;
+
+                > a {
+                    display: block;
+                    position: relative;
+                    color: @submenu-item-color;
+                    font-weight: 400;
+                    padding: 7px 0 9px 37px;
+                    margin: 0;
+                    font-size: 14px;
+
+                    &:focus {
+                        text-decoration: none;
+                    }
+
+                    &:hover {
+                        text-decoration: none;
+                        //color: @submenu-item-hover;
+                        color: #c7c7c7;
+                        //font-weight: 600;
+                    }
+                }
+
+                &.active > a {
+                    color: @menu-active-color;
+                }
+                /* optional icon before each item */
+                a > [class*="icon-"]:first-child {
+                    font-size: 15px;
+                    font-weight: 100;
+                    width: 18px;
+                    height: auto;
+                    line-height: 12px;
+                    text-align: center;
+                    position: absolute;
+                    right: 10px;
+                    top: 15px;
+                    z-index: 1;
+                    color: white;
+                    background-color: transparent;
+                }
+
+                &.active > a > [class*="icon-"]:first-child,
+                &:hover > a > [class*="icon-"]:first-child {
+                    display: inline-block;
+                }
+
+                &.active > a > [class*="icon-"]:first-child {
+                    color: @submenu-item-active-icon;
+                }
+            }
+            // > li
+        }
+        //end of submenu
+        > .submenu { //the first level submenu
+            > li {
+                //tree like menu
+                &:before {
+                    /* the horizontal line */
+                    content: "";
+                    display: inline-block;
+                    position: absolute;
+                    width: 7px;
+                    left: 20px;
+                    top: 17px;
+                }
+            }
+
+            &:before {
+                content: "";
+                display: block;
+                position: absolute;
+                z-index: 1;
+                left: 18px;
+                top: 0;
+                bottom: 0;
+            }
+        }
+
+        &.active {
+            > .submenu {
+                > li {
+                    &:before {
+                        border-top-color: @submenu-active-left-border;
+                    }
+                }
+
+                &:before {
+                    border-left-color: @submenu-active-left-border;
+                }
+            }
+        }
+        //3d and 4th level
+        > .submenu {
+            li > .submenu {
+                border-top: none;
+                background-color: transparent;
+                display: none;
+            }
+
+            li.active > .submenu {
+                display: block;
+            }
+
+            a > .arrow {
+                right: 11px;
+                top: 10px;
+            }
+
+            .open > a, .open > a:hover, .open > a:focus {
+                background-color: @menu-selected-background-color;
+                border-color: @submenu-item-border;
+            }
+
+            li > .submenu > li > a > .arrow {
+                right: 12px;
+                top: 9px;
+            }
+
+            li > .submenu > li {
+                line-height: 16px;
+
+                &:before { //the tree like menu
+                    display: none;
+                }
+
+                > a { /*3rd level*/
+                    margin-left: 20px;
+                    padding-left: 22px;
+                }
+
+                > .submenu > li > a { /*4th level*/
+                    margin-left: 20px;
+                    padding-left: 38px;
+                }
+
+                a > [class*="icon-"]:first-child {
+                    display: inline-block;
+                    color: inherit;
+                    font-size: 14px;
+                    position: static;
+                    background-color: transparent;
+                    margin-right: 1px;
+                }
+
+
+                a {
+                    font-size: 14px;
+                    color: #fff;
+                    font-weight: 200;
+
+                    &:hover {
+                        /*color: desaturate(@menu-focus-color, 25%);
+                        text-decoration: none;
+                        font-weight: 400;
+                            */
+                        text-decoration: none;
+                        //color: @submenu-item-hover;
+                        color: #c7c7c7;
+                        //font-weight: 600;
+                        [class*="icon-"] {
+                            text-decoration: none;
+                            color: desaturate(@menu-focus-color, 25%);
+                        }
+                    }
+
+                    &:focus {
+                        background-color: @menu-selected-background-color;
+                    }
+                }
+            }
+
+            li.open > a {
+                color: desaturate(@menu-focus-color, 12%);
+
+                > [class*="icon-"]:first-child {
+                    display: inline-block;
+                }
+
+                .arrow {
+                    color: desaturate(@menu-focus-color, 12%);
+                }
+            }
+
+            li > .submenu li.open > a {
+                color: desaturate(@menu-focus-color, 12%);
+
+                > [class*="icon-"]:first-child {
+                    display: inline-block;
+                    color: @menu-focus-color;
+                }
+
+                .arrow {
+                    color: desaturate(@menu-focus-color, 12%);
+                }
+            }
+
+            li > .submenu li.active > a {
+                color: desaturate(@menu-active-color, 8%);
+
+                > [class*="icon-"]:first-child {
+                    display: inline-block;
+                    color: desaturate(@menu-active-color, 8%);
+                }
+            }
+        }
+
+        &.active.open li.active > a:after {
+            top: 2px;
+            border-width: 14px 8px;
+        }
+
+        &.active.open li.active.open li.active > a:after {
+            top: 0;
+        }
+    }
+
+    li {
+        .active_state_caret() {
+            display: block;
+            content: "";
+            position: absolute !important;
+            right: 0;
+            top: 4px;
+            border: 8px solid transparent;
+            border-width: 14px 10px;
+            border-right-color: @menu-active-color;
+        }
+
+        .submenu {
+            /* needed for webkit based browsers to slideToggle without problem */
+            overflow: hidden;
+        }
+
+        &.active > a:after {
+            .active_state_caret();
+        }
+
+        &.open > a:after { /* no caret for open menu item */ //we put this after .active > a:after to override it
+            display: none;
+        }
+
+        &.active.open > .submenu > li.active.open > a.dropdown-toggle:after {
+            /* don't display caret on active open item who is open and has children */
+            display: none;
+        }
+
+        &.active > .submenu > li.active > a:after {
+            /** don't display caret on active item whose parent is not open useful for hiding the caret when submenu is sliding up */
+            display: none;
+        }
+
+        &.active.open > .submenu > li.active > a:after {
+            /* display caret on active item whose parent is open */
+            display: block;
+        }
+
+        &.active.no-active-child {
+            > a:after { /* show caret for active menu item with childs which is not open(i.e. no submenu item is active) */
+                display: inline-block !important;
+            }
+        }
+
+        > a:focus {
+            outline: none;
+        }
+    }
+
+    a {
+        .badge, .label {
+            font-size: 12px;
+            padding-left: 6px;
+            padding-right: 6px;
+            position: absolute;
+            top: 9px;
+            right: 11px;
+            opacity: 0.88;
+
+            [class*="icon-"] {
+                vertical-align: middle;
+                margin: 0;
+            }
+        }
+
+        &.dropdown-toggle {
+            .badge, .label {
+                right: 28px;
+            }
+        }
+
+        &:hover {
+            .badge, .label {
+                opacity: 1;
+            }
+        }
+    }
+
+    .submenu .submenu a {
+        .badge, .label {
+            top: 6px;
+        }
+    }
+}
+
+/* side menu minimizer icon */
+.sidebar-collapse {
+    border-bottom: 1px solid @menumin-btn-border;
+    background-color: @menumin-btn-bg;
+    text-align: center;
+    padding: 3px 0;
+    position: relative;
+
+
+    > [class*="icon-"] {
+        display: inline-block;
+        cursor: pointer;
+        font-size: 14px;
+        color: @menumin-icon-color;
+        border: 1px solid @menumin-icon-border;
+        padding: 0 5px;
+        line-height: 18px;
+        border-radius: 16px;
+        background-color: @menumin-icon-bg;
+        position: relative;
+    }
+
+    &:before {
+        content: "";
+        display: inline-block;
+        height: 0;
+        border-top: 1px solid @menumin-btn-border;
+        position: absolute;
+        left: 15px;
+        right: 15px;
+        top: 13px;
+    }
+}
+
+/* sidebar shortcuts icon */
+.sidebar-shortcuts {
+    background-color: @shortcuts-bg;
+    border-bottom: 1px solid @shortcuts-border;
+    text-align: center;
+    line-height: @breadcrumb-height - 2;
+    max-height: @breadcrumb-height;
+    margin-bottom: 0;
+}
+
+.sidebar-shortcuts-large {
+    padding-bottom: 4px;
+
+    > .btn {
+        min-width: 41px;
+        line-height: 24px;
+        border-width: 4px;
+        
+        text-align: center;
+        background-color: @menu-bg;
+        color: @menu-focus-color;
+        padding-left: 25px;
+        padding-right: 25px;
+        padding-top: 3px;
+        padding-bottom: 0px;
+        > [class*="icon-"] {
+            margin: 0;
+        }
+         &:hover {
+             border-bottom: 1px solid #fff;
+            }
+          
+    }
+
+}
+
+.sidebar-shortcuts-mini {
+    display: none;
+    font-size: 0;
+    width: 42px;
+    line-height: 18px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    background-color: @submenu-bg;
+
+    > .btn {
+        border-width: 0 !important;
+        font-size: 0;
+        line-height: 0;
+        padding: 8px !important;
+        margin: 0 1px;
+        border-radius: 0 !important;
+        .opacity(0.85);
+    }
+}
+/* custom modifications */
+.navbar-brand {
+    min-width: 0;
+}
+
+.nav > li > a {
+    position: relative;
+    display: inline-flex;
+    vertical-align: middle;
+    padding: 10px 15px;
+}
+
+.navbar-nav {
+    > li {
+        float: left;
+        margin-top: 24px;
+    }
+
+    .userinfo {
+        max-width: 400px;
+        .userfullname {
+            max-width: 278px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    }
+}
+
+@media screen and (max-width:992px) and (min-width:320px) {
+
+    .sidebar-shortcuts-large {
+     margin-top: 20px;
+   }
+ 
+}
+
+@media screen and (max-width:319px) {
+#leftMenu li a {
+        color: #fff;
+        font-size: 14px;
+        font-weight: 600;
+        padding: 18px 6px;
+        margin-top: -20px;
+    }
+
+.sidebar.display {
+    display: block;
+    margin-top: 16px;
+}
+
+}
+
+@media screen and (max-width:991px) {
+
+	.navbar .navbar-container {
+		min-height: 60px;
+
+		.navlogo {
+			text-align: center;
+		}
+	}
+	
+    #leftMenu li a {
+        color: #fff;
+        font-size: 14px;
+        font-weight: 600;
+        padding: 9px 6px;
+        margin-top: 7px;
+    }
+
+    
+    .navbar-right {
+        float: right !important;
+    }
+
+
+    .navbar-brand {
+        padding-top: 3px;
+		float:none;
+		display: inline-block;
+    }
+
+    .custom-hidden-xs {
+        display: none;
+    }
+
+    .navbar-nav > li > a {
+        padding-top: 14px;
+    }
+    .page-content {
+        padding-top: 19px;
+    }
+
+    .navbar-collapse.collapse {
+        display: block !important;
+        height: auto !important;
+        overflow: visible !important;
+        border: none;
+        margin-right: 15px;
+    }
+
+    .navbar-nav > li {
+        float: left;
+        margin-top: 1px;
+    }
+
+    .navbar-brand > img {
+        display: block;
+        width: 100%;
+        margin: 12px auto;
+    }
+
+    .navbar-header {
+        float: left;
+    }
+    /*.navbar-toggle {
+    display: none
+  }*/
+
+}
+
+#leftMenu {
+    width: 565px;
+    height: 35px;
+    margin: -28px;
+}
+
+    #leftMenu ul {        
+        padding: 8px 0px;
+        margin: -9px 18px 0px 0px;
+    }
+
+    #leftMenu li.dropdown {
+        display: inline;
+        padding: 10px 0px 0px 0px;
+    }
+
+        #leftMenu li span, #leftMenu li a span {
+            color: #9d9d9d;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+/* side menu toggler in mobile view */
+.menu-toggler {
+    display: none;
+}
+
+/* responsive sidebar */
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+    ::safari-only, .sidebar-shortcuts-mini > .btn { //safari only
+        margin: 0;
+    }
+}
+
+.material-icons.grey { color: #9d9d9d; }
+
+@media screen and (max-width: @screen-desktop) {
+    #leftMenu {
+        margin-left: 0;
+        margin-right: 0;
+    }
+}
+
+@media only screen and (max-width: @screen-sm-max) {
+    .noScroll {
+        height: 100%;
+        overflow: hidden;
+
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+        }
+    }
+}
+
+@media only screen and (max-width: @screen-sm-max) {
+
+
+ #leftMenu ul {        
+     height:100%;
+     margin: 8px 0px 0px 0px;
+}
+
+.nav-list {
+  position: absolute;
+    height: 3890px;
+}
+
+.nav-list > li > a:focus, .nav-list > li > a:hover,
+.nav-list > li.open > a,
+.nav-list,
+.nav-list > li,
+.nav-list > li .submenu  {
+    width:100%;
+}
+
+.nav-list > li .submenu > li {
+    padding-right: 20px;
+ }
+
+    #leftMenu li span,  #leftMenu li a span {
+        color: @white;
+        font-size: 14px;
+        font-weight: 600;
+        
+    }
+
+
+
+    .sidebar {
+        display: none;
+        float: none;
+        position: absolute;
+        width:100%;
+        z-index: 999;
+        left: 0;
+        bottom: auto;
+        top: auto !important; /*so that it's applied even if it's .sidebar-fixed */
+        margin-top: 0;
+        border: 1px solid #CCC;
+        border-left-width: 0;
+        box-shadow: 2px 1px 2px 0 rgba(0,0,0,0.2);
+
+        &:before {
+            display: none;
+        }
+
+        &.display {
+            display: block;
+        }
+    }
+
+    .menu-toggler.active:before {
+        // content:  url(orderedList1.png);
+        font-family: 'Material Icons';
+        content: "\E14C";
+        font-size: 20px;
+        color: black;
+    }
+
+    .menu-toggler {
+        display: inline-block;
+        position: relative;
+        left: 0;
+        z-index: 998;
+        width: 8px;
+        height: 32px;
+        margin-right: 2px;
+        margin-top: 12px;
+        line-height: normal;
+        padding-left: 33px;
+        padding-top: 7px;
+        padding-bottom: 1px;
+        font-size: 13px;
+        font-weight: bold;
+        text-transform: uppercase;
+        background-color: transparent;
+        color: #F3F3F3;
+        .box-sizing(content-box);
+
+        &:before {
+            width: 24px;
+            font-family: 'Material Icons';
+            content: "\E5D2";
+            font-size: 20px;            
+            position: absolute;
+            color: black;
+            z-index: 11;
+            top: 7px;
+            left: 4px;
+        }
+
+        > .menu-text {
+            display: none;
+            position: absolute;
+            bottom: -18px;
+            left: 0;
+            border: 1px solid transparent;
+            border-width: 9px 42px;
+            border-top-color: #444;
+            white-space: nowrap;
+
+            &:after {
+                display: block;
+                color: #FFF;
+                content: @menu-button-text;
+                position: absolute;
+                left: -8px; //change these to adjust text placement
+                top: -41px;
+            }
+        }
+    }
+
+    .nav-list > li.active:after {
+        display: none;
+    }
+
+    .nav-list li.active > a:after {
+        display: none;
+    }
+
+    .nav-list li.active.open > .submenu > li.active > a:after {
+        display: none;
+    }
+
+    .menu-min .nav-list > li.active:after {
+        display: block;
+    }
+
+    .menu-min .nav-list > li.active > a:after {
+        display: block;
+    }
+}
+
+@media screen and (max-width:1199px) and (min-width:993px) {
+    #leftMenu ul {
+        height: 100%;
+    }
+    .open > .dropdown-menu {
+        display: table;
+    }
+
+}
+
+
+@media screen and (max-width:992px) and (min-width:769px) {
+
+    #leftMenu li a {
+        color: #fff;
+        font-size: 14px;
+        font-weight: 600;
+        padding: 9px 6px;        
+        margin-top: 16px;
+    }
+
+ .navbar-nav .open .dropdown-menu > li {
+        text-align: center;
+        border: none;
+    }
+.navbar-nav .open .dropdown-menu {
+        position: absolute;
+        top: 53px;
+        left: 0px;
+        right: -16px;
+        position: fixed;
+        background-color: @menu-bg;
+    }
+
+    #leftMenu ul {
+    height: 100%;
+    margin: 5px 0px 0px 0px;
+}
+}
+
+
+
+@media only screen and (max-width: @screen-tiny) {
+
+    .nav-list {
+        width: 100%;
+}
+
+.nav-list > li .submenu {
+        width: 100%;
+}
+
+    .menu-toggler {
+        width: 0;
+
+        > .menu-text {
+            border-width: 7px 16px;
+            bottom: -14px;
+
+            &:after {
+                font-size: 9px;
+                font-weight: normal;
+                color: #FFF;
+                position: absolute;
+                left: -13px;
+                top: -42px;
+            }
+        }
+    }
+}

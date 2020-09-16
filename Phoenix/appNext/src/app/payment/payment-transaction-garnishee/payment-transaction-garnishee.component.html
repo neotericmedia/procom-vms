@@ -1,0 +1,7 @@
+<app-phx-data-table #grid [configuration]="dataTableConfiguration" [dataSourceUrl]="'payment/getPaymentTransactionGarnishees'"
+  [dataSourceParams]='odataParams' [exportFileName]="'paymenttransaction'" (contextMenuPreparing)="onContextMenuPreparing($event)"
+  [columns]="columns" (rowClick)="onRowClick($event)" [componentName]="'payment-transactions-detail-table'">
+  <div *dxTemplate="let d of 'currencyTemplate'">
+    <span>{{d.value | number:'1.2-2'}} {{displayCurrencyCode(d.data.CurrencyId)}}</span>
+  </div>
+</app-phx-data-table>

@@ -1,0 +1,65 @@
+<div class="row ">
+  <div class="form-group col-md-4 remove-padding-on-sides">
+    <app-phx-select-box-badge *ngIf="showClients" [value]="organizationIdClient" [items]="OrgClients" textField="ClientOrgDisplayName" badgeField="FixedPriceConflictCount"
+      valueField="OrganizationIdClient" placeholder="Select Conflict Transaction" (valueChanged)="newClientOrgSelected($event.value)">
+    </app-phx-select-box-badge>
+  </div>
+  <div class="form-group col-md-4 remove-padding-on-sides">
+    <app-phx-select-box *ngIf="organizationIdClient && stateActions.length > 0 && canEdit" [value]="selectedAction" [items]="actionsArr" textField="DisplayName" valueField="actionId"
+      placeholder="Actions" (valueChanged)="actionSelect($event.value)">
+    </app-phx-select-box>
+  </div>
+</div>
+
+<div class="row ">
+  <div class="vms-transaction-conflict-search">
+    <app-phx-data-table #phxTable [configuration]="dataTableConfiguration" [dataSourceUrl]="dataSourceUrl" [dataSourceParams]='oDataParams'
+      [columns]="columns" [exportFileName]="exportFileName" [componentName]="dataGridComponentName" (selectionChanged)="selections($event)" (rowClick)="dxRowClick($event)" (responseReceived)="dataReceived($event)">
+      <div *dxTemplate="let d of 'reasonTemplate'">
+        <span style="white-space: pre">{{d.value | replaceHtmlBreakWithNewLine}}</span>
+      </div>
+      <div *dxTemplate="let d of 'currencyTemplate'">
+        <span>{{d.value | number:'1.2-2'}} {{d.data.CurrencyId | CodeValue:codeValueGroups.Currency:'code'}}</span>
+      </div>
+      <div *dxTemplate="let item of 'actionTemplate'">
+        <div class="btn-group">
+          <button *ngIf="canEdit" type="button" class="btn btn-xs btn-default" (click)="editNote(item, $event)">Edit Note</button>
+        </div>
+      </div>
+    </app-phx-data-table>
+
+    <div class="vms-transaction-conflict-report" [ngClass]="{ out: !Id, in: Id}">
+
+    </div>
+  </div>
+  <div *ngIf="selectedAction || WorkOrderMappingDataset?.length > 0" class="btn-toolbar">
+    <div *ngIf="selectedAction===phxConstants.StateAction.VmsFixedPriceProcessedRecordIntercompanyTransfer">
+      <div class="form-group col-md-4 pull-right remove-padding-on-right-side">
+        <app-phx-select-box [value]="organizationIdClient" [items]="listOrganizationsInternal" textField="DisplayName" valueField="Id"
+          placeholder="Select Internal Organization" (valueChanged)="transferOrganization($event.value)">
+        </app-phx-select-box>
+      </div>
+      <label class="vms-org-lbl control-label pull-right" [ngClass]="{'req-lab-right':!transferToOrganization}" style="text-align:right;margin-top:8px;">Transfer To</label>
+    </div>
+  </div>
+</div>
+<div class="row" *ngIf="WorkOrderMappingDataset !== null">
+  <div class="form-group">
+    <app-phx-data-table #phxTableWorkOrderMappings [configuration]="dataTableConfigurationWorkOrderMappings"
+      [dataSource]="WorkOrderMappingDataset" [columns]="columnsWorkOrderMappings" [componentName]="'vms-transaction-expense-conflict-workordermappings'"
+      (editorPreparing)="onEditorPreparing($event)" (contentReady)="onContentReady($event)" (rowPrepared)="onRowPrepare($event)" (cellPrepared)="onCellPrepared($event)"
+      >
+      <div *dxTemplate="let d of 'currencyTemplate'">
+        <span>{{d.value | number:'1.2-2'}} {{d.data.CurrencyCode}}</span>
+      </div>
+    </app-phx-data-table>
+  </div>
+  <div class="btn-toolbar">
+  </div>
+</div>
+<app-phx-state-action-buttons class="form-group col-md-4 pull-right remove-padding-on-right-side" [stateActions]="stateActions"
+    [availableStateActions]="availableStateActions"></app-phx-state-action-buttons>
+<div class="row">
+  <app-phx-validation-messages [messages]="ValidationMessages"></app-phx-validation-messages>
+</div>
+<app-phx-dialog [config]="phxDialogComponentConfigModel"></app-phx-dialog>

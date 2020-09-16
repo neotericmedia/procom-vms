@@ -1,0 +1,85 @@
+<app-phx-panel headerTitle="Worker Eligibility">
+  <form [formGroup]="inputFormGroup" *ngIf="inputFormGroup">
+
+    <phx-form-control name="WorkerEligibilityId" [control]="inputFormGroup.controls.WorkerEligibilityId" labelText="Worker Eligibility"
+      [editable]="readOnlyStorage.IsEditable" viewModeText="{{inputFormGroup?.value.WorkerEligibilityId | CodeValue:codeValueGroups.WorkerEligibilityType}}">
+      <app-phx-select-box-code-value [groupName]="codeValueGroups.WorkerEligibilityType" sortByFieldName="text"
+        [formControl]="inputFormGroup.controls.WorkerEligibilityId">
+      </app-phx-select-box-code-value>
+    </phx-form-control>
+    <!--Worker Permit Details-->
+
+    <div *ngIf="inputFormGroup.value.WorkerEligibilityId === phxConstants.WorkerEligibility.ForeignWorker">
+
+      <app-phx-panel headerTitle="Work Permit Details" class="padding-margin-lr-0">
+        <phx-form-control name="TemporaryForeignPermitTypeId" [control]="inputFormGroup.controls.TemporaryForeignPermitTypeId"
+          labelText="Temporary Foreign Permit Type" [editable]="readOnlyStorage.IsEditable" viewModeText="{{inputFormGroup?.value.TemporaryForeignPermitTypeId | CodeValue:codeValueGroups.TemporaryForeignPermitType}}">
+          <app-phx-select-box-code-value [groupName]="codeValueGroups.TemporaryForeignPermitType" sortByFieldName="text"
+            [formControl]="inputFormGroup.controls.TemporaryForeignPermitTypeId">
+          </app-phx-select-box-code-value>
+        </phx-form-control>
+
+        <div *ngIf="inputFormGroup.value.TemporaryForeignPermitTypeId">
+
+          <phx-form-control name="IsWorkerOnImpliedStatus" [control]="inputFormGroup.controls.IsWorkerOnImpliedStatus"
+            labelText="Is worker on Implied Status?" [editable]="readOnlyStorage.IsEditable" viewModeText="{{inputFormGroup.value.IsWorkerOnImpliedStatus | boolToYesNo}}">
+            <label class="radio-inline">
+              <input class="form-check-input" type="radio" formControlName="IsWorkerOnImpliedStatus" [value]="true">Yes</label>
+            <label class="radio-inline">
+              <input class="form-check-input" type="radio" formControlName="IsWorkerOnImpliedStatus" [value]="false">No</label>
+          </phx-form-control>
+
+          <phx-form-control [control]="inputFormGroup.controls.ImpliedStatusEffectiveDate" *ngIf="inputFormGroup.value.IsWorkerOnImpliedStatus"
+            labelText="Implied Status Effective Date" [editable]="readOnlyStorage.IsEditable" viewModeText="{{inputFormGroup.value.ImpliedStatusEffectiveDate | date:phxConstants.DateFormat.mediumDate}}">
+            <app-phx-date-box [formControl]="inputFormGroup.controls.ImpliedStatusEffectiveDate" (onValue)="datePickerCallback()"
+              type="date"></app-phx-date-box>
+          </phx-form-control>
+
+          <phx-form-control *ngIf="inputFormGroup.value.TemporaryForeignPermitTypeId === phxConstants.TemporaryForeignPermitType.StudentIec"
+            [control]="inputFormGroup.controls.IECCategoryStudentTypeId" labelText="Student Type (IEC Category)"
+            [editable]="readOnlyStorage.IsEditable" viewModeText="{{inputFormGroup?.value.IECCategoryStudentTypeId | CodeValue:codeValueGroups.IECCategoryStudentType}}">
+            <app-phx-select-box-code-value [groupName]="codeValueGroups.IECCategoryStudentType" sortByFieldName="text"
+              [formControl]="inputFormGroup.controls.IECCategoryStudentTypeId">
+            </app-phx-select-box-code-value>
+          </phx-form-control>
+
+          <phx-form-control [control]="inputFormGroup.controls.EligibilityForWorkPermitId" labelText="Eligibility for Work Permit"
+            [editable]="readOnlyStorage.IsEditable" viewModeText="{{inputFormGroup?.value.EligibilityForWorkPermitId | CodeValue:codeValueGroups.EligibilityForWorkPermitType}}">
+            <app-phx-select-box-code-value [groupName]="codeValueGroups.EligibilityForWorkPermitType" sortByFieldName="text"
+              [formControl]="inputFormGroup.controls.EligibilityForWorkPermitId">
+            </app-phx-select-box-code-value>
+          </phx-form-control>
+
+          <phx-form-control [control]="inputFormGroup.controls.WorkPermitNumber" labelText="Work Permit Number"
+            [editable]="readOnlyStorage.IsEditable" viewModeText="{{inputFormGroup.value.WorkPermitNumber}}">
+            <input type="text" class="form-control" formControlName="WorkPermitNumber" />
+          </phx-form-control>
+
+          <phx-form-control [control]="inputFormGroup.controls.WorkPermitTypeId" labelText="Work Permit Type"
+            [editable]="readOnlyStorage.IsEditable" viewModeText="{{inputFormGroup?.value.WorkPermitTypeId | CodeValue:codeValueGroups.WorkPermitType}}">
+            <app-phx-select-box-code-value [groupName]="codeValueGroups.WorkPermitType" sortByFieldName="text"
+              [formControl]="inputFormGroup.controls.WorkPermitTypeId">
+            </app-phx-select-box-code-value>
+          </phx-form-control>
+          <phx-form-control [control]="inputFormGroup.controls.ClosedWorkPermitCompany" *ngIf="inputFormGroup.value.WorkPermitTypeId === phxConstants.WorkPermitType.Closed || 
+            inputFormGroup.value.WorkPermitTypeId === phxConstants.WorkPermitType.Other"
+            labelText="Closed Work Permit Company" [editable]="readOnlyStorage.IsEditable" viewModeText="{{inputFormGroup.value.ClosedWorkPermitCompany}}">
+            <input type="text" class="form-control" formControlName="ClosedWorkPermitCompany" />
+          </phx-form-control>
+
+          <phx-form-control [control]="inputFormGroup.controls.WorkPermitRestrictions" labelText="Work Permit Restrictions"
+            [editable]="readOnlyStorage.IsEditable" viewModeText="{{inputFormGroup.value.WorkPermitRestrictions}}">
+            <textarea rows="6" style="resize: none" class="form-control" formControlName="WorkPermitRestrictions"></textarea>
+          </phx-form-control>
+
+          <phx-form-control name="WorkPermitExpiryDate" [control]="inputFormGroup.controls.WorkPermitExpiryDate"
+            labelText="Work Permit Expiry Date" [editable]="readOnlyStorage.IsEditable" viewModeText="{{inputFormGroup.value.WorkPermitExpiryDate | date:phxConstants.DateFormat.mediumDate}}">
+            <app-phx-date-box [formControl]="inputFormGroup.controls.WorkPermitExpiryDate" [displayFormat]="phxConstants.DateFormat.MMM_dd_yyyy"
+              (onValueChanged)="datePickerCallback()" type="date"></app-phx-date-box>
+          </phx-form-control>
+
+        </div>
+      </app-phx-panel>
+    </div>
+  </form>
+</app-phx-panel>

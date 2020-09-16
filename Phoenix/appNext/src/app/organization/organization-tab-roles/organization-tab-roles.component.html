@@ -1,0 +1,83 @@
+<div *ngIf="html.rolesConfig">
+    <div class="form-horizontal">
+        <div class="panel no-border">
+            <div class="panel-body no-padding-h">
+                <div class="org-form">
+                    <div class="row">
+                        <!-- <div class="form-group"  >
+                            <h4>Organization Roles</h4>
+                        </div> -->
+                    </div>
+                    <div class="row">
+                        <div class="btn-group" *ngIf="html.rolesCanCreateAny">
+                            <button type="button" class="btn btn-clouds dropdown-toggle" data-toggle="dropdown">Add Role
+                                <span class="caret ml"></span>
+                            </button>
+                            <ul class="dropdown-menu bordered pull-left">
+                                <li *ngFor="let roleConfig of html.rolesConfig" [ngStyle]="{'display' :!roleConfig.canCreate ? 'none' : 'list-item'}">
+                                    <a (click)="onClickAddOrganizationRole(roleConfig.type)" style="cursor: pointer;">{{roleConfig.name}}</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="org-roles">
+                    <ul class="roles-list">
+                        <div *ngFor="let roleConfig of html.rolesConfig">
+                            <li class="role-card" *ngFor="let id of roleConfig.ids" [ngClass]="{'active':router.url.includes(roleConfig.navigationName)}">
+                                <a [ngClass]="roleConfig.icon" (click)="onClickNavigateToRole(roleConfig, id)" [title]="roleConfig.name">&nbsp;</a>
+                            </li>
+                        </div>
+                    </ul>
+                    <div class="role-content">
+                        <div class="panel">
+                            <div class="panel-body">
+                                <app-organization-role-client *ngIf="html.currentOrganizationRole && 
+                                    html.currentOrganizationRole.roleConfig.type === html.phxConstants.OrganizationRoleType.Client"
+                                    [rootModel]="rootModel"
+                                    [inputFormGroup]="html.currentOrganizationRole.formGroup" [readOnlyStorage]="readOnlyStorage"
+                                    (outputEvent)="onOutputEvent($event)">
+                                </app-organization-role-client>
+
+                                <app-organization-role-independent-contractor *ngIf="html.currentOrganizationRole && 
+                                    html.currentOrganizationRole.roleConfig.type === html.phxConstants.OrganizationRoleType.IndependentContractor"
+                                    [rootModel]="rootModel"    
+                                    [inputFormGroup]="html.currentOrganizationRole.formGroup" [readOnlyStorage]="readOnlyStorage"
+                                    [salesTaxInputFormGroup]="inputFormGroup.controls.OrganizationTaxNumbers"
+                                    [currentUserRole]="html.currentOrganizationRole?.roleConfig.type"
+                                    (outputEvent)="onOutputEvent($event)">
+                                </app-organization-role-independent-contractor>
+
+                                <app-organization-role-internal *ngIf="html.currentOrganizationRole &&
+                                    html.currentOrganizationRole.roleConfig.type === html.phxConstants.OrganizationRoleType.Internal"
+                                    [rootModel]="rootModel"
+                                    [inputFormGroup]="html.currentOrganizationRole.formGroup" [readOnlyStorage]="readOnlyStorage"
+                                    [salesTaxInputFormGroup]="inputFormGroup.controls.OrganizationTaxNumbers"
+                                    [currentUserRole]="html.currentOrganizationRole?.roleConfig.type"
+                                    (outputEvent)="onOutputEvent($event)">
+                                </app-organization-role-internal>
+
+                                <app-organization-role-limited-liability-company *ngIf="html.currentOrganizationRole && 
+                                    html.currentOrganizationRole.roleConfig.type===html.phxConstants.OrganizationRoleType.LimitedLiabilityCompany"
+                                    [rootModel]="rootModel"    
+                                    [inputFormGroup]="html.currentOrganizationRole.formGroup" [readOnlyStorage]="readOnlyStorage"
+                                    (outputEvent)="onOutputEvent($event)">
+                                </app-organization-role-limited-liability-company>
+
+                                <app-organization-role-sub-vendor *ngIf="html.currentOrganizationRole && 
+                                    html.currentOrganizationRole.roleConfig.type===html.phxConstants.OrganizationRoleType.SubVendor"
+                                    [rootModel]="rootModel"    
+                                    [inputFormGroup]="html.currentOrganizationRole.formGroup" [readOnlyStorage]="readOnlyStorage"
+                                    [salesTaxInputFormGroup]="inputFormGroup.controls.OrganizationTaxNumbers"
+                                    [currentUserRole]="html.currentOrganizationRole?.roleConfig.type"
+                                    (outputEvent)="onOutputEvent($event)">
+                                </app-organization-role-sub-vendor>
+                                    
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

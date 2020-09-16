@@ -1,0 +1,228 @@
+﻿<div class="form-horizontal">
+    <div class="panel no-border">
+        <div class="panel-body no-padding-h">
+            <div class="org-form">
+                <div class="row">
+                    <div class="form-group">
+                        <h4>Organization Roles</h4>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="btn-group" data-ng-if="scopeOrg.actionScope.show.addClientRole||scopeOrg.actionScope.show.addIndependentContractorRole||scopeOrg.actionScope.show.addLimitedLiabilityCompanyRole||scopeOrg.actionScope.show.addInternalRole">
+                        <button type="button" class="btn btn-clouds dropdown-toggle" data-toggle="dropdown">Add Role
+                            <span class="caret ml"></span>
+                        </button>
+                        <ul class="dropdown-menu bordered pull-left">
+                            <li data-ng-show="scopeOrg.actionScope.show.addClientRole" data-ng-class="{disabled: !scopeOrg.actionScope.show.addClientRole}">
+                                <a data-ng-click="scopeOrg.actionScope.event.role.client.add()" style="cursor: pointer;">Client</a>
+                            </li>
+                            <li data-ng-show="scopeOrg.actionScope.show.addIndependentContractorRole" data-ng-class="{disabled: !scopeOrg.actionScope.show.addIndependentContractorRole}">
+                                <a data-ng-click="scopeOrg.actionScope.event.role.independentContractor.add()" style="cursor: pointer;">Independent Contractor</a>
+                            </li>
+                            <li data-ng-show="scopeOrg.actionScope.show.addLimitedLiabilityCompanyRole" data-ng-class="{disabled: !scopeOrg.actionScope.show.addLimitedLiabilityCompanyRole}">
+                                <a data-ng-click="scopeOrg.actionScope.event.role.limitedLiabilityCompany.add()" style="cursor: pointer;">Limited Liability Company</a>
+                            </li>
+                            <li data-ng-show="scopeOrg.actionScope.show.addInternalRole" data-ng-class="{disabled: !scopeOrg.actionScope.show.addInternalRole}">
+                                <a data-ng-click="scopeOrg.actionScope.event.role.internal.add()" style="cursor: pointer;">Internal</a>
+                            </li>
+                            <li data-ng-show="scopeOrg.actionScope.show.addSubVendorRole" data-ng-class="{disabled: !scopeOrg.actionScope.show.addSubVendorRole}">
+                                <a data-ng-click="scopeOrg.actionScope.event.role.subVendor.add()" style="cursor: pointer;">Sub-Vendor</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="org-roles">
+                <div>
+                    <ul class="roles-list">
+                        <li class="role-card active" data-ng-if="scopeOrg.entity.OrganizationClientRoles==null && scopeOrg.entity.OrganizationIndependentContractorRoles==null && scopeOrg.entity.OrganizationLimitedLiabilityCompanyRoles==null && scopeOrg.entity.OrganizationInternalRoles==null">
+                            <a class="icon icon-small icon-organization" href="javascript:void(0);" title="No Reoles">&nbsp;</a>
+                        </li>
+                        <li class="role-card active" data-ng-repeat="role in scopeOrg.entity.OrganizationClientRoles" data-ng-class="{'active':$state.includes('org.edit.roles.client')}">
+                            <a class="icon icon-small icon-organization-client" data-ui-sref="org.edit.roles.client({roleId: role.Id})" title="Client">&nbsp;</a>
+                        </li>
+                        <li class="role-card" data-ng-repeat="role in scopeOrg.entity.OrganizationIndependentContractorRoles" data-ng-class="{'active':$state.includes('org.edit.roles.independentcontractor')}">
+                            <a class="icon icon-organization-independentcontractor" data-ui-sref="org.edit.roles.independentcontractor({roleId: role.Id})"
+                                title="Independent Contractor">&nbsp;</a>
+                        </li>
+                        <li class="role-card" data-ng-repeat="role in scopeOrg.entity.OrganizationLimitedLiabilityCompanyRoles" data-ng-class="{'active':$state.includes('org.edit.roles.limitedliabilitycompany')}">
+                            <a class="icon icon-organization-limitedliabilitycompany" data-ui-sref="org.edit.roles.limitedliabilitycompany({roleId: role.Id})"
+                                title="Limited Liability Company">&nbsp;</a>
+                        </li>
+                        <li class="role-card" data-ng-repeat="role in scopeOrg.entity.OrganizationInternalRoles" data-ng-class="{'active':$state.includes('org.edit.roles.internal')}">
+                            <a class="icon icon-organization-internal" data-ui-sref="org.edit.roles.internal({roleId: role.Id})" title="Internal">&nbsp;</a>
+                        </li>
+                        <li class="role-card" data-ng-repeat="role in scopeOrg.entity.OrganizationSubVendorRoles" data-ng-class="{'active':$state.includes('org.edit.roles.subvendor')}">
+                            <a class="icon icon-organization-subvendor" data-ui-sref="org.edit.roles.subvendor({roleId: role.Id})" title="Sub Vendor">&nbsp;</a>
+                        </li>
+                    </ul>
+                    <div class="role-content">
+                        <div class="row">
+                            <div class="role-title" data-ng-if="$state.includes('org.edit.roles.client')">
+                                Client Role
+                                <div>
+                                    <button type="button" class="btn btn-default" data-ng-if="scopeOrg.entity.OrganizationClientRoles[0].Id==0" data-ng-click="scopeOrg.actionScope.event.role.client.remove()">Cancel Client Role</button>
+                                </div>
+                            </div>
+                            <div class="role-title" data-ng-if="$state.includes('org.edit.roles.independentcontractor')">
+                                Independent Contractor Role
+                                <div>
+                                    <button type="button" class="btn btn-default" data-ng-if="scopeOrg.entity.OrganizationIndependentContractorRoles[0].Id==0"
+                                        data-ng-click="scopeOrg.actionScope.event.role.independentContractor.remove()">Cancel Independent Contractor Role</button>
+                                </div>
+                            </div>
+                            <div class="role-title" data-ng-if="$state.includes('org.edit.roles.limitedliabilitycompany')">
+                                Limited Liability Company Role
+                                <div>
+                                    <button type="button" class="btn btn-default" data-ng-if="scopeOrg.entity.OrganizationLimitedLiabilityCompanyRoles[0].Id==0"
+                                        data-ng-click="scopeOrg.actionScope.event.role.limitedLiabilityCompany.remove()">Cancel Limited Liability Company Role</button>
+                                </div>
+                            </div>
+                            <div class="role-title" data-ng-if="$state.includes('org.edit.roles.internal')">
+                                Internal Role
+                                <div>
+                                    <button type="button" class="btn btn-default" data-ng-if="scopeOrg.entity.OrganizationInternalRoles[0].Id==0" data-ng-click="scopeOrg.actionScope.event.role.internal.remove()">Cancel Internal Role</button>
+                                </div>
+                            </div>
+                            <div class="role-title" data-ng-if="$state.includes('org.edit.roles.subvendor')">
+                                Sub Vendor Role
+                                <div>
+                                    <button type="button" class="btn btn-default" data-ng-if="scopeOrg.entity.OrganizationSubVendorRoles[0].Id==0" data-ng-click="scopeOrg.actionScope.event.role.subVendor.remove()">Cancel Sub Vendor Role</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel">
+                            <div class="panel-body">
+                                <div class="col-lg-12">
+                                    <div class="row" data-ng-if="$state.includes('org.edit.roles.client')">
+                                        <div>
+                                            <div class="panel-body">
+                                                <div data-ui-view="OrgUiViewOrganizationRoleClient" data-autoscroll="false"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row" data-ng-if="$state.includes('org.edit.roles.independentcontractor')">
+                                        <div class="panel panel-internal mln mrn ">
+                                            <div class="panel-body">
+                                                <div data-ui-view="OrgUiViewOrganizationRoleIndependentContractor" data-autoscroll="false"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row" data-ng-if="$state.includes('org.edit.roles.limitedliabilitycompany')">
+                                        <div class="panel panel-internal mln mrn ">
+                                            <div class="panel-body">
+                                                <div data-ui-view="OrgUiViewOrganizationRoleLimitedLiabilityCompany" data-autoscroll="false"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row" data-ng-if="$state.includes('org.edit.roles.subvendor')">
+                                        <div class="panel panel-internal mln mrn ">
+                                            <div class="panel-body">
+                                                <div data-ui-view="OrgUiViewOrganizationRoleSubVendor" data-autoscroll="false"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row" data-ng-if="$state.includes('org.edit.roles.internal')">
+                                        <div data-ui-view="OrgUiViewOrganizationRoleInternal" data-autoscroll="false"></div>
+                                    </div>
+                                    <div class="row" data-ng-if="$state.includes('org.edit.roles.internal')||$state.includes('org.edit.roles.independentcontractor')||$state.includes('org.edit.roles.subvendor')">
+                                        <div class="panel panel-internal mln mrn">
+                                            <div class="panel-body">
+                                                <div data-ui-view="OrgUiViewOrganizationTaxNumbers" data-onload="labelwidth=3;inputwidth=7;fullwidth=true" data-autoscroll="false"></div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="row" data-ng-if="$state.includes('org.edit.roles.client')">
+                                        <div class="panel panel-internal mln mrn">
+                                            <div class="panel-body">
+                                                <div data-ui-view="OrgUiViewOrganizationRoleClientAlternateBill" data-autoscroll="false"></div>
+                                            </div>
+                                        </div>
+                                        <div class="panel panel-internal mln mrn">
+                                            <div class="panel-body">
+                                                <div data-ui-view="OrgUiViewOrganizationRoleClientImport" data-autoscroll="false"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row" data-ng-if="$state.includes('org.edit.roles.independentcontractor')">
+                                        <div class="panel panel-internal mln mrn org-payment-details">
+                                            <div class="panel-body">
+                                                <div data-ui-view="OrgUiViewOrganizationIndependentContractorRolePaymentMethods" data-autoscroll="false"></div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="row" data-ng-if="$state.includes('org.edit.roles.limitedliabilitycompany')">
+                                        <div class="panel panel-internal mln mrn org-payment-details">
+                                            <div class="panel-body">
+                                                <div data-ui-view="OrgUiViewOrganizationLimitedLiabilityCompanyRolePaymentMethods" data-autoscroll="false"></div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="row" data-ng-if="$state.includes('org.edit.roles.subvendor')">
+                                        <div class="panel panel-internal mln mrn org-payment-details">
+                                            <div class="panel-body">
+                                                <div data-ui-view="OrgUiViewOrganizationSubVendorRolePaymentMethods" data-autoscroll="false"></div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="row" data-ng-if="$state.includes('org.edit.roles.subvendor')">
+                                        <div class="panel panel-internal mln mrn org-payment-details">
+                                            <div class="panel-body">
+                                                <div data-ui-view="OrgUiViewOrganizationRoleSubVendorRestrictions" data-autoscroll="false"></div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="row" data-ng-if="$state.includes('org.edit.roles.internal')">
+                                        <div class="panel panel-internal mln mrn">
+                                            <div class="panel-body">
+                                                <div data-ui-view="OrgUiViewOrganizationInternalRoleBankAccounts" data-autoscroll="false"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row" data-ng-if="$state.includes('org.edit.roles.independentcontractor') && scopeOrg.entity.OrganizationIndependentContractorRoles[0].IdOriginal>0 && !scopeOrg.complianceDocument.parentEntityHasNoApplicableComplianceDocuments">
+                                        <div class="panel panel-internal mln mrn">
+                                            <div class="panel-body">
+                                                <app-compliance-document [entity-type-id]="ApplicationConstants.EntityType.OrganizationIndependentContractorRole" [entity-id]="scopeOrg.entity.OrganizationIndependentContractorRoles[0].IdOriginal"
+                                                    [entity-name]="scopeOrg.entity.LegalName"
+                                                    reference-entity-link="#/org/{{scopeOrg.entity.Id}}/roles/independentcontractor/{{scopeOrg.entity.OrganizationIndependentContractorRoles[0].Id}}"
+                                                    (compliance-document-output)="scopeOrg.complianceDocument.onComplianceDocumentOutput($event)"></app-compliance-document>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row" data-ng-if="$state.includes('org.edit.roles.limitedliabilitycompany') && scopeOrg.entity.OrganizationLimitedLiabilityCompanyRoles[0].IdOriginal>0 && !scopeOrg.complianceDocument.parentEntityHasNoApplicableComplianceDocuments">
+                                        <div class="panel panel-internal mln mrn">
+                                            <div class="panel-body">
+                                                <app-compliance-document [entity-type-id]="ApplicationConstants.EntityType.OrganizationLimitedLiabilityCompanyRole" [entity-id]="scopeOrg.entity.OrganizationLimitedLiabilityCompanyRoles[0].IdOriginal"
+                                                    [entity-name]="scopeOrg.entity.LegalName"
+                                                    reference-entity-link="#/org/{{scopeOrg.entity.Id}}/roles/limitedliabilitycompany/{{scopeOrg.entity.OrganizationLimitedLiabilityCompanyRoles[0].Id}}"
+                                                    (compliance-document-output)="scopeOrg.complianceDocument.onComplianceDocumentOutput($event)"></app-compliance-document>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row" data-ng-if="$state.includes('org.edit.roles.subvendor') && scopeOrg.entity.OrganizationSubVendorRoles[0].IdOriginal>0 && !scopeOrg.complianceDocument.parentEntityHasNoApplicableComplianceDocuments">
+                                        <div class="panel panel-internal mln mrn">
+                                            <div class="panel-body">
+                                                <app-compliance-document [entity-type-id]="ApplicationConstants.EntityType.OrganizationSubVendorRole" [entity-id]="scopeOrg.entity.OrganizationSubVendorRoles[0].IdOriginal"
+                                                    [entity-name]="scopeOrg.entity.LegalName"
+                                                    reference-entity-link="#/org/{{scopeOrg.entity.Id}}/roles/subvendor/{{scopeOrg.entity.OrganizationSubVendorRoles[0].Id}}"
+                                                    (compliance-document-output)="scopeOrg.complianceDocument.onComplianceDocumentOutput($event)"></app-compliance-document>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

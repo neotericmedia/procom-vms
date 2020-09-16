@@ -1,0 +1,182 @@
+﻿<div class="form-group">
+    <div class="col-lg-12">
+        <h4>Details</h4>
+    </div>
+</div>
+<div class="form-group">
+    <label class="col-lg-4 control-label label-to-right req-lab-right" data-for-property="LegalName" for="LegalName" data-model-property="scopeOrg.entity.LegalName"
+        data-original-title="" title="">Legal Name</label>
+    <div class="col-lg-8">
+        <input type="text" name="LegalName" required="required" maxlength="128" max="128" min="3" data-ng-model="scopeOrg.entity.LegalName"
+            data-required-message="Required" data-pt-field-view="scopeOrg.ptFieldViewConfigOnChangeStatusId" data-ng-required="true"
+            class="form-control ng-scope" data-ng-change="scopeOrg.actionScope.event.onChangeLegalName()" data-ng-blur="scopeOrg.actionScope.event.onBlurCheckLegalNameAndOrgCode(formOrganization)"
+        />
+        <div class="alert alert-danger" data-ng-if="formOrganization.LegalName.$error.existingOrganizationLegalName">
+            This organization legal name is not unique
+        </div>
+    </div>
+</div>
+<div class="form-group">
+    <label data-for-property="Code" for="Code" data-model-property="scopeOrg.entity.Code" class="col-lg-4 control-label label-to-right req-lab-right"
+        data-original-title="" title="">
+        Code
+    </label>
+    <div class="col-lg-8">
+        <input type="text" name="Code" data-required-message="Required" class="form-control ng-scope" required="required" maxlength="6"
+            max="6" min="3" data-ng-model="scopeOrg.entity.Code" data-control-user-input="" data-ng-required="true" data-pt-field-view="scopeOrg.ptFieldViewConfigOnChangeStatusId"
+            data-ng-blur="scopeOrg.actionScope.event.onBlurCheckLegalNameAndOrgCode(formOrganization)">
+        <div class="alert alert-danger" data-ng-if="formOrganization.Code.$error.existingOrganizationCode">
+            This organization code is not unique
+        </div>
+    </div>
+</div>
+<div class="form-group">
+    <label data-for-property="DisplayName" for="DisplayName" data-model-property="scopeOrg.entity.DisplayName" class="col-lg-4 control-label label-to-right req-lab-right"
+        data-original-title="" title="">
+        Display Name
+    </label>
+    <div class="col-lg-8">
+        <input type="text" name="DisplayName" class="form-control ng-scope" required="required" maxlength="128" max="128" min="3"
+            data-ng-model="scopeOrg.entity.DisplayName" data-required-message="Required" data-ng-blur="scopeOrg.recalcNavigationName()"
+            data-pt-field-view="scopeOrg.ptFieldViewConfigOnChangeStatusId" data-ng-required="true" data-control-user-input="">
+    </div>
+</div>
+<div class="form-group">
+    <div data-ng-if="scopeOrg.actionScope.show.parentOrganizationNameFromList">
+        <label data-for-property="ParentOrganizationId" for="ParentOrganizationId" data-model-property="scopeOrg.entity.ParentOrganization.Id"
+            class="col-lg-4 control-label label-to-right req-lab-right">
+            Parent Organization
+        </label>
+        <div class="col-lg-8">
+            <div class="parentOrgContainer">
+                <div class="input-group select2-bootstrap-append">
+                    <ui-select name="ParentOrganizationId" theme="select2" class="form-control" data-ng-model="scopeOrg.entity.ParentOrganization.Id"
+                        data-pt-field-view="scopeOrg.ptFieldViewConfigOnChangeStatusId" required="required" data-pt-field-view-custom="{{scopeOrg.entity.ParentOrganization.Id|lookupnocache:scopeOrg.parentOrganizations:'Id':'Name'}} {{' - ' + scopeOrg.entity.ParentOrganization.Id}}">
+                        <ui-select-match placeholder="-- Select One --">{{$select.selected.Name}} - {{$select.selected.Id}}</ui-select-match>
+                        <ui-select-choices repeat="item.Id as item in  scopeOrg.parentOrganizations | uiSelectChoicesFilter: $select.search: 'Name': 'Id'">
+                            <span data-ng-bind-html="item.Name | highlight: $select.search"></span>
+                            <span data-ng-bind-html="' - ' + item.Id | highlight: $select.search"></span>
+                        </ui-select-choices>
+                    </ui-select>
+                    <span class="input-group-btn">
+                        <button tabindex="-1" data-ng-click="scopeOrg.entity.ParentOrganization=null" class="btn btn-default">
+                            <i class="material-icons md-18">clear</i>
+                        </button>
+                    </span>
+                </div>
+            </div>
+            <p class="help-block" data-ng-click="scopeOrg.actionScope.event.parentOrganizationNameFromListSwitch()" data-ng-show="scopeOrg.actionScope.show.modifyParentOrganization"
+                style="cursor: pointer;">
+                <a href="javascript:;">Or enter a new parent organization</a>
+            </p>
+        </div>
+    </div>
+    <div data-ng-if="!scopeOrg.actionScope.show.parentOrganizationNameFromList">
+        <label data-for-property="parentOrganizationName" for="parentOrganizationName" data-model-property="scopeOrg.entity.ParentOrganization.Name"
+            class="col-lg-4 control-label label-to-right req-lab-right">
+            Parent Organization
+        </label>
+        <div class="col-lg-8">
+            <input type="text" name="parentOrganizationName" class="form-control ng-scope" required="required" maxlength="128" class="form-control"
+                data-ng-model="scopeOrg.entity.ParentOrganization.Name" data-required-message="Required" data-pt-field-view="scopeOrg.ptFieldViewConfigOnChangeStatusId"
+                data-pt-field-view-custom="'test'" data-ng-required="true">
+            <p class="help-block" style="cursor: pointer;" data-ng-click="scopeOrg.actionScope.event.parentOrganizationNameFromListSwitch()"
+                data-ng-show="scopeOrg.actionScope.show.modifyParentOrganization">
+                <a href="javascript:;">Or select an existing parent organization</a>
+            </p>
+        </div>
+    </div>
+</div>
+<div class="form-group">
+    <label data-for-property="SectorTypeId" for="SectorTypeId" data-model-property="scopeOrg.entity.SectorTypeId" class="col-lg-4 control-label label-to-right lab-right"
+        data-original-title="" title="">Sector</label>
+    <div class="col-lg-8">
+        <div class="input-group select2-bootstrap-append">
+            <ui-select name="SectorTypeId" data-ng-model="scopeOrg.entity.SectorTypeId" theme="select2" class="form-control" data-pt-field-view="scopeOrg.ptFieldViewConfigOnChangeStatusId"
+                data-ng-change="scopeOrg.actionScope.event.onChangeSectorTypeId()">
+                <ui-select-match placeholder="-- Select One --">{{$select.selected.text}}</ui-select-match>
+                <ui-select-choices repeat="item.id as item in scopeOrg.lists.sectorTypeList | uiSelectChoicesFilter: $select.search: 'text'">
+                    <span data-ng-bind-html="item.text | highlight: $select.search"></span>
+                </ui-select-choices>
+            </ui-select>
+            <span class="input-group-btn">
+                <button tabindex="-1" data-ng-click="scopeOrg.actionScope.event.onRemoveSectorTypeId()" class="btn btn-default">
+                    <i class="material-icons md-18">clear</i>
+                </button>
+            </span>
+        </div>
+    </div>
+</div>
+<div class="form-group">
+    <label data-for-property="IndustryTypeId" for="IndustryTypeId" class="col-lg-4 control-label label-to-right lab-right" data-original-title=""
+        title="">Industry</label>
+    <div class="col-lg-8">
+        <div class="input-group select2-bootstrap-append">
+            <ui-select name="IndustryTypeId" data-ng-model="scopeOrg.entity.IndustryTypeId" theme="select2" class="form-control" data-pt-field-view="scopeOrg.ptFieldViewConfigOnChangeStatusId">
+                <ui-select-match placeholder="-- Select One --">{{$select.selected.text}}</ui-select-match>
+                <ui-select-choices repeat="item.id as item in scopeOrg.lists.industryTypeList | uiSelectChoicesFilter: $select.search: 'text'">
+                    <span data-ng-bind-html="item.text | highlight: $select.search"></span>
+                </ui-select-choices>
+            </ui-select>
+            <span class="input-group-btn">
+                <button tabindex="-1" data-ng-click="scopeOrg.entity.IndustryTypeId=undefined" class="btn btn-default">
+                    <i class="material-icons md-18">clear</i>
+                </button>
+            </span>
+        </div>
+    </div>
+</div>
+<div class="form-group">
+    <label data-for-property="entityCountryId" for="entityCountryId" data-model-property="scopeOrg.entity.CountryId" class="col-lg-4 control-label req-lab-right"
+        data-original-title="" title="">Country</label>
+    <div class="col-lg-8">
+        <div class="input-group select2-bootstrap-append">
+            <ui-select name="entityCountryId" data-ng-model="scopeOrg.entity.CountryId" theme="select2" class="form-control" required-condition="scopeOrg.entity.CountryId!=undefined"
+                data-pt-field-view="scopeOrg.ptFieldViewConfigOnChangeStatusId" required="required" data-ng-change="scopeOrg.actionScope.event.onChangeDetailsCountry()">
+                <ui-select-match placeholder="-- Select One --">{{$select.selected.text}}</ui-select-match>
+                <ui-select-choices repeat="item.id as item in scopeOrg.lists.countryList | uiSelectChoicesFilter: $select.search: 'text'">
+                    <span data-ng-bind-html="item.text | highlight: $select.search"></span>
+                </ui-select-choices>
+            </ui-select>
+            <span class="input-group-btn">
+                <button tabindex="-1" data-ng-click="scopeOrg.entity.CountryId=undefined; scopeOrg.actionScope.event.onChangeDetailsCountry();"
+                    class="btn btn-default">
+                    <i class="material-icons md-18">clear</i>
+                </button>
+            </span>
+        </div>
+    </div>
+</div>
+<div class="form-group">
+    <label data-for-property="DefaultTaxSubdivisionId" for="DefaultTaxSubdivisionId" data-model-property="scopeOrg.entity.DefaultTaxSubdivisionId"
+        class="col-lg-4 control-label req-lab-right" data-original-title="" title="">Default Tax Province/State</label>
+    <div class="col-lg-8">
+        <div class="input-group select2-bootstrap-append">
+            <ui-select name="DefaultTaxSubdivisionId" theme="select2" class="form-control" data-ng-model="scopeOrg.entity.DefaultTaxSubdivisionId"
+                data-pt-field-view="scopeOrg.ptFieldViewConfigOnChangeStatusId" required="required">
+                <ui-select-match placeholder="-- Select One --">{{$select.selected.text}}</ui-select-match>
+                <ui-select-choices repeat="item.id as item in scopeOrg.lists.taxSubdivisionList  | uiSelectChoicesFilter: $select.search: 'text'">
+                    <span data-ng-bind-html="item.text | highlight: $select.search"></span>
+                </ui-select-choices>
+            </ui-select>
+            <span class="input-group-btn">
+                <button tabindex="-1" data-ng-click="scopeOrg.entity.DefaultTaxSubdivisionId=undefined" class="btn btn-default">
+                    <i class="material-icons md-18">clear</i>
+                </button>
+            </span>
+        </div>
+    </div>
+</div>
+<ng-template data-ng-if="scopeOrg.entity.OrganizationClientRoles.length > 0 && scopeOrg.isSendInviteVisible">
+    <div class="form-group">
+        <div class="col-lg-12">
+            <h4>Send Invite</h4>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-lg-4 control-label label-to-right lab-right">Invite All Associated Consultants</label>
+        <div class="col-lg-8">
+            <button class="btn btn-default btn-profile-invite" data-ng-click="scopeOrg.invite()" data-ng-disabled="scopeOrg.isInvited">Send Invitation</button>
+        </div>
+    </div>
+</ng-template>

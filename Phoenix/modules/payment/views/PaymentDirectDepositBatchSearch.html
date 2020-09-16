@@ -1,0 +1,79 @@
+﻿<div class="smart-table-wrapper">
+    <div class="row" data-cg-busy="loadItemsPromise">
+        <div>
+            <table data-st-table-struct='[{"stTableValue" : "items"}, {"stPipeValue" : "callServer"}, {"widthValues" : "[10, 30, 30, 10, 10]"}, {"stPaginationValue" : "pageSize"}]'>
+                <thead data-st-head="2000px">
+                    <tr>
+                        <th data-st-sort="OrganizationIdInternal" data-st-sort-default="reverse">Org.Id</th>
+                        <th data-st-sort="InternalOrganizationLegalName">Org.Name</th>
+                        <!--<th data-st-sort="InternalOrganizationBankAccountId">Bank Account Id</th>-->
+                        <th data-st-sort="InternalOrganizationBankAccountBankName">Bank Account Name</th>
+                        <th data-st-sort="InternalOrganizationBankAccountCurrencyId">Currency</th>
+                        <th data-st-sort="BatchStatusId">Batch Status</th>
+                        <th data-st-sort="Count">Count</th>
+                    </tr>
+                    <tr>
+                        <th>
+                            <input data-st-sort="OrganizationIdInternal"
+                                   data-st-advanced-search="{property: 'OrganizationIdInternal', ignoreQuotes: true}"
+                                   placeholder=""
+                                   class="input-sm form-control numberType" data-safe-restrict-input="[^0123456789]" />
+                        </th>
+                        <th>
+                            <input data-st-advanced-search="'InternalOrganizationLegalName'" placeholder=""
+                                   class="input-sm form-control" type="search" />
+                        </th>
+                        <!--<th>
+                <input data-st-sort="InternalOrganizationBankAccountId"
+                       data-st-advanced-search="{property: 'InternalOrganizationBankAccountId', ignoreQuotes: true}" placeholder=""
+                       class="input-sm form-control" data-safe-restrict-input="[^0123456789.]" />
+            </th>-->
+                        <th>
+                            <input data-st-advanced-search="'InternalOrganizationBankAccountBankName'" placeholder=""
+                                   class="input-sm form-control" type="search" />
+                        </th>
+                        <th>
+
+                        </th>
+                        <th>
+
+                        </th>
+                        <th>
+                            <input data-st-sort="Count"
+                                   data-st-advanced-search="{property: 'Count', ignoreQuotes: true}" placeholder=""
+                                   class="input-sm form-control numberType" data-safe-restrict-input="[^0123456789]" />
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr data-ng-repeat="item in items" class="documentReleaseRow" data-ui-sref-tr="payment.directdepositbatch.searchbybankaccount({ bankAccountId: item.InternalOrganizationBankAccountId })" style="cursor: pointer">
+                        <td title="{{item.InternalOrganizationId}}">{{item.InternalOrganizationId}}</td>
+                        <td title="{{item.InternalOrganizationLegalName}}">{{item.InternalOrganizationLegalName}}</td>
+                        <!--<td title="{{item.InternalOrganizationBankAccountId}}">{{item.InternalOrganizationBankAccountId}}</td>-->
+                        <td title="{{item.InternalOrganizationBankAccountBankName}}">
+                            {{item.InternalOrganizationBankAccountBankName}}
+                        </td>
+                        <td title="{{item.InternalOrganizationBankAccountCurrencyId}}">
+                            {{item.InternalOrganizationBankAccountCurrencyId | lookup:lists.currencyList:'id':'code'}}
+                        </td>
+                        <td title="{{item.BatchStatusId}}">
+                            {{item.BatchStatusId | lookup:lists.paymentReleaseBatchStatusList}}
+                        </td>
+                        <td title="{{item.Count}}">{{item.Count}}</td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="9">
+                            <span>Total Count: {{totalItemCount || 0}}; Items Loaded: {{ items ? items.length : 0}}</span>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="payment-report"
+     data-ng-class="{ out: !$state.is('payment.search.report'), in: $state.is('payment.search.report')}">
+    <div ui-view="reportView"></div>
+</div>

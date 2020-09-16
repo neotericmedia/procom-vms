@@ -1,0 +1,12 @@
+﻿<div class="stAdvancedSearch menu" style="position: relative; padding: 0px; ">
+    <div ng-click="toggleFilterDialogVisibility()" style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap; padding: 5px 10px; max-width: inherit; width: 100%;"><span title="{{searchValue.text}}">&nbsp;{{searchValue.text}}</span></div>
+    <div class="menu-dropdown" data-ng-show="showDialog">
+        <div class="menu-header">Filter <span ng-click="clear()" class="pull-right badge badge-info">Clear</span></div>
+        <div class="menu-content">
+            <stas-placeholder></stas-placeholder>
+        </div>
+        <div class="menu-footer">
+            <a class="btn btn-success pull-right" ng-click="search()">Go</a>
+        </div>
+    </div>
+</div>

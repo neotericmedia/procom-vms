@@ -1,0 +1,69 @@
+<ng-container *ngIf="hasStateActions()">
+    
+    <div class="btn-toolbar link-bar" *ngIf="showDropdown()">
+        <div class="btn-group">
+            <div class="btn-wrapper">
+                <button class="btn btn-clouds dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="true">
+                    {{'common.generic.actions' | phxTranslate}}...
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu bordered" aria-labelledby="dropdownMenu1">
+                    <ng-container *ngFor="let action of filteredStateActions">
+                        <li *ngIf="!isActionHidden(action)" (click)="onClickAction(action)" class="action-link" [class.disabled]="executing || isActionDisabled(action)">
+                            <a> {{action.displayText}} </a>
+                        </li>
+                    </ng-container>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="btn-toolbar button-bar" *ngIf="showButton()">
+        <div class="btn-group">
+            <ng-container *ngFor="let action of filteredStateActions">
+                <button *ngIf="!isActionHidden(action)" type="button" class="btn btn-default action-button" (click)="onClickAction(action)"
+                    [disabled]="executing || isActionDisabled(action)" [class.btn-primary]="action._primaryAction" [class.btn-danger]="action._dangerAction"
+                    [class.btn-secondary]="action._secondaryAction" [class.btn-warning]="action._warningAction">
+                    {{action.displayText}}
+                </button>
+            </ng-container>
+        </div>
+    </div>
+
+    <div class="btn-group-xs" *ngIf="showSmallButton()">
+        <ng-container *ngFor="let action of filteredStateActions">
+            <button *ngIf="!isActionHidden(action)" type="button" class="btn btn-xs" (click)="onClickAction(action)"
+                [disabled]="executing || isActionDisabled(action)" [class.btn-primary]="action._primaryAction" [class.btn-danger]="action._dangerAction"
+                [class.btn-secondary]="action._secondaryAction" [class.btn-warning]="action._warningAction">
+                {{action.displayText}}
+            </button>
+        </ng-container>
+    </div>
+
+    <div class="btn-toolbar button-bar" *ngIf="showButtonWithElipsis()">
+        <div class="btn-group">
+            <ng-container *ngFor="let action of filteredStateActions">
+                <button *ngIf="action.style && !isActionHidden(action)" type="button" class="btn btn-default action-button" (click)="onClickAction(action)"
+                    [disabled]="executing || isActionDisabled(action)" [class.btn-primary]="action._primaryAction" [class.btn-danger]="action._dangerAction"
+                    [class.btn-secondary]="action._secondaryAction" [class.btn-warning]="action._warningAction">
+                    {{action.displayText}}
+                </button>
+            </ng-container>
+            <div class="btn-group elipsis">
+                <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="true">
+                    <i class="material-icons md-24">more_horiz</i>
+                </button>
+                <ul class="dropdown-menu bordered" aria-labelledby="dropdownMenu1">
+                    <ng-container *ngFor="let action of filteredStateActions">
+                        <li *ngIf="!action.style && !isActionHidden(action)" (click)="onClickAction(action)" class="action-link" [class.disabled]="executing || isActionDisabled(action)">
+                            <a> {{action.displayText}} </a>
+                        </li>
+                    </ng-container>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+</ng-container>

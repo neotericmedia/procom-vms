@@ -1,0 +1,16 @@
+<div class="col col-xs-12">
+  <div class="row">
+    <app-phx-data-table [configuration]="dataTableConfiguration" [dataSourceUrl]="dataSourceUrl" [dataSourceParams]='oDataParams'
+      [columns]="columns" [exportFileName]="'timesheets'" [componentName]="dataGridComponentName" (rowClick)="onRowSelected($event)" (contextMenuOpenTab)="onContextMenuOpenTab($event)"
+      [height]="700">
+      <div *dxTemplate="let po of 'poUnitsCellTemplate'">
+        <span *ngIf="po.data.PONumber">{{ (po.value != null ? po.value : 0) | number: '1.0-2' }} {{ po.data.PORateUnitId | CodeValue:commonService.CodeValueGroups.RateUnit:'text'
+          }}s</span>
+        <span *ngIf="!po.data.PONumber">{{'common.generic.notApplicable' | phxTranslate}}</span>
+      </div>
+      <div *dxTemplate="let pn of 'poNumberCellTemplate'">
+        <span>{{ pn.value ? pn.value : ('common.generic.notApplicable' | phxTranslate) }}</span>
+      </div>
+    </app-phx-data-table>
+  </div>
+</div>

@@ -1,0 +1,19 @@
+.control-label {
+    white-space: nowrap;
+
+    .text {
+        white-space: normal;
+        display: inline-block;
+    }
+
+    .asterisk {
+        color: #888;
+        font-size: 1.1em;
+        display: inline-block;
+        visibility: hidden;
+        &.error {
+            color: #d50000;
+            visibility: visible;
+        }
+    }
+}

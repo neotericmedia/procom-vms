@@ -1,0 +1,38 @@
+.desktop-view {
+    float: right;
+    margin: 12px 5px;
+}
+
+.mobile-view {
+    display: none;
+}
+
+.dropdown-toggle {
+    background-color: white;
+    color: #9B9B9B;
+    font-weight: 400;
+}
+
+.dropdown-menu {
+    min-width: 50px;
+    z-index: 99;
+}
+
+.dropdown-item {
+    cursor: pointer;
+}
+
+.btn-group{
+    margin-top: 0;
+    margin-bottom: 15px;
+}
+
+@media only screen and (max-width: 767px) {
+    .desktop-view {
+        display: none;
+    }
+
+    .mobile-view {
+        display: initial;
+    }
+}

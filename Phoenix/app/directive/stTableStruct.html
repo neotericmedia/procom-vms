@@ -1,0 +1,20 @@
+﻿<st-open-column-view></st-open-column-view>
+<div data-st-draggable="" data-st-initilization="" class="r-table-div1" style="width:95% !important;" combine-horizontal-scrolls="horizontal-scroll" ng-bind-html="stTableHTML" {pipehtml}} {{attrAddons}}>
+    <div class="gray-border">
+        <div class="r-table-div2">
+            <div class="horizontal-scroll r-table-div3">
+                <table ng-bind-html="attrclasshead" data-st-fixed-header="" style="position: relative; min-width: 2000px;" ng-transclude="head">
+                    <!--//+ iElement.context.ATHead-->
+                </table>
+            </div>
+        </div>
+        <div class="horizontal-scroll r-table-div4" ng-bind-html="scrollAttr">
+            <table ng-bind-html="attrClassBody" data-st-resize-twain=" " data-st-fixed-header=" " ng-transclude=" body">
+                <!--//+ iElement.context.ATBody-->
+            </table>
+        </div>
+    </div>
+    <div style="width: 95% !important;" class="r-table-div5">
+        <div ng-transclude="footer"></div>
+    </div>
+</div>

@@ -1,0 +1,49 @@
+<form [formGroup]="inputFormGroup">
+  <div class="col-lg-12">
+    <div class="col-lg-4 text-right">
+      <phx-form-control-label [control]="inputFormGroup">{{inputFormGroup.controls.SourceDeductionTypeId.value
+        != phxConstants.SourceDeductionType.AdditionalTax
+        ? 'Apply ' : ''}}{{inputFormGroup.controls.SourceDeductionTypeId.value |
+        lookupNoCache: html.lists.sourceDeductionTypeList:'id':'text'}}</phx-form-control-label>
+    </div>
+    <div class="col-lg-8">
+      <div class="col-lg-6">
+        <phx-form-control labelText="" [layoutType]="layoutType.InputOnly" [control]="inputFormGroup.controls.IsApplied"
+          [editable]="inputFormGroup.controls.IsOverWritable.value && readOnlyStorage.IsEditable && checkPtFiledAccessibility('WorkOrderVersion.PaymentInfoes.PaymentSourceDeductions','IsApplied')"
+          viewModeText="{{inputFormGroup.controls.IsApplied.value | boolToYesNo}}">
+          <label class="radio-inline">
+            <input class="form-check-input" type="radio" [value]="true" formControlName="IsApplied">Yes</label>
+          <label class="radio-inline">
+            <input class="form-check-input" type="radio" [value]="false" formControlName="IsApplied">No</label>
+        </phx-form-control>
+      </div>
+
+      <!-- One or the other? -->
+      <div class="col-lg-6" *ngIf="inputFormGroup.controls.RatePercentage.value!==null">
+        <phx-form-control labelText="" [layoutType]="layoutType.InputOnly" [control]="inputFormGroup.controls.RatePercentage"
+          [editable]="readOnlyStorage.IsEditable && checkPtFiledAccessibility('WorkOrderVersion.PaymentInfoes.PaymentSourceDeductions','RatePercentage')">
+          <div>
+            <div class="input-group">
+              <input style="width: 90px;" [inputTextLimitWithDecimals]="percentageFilter" type="text" class="form-control ng-scope"
+                formControlName="RatePercentage" />
+              <span class="input-group-addon">%</span>
+            </div>
+          </div>
+        </phx-form-control>
+      </div>
+      <div class="col-lg-6" *ngIf="inputFormGroup.controls.IsApplied.value && inputFormGroup.controls.SourceDeductionTypeId.value === phxConstants.SourceDeductionType.AdditionalTax">
+        <phx-form-control labelText="" [layoutType]="layoutType.InputOnly" [control]="inputFormGroup.controls.RateAmount"
+          [editable]="readOnlyStorage.IsEditable  && checkPtFiledAccessibility('WorkOrderVersion.PaymentInfoes.PaymentSourceDeductions','RateAmount')"
+          viewModeText="{{inputFormGroup.value.RateAmount}}">
+          <div>
+            <div class="input-group">
+              <span class="input-group-addon">$</span>
+              <input style="width: 90px;" [inputTextLimitWithDecimals]="rateAmountFilter" type="text" class="form-control ng-scope"
+                formControlName="RateAmount" />
+            </div>
+          </div>
+        </phx-form-control>
+      </div>
+    </div>
+  </div>
+</form>

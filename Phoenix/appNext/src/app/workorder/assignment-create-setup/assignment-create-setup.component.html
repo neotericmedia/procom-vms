@@ -1,0 +1,74 @@
+<div class="content-group form-horizontal" [formGroup]="inputFormGroup" style="height:100%;">
+  <div data-loading-spinner="selfScope.getDataInProgress"></div>
+  <div class="row" data-ng-disabled="selfScope.getDataInProgress">
+    <div class="col-md-10 col-lg-9 col-xl-8 col-xxl-7 col-xxxl-6">
+      <div class="form-group">
+        <phx-form-control [control]="inputFormGroup.controls.LineOfBusinessId" labelText="Line Of Business" [editable]="true">
+          <app-phx-select-box [items]="listLineOfBusiness" textField="text" valueField="id" (valueChanged)="onLineOfBusinessChange($event)"
+            placeholder="-- select one --" formControlName="LineOfBusinessId">
+          </app-phx-select-box>
+        </phx-form-control>
+      </div>
+      <div *ngIf="!disableATS">
+        <div class="form-group hide">
+          <phx-form-control [control]="inputFormGroup.controls.AtsSourceId" labelText="ATS Source" [editable]="true">
+            <app-phx-select-box [items]="listAtsSource" textField="text" valueField="id" placeholder="-- select one --" formControlName="AtsSourceId"
+              (valueChanged)="onChangeAtsSourceId()">
+            </app-phx-select-box>
+          </phx-form-control>
+        </div>
+        <div class="form-group" *ngIf="inputFormGroup.controls.AtsSourceId.value > 0">
+          <phx-form-control labelText="ATS Placement ID" [editable]="true" [control]="inputFormGroup.controls.AtsPlacementId">
+            <input formControlName="AtsPlacementId" type="text" class="form-control" phxFloatBetweenInput='{"from":1, "to":999999, "decimalplaces":0}'
+              (input)="onChangePlacementId()" />
+          </phx-form-control>
+        </div>
+      </div>
+      <div class="duplicate-workorder-warning" *ngIf="displayWarningMessage && duplicateWorkOrders.length > 0">
+        <p>We've found the following work orders with this ATS ID. Select to review, or edit to change an existing work order.</p>
+      </div>
+      <div class="duplicate-workorder-warning" *ngIf="displayWarningMessage && duplicateWorkOrders.length === 0">
+        <p>We haven't found any work order with this ATS ID.</p>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-10 col-lg-9 col-xl-8 col-xxl-7 col-xxxl-6">
+      <div *ngIf="!getDataInProgress">
+        <div class="pull-right padding-10" style="margin-top: -5px;">
+          <button type="button" class="btn btn-primary" (click)="workOrderCreate()" *ngIf="duplicateWorkOrders.length === 0" [disabled]="!inputFormGroup.valid">Next</button>
+          <button type="button" class="btn btn-primary" (click)="workOrderCreate()" *ngIf="duplicateWorkOrders.length > 0" [disabled]="!inputFormGroup.valid">Create New</button>
+        </div>
+        <div *ngIf="checkingDuplicateWorkOrders" class="pull-right text-right text-primary error-box">
+          <strong>Looking for matching work orders...</strong>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-10 col-lg-9 col-xl-8 col-xxl-7 col-xxxl-6">
+    <div class="panel-footer duplicate-workorder-footer" *ngIf="duplicateWorkOrders.length > 0">
+      <div class="duplicate-workorder-table">
+        <div class="row bg-gray-strong duplicate-workorder-table-header">
+          <div class="col-xs-4 col-sm-2 duplicate-workorder-table-cell text-black">Work Order</div>
+          <div class="col-xs-4 col-sm-2 duplicate-workorder-table-cell text-black">Worker Name</div>
+          <div class="col-xs-4 col-sm-2 duplicate-workorder-table-cell text-black">Status</div>
+          <div class="clearfix visible-xs-block"></div>
+          <div class="col-xs-4 col-sm-2 duplicate-workorder-table-cell text-black">Start Date</div>
+          <div class="col-xs-4 col-sm-2 duplicate-workorder-table-cell text-black">End Date</div>
+          <div class="col-xs-4 col-sm-2 duplicate-workorder-table-cell text-black">Action</div>
+        </div>
+        <div class="row duplicate-workorder-table-row" *ngFor="let workOrder of duplicateWorkOrders">
+          <div class="col-xs-4 col-sm-2 text-black duplicate-workorder-table-cell">{{workOrder.WorkOrderFullNumber}}</div>
+          <div class="col-xs-4 col-sm-2 text-black duplicate-workorder-table-cell">{{workOrder.WorkerName}}</div>
+          <div class="col-xs-4 col-sm-2 text-black duplicate-workorder-table-cell">{{workOrder.WorkOrderStatus}}</div>
+          <div class="clearfix visible-xs-block"></div>
+          <div class="col-xs-4 col-sm-2 text-black duplicate-workorder-table-cell">{{workOrder.StartDate}}</div>
+          <div class="col-xs-4 col-sm-2 text-black duplicate-workorder-table-cell">{{workOrder.EndDate}}</div>
+          <div class="col-xs-4 col-sm-2 text-black duplicate-workorder-table-cell">
+            <a class="duplicate-workorder-table-action" (click)="openWorkOrder(workOrder)">Select</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

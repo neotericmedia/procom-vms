@@ -1,0 +1,40 @@
+<form *ngIf="inputFormGroup">
+
+    <app-contact-profile-details [readOnlyStorage]="readOnlyStorage" [inputFormGroup]="inputFormGroup">
+
+    </app-contact-profile-details>
+
+    <div style="clear: both;" class="class content-group form-horizontal">
+        <div class="class content-left">
+
+            <app-contact-profile-internal-commission (outputEvent)="onOutputEvent()" [inputFormGroup]="inputFormGroup" [readOnlyStorage]="readOnlyStorage" >
+
+            </app-contact-profile-internal-commission>
+
+            <app-contact-organization-info [readOnlyStorage]="readOnlyStorage" [profileDetails]="currentProfile"
+                [inputFormGroup]="inputFormGroup">
+
+            </app-contact-organization-info>
+        </div>
+        <div class="class content-right">
+            <app-contact-userroles [inputFormGroup]="inputFormGroup" [readOnlyStorage]="readOnlyStorage" (outputEvent)="onOutputEvent()" >
+                
+            </app-contact-userroles>
+        </div>
+    </div>
+
+    <div class="flex-row">
+        <div class="flex-row__child">
+            <app-contact-phonenumbers [readOnlyStorage]="readOnlyStorage" [inputFormGroup]="inputFormGroup"
+                (outputEvent)="onOutputEvent()">
+
+            </app-contact-phonenumbers>
+        </div>
+        <div class="flex-row__child">
+            <app-contact-addresses [readOnlyStorage]="readOnlyStorage" [inputFormGroup]="inputFormGroup" (outputEvent)="onOutputEvent()">
+
+            </app-contact-addresses>
+        </div>
+    </div>
+
+</form>

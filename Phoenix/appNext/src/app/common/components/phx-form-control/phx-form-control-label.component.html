@@ -1,0 +1,15 @@
+<label [for]="name" class="control-label" [ngClass]="control && control.hasError('required') ? '': 'req-lab-right-valid'"
+    (click)="onClick()">
+    <div class="text">
+        <a *ngIf="showLabelAsHyperlink === true; else contentTemplate">
+            <ng-container *ngTemplateOutlet="contentTemplate"></ng-container>
+        </a>
+        <ng-template #contentTemplate>
+            <ng-content></ng-content>
+        </ng-template>
+    </div>
+
+    <div *ngIf="enableAsterisk && hasRequiredField()" class="asterisk" [class.error]="control.invalid">
+        *
+    </div>
+</label>

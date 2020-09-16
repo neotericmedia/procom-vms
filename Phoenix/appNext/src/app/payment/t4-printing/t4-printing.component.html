@@ -1,0 +1,115 @@
+<app-phx-panel headerTitle="Details">
+  <div *ngIf="form" class="form-horizontal clearfix">
+    <form [formGroup]="form" #ngForm="ngForm" class="col-lg-10">
+      <div class="col-xl-8 col-lg-10">
+        <phx-form-control [control]="form.controls.organizationIdInternal" labelText="Internal Organization" [showValidationMessages]="true">
+          <app-phx-select-box formControlName="organizationIdInternal" [items]="listOrganizationInternal" textField="DisplayName" valueField="Id" 
+            placeholder="-- Select One --"></app-phx-select-box>
+        </phx-form-control>
+      
+        <phx-form-control [control]="form.controls.t4Types" labelText="Type" [showValidationMessages]="true">
+          <div formArrayName="t4Types">
+              <label *ngFor="let group of form.controls.t4Types.controls; let i = index;" [formGroupName]="i" class="checkbox-inline">
+                <input formControlName="checked" type="checkbox"> {{ group.value.id | CodeValue:'t4.CodeT4SlipType' }}
+              </label>
+          </div>
+        </phx-form-control>
+  
+        <phx-form-control [control]="form.controls.reportDate" labelText="Tax Year" [showValidationMessages]="true">
+          <app-phx-date-box [formControl]="form.controls.reportDate" displayFormat="Year" maxZoomLevel="decade" minZoomLevel="century"></app-phx-date-box>
+        </phx-form-control>
+  
+        <phx-form-control [control]="form.controls.excludeInactive" labelText="Exclude Inactive Workers" labelText="">
+          <label class="checkbox-inline">
+            <input [formControl]="form.controls.excludeInactive" type="checkbox"> Exclude Inactive Workers
+          </label>
+        </phx-form-control>
+  
+        <phx-form-control [control]="form.controls.excludePrinted" labelText="Exclude Printed Records" labelText="">
+          <label class="checkbox-inline">
+            <input [formControl]="form.controls.excludePrinted" type="checkbox"> Exclude Printed Records
+          </label>
+        </phx-form-control>
+        
+        <div>
+          <div class="col-lg-4">
+            <!-- form label spacing -->
+          </div>
+          <div class="col-lg-8">
+            <button class="btn-link form-control-static" (click)="formShowAll = !formShowAll">
+              <ng-container *ngIf="formShowAll">Less Options</ng-container>
+              <ng-container *ngIf="!formShowAll">More Options</ng-container>
+            </button>
+          </div>
+        </div>
+        
+        <ng-container *ngIf="formShowAll">
+          <!-- Refine Range (Worker) -->
+          <phx-form-control [control]="form.controls.workerRefineType" labelText="Refine Range" [showValidationMessages]="true">
+            <label class="radio-inline">
+              <input type="radio" [formControl]="form.controls.workerRefineType" [value]="workerRefineType.None"> All
+            </label>
+            <label class="radio-inline">
+              <input type="radio" [formControl]="form.controls.workerRefineType" [value]="workerRefineType.One"> One
+            </label>
+            <label class="radio-inline">
+              <input type="radio" [formControl]="form.controls.workerRefineType" [value]="workerRefineType.Range"> Range
+            </label>
+          </phx-form-control>
+          
+          <phx-form-control *ngIf="form.value.workerRefineType == workerRefineType.One" [control]="form.controls.contactIdWorkerSingle" labelText="Worker">
+            <app-phx-select-box [formControl]="form.controls.contactIdWorkerSingle" [items]="listWorker" textField="DisplayName" valueField="Id" 
+              placeholder="-- Select One --">
+              <div *dxTemplate="let data of 'drop-down-button-template'">
+                <div class="dx-dropdowneditor-icon hide-dropdowneditor-icon">
+                  <i class="material-icons">person</i>
+                </div>
+              </div>
+            </app-phx-select-box>
+          </phx-form-control>
+          
+          <ng-container *ngIf="form.value.workerRefineType == workerRefineType.Range">
+            <phx-form-control [control]="form.controls.contactIdWorkerRangeStart" labelText="From">
+              <app-phx-select-box [formControl]="form.controls.contactIdWorkerRangeStart" [items]="listWorkerRangeStart" textField="DisplayName" valueField="Id" 
+                placeholder="-- Select One --" (valueChanged)="onChangeWorkerRangeStart($event.value)">
+                <div *dxTemplate="let data of 'drop-down-button-template'">
+                    <ng-container *ngTemplateOutlet="dropdownEditorIconWorker"></ng-container>
+                </div>
+              </app-phx-select-box>
+            </phx-form-control>
+      
+            <phx-form-control [control]="form.controls.contactIdWorkerRangeEnd" labelText="To">
+              <app-phx-select-box [formControl]="form.controls.contactIdWorkerRangeEnd" [items]="listWorkerRangeEnd" textField="DisplayName" valueField="Id" 
+                placeholder="-- Select One --" (valueChanged)="onChangeWorkerRangeEnd($event.value)">
+                <div *dxTemplate="let data of 'drop-down-button-template'">
+                    <ng-container *ngTemplateOutlet="dropdownEditorIconWorker"></ng-container>
+                </div>
+              </app-phx-select-box>
+            </phx-form-control>
+          </ng-container>
+        </ng-container>
+      </div>
+
+      <div class="btn-toolbar col-lg-12" style="margin-top: 20px;">
+        <button class="btn btn-primary pull-right" (click)="getReport()" [disabled]="!form.valid">Search</button>
+        <button class="btn btn-default pull-right" (click)="reset()">Clear</button>
+      </div>
+    </form>
+  </div>
+</app-phx-panel>
+<div class="col-xs-12" *ngIf="dataSourceUrl">
+  <app-phx-data-table #grid componentName="t4Printing" [configuration]="dataTableConfig" [columns]="columns" 
+    [dataSourceUrl]="dataSourceUrl" [dataSourceParams]="dataSourceParams" (responseReceived)="onT4SlipPrintHistoryReceived($event)">
+  </app-phx-data-table>
+
+  <div class="btn-toolbar col-lg-12">
+    <button class="btn btn-primary pull-right" (click)="print()" [disabled]="!grid.totalCount || isGridLoading">Generate T4</button>
+    <button class="btn btn-default pull-right" (click)="cancelReport()">Cancel</button>
+  </div>
+</div>
+
+<ng-template #dropdownEditorIconWorker>
+  <div class="dx-dropdowneditor-icon hide-dropdowneditor-icon">
+    <i class="material-icons">person</i>
+  </div>
+</ng-template>

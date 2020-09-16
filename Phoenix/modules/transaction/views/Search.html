@@ -1,0 +1,156 @@
+﻿<div class="smart-table-wrapper">
+    <div class="row" data-cg-busy="loadItemsPromise">
+        <table data-st-table-struct='[{"stTableValue" : "items"}, {"stPipeValue" : "callServer"}, {"widthValues" : "[4, 8, 7, 9, 9, 9, 14, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 5, 10, 5]"}, {"stPaginationValue" : "pageSize"}]'>
+            <thead data-st-head="2800px">
+                <tr>
+                    <th data-st-sort="Id" data-st-sort-default="reverse">ID</th>
+                    <th data-st-sort="TransactionNumber">Txn. #</th>
+                    <th data-st-sort="TransactionTypeId">Type</th>
+                    <th data-st-sort="OrganizationInternalCode">Internal Company</th>
+                    <th data-st-sort="WorkerName">Worker Name</th>
+                    <th data-st-sort="PayeeName">Payee Name</th>
+                    <th data-st-sort="ClientCompany">Client Company</th>
+                    <th data-st-sort="FromDate">From</th>
+                    <th data-st-sort="ToDate">To</th>
+                    <th data-st-sort="Subtotal" class="text-center">Bill Subtotal</th>
+                    <th data-st-sort="Tax" class="text-center">Bill Tax</th>
+                    <th data-st-sort="Total" class="text-center">Bill Total</th>
+                    <th data-st-sort="PaymentSubtotal" class="text-center">Pay Subtotal</th>
+                    <th data-st-sort="PaymentTax" class="text-center">Pay Tax</th>
+                    <th data-st-sort="PaymentDeductions" class="text-center">Deductions</th>
+                    <th data-st-sort="PaymentTotal" class="text-center">Pay Total</th>
+                    <th data-st-sort="PONumber">PO Number</th>
+                    <th data-st-sort="IsDraft">Status</th>
+                    <th data-st-pen-name="Action">Action</th>
+                </tr>
+                <tr>
+                    <th>
+                        <input data-st-advanced-search="{property: 'Id', ignoreQuotes: true}" placeholder="" data-safe-restrict-input="[^0123456789]"
+                               class="input-sm form-control numberType" />
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="'TransactionNumber'" placeholder=""
+                               class="input-sm form-control" type="search" />
+                    </th>
+                    <th>
+                        <select data-st-advanced-search="{property: 'TransactionTypeId', ignoreQuotes: true}" class="input-sm form-control" id="transactionSearchType">
+                            <option value="1">Timesheet</option>
+                            <option value="2">Manual</option>
+                            <option value="3">Expense</option>
+                            <option value="4">Advance</option>
+                            <option value="5">VMS</option>
+                            <option value="6">Adjustment</option>
+                        </select>
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="'OrganizationInternalCode'" placeholder=""
+                               class="input-sm form-control" type="search" />
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="'WorkerName'" placeholder=""
+                               class="input-sm form-control" type="search" />
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="'PayeeName'" placeholder=""
+                               class="input-sm form-control" type="search" />
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="'ClientCompany'" placeholder=""
+                               class="input-sm form-control" type="search" />
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="'FromDate'"
+                               data-st-as-operator-override="'ge'"
+                               close-on-date-selection="false" show-button-bar="false" show-weeks="false" class="input-sm form-control"
+                               data-st-as-lazy-attributes="{'uib-datepicker' : ApplicationConstants.formatDate}"
+                               data-st-as-height-override="400"
+                               data-st-as-width-override="315" />
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="'ToDate'"
+                               data-st-as-operator-override="'le'"
+                               close-on-date-selection="false" show-button-bar="false" show-weeks="false" class="input-sm form-control"
+                               data-st-as-lazy-attributes="{'uib-datepicker' : ApplicationConstants.formatDate}"
+                               data-st-as-height-override="400"
+                               data-st-as-width-override="315" />
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="{property: 'Subtotal', ignoreQuotes: true, valueSuffix: 'M'}" placeholder=""
+                               class="input-sm form-control numberType" data-safe-restrict-input="[^0123456789.]" />
+                    </th>
+
+                    <th>
+                        <input data-st-advanced-search="{property: 'Tax', ignoreQuotes: true, valueSuffix: 'M'}" placeholder=""
+                               class="input-sm form-control numberType" data-safe-restrict-input="[^0123456789.]" />
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="{property: 'Total', ignoreQuotes: true, valueSuffix: 'M'}" placeholder=""
+                               class="input-sm form-control numberType" data-safe-restrict-input="[^0123456789.]" />
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="{property: 'PaymentSubtotal', ignoreQuotes: true, valueSuffix: 'M'}" placeholder=""
+                               class="input-sm form-control numberType" data-safe-restrict-input="[^0123456789.]" />
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="{property: 'PaymentTax', ignoreQuotes: true, valueSuffix: 'M'}" placeholder=""
+                               class="input-sm form-control numberType" data-safe-restrict-input="[^0123456789.]" />
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="{property: 'PaymentDeductions', ignoreQuotes: true, valueSuffix: 'M'}" placeholder=""
+                               class="input-sm form-control numberType" data-safe-restrict-input="[^0123456789.]" />
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="{property: 'PaymentTotal', ignoreQuotes: true, valueSuffix: 'M'}" placeholder=""
+                               class="input-sm form-control numberType" data-safe-restrict-input="[^0123456789.]" />
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="'PONumber'" placeholder="" class="input-sm form-control" type="search" />
+                    </th>
+                    <th>
+                        <select data-st-advanced-search="{property: 'IsDraft', ignoreQuotes: true}" class="input-sm form-control" id="transactionIsDraft">
+                            <option value="true">Draft</option>
+                            <option value="false">Active</option>
+                        </select>
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr data-ng-repeat="txn in items" data-ng-click="rowClick($event, txn)" data-ng-mousedown="rowMouseDown($event, txn)" style="cursor: pointer">
+                    <td title="{{txn.Id}}" ng-bind="::txn.Id"></td>
+                    <td title="{{txn.TransactionNumber}}" ng-bind="::txn.TransactionNumber"></td>
+                    <td title="{{txn.TransactionTypeId | lookup:lists.transactionTypeList:'id':'code'}}" ng-bind="::txn.TransactionTypeId | lookup:lists.transactionTypeList:'id':'code'"></td>
+                    <td title="{{txn.OrganizationInternalCode}}" ng-bind="::txn.OrganizationInternalCode"></td>
+                    <td title="{{txn.WorkerName}}">{{txn.WorkerName.length > 2 ? txn.WorkerName : ''}}</td>
+                    <td title="{{txn.PayeeName}}" ng-bind="::txn.PayeeName"></td>
+                    <td title="{{txn.ClientCompany}}" ng-bind="::txn.ClientCompany"></td>
+                    <td title="{{txn.FromDate| date: ApplicationConstants.formatDate}}" ng-bind="::txn.FromDate | date: ApplicationConstants.formatDate"></td>
+                    <td title="{{txn.ToDate| date: ApplicationConstants.formatDate}}" ng-bind="::txn.ToDate | date: ApplicationConstants.formatDate"></td>
+                    <td class="text-right" ng-bind="::txn.Subtotal | currency: txn.CurrencyCode + ' $'"></td>
+                    <td class="text-right" ng-bind="::(txn.Tax || 0.00)|currency: txn.CurrencyCode + ' $'"></td>
+                    <td class="text-right" ng-bind="::txn.Total|currency: txn.CurrencyCode + ' $'"></td>
+
+                    <td class="text-right" ng-bind="::txn.PaymentSubtotal | currency: txn.CurrencyCode + ' $'"></td>
+                    <td class="text-right" ng-bind="::(txn.PaymentTax || 0.00) | currency: txn.CurrencyCode + ' $'"></td>
+                    <td class="text-right" ng-bind="::(txn.PaymentDeductions || 0.00) | currency: txn.CurrencyCode + ' $'"></td>
+                    <td class="text-right" ng-bind="::txn.PaymentTotal | currency: txn.CurrencyCode + ' $'"></td>
+
+                    <td title="{{txn.PONumber}}" ng-bind="::txn.PONumber"></td>
+                    <td title="{{txn.IsDraft | lookup:lists.draftStatusList}}" ng-bind="::txn.IsDraft | lookup:lists.draftStatusList"></td>
+                    <td>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-xs btn-clouds btn-row-action no-padding-bottom" data-action="view" title="View"><i class="fontello-icon-eye-1"></i></button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="10">
+                        <span>Total Count: {{totalItemCount || 0}}; Items Loaded: {{ items ? items.length : 0}}</span>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>

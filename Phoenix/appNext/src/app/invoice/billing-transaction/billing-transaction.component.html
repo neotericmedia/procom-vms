@@ -1,0 +1,7 @@
+<div class="row">
+  <div class="col-xs-12">
+    <app-phx-data-table #grid *ngIf="componentName" [configuration]="dataTableConfiguration" [dataSourceUrl]="dataSourceUrl" [dataSourceParams]='odataParams'
+      [columns]="columns" [exportFileName]="componentName" [componentName]="componentName" (selectionChanged)="onSelectionChanged($event)" (contextMenuPreparing)="onContextMenuPreparing($event)">
+    </app-phx-data-table>
+  </div>
+</div>

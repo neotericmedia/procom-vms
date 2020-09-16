@@ -1,0 +1,62 @@
+.time-sheet-cell-day{
+    text-align: center;
+    padding-top: 5px;
+    display: inline-block;
+}
+
+.date-sm-down {
+    display: none;
+}
+
+.date-md-up {
+    display: inline-block;
+    padding-bottom: 5px;
+    padding-left: 4px;
+}
+
+.date {
+    font-weight: bold;
+    font-size: 21px;
+    line-height: 15px;
+}
+
+.date-font {
+    font-size: 12px;
+    color: #959595;
+}
+
+@media only screen and (min-width: 960px) {
+    .time-sheet-cell-day.active {
+        background-color: #EBEBEB;
+        color: #333333;
+        font-weight: bold; 
+    }
+
+    .holiday, .weekend {
+        color: #FF7a7a;
+    }
+}
+
+@media only screen and (max-width: 959px) {
+    .time-sheet-cell-day.active {
+        background-color: #EBEBEB;
+        color: #333333;
+        font-weight: bold; 
+    }
+
+    .date-md-up {
+        display: none;
+    }
+
+    .time-sheet-cell-day{
+        height: 60px;
+        width: 60px;
+    }
+    .date-sm-down {
+        display: inline-block;
+    }
+
+    .holiday, .weekend {
+        color: #FF7a7a;
+    }
+}

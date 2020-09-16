@@ -1,0 +1,628 @@
+<div class="col-lg-12 table-responsive" *ngIf="transaction && transaction.TransactionCalculation">
+  <table class="table table-striped table-bordered table-hover table-condensed" *ngIf="transaction.TransactionCalculation.AmountSummary">
+    <thead>
+      <tr>
+        <th class="transaction-amount-summary-table-first-col">&nbsp;</th>
+        <th [attr.colspan]="transaction.TransactionCalculation.AmountSummary.AmountSummaryBills.length" [ngClass]="transaction.TransactionCalculation.AmountSummary.AmountSummaryBills.length == 0 ? 'hide' : ''">
+          <span class="pull-right">Bill</span>
+        </th>
+        <th><span class="pull-right">Internal</span></th>
+        <th [attr.colspan]="transaction.TransactionCalculation.AmountSummary.AmountSummaryPayees.length" [ngClass]="transaction.TransactionCalculation.AmountSummary.AmountSummaryPayees.length == 0 ? 'hide' : ''">
+          <span class="pull-right"> Payee(s)</span>
+        </th>
+      </tr>
+      <tr>
+        <th class="transaction-amount-summary-table-first-col">&nbsp;</th>
+        <th *ngFor="let bill of transaction.TransactionCalculation.AmountSummary.AmountSummaryBills">
+          <span class="right-text pull-right">{{ bill.OrganizationClientLegalName }}</span>
+        </th>
+        <th>
+          <span class="right-text pull-right">{{
+            transaction.TransactionCalculation.AmountSummary.AmountSummaryEmployer.OrganizationInternalLegalName }}</span>
+        </th>
+        <th *ngFor="let payee of transaction.TransactionCalculation.AmountSummary.AmountSummaryPayees">
+          <span class="right-text pull-right">{{ payee.PayeeName }}</span>
+        </th>
+      </tr>
+    </thead>
+    <tbody class="transaction-amount-summary-table-body">
+      <tr>
+        <td class="h4" [attr.colspan]="2 + transaction.TransactionCalculation.AmountSummary.AmountSummaryBills.length + transaction.TransactionCalculation.AmountSummary.AmountSummaryPayees.length">Gross</td>
+      </tr>
+      <tr>
+        <td class="transaction-amount-summary-table-first-col">&nbsp;Amount</td>
+        <td *ngFor="let bill of transaction.TransactionCalculation.AmountSummary.AmountSummaryBills">
+          <span class="pull-right" *ngIf="transaction.CurrencyCode">{{ bill.Amount_TotalLines | currency: transaction.CurrencyCode + ' $' }}</span>
+        </td>
+        <td>&nbsp;</td>
+        <td *ngFor="let payee of transaction.TransactionCalculation.AmountSummary.AmountSummaryPayees">
+          <span class="pull-right" *ngIf="transaction.CurrencyCode">{{ payee.Amount_TotalLines | currency: transaction.CurrencyCode + ' $' }}</span>
+        </td>
+      </tr>
+      <tr *ngIf="showSummaryEarningsAndDeductions('Amount_PayeeStatutoryHoliday')">
+        <td class="transaction-amount-summary-table-first-col">&nbsp;Statutory Holiday</td>
+        <td *ngFor="let bill of transaction.TransactionCalculation.AmountSummary.AmountSummaryBills">&nbsp;</td>
+        <td>&nbsp;</td>
+        <td *ngFor="let payee of transaction.TransactionCalculation.AmountSummary.AmountSummaryPayees">
+          <span class="pull-right" *ngIf="transaction.CurrencyCode">{{ payee.Amount_PayeeStatutoryHoliday | currency: transaction.CurrencyCode + '
+            $' }}</span>
+        </td>
+      </tr>
+      <tr *ngIf="showSummaryEarningsAndDeductions('Amount_PayeePaymentOtherEarningVacationPay_NotAccrued')">
+        <td class="transaction-amount-summary-table-first-col">
+          <label class="transaction-amount-summary-checkbox-view" *ngIf="showIsReplaceByZeroIcon" [ngClass]="getModel('ExcludedEarningAndSourceDeductions', {EarningsAndDeductionsTypeId: phxConstants.EarningsAndDeductionsType.PaymentOtherEarningVacationPay}).IsExcluded
+                    ? 'transaction-amount-summary-checkbox-view-red'
+                    : 'transaction-amount-summary-checkbox-view-green'">
+          </label>
+          <input type="checkbox" class="transaction-amount-summary-checkbox" id="Amount_PayeePaymentOtherEarningVacationPay_NotAccrued"
+            *ngIf="showIsReplaceByZeroInputCheckBox" [(ngModel)]="getModel('ExcludedEarningAndSourceDeductions', {EarningsAndDeductionsTypeId: phxConstants.EarningsAndDeductionsType.PaymentOtherEarningVacationPay}).IsExcluded"
+            (ngModelChange)="resetTaxesAndCalculate()" />
+
+          <label for="Amount_PayeePaymentOtherEarningVacationPay_NotAccrued"></label>
+          <label for="Amount_PayeePaymentOtherEarningVacationPay_NotAccrued" class="transaction-amount-summary-label-text">
+            {{ phxConstants.EarningsAndDeductionsType.PaymentOtherEarningVacationPay | lookupNoCache:
+            html.lists.earningsAndDeductionsTypeList:'id':'text' }}</label>
+          <label class="transaction-amount-summary-label-text" *ngIf="transaction.TransactionCalculation.AmountSummary.Percent_PayeFirstOrDefault_OtherEarningVacationPay_NotAccrued">
+            {{
+            transaction.TransactionCalculation.AmountSummary.Percent_PayeFirstOrDefault_OtherEarningVacationPay_NotAccrued
+            }} %</label>
+        </td>
+        <td *ngFor="let bill of transaction.TransactionCalculation.AmountSummary.AmountSummaryBills">&nbsp;</td>
+        <td>&nbsp;</td>
+        <td *ngFor="let payee of transaction.TransactionCalculation.AmountSummary.AmountSummaryPayees">
+          <span class="pull-right" *ngIf="transaction.CurrencyCode" [ngClass]="getModel('ExcludedEarningAndSourceDeductions', {EarningsAndDeductionsTypeId: phxConstants.EarningsAndDeductionsType.PaymentOtherEarningVacationPay}).IsExcluded?
+                  'transaction-amount-summary-amount-strikethrough' : ''">
+
+            {{ payee.Amount_PayeePaymentOtherEarningVacationPay_NotAccrued | currency: transaction.CurrencyCode + '
+            $' }}</span>
+        </td>
+      </tr>
+      <tr *ngIf="showSummaryEarningsAndDeductions('Amount_PayeePaymentOtherEarningVacationPay_Accrued')">
+        <td class="transaction-amount-summary-table-first-col">
+          <label class="transaction-amount-summary-checkbox-view" *ngIf="showIsReplaceByZeroIcon" [ngClass]="getModel('ExcludedEarningAndSourceDeductions', {EarningsAndDeductionsTypeId: phxConstants.EarningsAndDeductionsType.PaymentOtherEarningVacationPay}).IsExcluded
+                ? 'transaction-amount-summary-checkbox-view-red' : 'transaction-amount-summary-checkbox-view-green'">
+          </label>
+          <input type="checkbox" class="transaction-amount-summary-checkbox" id="Amount_PayeePaymentOtherEarningVacationPay_Accrued"
+            *ngIf="showIsReplaceByZeroInputCheckBox" [(ngModel)]="getModel('ExcludedEarningAndSourceDeductions', {EarningsAndDeductionsTypeId: phxConstants.EarningsAndDeductionsType.PaymentOtherEarningVacationPay}).IsExcluded"
+            (ngModelChange)="resetTaxesAndCalculate()" />
+          <label for="Amount_PayeePaymentOtherEarningVacationPay_Accrued"></label>
+          <label for="Amount_PayeePaymentOtherEarningVacationPay_Accrued" class="transaction-amount-summary-label-text">
+            {{ phxConstants.EarningsAndDeductionsType.PaymentOtherEarningVacationPay | lookupNoCache:
+            html.lists.earningsAndDeductionsTypeList:'id':'text' }} Accrued</label>
+          <label class="transaction-amount-summary-label-text" *ngIf="transaction.TransactionCalculation.AmountSummary.Percent_PayeFirstOrDefault_OtherEarningVacationPay_Accrued">
+            {{
+            transaction.TransactionCalculation.AmountSummary.Percent_PayeFirstOrDefault_OtherEarningVacationPay_Accrued
+            }}%</label>
+        </td>
+        <td *ngFor="let bill of transaction.TransactionCalculation.AmountSummary.AmountSummaryBills">&nbsp;</td>
+        <td>&nbsp;</td>
+        <td *ngFor="let payee of transaction.TransactionCalculation.AmountSummary.AmountSummaryPayees">
+          <span class="pull-right" *ngIf="transaction.CurrencyCode" [ngClass]="getModel('ExcludedEarningAndSourceDeductions', {EarningsAndDeductionsTypeId: phxConstants.EarningsAndDeductionsType.PaymentOtherEarningVacationPay}).IsExcluded 
+               ? 'transaction-amount-summary-amount-strikethrough' : ''">
+            {{ payee.Amount_PayeePaymentOtherEarningVacationPay_Accrued | currency:
+            transaction.CurrencyCode + ' $' }}</span>
+        </td>
+      </tr>
+      <tr *ngIf="showSummaryEarningsAndDeductions('Amount_VMSFee')">
+        <td class="transaction-amount-summary-table-first-col">
+          <label class="transaction-amount-summary-checkbox-view" *ngIf="showIsReplaceByZeroIcon" [ngClass]="getModel('ExcludedEarningAndSourceDeductions', {EarningsAndDeductionsTypeId: phxConstants.EarningsAndDeductionsType.VmsFee}).IsExcluded
+                ? 'transaction-amount-summary-checkbox-view-red' : 'transaction-amount-summary-checkbox-view-green'">
+          </label>
+          <input type="checkbox" class="transaction-amount-summary-checkbox" id="Amount_VMSFee" *ngIf="showIsReplaceByZeroInputCheckBox"
+            [(ngModel)]="getModel('ExcludedEarningAndSourceDeductions', {EarningsAndDeductionsTypeId: phxConstants.EarningsAndDeductionsType.VmsFee}).IsExcluded"
+            (ngModelChange)="resetTaxesAndCalculate()" />
+          <label for="Amount_VMSFee"></label>
+          <label for="Amount_VMSFee" class="transaction-amount-summary-label-text">
+            {{ phxConstants.EarningsAndDeductionsType.VmsFee | lookupNoCache:
+            html.lists.earningsAndDeductionsTypeList:'id':'text' }}
+          </label>
+          <label class="transaction-amount-summary-label-text" *ngIf="transaction.TransactionCalculation.AmountSummary.Percent_BillFirstOrDefault_VMSFee">{{
+            transaction.TransactionCalculation.AmountSummary.Percent_BillFirstOrDefault_VMSFee }} %</label>
+        </td>
+        <td *ngFor="let bill of transaction.TransactionCalculation.AmountSummary.AmountSummaryBills">
+          <span class="pull-right" *ngIf="transaction.CurrencyCode" [ngClass]="getModel('ExcludedEarningAndSourceDeductions', {EarningsAndDeductionsTypeId: phxConstants.EarningsAndDeductionsType.VmsFee}).IsExcluded? 'transaction-amount-summary-amount-strikethrough' : ''">
+            {{ bill.Amount_VMSFee | currency: transaction.CurrencyCode + ' $' }}</span>
+        </td>
+        <td>&nbsp;</td>
+        <td *ngFor="let payee of transaction.TransactionCalculation.AmountSummary.AmountSummaryPayees">&nbsp;</td>
+      </tr>
+      <tr>
+        <td class="transaction-amount-summary-table-first-col bold">Total Gross</td>
+        <td *ngFor="let bill of transaction.TransactionCalculation.AmountSummary.AmountSummaryBills">
+          <span class="pull-right bold" *ngIf="transaction.CurrencyCode">{{ bill.Amount_TotalGross | currency: transaction.CurrencyCode + '
+            $' }}</span>
+        </td>
+        <td>&nbsp;</td>
+        <td *ngFor="let payee of transaction.TransactionCalculation.AmountSummary.AmountSummaryPayees">
+          <span class="pull-right bold" *ngIf="transaction.CurrencyCode">{{ payee.Amount_TotalGross | currency: transaction.CurrencyCode + '
+            $' }}</span>
+        </td>
+      </tr>
+
+      <tr>
+        <td class="h4" [attr.colspan]="2 + transaction.TransactionCalculation.AmountSummary.AmountSummaryBills.length + transaction.TransactionCalculation.AmountSummary.AmountSummaryPayees.length" *ngIf="showSummaryEarningsAndDeductions('Amount_SalesTaxGSTHST') || showSummaryEarningsAndDeductions('Amount_SalesTaxQST') || showSummaryEarningsAndDeductions('Amount_SalesTaxPST')">
+          Sales Tax
+        </td>
+      </tr>
+      <tr *ngIf="showSummaryEarningsAndDeductions('Amount_SalesTaxGSTHST')">
+        <ng-container [ngTemplateOutlet]="salesTax" [ngTemplateOutletContext]="{data: {
+                    id: 1,
+                    title: 'GST/HST',
+                    showIsReplaceByZeroIcon: showIsReplaceByZeroIcon,
+                    showIsReplaceByZeroInputCheckBox: showIsReplaceByZeroInputCheckBox,
+                    td2list: transaction.TransactionCalculation.AmountSummary.AmountSummaryBills,
+                    td2Label3DisplayValue: transaction.TransactionCalculation.BillRate_SalesTaxGSTHST,
+                    td2Label4DisplayProperty: 'Amount_SalesTaxGSTHST',
+                    td2ModelObj: { propName: 'ExcludedBillSalesTaxes', filterObj: { SalesTaxId: phxConstants.SalesTaxType.GSTHST} },
+                    td4list: transaction.TransactionCalculation.AmountSummary.AmountSummaryPayees,
+                    td4Label3DisplayValue: transaction.TransactionCalculation.PaymentRate_SalesTaxGSTHST,
+                    td4Label4DisplayProperty: 'Amount_SalesTaxGSTHST',
+                    td4ModelObj: { propName: 'ExcludedPaySalesTaxes', filterObj: { SalesTaxId: phxConstants.SalesTaxType.GSTHST } }
+                }
+                }">
+        </ng-container>
+      </tr>
+      <tr *ngIf="showSummaryEarningsAndDeductions('Amount_SalesTaxQST')">
+        <ng-container [ngTemplateOutlet]="salesTax" [ngTemplateOutletContext]="{data: {
+                  id: 2,
+                  title: 'QST',
+                  showIsReplaceByZeroIcon: showIsReplaceByZeroIcon,
+                  showIsReplaceByZeroInputCheckBox: showIsReplaceByZeroInputCheckBox,
+                  td2list: transaction.TransactionCalculation.AmountSummary.AmountSummaryBills,
+                  td2Label3DisplayValue: transaction.TransactionCalculation.BillRate_SalesTaxQST,
+                  td2Label4DisplayProperty: 'Amount_SalesTaxQST',
+                  td2ModelObj: { propName: 'ExcludedBillSalesTaxes', filterObj: { SalesTaxId: phxConstants.SalesTaxType.QST} },
+                  td4list: transaction.TransactionCalculation.AmountSummary.AmountSummaryPayees,
+                  td4Label3DisplayValue:  transaction.TransactionCalculation.PaymentRate_SalesTaxQST,
+                  td4Label4DisplayProperty: 'Amount_SalesTaxQST',
+                  td4ModelObj: { propName: 'ExcludedPaySalesTaxes', filterObj: { SalesTaxId: phxConstants.SalesTaxType.QST } }
+              }
+              }">
+        </ng-container>
+      </tr>
+      <tr *ngIf="showSummaryEarningsAndDeductions('Amount_SalesTaxPST')">
+        <ng-container [ngTemplateOutlet]="salesTax" [ngTemplateOutletContext]="{data: {
+                  id: 3,
+                  title: 'PST',
+                  showIsReplaceByZeroIcon: showIsReplaceByZeroIcon,
+                  showIsReplaceByZeroInputCheckBox: showIsReplaceByZeroInputCheckBox,
+                  td2list: transaction.TransactionCalculation.AmountSummary.AmountSummaryBills,
+                  td2Label3DisplayValue: transaction.TransactionCalculation.BillRate_SalesTaxPST,
+                  td2Label4DisplayProperty: 'Amount_SalesTaxPST',
+                  td2ModelObj: { propName: 'ExcludedBillSalesTaxes', filterObj: { SalesTaxId: phxConstants.SalesTaxType.PST} },
+                  td4list: transaction.TransactionCalculation.AmountSummary.AmountSummaryPayees,
+                  td4Label3DisplayValue:  transaction.TransactionCalculation.PaymentRate_SalesTaxPST,
+                  td4Label4DisplayProperty: 'Amount_SalesTaxPST',
+                  td4ModelObj: { propName: 'ExcludedPaySalesTaxes', filterObj: { SalesTaxId: phxConstants.SalesTaxType.PST } }
+              }
+              }">
+        </ng-container>
+      </tr>
+      <tr *ngIf="showSummaryEarningsAndDeductions('Amount_SalesTaxGSTHST') || showSummaryEarningsAndDeductions('Amount_SalesTaxQST') || showSummaryEarningsAndDeductions('Amount_SalesTaxPST')">
+        <td class="transaction-amount-summary-table-first-col bold">Sales Tax Total Amount</td>
+        <td *ngFor="let bill of transaction.TransactionCalculation.AmountSummary.AmountSummaryBills">
+          <span class="pull-right bold" *ngIf="transaction.CurrencyCode">{{ bill.Amount_TotalSalesTax | currency: transaction.CurrencyCode + ' $' }}</span>
+        </td>
+        <td>&nbsp;</td>
+        <td *ngFor="let payee of transaction.TransactionCalculation.AmountSummary.AmountSummaryPayees">
+          <span class="pull-right bold" *ngIf="transaction.CurrencyCode">{{ payee.Amount_TotalSalesTax | currency: transaction.CurrencyCode + ' $'
+            }}</span>
+        </td>
+      </tr>
+
+      <tr>
+        <td class="h4" [attr.colspan]="2 + transaction.TransactionCalculation.AmountSummary.AmountSummaryBills.length + transaction.TransactionCalculation.AmountSummary.AmountSummaryPayees.length">Deductions and Employer Cost</td>
+      </tr>
+      <tr *ngIf="showSummaryEarningsAndDeductions('Amount_SourceDeductionFederalTax')">
+        <ng-container [ngTemplateOutlet]="recursiveList" [ngTemplateOutletContext]="{
+                data: {
+                  showIsReplaceByZeroIcon: showIsReplaceByZeroIcon,
+                  id: 1,
+                  forProperty: 'SourceDeductionFederalTax',
+                  showIsReplaceByZeroInputCheckBox: showIsReplaceByZeroInputCheckBox,
+                  td1label3value: phxConstants.EarningsAndDeductionsType.SourceDeductionFederalTax,
+                  td2list: transaction.TransactionCalculation.AmountSummary.AmountSummaryBills,
+                  modelObj: { propName: 'ExcludedEarningAndSourceDeductions', filterObj: { EarningsAndDeductionsTypeId: phxConstants.EarningsAndDeductionsType.SourceDeductionFederalTax } },
+                  td3DisplayVal: transaction.TransactionCalculation.AmountSummary.AmountSummaryEmployer.Amount_SourceDeductionFederalTax,
+                  td4Obj: { list: transaction.TransactionCalculation.AmountSummary.AmountSummaryPayees, displayProp: 'Amount_SourceDeductionFederalTax', isShow: true }
+                }
+              }">
+        </ng-container>
+
+      </tr>
+      <tr *ngIf="showSummaryEarningsAndDeductions('Amount_SourceDeductionProvincialTax')">
+        <ng-container [ngTemplateOutlet]="recursiveList" [ngTemplateOutletContext]="{
+                data: {
+                  showIsReplaceByZeroIcon: showIsReplaceByZeroIcon,
+                  id: 2,
+                  forProperty: 'SourceDeductionProvincialTax',
+                  showIsReplaceByZeroInputCheckBox: showIsReplaceByZeroInputCheckBox,
+                  modelObj: { propName: 'ExcludedEarningAndSourceDeductions', filterObj: { EarningsAndDeductionsTypeId: phxConstants.EarningsAndDeductionsType.SourceDeductionProvincialTax } },
+                  td1label3value: phxConstants.EarningsAndDeductionsType.SourceDeductionProvincialTax,
+                  td2list: transaction.TransactionCalculation.AmountSummary.AmountSummaryBills,
+                  td3DisplayVal: transaction.TransactionCalculation.AmountSummary.AmountSummaryEmployer.Amount_SourceDeductionProvincialTax,
+                  td4Obj: { list: transaction.TransactionCalculation.AmountSummary.AmountSummaryPayees, displayProp: 'Amount_SourceDeductionProvincialTax', isShow: true }
+                }
+              }">
+        </ng-container>
+
+      </tr>
+      <tr *ngIf="showSummaryEarningsAndDeductions('Amount_SourceDeductionCanadaPensionPlan')">
+        <ng-container [ngTemplateOutlet]="recursiveList" [ngTemplateOutletContext]="{
+                data: {
+                  showIsReplaceByZeroIcon: showIsReplaceByZeroIcon,
+                  id: 3,
+                  forProperty: 'SourceDeductionCanadaPensionPlan',
+                  showIsReplaceByZeroInputCheckBox: showIsReplaceByZeroInputCheckBox,
+                  modelObj: { propName: 'ExcludedEarningAndSourceDeductions', filterObj: { EarningsAndDeductionsTypeId: phxConstants.EarningsAndDeductionsType.SourceDeductionCanadaPensionPlan } },
+                  td1label3value: phxConstants.EarningsAndDeductionsType.SourceDeductionCanadaPensionPlan,
+                  td2list: transaction.TransactionCalculation.AmountSummary.AmountSummaryBills,
+                  td3DisplayVal: transaction.TransactionCalculation.AmountSummary.AmountSummaryEmployer.Amount_SourceDeductionCanadaPensionPlan,
+                  td4Obj: { list: transaction.TransactionCalculation.AmountSummary.AmountSummaryPayees, displayProp: 'Amount_SourceDeductionCanadaPensionPlan', isShow: true }
+                }
+              }">
+        </ng-container>
+
+      </tr>
+      <tr *ngIf="showSummaryEarningsAndDeductions('Amount_SourceDeductionEmploymentInsurance')">
+        <ng-container [ngTemplateOutlet]="recursiveList" [ngTemplateOutletContext]="{
+                data: {
+                  showIsReplaceByZeroIcon: showIsReplaceByZeroIcon,
+                  id: 4,
+                  forProperty: 'SourceDeductionEmploymentInsurance',
+                  showIsReplaceByZeroInputCheckBox: showIsReplaceByZeroInputCheckBox,
+                  modelObj: { propName: 'ExcludedEarningAndSourceDeductions', filterObj: { EarningsAndDeductionsTypeId: phxConstants.EarningsAndDeductionsType.SourceDeductionEmploymentInsurance } },
+                  td1label3value: phxConstants.EarningsAndDeductionsType.SourceDeductionEmploymentInsurance,
+                  td2list: transaction.TransactionCalculation.AmountSummary.AmountSummaryBills,
+                  td3DisplayVal: transaction.TransactionCalculation.AmountSummary.AmountSummaryEmployer.Amount_SourceDeductionEmploymentInsurance,
+                  td4Obj: { list: transaction.TransactionCalculation.AmountSummary.AmountSummaryPayees, displayProp: 'Amount_SourceDeductionEmploymentInsurance', isShow: true }
+                }
+              }">
+        </ng-container>
+
+      </tr>
+      <tr *ngIf="showSummaryEarningsAndDeductions('Amount_SourceDeductionParentalInsurancePlan')">
+        <ng-container [ngTemplateOutlet]="recursiveList" [ngTemplateOutletContext]="{
+                data: {
+                  showIsReplaceByZeroIcon: showIsReplaceByZeroIcon,
+                  id: 5,
+                  forProperty: 'SourceDeductionParentalInsurancePlan',
+                  showIsReplaceByZeroInputCheckBox: showIsReplaceByZeroInputCheckBox,
+                  modelObj: { propName: 'ExcludedEarningAndSourceDeductions', filterObj: { EarningsAndDeductionsTypeId: phxConstants.EarningsAndDeductionsType.SourceDeductionParentalInsurancePlan } },
+                  td1label3value: phxConstants.EarningsAndDeductionsType.SourceDeductionParentalInsurancePlan,
+                  td2list: transaction.TransactionCalculation.AmountSummary.AmountSummaryBills,
+                  td3DisplayVal: transaction.TransactionCalculation.AmountSummary.AmountSummaryEmployer.Amount_SourceDeductionParentalInsurancePlan,
+                  td4Obj: { list: transaction.TransactionCalculation.AmountSummary.AmountSummaryPayees, displayProp: 'Amount_SourceDeductionParentalInsurancePlan', isShow: true }
+                }
+              }">
+        </ng-container>
+
+      </tr>
+      <tr *ngIf="showSummaryEarningsAndDeductions('Amount_SourceDeductionHealthCare')">
+        <ng-container [ngTemplateOutlet]="recursiveList" [ngTemplateOutletContext]="{
+                data: {
+                  showIsReplaceByZeroIcon: showIsReplaceByZeroIcon,
+                  id: 6,
+                  forProperty: 'SourceDeductionHealthCare',
+                  showIsReplaceByZeroInputCheckBox: showIsReplaceByZeroInputCheckBox,
+                  modelObj: { propName: 'ExcludedEarningAndSourceDeductions', filterObj: { EarningsAndDeductionsTypeId: phxConstants.EarningsAndDeductionsType.SourceDeductionHealthCare } },
+                  td1label3value: phxConstants.EarningsAndDeductionsType.SourceDeductionHealthCare,
+                  td2list: transaction.TransactionCalculation.AmountSummary.AmountSummaryBills,
+                  td3DisplayVal: transaction.TransactionCalculation.AmountSummary.AmountSummaryEmployer.Amount_SourceDeductionHealthCare,
+                  td4Obj: { list: transaction.TransactionCalculation.AmountSummary.AmountSummaryPayees, displayProp: 'Amount_SourceDeductionHealthCare', isShow: true }
+                }
+              }">
+        </ng-container>
+
+      </tr>
+      <tr *ngIf="showSummaryEarningsAndDeductions('Amount_SourceDeductionQuebecTrainingFee')">
+        <ng-container [ngTemplateOutlet]="recursiveList" [ngTemplateOutletContext]="{
+                data: {
+                  showIsReplaceByZeroIcon: showIsReplaceByZeroIcon,
+                  id: 7,
+                  forProperty: 'SourceDeductionQuebecTrainingFee',
+                  showIsReplaceByZeroInputCheckBox: showIsReplaceByZeroInputCheckBox,
+                  modelObj: { propName: 'ExcludedEarningAndSourceDeductions', filterObj: { EarningsAndDeductionsTypeId: phxConstants.EarningsAndDeductionsType.SourceDeductionQuebecTrainingFee } },
+                  td1label3value: phxConstants.EarningsAndDeductionsType.SourceDeductionQuebecTrainingFee,
+                  td2list: transaction.TransactionCalculation.AmountSummary.AmountSummaryBills,
+                  td3DisplayVal: transaction.TransactionCalculation.AmountSummary.AmountSummaryEmployer.Amount_SourceDeductionQuebecTrainingFee,
+                  td4Obj: { list: transaction.TransactionCalculation.AmountSummary.AmountSummaryPayees, displayProp: 'Amount_SourceDeductionQuebecTrainingFee', isShow: true }
+                }
+              }">
+        </ng-container>
+
+      </tr>
+      <tr *ngIf="showSummaryEarningsAndDeductions('Amount_SourceDeductionWCB')">
+        <ng-container [ngTemplateOutlet]="recursiveList" [ngTemplateOutletContext]="{
+                data: {
+                  showIsReplaceByZeroIcon: showIsReplaceByZeroIcon,
+                  id: 8,
+                  forProperty: 'SourceDeductionWCB',
+                  showIsReplaceByZeroInputCheckBox: showIsReplaceByZeroInputCheckBox,
+                  modelObj: { propName: 'ExcludedEarningAndSourceDeductions', filterObj: { EarningsAndDeductionsTypeId: phxConstants.EarningsAndDeductionsType.SourceDeductionWCB } },
+                  td1label3value: phxConstants.EarningsAndDeductionsType.SourceDeductionWCB,
+                  td2list: transaction.TransactionCalculation.AmountSummary.AmountSummaryBills,
+                  td3DisplayVal: transaction.TransactionCalculation.AmountSummary.AmountSummaryEmployer.Amount_SourceDeductionWCB,
+                  td4Obj: { list: transaction.TransactionCalculation.AmountSummary.AmountSummaryPayees, displayProp: 'Amount_SourceDeductionWCB', isShow: true }
+                }
+              }">
+        </ng-container>
+
+      </tr>
+      <tr *ngIf="showSummaryEarningsAndDeductions('Amount_SourceDeductionQuebecPensionPlan')">
+        <ng-container [ngTemplateOutlet]="recursiveList" [ngTemplateOutletContext]="{
+                data: {
+                  showIsReplaceByZeroIcon: showIsReplaceByZeroIcon,
+                  id: 9,
+                  forProperty: 'SourceDeductionQuebecPensionPlan',
+                  showIsReplaceByZeroInputCheckBox: showIsReplaceByZeroInputCheckBox,
+                  modelObj: { propName: 'ExcludedEarningAndSourceDeductions', filterObj: { EarningsAndDeductionsTypeId: phxConstants.EarningsAndDeductionsType.SourceDeductionQuebecPensionPlan } },
+                  td1label3value: phxConstants.EarningsAndDeductionsType.SourceDeductionQuebecPensionPlan,
+                  td2list: transaction.TransactionCalculation.AmountSummary.AmountSummaryBills,
+                  td3DisplayVal: transaction.TransactionCalculation.AmountSummary.AmountSummaryEmployer.Amount_SourceDeductionQuebecPensionPlan,
+                  td4Obj: { list: transaction.TransactionCalculation.AmountSummary.AmountSummaryPayees, displayProp: 'Amount_SourceDeductionQuebecPensionPlan', isShow: true }
+                }
+              }">
+        </ng-container>
+
+      </tr>
+      <tr *ngIf="showSummaryEarningsAndDeductions('Amount_SourceDeductionNonResidentWithholding')">
+        <ng-container [ngTemplateOutlet]="recursiveList" [ngTemplateOutletContext]="{
+                data: {
+                  showIsReplaceByZeroIcon: showIsReplaceByZeroIcon,
+                  id: 10,
+                  forProperty: 'SourceDeductionNonResidentWithHolding',
+                  showIsReplaceByZeroInputCheckBox: showIsReplaceByZeroInputCheckBox,
+                  modelObj: { propName: 'ExcludedEarningAndSourceDeductions', filterObj: { EarningsAndDeductionsTypeId: phxConstants.EarningsAndDeductionsType.SourceDeductionNonResidentWithHolding } },
+                  td1label3value: phxConstants.EarningsAndDeductionsType.SourceDeductionNonResidentWithHolding,
+                  td2list: transaction.TransactionCalculation.AmountSummary.AmountSummaryBills,
+                  td3DisplayVal: transaction.TransactionCalculation.AmountSummary.AmountSummaryEmployer.Amount_SourceDeductionNonResidentWithholding,
+                  td4Obj: { list: transaction.TransactionCalculation.AmountSummary.AmountSummaryPayees, displayProp: 'Amount_SourceDeductionNonResidentWithholding', isShow: true }
+                }
+              }">
+        </ng-container>
+
+      </tr>
+      <tr *ngIf="showSummaryEarningsAndDeductions('Amount_SourceDeductionAdditionalTax')">
+        <ng-container [ngTemplateOutlet]="recursiveList" [ngTemplateOutletContext]="{
+                  data: {
+                    showIsReplaceByZeroIcon: showIsReplaceByZeroIcon,
+                    id: 11,
+                    forProperty: 'SourceDeductionAdditionalTax',
+                    showIsReplaceByZeroInputCheckBox: showIsReplaceByZeroInputCheckBox,
+                    modelObj: { propName: 'ExcludedEarningAndSourceDeductions', filterObj: { EarningsAndDeductionsTypeId: phxConstants.EarningsAndDeductionsType.SourceDeductionAdditionalTax } },
+                    td1label3value: phxConstants.EarningsAndDeductionsType.SourceDeductionAdditionalTax,
+                    td2list: transaction.TransactionCalculation.AmountSummary.AmountSummaryBills,
+                    td3DisplayVal: transaction.TransactionCalculation.AmountSummary.AmountSummaryEmployer.Amount_SourceDeductionAdditionalTax,
+                    td4Obj: { list: transaction.TransactionCalculation.AmountSummary.AmountSummaryPayees, displayProp: 'Amount_SourceDeductionAdditionalTax', isShow: true }
+                  }
+                }">
+        </ng-container>
+
+      </tr>
+      <tr *ngIf="showSummaryEarningsAndDeductions('Amount_SourceDeductionMedicare')">
+        <ng-container [ngTemplateOutlet]="recursiveList" [ngTemplateOutletContext]="{
+                  data: {
+                    showIsReplaceByZeroIcon: showIsReplaceByZeroIcon,
+                    id: 12,
+                    forProperty: 'SourceDeductionMedicare',
+                    showIsReplaceByZeroInputCheckBox: showIsReplaceByZeroInputCheckBox,
+                    modelObj: { propName: 'ExcludedEarningAndSourceDeductions', filterObj: { EarningsAndDeductionsTypeId: phxConstants.EarningsAndDeductionsType.SourceDeductionMedicare } },
+                    td1label3value: phxConstants.EarningsAndDeductionsType.SourceDeductionMedicare,
+                    td2list: transaction.TransactionCalculation.AmountSummary.AmountSummaryBills,
+                    td3DisplayVal: transaction.TransactionCalculation.AmountSummary.AmountSummaryEmployer.Amount_SourceDeductionMedicare,
+                    td4Obj: { list: transaction.TransactionCalculation.AmountSummary.AmountSummaryPayees, isShow: false }
+                  }
+                }">
+        </ng-container>
+      </tr>
+      <tr *ngIf="showSummaryEarningsAndDeductions('Amount_SourceDeductionSocialSecurity')">
+        <ng-container [ngTemplateOutlet]="recursiveList" [ngTemplateOutletContext]="{
+                  data: {
+                    showIsReplaceByZeroIcon: showIsReplaceByZeroIcon,
+                    id: 13,
+                    forProperty: 'SourceDeductionSocialSecurity',
+                    showIsReplaceByZeroInputCheckBox: showIsReplaceByZeroInputCheckBox,
+                    modelObj: { propName: 'ExcludedEarningAndSourceDeductions', filterObj: { EarningsAndDeductionsTypeId: phxConstants.EarningsAndDeductionsType.SourceDeductionSocialSecurity } },
+                    td1label3value: phxConstants.EarningsAndDeductionsType.SourceDeductionSocialSecurity,
+                    td2list: transaction.TransactionCalculation.AmountSummary.AmountSummaryBills,
+                    td3DisplayVal: transaction.TransactionCalculation.AmountSummary.AmountSummaryEmployer.Amount_SourceDeductionSocialSecurity,
+                    td4Obj: { list: transaction.TransactionCalculation.AmountSummary.AmountSummaryPayees, isShow: false }
+                  }
+                }">
+        </ng-container>
+      </tr>
+      <tr *ngIf="showSummaryEarningsAndDeductions('Amount_SourceDeductionFudi')">
+        <ng-container [ngTemplateOutlet]="recursiveList" [ngTemplateOutletContext]="{
+                  data: {
+                    showIsReplaceByZeroIcon: showIsReplaceByZeroIcon,
+                    id: 14,
+                    forProperty: 'SourceDeductionFudi',
+                    showIsReplaceByZeroInputCheckBox: showIsReplaceByZeroInputCheckBox,
+                    modelObj: { propName: 'ExcludedEarningAndSourceDeductions', filterObj: { EarningsAndDeductionsTypeId: phxConstants.EarningsAndDeductionsType.SourceDeductionFudi } },
+                    td1label3value: phxConstants.EarningsAndDeductionsType.SourceDeductionFudi,
+                    td2list: transaction.TransactionCalculation.AmountSummary.AmountSummaryBills,
+                    td3DisplayVal: transaction.TransactionCalculation.AmountSummary.AmountSummaryEmployer.Amount_SourceDeductionFudi,
+                    td4Obj: { list: transaction.TransactionCalculation.AmountSummary.AmountSummaryPayees, isShow: false }
+                  }
+                }">
+        </ng-container>
+      </tr>
+      <tr *ngIf="showSummaryEarningsAndDeductions('Amount_SourceDeductionSui')">
+        <ng-container [ngTemplateOutlet]="recursiveList" [ngTemplateOutletContext]="{
+                          data: {
+                            showIsReplaceByZeroIcon: showIsReplaceByZeroIcon,
+                            id: 15,
+                            forProperty: 'SourceDeductionSui',
+                            showIsReplaceByZeroInputCheckBox: showIsReplaceByZeroInputCheckBox,
+                            modelObj: { propName: 'ExcludedEarningAndSourceDeductions', filterObj: { EarningsAndDeductionsTypeId: phxConstants.EarningsAndDeductionsType.SourceDeductionSui } },
+                            td1label3value: phxConstants.EarningsAndDeductionsType.SourceDeductionSui,
+                            td2list: transaction.TransactionCalculation.AmountSummary.AmountSummaryBills,
+                            td3DisplayVal: transaction.TransactionCalculation.AmountSummary.AmountSummaryEmployer.Amount_SourceDeductionSui,
+                            td4Obj: { list: transaction.TransactionCalculation.AmountSummary.AmountSummaryPayees, isShow: false }
+                          }
+                        }">
+        </ng-container>
+      </tr>
+      <tr *ngIf="showSummaryEarningsAndDeductions('Amount_SourceDeductionBenefits')">
+        <ng-container [ngTemplateOutlet]="recursiveList" [ngTemplateOutletContext]="{
+                  data: {
+                    showIsReplaceByZeroIcon: showIsReplaceByZeroIcon,
+                    id: 16,
+                    forProperty: 'SourceDeductionBenefits',
+                    showIsReplaceByZeroInputCheckBox: showIsReplaceByZeroInputCheckBox,
+                    modelObj: { propName: 'ExcludedEarningAndSourceDeductions', filterObj: { EarningsAndDeductionsTypeId: phxConstants.EarningsAndDeductionsType.SourceDeductionBenefits } },
+                    td1label3value: phxConstants.EarningsAndDeductionsType.SourceDeductionBenefits,
+                    td2list: transaction.TransactionCalculation.AmountSummary.AmountSummaryBills,
+                    td3DisplayVal: transaction.TransactionCalculation.AmountSummary.AmountSummaryEmployer.Amount_SourceDeductionBenefits,
+                    td4Obj: { list: transaction.TransactionCalculation.AmountSummary.AmountSummaryPayees, displayProp: 'Amount_SourceDeductionBenefits', isShow: true }
+                  }
+                }">
+        </ng-container>
+
+      </tr>
+      <tr>
+        <td class="transaction-amount-summary-table-first-col bold">Total Deductions</td>
+        <td *ngFor="let bill of transaction.TransactionCalculation.AmountSummary.AmountSummaryBills">&nbsp;</td>
+        <td>
+          <span class="pull-right bold" *ngIf="transaction.CurrencyCode"> {{
+            transaction.TransactionCalculation.AmountSummary.AmountSummaryEmployer.Amount_TotalDeductions |
+            currency: transaction.CurrencyCode + ' $' }} </span>
+        </td>
+        <td *ngFor="let payee of transaction.TransactionCalculation.AmountSummary.AmountSummaryPayees">
+          <span class="pull-right bold" *ngIf="transaction.CurrencyCode">{{ payee.Amount_TotalDeductions | currency: transaction.CurrencyCode + ' $'
+            }}</span>
+        </td>
+      </tr>
+
+      <tr *ngIf="showSummaryEarningsAndDeductions('Amount_PayeeAdvance') || showSummaryEarningsAndDeductions('Amount_PayeeGarnishee')">
+        <td class="transaction-amount-summary-table-first-col"><span class="h4">Advances and Garnishees</span></td>
+        <td *ngFor="let bill of transaction.TransactionCalculation.AmountSummary.AmountSummaryBills">&nbsp;</td>
+        <td>&nbsp;</td>
+        <td *ngFor="let payee of transaction.TransactionCalculation.AmountSummary.AmountSummaryPayees">&nbsp;</td>
+      </tr>
+      <tr *ngIf="showSummaryEarningsAndDeductions('Amount_PayeeAdvance')">
+        <ng-container [ngTemplateOutlet]="recursiveList" [ngTemplateOutletContext]="{
+                  data: {
+                    showIsReplaceByZeroIcon: showIsReplaceByZeroIcon,
+                    id: 17,
+                    forProperty: 'Advance',
+                    showIsReplaceByZeroInputCheckBox: showIsReplaceByZeroInputCheckBox,
+                    modelObj: { propName: 'ExcludedEarningAndSourceDeductions', filterObj: { EarningsAndDeductionsTypeId: phxConstants.EarningsAndDeductionsType.Advance } },
+                    td1label3value: phxConstants.EarningsAndDeductionsType.Advance,
+                    td2list: transaction.TransactionCalculation.AmountSummary.AmountSummaryBills,
+                    td3DisplayVal: null,
+                    td4Obj: { list: transaction.TransactionCalculation.AmountSummary.AmountSummaryPayees, displayProp: 'Amount_PayeeAdvance', isShow: true }
+                  }
+                }">
+        </ng-container>
+      </tr>
+      <tr *ngIf="showSummaryEarningsAndDeductions('Amount_PayeeGarnishee')">
+        <ng-container [ngTemplateOutlet]="recursiveList" [ngTemplateOutletContext]="{
+                  data: {
+                    showIsReplaceByZeroIcon: showIsReplaceByZeroIcon,
+                    id: 18,
+                    forProperty: 'Garnishee',
+                    showIsReplaceByZeroInputCheckBox: showIsReplaceByZeroInputCheckBox,
+                    modelObj: { propName: 'ExcludedEarningAndSourceDeductions', filterObj: { EarningsAndDeductionsTypeId: phxConstants.EarningsAndDeductionsType.Garnishee } },
+                    td1label3value: phxConstants.EarningsAndDeductionsType.Garnishee,
+                    td2list: transaction.TransactionCalculation.AmountSummary.AmountSummaryBills,
+                    td3DisplayVal: null,
+                    td4Obj: { list: transaction.TransactionCalculation.AmountSummary.AmountSummaryPayees, displayProp: 'Amount_PayeeGarnishee', isShow: true }
+                  }
+                }">
+        </ng-container>
+      </tr>
+
+      <tr>
+        <td class="h4" [attr.colspan]="2 + transaction.TransactionCalculation.AmountSummary.AmountSummaryBills.length + transaction.TransactionCalculation.AmountSummary.AmountSummaryPayees.length">Total Amounts</td>
+      </tr>
+      <tr>
+        <td class="transaction-amount-summary-table-first-col bold">Total Amount</td>
+        <td *ngFor="let bill of transaction.TransactionCalculation.AmountSummary.AmountSummaryBills">
+          <span class="pull-right bold" *ngIf="transaction.CurrencyCode"> {{ bill.Amount_BillTotalAll | currency: transaction.CurrencyCode + ' $' }}</span>
+        </td>
+        <td>
+          <span class="pull-right bold" *ngIf="transaction.CurrencyCode"> {{
+            transaction.TransactionCalculation.AmountSummary.AmountSummaryEmployer.Amount_TotalDeductions |
+            currency: transaction.CurrencyCode + ' $' }}</span>
+        </td>
+        <td *ngFor="let payee of transaction.TransactionCalculation.AmountSummary.AmountSummaryPayees">
+          <span class="pull-right bold" *ngIf="transaction.CurrencyCode"> {{ payee.Amount_PayeeTotalAll | currency: transaction.CurrencyCode + ' $'
+            }}</span>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<ng-template #recursiveList let-data="data">
+  <td class="transaction-amount-summary-table-first-col">
+    <label class="transaction-amount-summary-checkbox-view" *ngIf="data.showIsReplaceByZeroIcon" [ngClass]="getModel(data.modelObj.propName, data.modelObj.filterObj).IsExcluded ?
+        'transaction-amount-summary-checkbox-view-red' : 'transaction-amount-summary-checkbox-view-green'">
+    </label>
+    <input type="checkbox" class="transaction-amount-summary-checkbox" id="{{'amount_' + data.forProperty}}" *ngIf="data.showIsReplaceByZeroInputCheckBox"
+      [(ngModel)]="getModel(data.modelObj.propName, data.modelObj.filterObj).IsExcluded" (ngModelChange)="resetTaxesAndCalculate()" />
+    <label for="{{'amount_' + data.forProperty}}"></label>
+    <label for="{{'amount_' + data.forProperty}}" class="transaction-amount-summary-label-text">
+      {{ data.td1label3value | lookupNoCache: html.lists.earningsAndDeductionsTypeList:'id':'text' }}
+    </label>
+  </td>
+  <td *ngFor="let list of data.td2list">&nbsp;</td>
+  <td>
+    <span class="pull-right" *ngIf="transaction.CurrencyCode" [ngClass]="getModel(data.modelObj.propName, data.modelObj.filterObj).IsExcluded ? 'transaction-amount-summary-amount-strikethrough' : ''">
+      {{ data.td3DisplayVal | currency: transaction.CurrencyCode + ' $' }}
+    </span>
+  </td>
+  <td *ngFor="let list of data.td4Obj.list">
+    <ng-container *ngIf="!data.td4Obj.isShow">&nbsp;</ng-container>
+    <span class="pull-right" *ngIf="data.td4Obj.isShow && transaction.CurrencyCode" [ngClass]="getModel(data.modelObj.propName, data.modelObj.filterObj).IsExcluded ? 'transaction-amount-summary-amount-strikethrough' : ''"> {{ list[data.td4Obj.displayProp] | currency: transaction.CurrencyCode + '
+      $' }} </span>
+  </td>
+</ng-template>
+
+<ng-template #salesTax let-data="data">
+  <td class="transaction-amount-summary-table-first-col">{{data.title}}</td>
+  <td *ngFor="let bill of data.td2list">
+    <label class="transaction-amount-summary-checkbox-view" *ngIf="data.showIsReplaceByZeroIcon && bill[data.td2Label4DisplayProperty] !== null"
+      [ngClass]="getModel(data.td2ModelObj.propName, { SalesTaxId: data.td2ModelObj.filterObj.SalesTaxId, OrganizationIdClient: bill.OrganizationIdClient }).IsExcluded
+                ? 'transaction-amount-summary-checkbox-view-red'
+                : 'transaction-amount-summary-checkbox-view-green'">
+    </label>
+    <input type="checkbox" class="transaction-amount-summary-checkbox" id="{{data.td2Label4DisplayProperty}}_{{bill.OrganizationIdClient}}"
+      *ngIf="data.showIsReplaceByZeroInputCheckBox && bill[data.td2Label4DisplayProperty] !== null && showSummaryEarningsAndDeductions(data.td2Label4DisplayProperty, bill)"
+      [(ngModel)]="getModel(data.td2ModelObj.propName, { SalesTaxId: data.td2ModelObj.filterObj.SalesTaxId, OrganizationIdClient: bill.OrganizationIdClient }).IsExcluded"
+      (ngModelChange)="resetTaxesAndCalculate()" />
+    <label for="{{data.td2Label4DisplayProperty}}_{{bill.OrganizationIdClient}}"></label>
+    <label for="{{data.td2Label4DisplayProperty}}_{{bill.OrganizationIdClient}}" class="transaction-amount-summary-label-text"
+      *ngIf="data.td2Label3DisplayValue">
+      {{ data.td2Label3DisplayValue }} <span>%</span>
+    </label>
+    <label for="{{data.td2Label4DisplayProperty}}_{{bill.OrganizationIdClient}}" class="transaction-amount-summary-label-text right-text pull-right" *ngIf="transaction.CurrencyCode"
+      [ngClass]="getModel(data.td2ModelObj.propName, { SalesTaxId: data.td2ModelObj.filterObj.SalesTaxId, OrganizationIdClient: bill.OrganizationIdClient }).IsExcluded ? 'transaction-amount-summary-amount-strikethrough' : ''">
+      {{ bill[data.td2Label4DisplayProperty] | currency: transaction.CurrencyCode + ' $' }}
+    </label>
+  </td>
+  <td>&nbsp;</td>
+  <td *ngFor="let payee of data.td4list">
+    <label class="transaction-amount-summary-checkbox-view" *ngIf="data.showIsReplaceByZeroIcon && payee[data.td4Label4DisplayProperty] !== null"
+      [ngClass]="getModel(data.td4ModelObj.propName,  { SalesTaxId: data.td2ModelObj.filterObj.SalesTaxId, PayeeOrganizationIdSupplier: payee.PayeeOrganizationIdSupplier, PayeeUserProfileWorkerId: payee.PayeeUserProfileWorkerId}).IsExcluded
+                ? 'transaction-amount-summary-checkbox-view-red'
+                : 'transaction-amount-summary-checkbox-view-green'">
+    </label>
+    <input type="checkbox" class="transaction-amount-summary-checkbox" id="{{data.td4Label4DisplayProperty}}_{{payee.PayeeUserProfileWorkerId}}_{{payee.PayeeOrganizationIdSupplier}}"
+      *ngIf="data.showIsReplaceByZeroInputCheckBox && payee[data.td4Label4DisplayProperty] !== null && showSummaryEarningsAndDeductions(data.td4Label4DisplayProperty, payee)"
+      [(ngModel)]="getModel(data.td4ModelObj.propName, { SalesTaxId: data.td2ModelObj.filterObj.SalesTaxId, PayeeOrganizationIdSupplier: payee.PayeeOrganizationIdSupplier, PayeeUserProfileWorkerId: payee.PayeeUserProfileWorkerId}).IsExcluded"
+      (ngModelChange)="resetTaxesAndCalculate()" />
+    <label for="{{data.td4Label4DisplayProperty}}_{{payee.PayeeUserProfileWorkerId}}_{{payee.PayeeOrganizationIdSupplier}}"></label>
+    <label for="{{data.td4Label4DisplayProperty}}_{{payee.PayeeUserProfileWorkerId}}_{{payee.PayeeOrganizationIdSupplier}}"
+      class="transaction-amount-summary-label-text">
+      {{ data.td4Label3DisplayValue }} <span *ngIf="data.td4Label3DisplayValue">%</span>
+    </label>
+    <label for="{{data.td4Label4DisplayProperty}}_{{payee.PayeeUserProfileWorkerId}}_{{payee.PayeeOrganizationIdSupplier}}" *ngIf="transaction.CurrencyCode"
+      class="transaction-amount-summary-label-text  right-text pull-right" [ngClass]="getModel(data.td4ModelObj.propName,  { SalesTaxId: data.td2ModelObj.filterObj.SalesTaxId, PayeeOrganizationIdSupplier: payee.PayeeOrganizationIdSupplier, PayeeUserProfileWorkerId: payee.PayeeUserProfileWorkerId}).IsExcluded
+                ? 'transaction-amount-summary-amount-strikethrough': ''">
+      {{ payee[data.td4Label4DisplayProperty] | currency: transaction.CurrencyCode + ' $' }}
+    </label>
+  </td>
+</ng-template>

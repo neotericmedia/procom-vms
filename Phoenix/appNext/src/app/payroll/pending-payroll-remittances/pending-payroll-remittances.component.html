@@ -1,0 +1,48 @@
+<div class="row ">
+  <div class="vms-transaction-conflict-search">
+    <app-phx-data-table #phxTable  [configuration]="dataTableConfiguration" [dataSourceUrl]="dataSourceUrl" [dataSourceParams]='oDataParams'
+      [columns]="columns" [exportFileName]="exportFileName" [componentName]="dataGridComponentName" (selectionChanged)="selections($event)"
+       (responseReceived)="phxDataSetResponse($event)" (contextMenuPreparing)="onContextMenuPreparing($event)">
+    </app-phx-data-table>
+    <div class="pending-payroll-remittances-report" [ngClass]="{ out: !Id, in: Id}"></div>
+  </div>
+</div>
+<div class="row pending-remittance">
+    <div class="col-lg-12 sub-header">
+        <h4>Total Remittance Batch Breakdown by Type</h4>
+    </div>
+    <div class="col-lg-6" > 
+      <div *ngFor="let sd of sdGroups">
+        <div class="row rem-row" >
+            <div class="col-lg-8">{{sd.text}}<span class="pull-right">{{sd.sum | number:'.2-2'}}</span></div>            
+            <div class="col-lg-4"></div>
+        </div>
+      </div>
+    </div>
+    <br/>
+    <div class="col-lg-6">
+        <div class="row rem-row">
+            <div class="col-lg-8">Gross Paid<span class="pull-right"><b>{{grossPay | number:'.2-2'}}</b></span></div>
+            <div class="col-lg-4"></div>
+        </div>
+        <div class="row rem-row">
+            <div class="col-lg-8">Total Remittance Amount<span class="pull-right"><b>{{totalRemittanceAmount | number:'.2-2'}}</b></span></div>
+            <div class="col-lg-4"></div>
+        </div>
+        <div class="row rem-row">
+            <div class="col-lg-8">Remittance Date<span [ngClass]="!RemittanceDate ?'text-danger':''">*</span><dx-date-box width="140" class="pull-right" [(value)]="RemittanceDate" [displayFormat]="{formatter:formatDate}" required></dx-date-box></div>
+            <div class="col-lg-4"></div>
+        </div>
+        <br/>
+        <div class="row rem-row">
+            <div class="col-lg-4"></div>
+            <div class="col-lg-2"><dx-button type="normal" class="rem-btn" text="Save Draft" (onClick)="downloadDraftFile()" disabled="{{selectedPaymentTransactionIds?.length==0 ? 'disabled' : ''}}"></dx-button></div>
+            <div class="col-lg-2"><dx-button type="default" class="pull-right rem-btn" text="Remit" (onClick)="submitRemittance()" disabled="{{selectedPaymentTransactionIds?.length==0 || !RemittanceDate ? 'disabled' : ''}}"></dx-button></div>
+            <div class="col-lg-4"></div>
+        </div>
+    </div>  
+</div>
+
+<app-phx-modal #submitRemittanceModal [buttons]="submitRemittanceModalButtons" title="Confirm">
+    Do you want to remit records?
+</app-phx-modal>

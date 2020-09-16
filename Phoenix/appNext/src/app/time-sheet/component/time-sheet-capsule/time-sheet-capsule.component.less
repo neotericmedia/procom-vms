@@ -1,0 +1,129 @@
+.capsuleWrap {
+    position: relative;
+    font-size: 14px;
+    line-height: 18px;
+    margin: 0 1px 1px 1px;
+    border-radius: 4px;
+    padding-top: 5px;
+    padding-bottom: 2px;
+
+    [class^="col-"] {
+        padding-left: 5px;
+        padding-right: 5px;
+    }
+
+    .note-icon {
+        height: 12px;
+        position: absolute;
+        left: 5px;
+        bottom: 10px;
+        .material-icons {
+            font-size: 12px;
+        }
+    }
+
+    .btn-link.btn-clear {
+        width: 24px;
+        height: 24px;
+        padding: 0;
+        color: inherit;
+        line-height: 10px;
+        position: absolute;
+        right: 0;
+        top: -5px;
+        text-decoration: none;        
+        .material-icons.clear {
+            font-size: 21px;
+            display: block;
+        }
+    }
+
+    .row {
+        margin-left: 0px;
+        margin-right: 0px;
+    }
+}
+
+
+.capsuleData {
+    min-height: 28px;
+    width: calc(~'100% - 12px');
+}
+.capsuleData-elipse {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display: block;
+    overflow: hidden;
+}
+
+.paddign-top-bottom-0 {
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+.direct-row {
+    min-height: 26px;
+}
+
+.direct-wrap {
+    min-width: calc(~'100% - 12px');
+    box-sizing: border-box;
+}
+
+.direct, .direct:disabled {
+    width: calc(~'100% - 17px');
+    box-sizing: border-box;
+    outline: 0;
+    background: transparent;
+    color: inherit;
+    border: none;
+    padding: 2px 0 2px 0;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 18px;
+    height: 20px;
+    padding: 0;
+    display: inline-block;
+}
+
+.direct::-ms-clear, .direct:disabled::-ms-clear, .direct::-ms-reveal, .direct:disabled::-ms-reveal {
+    display: none;
+ }
+ 
+input.ng-dirty.ng-invalid.direct:focus, select.ng-dirty.ng-invalid.directfocus, .show-error.direct:focus {
+    color: inherit !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+.direct-error {
+    background: rgba(255, 255, 255, .75);
+    color: #d50000;
+    font-weight: bold;
+    position: absolute;
+    bottom: 2px;
+    left: 2px;
+    right: 2px;
+    text-align: center;
+    font-size: 9px;
+    line-height: 9px;
+    border-bottom-left-radius: 2px;
+    border-bottom-right-radius: 2px;
+    border-color: inherit;
+}
+
+.spotlight {
+    z-index: 1041;
+    filter: brightness(125%);
+}
+
+.dimmer {
+    filter: brightness(25%);    
+}
+
+@media screen and (max-width: 1700px) {
+    [class^="col-lg"] {
+        display: block;
+        width: 100%;
+    }
+}

@@ -1,0 +1,869 @@
+﻿<style>
+    .transaction-amount-summary-detail-summary .no-margin-left {
+        margin-left: 0;
+    }
+
+    .transaction-amount-summary-detail-summary .center {
+        text-align: center;
+    }
+
+    .transaction-amount-summary-detail-summary .right-text {
+        text-align: right;
+    }
+
+    .transaction-amount-summary-label-text {
+        margin-left: 3px;
+        font-weight: normal !important;
+        height: 26px;
+        vertical-align: bottom;
+    }
+
+    .transaction-amount-summary-label-text-no-checkbox {
+        font-weight: normal !important;
+        height: 26px;
+        vertical-align: bottom;
+    }
+
+    .transaction-amount-summary-checkbox-view {
+        position: relative;
+        height: 26px;
+        width: 26px;
+        border-radius: 50%;
+        transition: box-shadow 0.4s, border 0.4s;
+        border: solid 3px #f1f1f3;
+        box-shadow: 0 0 1px #f1f1f3;
+        cursor: pointer;
+        vertical-align: bottom;
+    }
+
+    .transaction-amount-summary-checkbox-view-red:after {
+        content: '\2718';
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        margin: auto;
+        color: red;
+        line-height: 1;
+        font-size: 18px;
+        text-align: center;
+        height: 26px;
+        width: 26px;
+        border-radius: 50%;
+        transition: box-shadow 0.4s, border 0.4s;
+        border: solid 3px #f1f1f3;
+        box-shadow: 0 0 1px #f1f1f3;
+        vertical-align: bottom;
+    }
+
+    .transaction-amount-summary-checkbox-view-green:after {
+        content: '\2714';
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        margin: auto;
+        color: green;
+        line-height: 1;
+        font-size: 18px;
+        text-align: center;
+        height: 26px;
+        width: 26px;
+        border-radius: 50%;
+        transition: box-shadow 0.4s, border 0.4s;
+        border: solid 3px #f1f1f3;
+        box-shadow: 0 0 1px #f1f1f3;
+        vertical-align: bottom;
+    }
+    /*http://www.fileformat.info/info/unicode/block/dingbats/images.htm*/
+
+    .transaction-amount-summary-table-first-col {
+        white-space: nowrap;
+    }
+
+    .transaction-amount-summary-table-body {
+        white-space: nowrap;
+    }
+
+
+
+    .transaction-amount-summary-checkbox {
+        display: none;
+    }
+
+        .transaction-amount-summary-checkbox + label {
+            position: relative;
+            height: 26px;
+            width: 26px;
+            border-radius: 50%;
+            transition: box-shadow 0.4s, border 0.4s;
+            border: solid 3px #f1f1f3;
+            box-shadow: 0 0 1px #f1f1f3;
+            cursor: pointer;
+            vertical-align: bottom;
+        }
+
+            .transaction-amount-summary-checkbox + label:after {
+                content: '\2714';
+                height: 1em;
+                position: absolute;
+                top: 0;
+                left: 0;
+                bottom: 0;
+                right: 0;
+                margin: auto;
+                color: green;
+                line-height: 1;
+                font-size: 18px;
+                text-align: center;
+            }
+
+            .transaction-amount-summary-checkbox + label:hover {
+                border: solid 3px green;
+                box-shadow: 0 0 1px green;
+            }
+
+        .transaction-amount-summary-checkbox:checked + label:after {
+            content: '\2718';
+            height: 1em;
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            margin: auto;
+            color: red;
+            line-height: 1;
+            font-size: 18px;
+            text-align: center;
+        }
+
+        .transaction-amount-summary-checkbox:checked + label:hover {
+            border: solid 3px red;
+            box-shadow: 0 0 1px red;
+        }
+
+
+    .transaction-amount-summary-amount-strikethrough {
+        position: relative;
+    }
+
+        .transaction-amount-summary-amount-strikethrough:before {
+            position: absolute;
+            content: "";
+            left: 0;
+            top: 50%;
+            right: 0;
+            border-top: 1px solid;
+            border-color: inherit;
+            -webkit-transform: rotate(-5deg);
+            -moz-transform: rotate(-5deg);
+            -ms-transform: rotate(-5deg);
+            -o-transform: rotate(-5deg);
+            transform: rotate(-5deg);
+        }
+</style>
+
+<div class="panel-internal transaction-amount-summary-detail-summary" style="margin: 0 -5px" >
+    <div class="panel-body">
+        <div class="col-lg-12">
+            <p class="h4 center">Amount Summary</p>
+        </div>
+        <div class="col-lg-12 table-responsive">
+            <table class="table table-striped table-bordered table-hover table-condensed" data-ng-show="model.transactionCalculation.AmountSummary">
+                <thead>
+                    <tr>
+                        <th class="transaction-amount-summary-table-first-col">&nbsp;</th>
+                        <th colspan="{{model.transactionCalculation.AmountSummary.AmountSummaryBills.length}}"
+                            data-ng-class="model.transactionCalculation.AmountSummary.AmountSummaryBills.length==0?'hide':''"><span class="pull-right">Bill</span></th>
+                        <th><span class="pull-right">Internal</span></th>
+                        <th colspan="{{model.transactionCalculation.AmountSummary.AmountSummaryPayees.length}}"
+                            data-ng-class="model.transactionCalculation.AmountSummary.AmountSummaryPayees.length==0?'hide':''"><span class="pull-right">Payee(s)</span></th>
+                    </tr>
+                    <tr>
+                        <th class="transaction-amount-summary-table-first-col">&nbsp;</th>
+                        <th data-ng-repeat="bill in model.transactionCalculation.AmountSummary.AmountSummaryBills"><span class="right-text pull-right">{{bill.OrganizationClientLegalName}}</span></th>
+                        <th><span class="right-text pull-right">{{model.transactionCalculation.AmountSummary.AmountSummaryEmployer.OrganizationInternalLegalName}}</span></th>
+                        <th data-ng-repeat="payee in model.transactionCalculation.AmountSummary.AmountSummaryPayees"><span class="right-text pull-right">{{payee.PayeeName}}</span></th>
+                    </tr>
+                </thead>
+                <tbody class="transaction-amount-summary-table-body">
+                    <tr>
+                        <td class="h4" colspan="{{1+model.transactionCalculation.AmountSummary.AmountSummaryBills.length+1+model.transactionCalculation.AmountSummary.AmountSummaryPayees.length}}">Gross</td>
+                    </tr>
+                    <tr>
+                        <td class="transaction-amount-summary-table-first-col">&nbsp;Amount</td>
+                        <td data-ng-repeat="bill in model.transactionCalculation.AmountSummary.AmountSummaryBills"><span class="pull-right">{{bill.Amount_TotalLines|currency:model.transactionHeader.CurrencyCode + " $"}}</span></td>
+                        <td>&nbsp;</td>
+                        <td data-ng-repeat="payee in model.transactionCalculation.AmountSummary.AmountSummaryPayees"><span class="pull-right">{{payee.Amount_TotalLines|currency:model.transactionHeader.CurrencyCode + " $"}}</span></td>
+                    </tr>
+                    <tr data-ng-if="showSummaryEarningsAndDeductions(model.transactionCalculation.AmountSummary, 'Amount_PayeeStatutoryHoliday')">
+                        <td class="transaction-amount-summary-table-first-col">&nbsp;Statutory Holiday</td>
+                        <td data-ng-repeat="bill in model.transactionCalculation.AmountSummary.AmountSummaryBills">&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td data-ng-repeat="payee in model.transactionCalculation.AmountSummary.AmountSummaryPayees"><span class="pull-right">{{payee.Amount_PayeeStatutoryHoliday|currency:model.transactionHeader.CurrencyCode + " $"}}</span></td>
+                    </tr>
+                    <tr data-ng-if="showSummaryEarningsAndDeductions(model.transactionCalculation.AmountSummary, 'Amount_PayeePaymentOtherEarningVacationPay_NotAccrued')">
+                        <td class="transaction-amount-summary-table-first-col">
+                            <label class="transaction-amount-summary-checkbox-view"
+                                   data-ng-if="showIsReplaceByZeroIcon"
+                                   data-ng-class="(model.transactionHeader.ExcludedEarningAndSourceDeductions|filter:{EarningsAndDeductionsTypeId: ApplicationConstants.EarningsAndDeductionsType.PaymentOtherEarningVacationPay})[0].IsExcluded ? 'transaction-amount-summary-checkbox-view-red' : 'transaction-amount-summary-checkbox-view-green'"></label>
+                            <input type="checkbox" class="transaction-amount-summary-checkbox" id="Amount_PayeePaymentOtherEarningVacationPay_NotAccrued"
+                                   data-ng-if="showIsReplaceByZeroInputCheckBox"
+                                   data-ng-change="resetTaxesAndCalculate()"
+                                   data-ng-model="(model.transactionHeader.ExcludedEarningAndSourceDeductions|filter:{EarningsAndDeductionsTypeId: ApplicationConstants.EarningsAndDeductionsType.PaymentOtherEarningVacationPay})[0].IsExcluded">
+                            <label for="Amount_PayeePaymentOtherEarningVacationPay_NotAccrued"></label>
+                            <label for="Amount_PayeePaymentOtherEarningVacationPay_NotAccrued" class="transaction-amount-summary-label-text">{{ApplicationConstants.EarningsAndDeductionsType.PaymentOtherEarningVacationPay | lookup:lists.earningsAndDeductionsTypeList:'id':'text'}}</label>
+                            <label class="transaction-amount-summary-label-text" data-ng-if="model.transactionCalculation.AmountSummary.Percent_PayeFirstOrDefault_OtherEarningVacationPay_NotAccrued">{{model.transactionCalculation.AmountSummary.Percent_PayeFirstOrDefault_OtherEarningVacationPay_NotAccrued}} %</label>
+                        </td>
+                        <td data-ng-repeat="bill in model.transactionCalculation.AmountSummary.AmountSummaryBills">&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td data-ng-repeat="payee in model.transactionCalculation.AmountSummary.AmountSummaryPayees">
+                            <!--Do not delete the next line - its correct logic to show percentage - but will be used in future-->
+                            <!--<span class="pull-left" data-ng-if="payee.Percent_PayeePaymentOtherEarningVacationPay_NotAccrued">{{payee.Percent_PayeePaymentOtherEarningVacationPay_NotAccrued}} %&nbsp;</span>-->
+                            <span class="pull-right" data-ng-class="(model.transactionHeader.ExcludedEarningAndSourceDeductions|filter:{EarningsAndDeductionsTypeId: ApplicationConstants.EarningsAndDeductionsType.PaymentOtherEarningVacationPay})[0].IsExcluded ? 'transaction-amount-summary-amount-strikethrough' : ''">{{payee.Amount_PayeePaymentOtherEarningVacationPay_NotAccrued|currency:model.transactionHeader.CurrencyCode + " $"}}</span>
+                        </td>
+                    </tr>
+                    <tr data-ng-if="showSummaryEarningsAndDeductions(model.transactionCalculation.AmountSummary, 'Amount_PayeePaymentOtherEarningVacationPay_Accrued')">
+                        <td class="transaction-amount-summary-table-first-col">
+                            <label class="transaction-amount-summary-checkbox-view"
+                                   data-ng-if="showIsReplaceByZeroIcon"
+                                   data-ng-class="(model.transactionHeader.ExcludedEarningAndSourceDeductions|filter:{EarningsAndDeductionsTypeId: ApplicationConstants.EarningsAndDeductionsType.PaymentOtherEarningVacationPay})[0].IsExcluded ? 'transaction-amount-summary-checkbox-view-red' : 'transaction-amount-summary-checkbox-view-green'"></label>
+                            <input type="checkbox" class="transaction-amount-summary-checkbox" id="Amount_PayeePaymentOtherEarningVacationPay_Accrued"
+                                   data-ng-if="showIsReplaceByZeroInputCheckBox"
+                                   data-ng-change="resetTaxesAndCalculate()"
+                                   data-ng-model="(model.transactionHeader.ExcludedEarningAndSourceDeductions|filter:{EarningsAndDeductionsTypeId: ApplicationConstants.EarningsAndDeductionsType.PaymentOtherEarningVacationPay})[0].IsExcluded">
+                            <label for="Amount_PayeePaymentOtherEarningVacationPay_Accrued"></label>
+                            <label for="Amount_PayeePaymentOtherEarningVacationPay_Accrued" class="transaction-amount-summary-label-text">{{ApplicationConstants.EarningsAndDeductionsType.PaymentOtherEarningVacationPay | lookup:lists.earningsAndDeductionsTypeList:'id':'text'}} Accrued</label>
+                            <label class="transaction-amount-summary-label-text"
+                                   data-ng-if="model.transactionCalculation.AmountSummary.Percent_PayeFirstOrDefault_OtherEarningVacationPay_Accrued">{{model.transactionCalculation.AmountSummary.Percent_PayeFirstOrDefault_OtherEarningVacationPay_Accrued}}%</label>
+                        </td>
+                        <td data-ng-repeat="bill in model.transactionCalculation.AmountSummary.AmountSummaryBills">&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td data-ng-repeat="payee in model.transactionCalculation.AmountSummary.AmountSummaryPayees">
+                            <!--Do not delete the next line - its correct logic to show percentage - but will be used in future-->
+                            <!--<span class="pull-left" data-ng-if="payee.Percent_PayeePaymentOtherEarningVacationPay_Accrued">{{payee.Percent_PayeePaymentOtherEarningVacationPay_Accrued}} %&nbsp;</span>-->
+                            <span class="pull-right" data-ng-class="(model.transactionHeader.ExcludedEarningAndSourceDeductions|filter:{EarningsAndDeductionsTypeId: ApplicationConstants.EarningsAndDeductionsType.PaymentOtherEarningVacationPay})[0].IsExcluded ? 'transaction-amount-summary-amount-strikethrough' : ''">{{payee.Amount_PayeePaymentOtherEarningVacationPay_Accrued|currency:model.transactionHeader.CurrencyCode + " $"}}</span>
+                        </td>
+                    </tr>
+                    <tr data-ng-if="showSummaryEarningsAndDeductions(model.transactionCalculation.AmountSummary, 'Amount_VMSFee')">
+                        <td class="transaction-amount-summary-table-first-col">
+                            <label class="transaction-amount-summary-checkbox-view"
+                                   data-ng-if="showIsReplaceByZeroIcon"
+                                   data-ng-class="(model.transactionHeader.ExcludedEarningAndSourceDeductions|filter:{EarningsAndDeductionsTypeId: ApplicationConstants.EarningsAndDeductionsType.VmsFee})[0].IsExcluded ? 'transaction-amount-summary-checkbox-view-red' : 'transaction-amount-summary-checkbox-view-green'"></label>
+                            <input type="checkbox" class="transaction-amount-summary-checkbox" id="Amount_VMSFee"
+                                   data-ng-if="showIsReplaceByZeroInputCheckBox"
+                                   data-ng-change="resetTaxesAndCalculate()"
+                                   data-ng-model="(model.transactionHeader.ExcludedEarningAndSourceDeductions|filter:{EarningsAndDeductionsTypeId: ApplicationConstants.EarningsAndDeductionsType.VmsFee})[0].IsExcluded">
+                            <label for="Amount_VMSFee"></label>
+                            <label for="Amount_VMSFee" class="transaction-amount-summary-label-text">{{ApplicationConstants.EarningsAndDeductionsType.VmsFee | lookup:lists.earningsAndDeductionsTypeList:'id':'text'}}</label>
+                            <label class="transaction-amount-summary-label-text" data-ng-if="model.transactionCalculation.AmountSummary.Percent_BillFirstOrDefault_VMSFee">{{model.transactionCalculation.AmountSummary.Percent_BillFirstOrDefault_VMSFee}} %</label>
+                        </td>
+                        <td data-ng-repeat="bill in model.transactionCalculation.AmountSummary.AmountSummaryBills">
+                            <!--Do not delete the next line - its correct logic to show percentage - but will be used in future-->
+                            <!--<span class="pull-left" data-ng-if="bill.Percent_VMSFee">{{bill.Percent_VMSFee}} %&nbsp;</span>-->
+                            <span class="pull-right" data-ng-class="(model.transactionHeader.ExcludedEarningAndSourceDeductions|filter:{EarningsAndDeductionsTypeId: ApplicationConstants.EarningsAndDeductionsType.VmsFee})[0].IsExcluded ? 'transaction-amount-summary-amount-strikethrough' : ''">{{bill.Amount_VMSFee|currency:model.transactionHeader.CurrencyCode + " $"}}</span>
+                        </td>
+                        <td>&nbsp;</td>
+                        <td data-ng-repeat="payee in model.transactionCalculation.AmountSummary.AmountSummaryPayees">&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td class="transaction-amount-summary-table-first-col bold">Total Gross</td>
+                        <td data-ng-repeat="bill in model.transactionCalculation.AmountSummary.AmountSummaryBills"><span class="pull-right bold">{{bill.Amount_TotalGross|currency:model.transactionHeader.CurrencyCode + " $"}}</span></td>
+                        <td>&nbsp;</td>
+                        <td data-ng-repeat="payee in model.transactionCalculation.AmountSummary.AmountSummaryPayees"><span class="pull-right bold">{{payee.Amount_TotalGross|currency:model.transactionHeader.CurrencyCode + " $"}}</span></td>
+                    </tr>
+
+                    <tr>
+                        <td class="h4" colspan="{{1+model.transactionCalculation.AmountSummary.AmountSummaryBills.length+1+model.transactionCalculation.AmountSummary.AmountSummaryPayees.length}}"
+                            data-ng-if="showSummaryEarningsAndDeductions(model.transactionCalculation.AmountSummary, 'Amount_SalesTaxGSTHST')||showSummaryEarningsAndDeductions(model.transactionCalculation.AmountSummary, 'Amount_SalesTaxQST')||showSummaryEarningsAndDeductions(model.transactionCalculation.AmountSummary, 'Amount_SalesTaxPST')">
+                            Sales Tax
+                        </td>
+                    </tr>
+                    <tr data-ng-if="showSummaryEarningsAndDeductions(model.transactionCalculation.AmountSummary, 'Amount_SalesTaxGSTHST')">
+                        <td class="transaction-amount-summary-table-first-col">
+                            GST/HST
+                        </td>
+                        <td data-ng-repeat="bill in model.transactionCalculation.AmountSummary.AmountSummaryBills">
+                            <label class="transaction-amount-summary-checkbox-view"
+                                   data-ng-if="showIsReplaceByZeroIcon && bill.Amount_SalesTaxGSTHST!==null"
+                                   data-ng-class="(model.transactionHeader.ExcludedBillSalesTaxes|filter:{SalesTaxId: ApplicationConstants.SalesTaxType.GSTHST, OrganizationIdClient:bill.OrganizationIdClient})[0].IsExcluded ? 'transaction-amount-summary-checkbox-view-red' : 'transaction-amount-summary-checkbox-view-green'"></label>
+                            <input type="checkbox" class="transaction-amount-summary-checkbox" id="Amount_SalesTaxGSTHST_{{bill.OrganizationIdClient}}"
+                                   data-ng-if="showIsReplaceByZeroInputCheckBox && bill.Amount_SalesTaxGSTHST!==null"
+                                   data-ng-show="showSummaryEarningsAndDeductions(model.transactionCalculation.AmountSummary, 'Amount_SalesTaxGSTHST', bill)"
+                                   data-ng-change="resetTaxesAndCalculate()"
+                                   data-ng-model="(model.transactionHeader.ExcludedBillSalesTaxes|filter:{SalesTaxId: ApplicationConstants.SalesTaxType.GSTHST, OrganizationIdClient:bill.OrganizationIdClient})[0].IsExcluded">
+                            <label for="Amount_SalesTaxGSTHST_{{bill.OrganizationIdClient}}"></label>
+                            <label for="Amount_SalesTaxGSTHST_{{bill.OrganizationIdClient}}" class="transaction-amount-summary-label-text">{{model.transactionCalculation.BillRate_SalesTaxGSTHST}}<span ng-if="model.transactionCalculation.BillRate_SalesTaxGSTHST">%</span></label>
+                            <label for="Amount_SalesTaxGSTHST_{{bill.OrganizationIdClient}}" class="transaction-amount-summary-label-text right-text pull-right"
+                                   data-ng-class="(model.transactionHeader.ExcludedBillSalesTaxes|filter:{SalesTaxId: ApplicationConstants.SalesTaxType.GSTHST, OrganizationIdClient:bill.OrganizationIdClient})[0].IsExcluded ? 'transaction-amount-summary-amount-strikethrough' : ''">{{bill.Amount_SalesTaxGSTHST|currency:model.transactionHeader.CurrencyCode + " $"}}</label>
+                        </td>
+                        <td>&nbsp;</td>
+                        <td data-ng-repeat="payee in model.transactionCalculation.AmountSummary.AmountSummaryPayees">
+                            <label class="transaction-amount-summary-checkbox-view"
+                                   data-ng-if="showIsReplaceByZeroIcon && payee.Amount_SalesTaxGSTHST!==null"
+                                   data-ng-class="(model.transactionHeader.ExcludedPaySalesTaxes|filter:{SalesTaxId:ApplicationConstants.SalesTaxType.GSTHST, PayeeOrganizationIdSupplier:payee.PayeeOrganizationIdSupplier, PayeeUserProfileWorkerId:payee.PayeeUserProfileWorkerId})[0].IsExcluded ? 'transaction-amount-summary-checkbox-view-red' : 'transaction-amount-summary-checkbox-view-green'"></label>
+                            <input type="checkbox" class="transaction-amount-summary-checkbox" id="Amount_SalesTaxGSTHST_{{payee.PayeeUserProfileWorkerId}}_{{payee.PayeeOrganizationIdSupplier}}"
+                                   data-ng-if="showIsReplaceByZeroInputCheckBox && payee.Amount_SalesTaxGSTHST!==null"
+                                   data-ng-show="showSummaryEarningsAndDeductions(model.transactionCalculation.AmountSummary, 'Amount_SalesTaxGSTHST', payee)"
+                                   data-ng-change="resetTaxesAndCalculate()"
+                                   data-ng-model="(model.transactionHeader.ExcludedPaySalesTaxes|filter:{SalesTaxId:ApplicationConstants.SalesTaxType.GSTHST, PayeeOrganizationIdSupplier:payee.PayeeOrganizationIdSupplier, PayeeUserProfileWorkerId:payee.PayeeUserProfileWorkerId})[0].IsExcluded">
+                            <label for="Amount_SalesTaxGSTHST_{{payee.PayeeUserProfileWorkerId}}_{{payee.PayeeOrganizationIdSupplier}}"></label>
+                            <label for="Amount_SalesTaxGSTHST_{{payee.PayeeUserProfileWorkerId}}_{{payee.PayeeOrganizationIdSupplier}}" class="transaction-amount-summary-label-text">{{model.transactionCalculation.PaymentRate_SalesTaxGSTHST}}<span ng-if="model.transactionCalculation.PaymentRate_SalesTaxGSTHST">%</span></label>
+                            <label for="Amount_SalesTaxGSTHST_{{payee.PayeeUserProfileWorkerId}}_{{payee.PayeeOrganizationIdSupplier}}" class="transaction-amount-summary-label-text  right-text pull-right"
+                                   data-ng-class="(model.transactionHeader.ExcludedPaySalesTaxes|filter:{SalesTaxId:ApplicationConstants.SalesTaxType.GSTHST, PayeeOrganizationIdSupplier:payee.PayeeOrganizationIdSupplier, PayeeUserProfileWorkerId:payee.PayeeUserProfileWorkerId})[0].IsExcluded ? 'transaction-amount-summary-amount-strikethrough' : ''">{{payee.Amount_SalesTaxGSTHST|currency:model.transactionHeader.CurrencyCode + " $"}}</label>
+                        </td>
+                    </tr>
+                    <tr data-ng-if="showSummaryEarningsAndDeductions(model.transactionCalculation.AmountSummary, 'Amount_SalesTaxQST')">
+                        <td class="transaction-amount-summary-table-first-col">
+                            QST
+                        </td>
+                        <td data-ng-repeat="bill in model.transactionCalculation.AmountSummary.AmountSummaryBills">
+                            <label class="transaction-amount-summary-checkbox-view"
+                                   data-ng-if="showIsReplaceByZeroIcon && bill.Amount_SalesTaxQST!==null"
+                                   data-ng-class="(model.transactionHeader.ExcludedBillSalesTaxes|filter:{SalesTaxId: ApplicationConstants.SalesTaxType.QST, OrganizationIdClient:bill.OrganizationIdClient})[0].IsExcluded ? 'transaction-amount-summary-checkbox-view-red' : 'transaction-amount-summary-checkbox-view-green'"></label>
+                            <input type="checkbox" class="transaction-amount-summary-checkbox" id="Amount_SalesTaxQST_{{bill.OrganizationIdClient}}"
+                                   data-ng-if="showIsReplaceByZeroInputCheckBox && bill.Amount_SalesTaxQST!==null"
+                                   data-ng-show="showSummaryEarningsAndDeductions(model.transactionCalculation.AmountSummary, 'Amount_SalesTaxQST', bill)"
+                                   data-ng-change="resetTaxesAndCalculate()"
+                                   data-ng-model="(model.transactionHeader.ExcludedBillSalesTaxes|filter:{SalesTaxId: ApplicationConstants.SalesTaxType.QST, OrganizationIdClient:bill.OrganizationIdClient})[0].IsExcluded">
+                            <label for="Amount_SalesTaxQST_{{bill.OrganizationIdClient}}"></label>
+                            <label for="Amount_SalesTaxQST_{{bill.OrganizationIdClient}}" class="transaction-amount-summary-label-text">{{model.transactionCalculation.BillRate_SalesTaxQST}}<span ng-if="model.transactionCalculation.BillRate_SalesTaxQST">%</span></label>
+                            <label for="Amount_SalesTaxQST_{{bill.OrganizationIdClient}}" class="transaction-amount-summary-label-text right-text pull-right"
+                                   data-ng-class="(model.transactionHeader.ExcludedBillSalesTaxes|filter:{SalesTaxId: ApplicationConstants.SalesTaxType.QST, OrganizationIdClient:bill.OrganizationIdClient})[0].IsExcluded ? 'transaction-amount-summary-amount-strikethrough' : ''">{{bill.Amount_SalesTaxQST|currency:model.transactionHeader.CurrencyCode + " $"}}</label>
+                        </td>
+                        <td>&nbsp;</td>
+                        <td data-ng-repeat="payee in model.transactionCalculation.AmountSummary.AmountSummaryPayees">
+                            <label class="transaction-amount-summary-checkbox-view"
+                                   data-ng-if="showIsReplaceByZeroIcon && payee.Amount_SalesTaxQST!==null"
+                                   data-ng-class="(model.transactionHeader.ExcludedPaySalesTaxes|filter:{SalesTaxId: ApplicationConstants.SalesTaxType.QST, PayeeOrganizationIdSupplier:payee.PayeeOrganizationIdSupplier, PayeeUserProfileWorkerId:payee.PayeeUserProfileWorkerId})[0].IsExcluded ? 'transaction-amount-summary-checkbox-view-red' : 'transaction-amount-summary-checkbox-view-green'"></label>
+                            <input type="checkbox" class="transaction-amount-summary-checkbox" id="Amount_SalesTaxQST_{{payee.PayeeUserProfileWorkerId}}_{{payee.PayeeOrganizationIdSupplier}}"
+                                   data-ng-if="showIsReplaceByZeroInputCheckBox && payee.Amount_SalesTaxQST!==null"
+                                   data-ng-show="showSummaryEarningsAndDeductions(model.transactionCalculation.AmountSummary, 'Amount_SalesTaxQST', payee)"
+                                   data-ng-change="resetTaxesAndCalculate()"
+                                   data-ng-model="(model.transactionHeader.ExcludedPaySalesTaxes|filter:{SalesTaxId: ApplicationConstants.SalesTaxType.QST, PayeeOrganizationIdSupplier:payee.PayeeOrganizationIdSupplier, PayeeUserProfileWorkerId:payee.PayeeUserProfileWorkerId})[0].IsExcluded">
+                            <label for="Amount_SalesTaxQST_{{payee.PayeeUserProfileWorkerId}}_{{payee.PayeeOrganizationIdSupplier}}"></label>
+                            <label for="Amount_SalesTaxQST_{{payee.PayeeUserProfileWorkerId}}_{{payee.PayeeOrganizationIdSupplier}}" class="transaction-amount-summary-label-text">{{model.transactionCalculation.PaymentRate_SalesTaxQST}}<span ng-if="model.transactionCalculation.PaymentRate_SalesTaxQST">%</span></label>
+                            <label for="Amount_SalesTaxQST_{{payee.PayeeUserProfileWorkerId}}_{{payee.PayeeOrganizationIdSupplier}}" class="transaction-amount-summary-label-text right-text pull-right"
+                                   data-ng-class="(model.transactionHeader.ExcludedPaySalesTaxes|filter:{SalesTaxId: ApplicationConstants.SalesTaxType.QST, PayeeOrganizationIdSupplier:payee.PayeeOrganizationIdSupplier, PayeeUserProfileWorkerId:payee.PayeeUserProfileWorkerId})[0].IsExcluded ? 'transaction-amount-summary-amount-strikethrough' : ''">{{payee.Amount_SalesTaxQST|currency:model.transactionHeader.CurrencyCode + " $"}}</label>
+                        </td>
+                    </tr>
+                    <tr data-ng-if="showSummaryEarningsAndDeductions(model.transactionCalculation.AmountSummary, 'Amount_SalesTaxPST')">
+                        <td class="transaction-amount-summary-table-first-col">
+                            PST
+                        </td>
+                        <td data-ng-repeat="bill in model.transactionCalculation.AmountSummary.AmountSummaryBills">
+                            <label class="transaction-amount-summary-checkbox-view"
+                                   data-ng-if="showIsReplaceByZeroIcon && bill.Amount_SalesTaxPST!==null"
+                                   data-ng-show="showSummaryEarningsAndDeductions(model.transactionCalculation.AmountSummary, 'Amount_SalesTaxPST', bill)"
+                                   data-ng-class="(model.transactionHeader.ExcludedBillSalesTaxes|filter:{SalesTaxId: ApplicationConstants.SalesTaxType.PST, OrganizationIdClient:bill.OrganizationIdClient})[0].IsExcluded ? 'transaction-amount-summary-checkbox-view-red' : 'transaction-amount-summary-checkbox-view-green'"></label>
+                            <input type="checkbox" class="transaction-amount-summary-checkbox" id="Amount_SalesTaxPST_{{bill.OrganizationIdClient}}"
+                                   data-ng-if="showIsReplaceByZeroInputCheckBox && bill.Amount_SalesTaxPST!==null"
+                                   data-ng-show="showSummaryEarningsAndDeductions(model.transactionCalculation.AmountSummary, 'Amount_SalesTaxPST', bill)"
+                                   data-ng-change="resetTaxesAndCalculate()"
+                                   data-ng-model="(model.transactionHeader.ExcludedBillSalesTaxes|filter:{SalesTaxId: ApplicationConstants.SalesTaxType.PST, OrganizationIdClient:bill.OrganizationIdClient})[0].IsExcluded">
+                            <label for="Amount_SalesTaxPST_{{bill.OrganizationIdClient}}"></label>
+                            <label for="Amount_SalesTaxPST_{{bill.OrganizationIdClient}}" class="transaction-amount-summary-label-text">{{model.transactionCalculation.BillRate_SalesTaxPST}}<span ng-if="model.transactionCalculation.BillRate_SalesTaxPST">%</span></label>
+                            <label for="Amount_SalesTaxPST_{{bill.OrganizationIdClient}}" class="transaction-amount-summary-label-text right-text pull-right"
+                                   data-ng-class="(model.transactionHeader.ExcludedBillSalesTaxes|filter:{SalesTaxId: ApplicationConstants.SalesTaxType.PST, OrganizationIdClient:bill.OrganizationIdClient})[0].IsExcluded ? 'transaction-amount-summary-amount-strikethrough' : ''">{{bill.Amount_SalesTaxPST|currency:model.transactionHeader.CurrencyCode + " $"}}</label>
+                        </td>
+                        <td>&nbsp;</td>
+                        <td data-ng-repeat="payee in model.transactionCalculation.AmountSummary.AmountSummaryPayees">
+                            <label class="transaction-amount-summary-checkbox-view"
+                                   data-ng-if="showIsReplaceByZeroIcon && payee.Amount_SalesTaxPST!==null"
+                                   data-ng-class="(model.transactionHeader.ExcludedPaySalesTaxes|filter:{SalesTaxId: ApplicationConstants.SalesTaxType.PST, PayeeOrganizationIdSupplier:payee.PayeeOrganizationIdSupplier, PayeeUserProfileWorkerId:payee.PayeeUserProfileWorkerId})[0].IsExcluded ? 'transaction-amount-summary-checkbox-view-red' : 'transaction-amount-summary-checkbox-view-green'"></label>
+                            <input type="checkbox" class="transaction-amount-summary-checkbox" id="Amount_SalesTaxPST_{{payee.PayeeUserProfileWorkerId}}_{{payee.PayeeOrganizationIdSupplier}}"
+                                   data-ng-if="showIsReplaceByZeroInputCheckBox && payee.Amount_SalesTaxPST!==null"
+                                   data-ng-show="showSummaryEarningsAndDeductions(model.transactionCalculation.AmountSummary, 'Amount_SalesTaxPST', payee)"
+                                   data-ng-change="resetTaxesAndCalculate()"
+                                   data-ng-model="(model.transactionHeader.ExcludedPaySalesTaxes|filter:{SalesTaxId: ApplicationConstants.SalesTaxType.PST, PayeeOrganizationIdSupplier:payee.PayeeOrganizationIdSupplier, PayeeUserProfileWorkerId:payee.PayeeUserProfileWorkerId})[0].IsExcluded">
+                            <label for="Amount_SalesTaxPST_{{payee.PayeeUserProfileWorkerId}}_{{payee.PayeeOrganizationIdSupplier}}"></label>
+                            <label for="Amount_SalesTaxPST_{{payee.PayeeUserProfileWorkerId}}_{{payee.PayeeOrganizationIdSupplier}}" class="transaction-amount-summary-label-text">{{model.transactionCalculation.PaymentRate_SalesTaxPST}}<span ng-if="model.transactionCalculation.PaymentRate_SalesTaxPST">%</span></label>
+                            <label for="Amount_SalesTaxPST_{{payee.PayeeUserProfileWorkerId}}_{{payee.PayeeOrganizationIdSupplier}}" class="transaction-amount-summary-label-text right-text pull-right"
+                                   data-ng-class="(model.transactionHeader.ExcludedPaySalesTaxes|filter:{SalesTaxId: ApplicationConstants.SalesTaxType.PST, PayeeOrganizationIdSupplier:payee.PayeeOrganizationIdSupplier, PayeeUserProfileWorkerId:payee.PayeeUserProfileWorkerId})[0].IsExcluded ? 'transaction-amount-summary-amount-strikethrough' : ''">{{payee.Amount_SalesTaxPST|currency:model.transactionHeader.CurrencyCode + " $"}}</label>
+                        </td>
+                    </tr>
+                    <tr data-ng-if="showSummaryEarningsAndDeductions(model.transactionCalculation.AmountSummary, 'Amount_SalesTaxGSTHST')||showSummaryEarningsAndDeductions(model.transactionCalculation.AmountSummary, 'Amount_SalesTaxQST')||showSummaryEarningsAndDeductions(model.transactionCalculation.AmountSummary, 'Amount_SalesTaxPST')">
+                        <td class="transaction-amount-summary-table-first-col bold">
+                            Sales Tax Total Amount
+                        </td>
+                        <td data-ng-repeat="bill in model.transactionCalculation.AmountSummary.AmountSummaryBills"><span class="pull-right bold">{{bill.Amount_TotalSalesTax|currency:model.transactionHeader.CurrencyCode + " $"}}</span></td>
+                        <td>&nbsp;</td>
+                        <td data-ng-repeat="payee in model.transactionCalculation.AmountSummary.AmountSummaryPayees"><span class="pull-right bold">{{payee.Amount_TotalSalesTax|currency:model.transactionHeader.CurrencyCode + " $"}}</span></td>
+                    </tr>
+
+                    <tr>
+                        <td class="h4" colspan="{{1+model.transactionCalculation.AmountSummary.AmountSummaryBills.length+1+model.transactionCalculation.AmountSummary.AmountSummaryPayees.length}}">Deductions and Employer Cost</td>
+                    </tr>
+                    <tr data-ng-if="showSummaryEarningsAndDeductions(model.transactionCalculation.AmountSummary, 'Amount_SourceDeductionFederalTax')">
+                        <td class="transaction-amount-summary-table-first-col">
+                            <label class="transaction-amount-summary-checkbox-view"
+                                   data-ng-if="showIsReplaceByZeroIcon"
+                                   data-ng-class="(model.transactionHeader.ExcludedEarningAndSourceDeductions|filter:{EarningsAndDeductionsTypeId: ApplicationConstants.EarningsAndDeductionsType.SourceDeductionFederalTax})[0].IsExcluded ? 'transaction-amount-summary-checkbox-view-red' : 'transaction-amount-summary-checkbox-view-green'"></label>
+                            <input type="checkbox" class="transaction-amount-summary-checkbox" id="Amount_SourceDeductionFederalTax"
+                                   data-ng-if="showIsReplaceByZeroInputCheckBox"
+                                   data-ng-change="resetTaxesAndCalculate()"
+                                   data-ng-model="(model.transactionHeader.ExcludedEarningAndSourceDeductions|filter:{EarningsAndDeductionsTypeId: ApplicationConstants.EarningsAndDeductionsType.SourceDeductionFederalTax})[0].IsExcluded">
+                            <label for="Amount_SourceDeductionFederalTax"></label>
+                            <label for="Amount_SourceDeductionFederalTax" class="transaction-amount-summary-label-text">{{ApplicationConstants.EarningsAndDeductionsType.SourceDeductionFederalTax | lookup:lists.earningsAndDeductionsTypeList:'id':'text'}}</label>
+                        </td>
+                        <td data-ng-repeat="bill in model.transactionCalculation.AmountSummary.AmountSummaryBills">&nbsp;</td>
+                        <td>
+                            <span class="pull-right" data-ng-class="(model.transactionHeader.ExcludedEarningAndSourceDeductions|filter:{EarningsAndDeductionsTypeId: ApplicationConstants.EarningsAndDeductionsType.SourceDeductionFederalTax})[0].IsExcluded ? 'transaction-amount-summary-amount-strikethrough' : ''">{{model.transactionCalculation.AmountSummary.AmountSummaryEmployer.Amount_SourceDeductionFederalTax|currency:model.transactionHeader.CurrencyCode + " $"}}</span>
+                        </td>
+                        <td data-ng-repeat="payee in model.transactionCalculation.AmountSummary.AmountSummaryPayees">
+                            <span class="pull-right" data-ng-class="(model.transactionHeader.ExcludedEarningAndSourceDeductions|filter:{EarningsAndDeductionsTypeId: ApplicationConstants.EarningsAndDeductionsType.SourceDeductionFederalTax})[0].IsExcluded ? 'transaction-amount-summary-amount-strikethrough' : ''">{{payee.Amount_SourceDeductionFederalTax|currency:model.transactionHeader.CurrencyCode + " $"}}</span>
+                        </td>
+                    </tr>
+                    <tr data-ng-if="showSummaryEarningsAndDeductions(model.transactionCalculation.AmountSummary, 'Amount_SourceDeductionProvincialTax')">
+                        <td class="transaction-amount-summary-table-first-col">
+                            <label class="transaction-amount-summary-checkbox-view"
+                                   data-ng-if="showIsReplaceByZeroIcon"
+                                   data-ng-class="(model.transactionHeader.ExcludedEarningAndSourceDeductions|filter:{EarningsAndDeductionsTypeId: ApplicationConstants.EarningsAndDeductionsType.SourceDeductionProvincialTax})[0].IsExcluded ? 'transaction-amount-summary-checkbox-view-red' : 'transaction-amount-summary-checkbox-view-green'"></label>
+                            <input type="checkbox" class="transaction-amount-summary-checkbox" id="Amount_SourceDeductionProvincialTax"
+                                   data-ng-if="showIsReplaceByZeroInputCheckBox"
+                                   data-ng-change="resetTaxesAndCalculate()"
+                                   data-ng-model="(model.transactionHeader.ExcludedEarningAndSourceDeductions|filter:{EarningsAndDeductionsTypeId: ApplicationConstants.EarningsAndDeductionsType.SourceDeductionProvincialTax})[0].IsExcluded">
+                            <label for="Amount_SourceDeductionProvincialTax"></label>
+                            <label for="Amount_SourceDeductionProvincialTax" class="transaction-amount-summary-label-text">{{ApplicationConstants.EarningsAndDeductionsType.SourceDeductionProvincialTax | lookup:lists.earningsAndDeductionsTypeList:'id':'text'}}</label>
+                        </td>
+                        <td data-ng-repeat="bill in model.transactionCalculation.AmountSummary.AmountSummaryBills">&nbsp;</td>
+                        <td>
+                            <span class="pull-right " data-ng-class="(model.transactionHeader.ExcludedEarningAndSourceDeductions|filter:{EarningsAndDeductionsTypeId: ApplicationConstants.EarningsAndDeductionsType.SourceDeductionProvincialTax})[0].IsExcluded ? 'transaction-amount-summary-amount-strikethrough' : ''">{{model.transactionCalculation.AmountSummary.AmountSummaryEmployer.Amount_SourceDeductionProvincialTax|currency:model.transactionHeader.CurrencyCode + " $"}}</span>
+                        </td>
+                        <td data-ng-repeat="payee in model.transactionCalculation.AmountSummary.AmountSummaryPayees">
+                            <span class="pull-right" data-ng-class="(model.transactionHeader.ExcludedEarningAndSourceDeductions|filter:{EarningsAndDeductionsTypeId: ApplicationConstants.EarningsAndDeductionsType.SourceDeductionProvincialTax})[0].IsExcluded ? 'transaction-amount-summary-amount-strikethrough' : ''">{{payee.Amount_SourceDeductionProvincialTax|currency:model.transactionHeader.CurrencyCode + " $"}}</span>
+                        </td>
+                    </tr>
+                    <tr data-ng-if="showSummaryEarningsAndDeductions(model.transactionCalculation.AmountSummary, 'Amount_SourceDeductionCanadaPensionPlan')">
+                        <td class="transaction-amount-summary-table-first-col">
+                            <label class="transaction-amount-summary-checkbox-view"
+                                   data-ng-if="showIsReplaceByZeroIcon"
+                                   data-ng-class="(model.transactionHeader.ExcludedEarningAndSourceDeductions|filter:{EarningsAndDeductionsTypeId: ApplicationConstants.EarningsAndDeductionsType.SourceDeductionCanadaPensionPlan})[0].IsExcluded ? 'transaction-amount-summary-checkbox-view-red' : 'transaction-amount-summary-checkbox-view-green'"></label>
+                            <input type="checkbox" class="transaction-amount-summary-checkbox" id="Amount_SourceDeductionCanadaPensionPlan"
+                                   data-ng-if="showIsReplaceByZeroInputCheckBox"
+                                   data-ng-change="resetTaxesAndCalculate()"
+                                   data-ng-model="(model.transactionHeader.ExcludedEarningAndSourceDeductions|filter:{EarningsAndDeductionsTypeId: ApplicationConstants.EarningsAndDeductionsType.SourceDeductionCanadaPensionPlan})[0].IsExcluded">
+                            <label for="Amount_SourceDeductionCanadaPensionPlan"></label>
+                            <label for="Amount_SourceDeductionCanadaPensionPlan" class="transaction-amount-summary-label-text">{{ApplicationConstants.EarningsAndDeductionsType.SourceDeductionCanadaPensionPlan | lookup:lists.earningsAndDeductionsTypeList:'id':'text'}}</label>
+                        </td>
+                        <td data-ng-repeat="bill in model.transactionCalculation.AmountSummary.AmountSummaryBills">&nbsp;</td>
+                        <td>
+                            <span class="pull-right" data-ng-class="(model.transactionHeader.ExcludedEarningAndSourceDeductions|filter:{EarningsAndDeductionsTypeId: ApplicationConstants.EarningsAndDeductionsType.SourceDeductionCanadaPensionPlan})[0].IsExcluded ? 'transaction-amount-summary-amount-strikethrough' : ''">{{model.transactionCalculation.AmountSummary.AmountSummaryEmployer.Amount_SourceDeductionCanadaPensionPlan|currency:model.transactionHeader.CurrencyCode + " $"}}</span>
+                        </td>
+                        <td data-ng-repeat="payee in model.transactionCalculation.AmountSummary.AmountSummaryPayees">
+                            <span class="pull-right" data-ng-class="(model.transactionHeader.ExcludedEarningAndSourceDeductions|filter:{EarningsAndDeductionsTypeId: ApplicationConstants.EarningsAndDeductionsType.SourceDeductionCanadaPensionPlan})[0].IsExcluded ? 'transaction-amount-summary-amount-strikethrough' : ''">{{payee.Amount_SourceDeductionCanadaPensionPlan|currency:model.transactionHeader.CurrencyCode + " $"}}</span>
+                        </td>
+                    </tr>
+                    <tr data-ng-if="showSummaryEarningsAndDeductions(model.transactionCalculation.AmountSummary, 'Amount_SourceDeductionEmploymentInsurance')">
+                        <td class="transaction-amount-summary-table-first-col">
+                            <label class="transaction-amount-summary-checkbox-view"
+                                   data-ng-if="showIsReplaceByZeroIcon"
+                                   data-ng-class="(model.transactionHeader.ExcludedEarningAndSourceDeductions|filter:{EarningsAndDeductionsTypeId: ApplicationConstants.EarningsAndDeductionsType.SourceDeductionEmploymentInsurance})[0].IsExcluded ? 'transaction-amount-summary-checkbox-view-red' : 'transaction-amount-summary-checkbox-view-green'"></label>
+                            <input type="checkbox" class="transaction-amount-summary-checkbox" id="Amount_SourceDeductionEmploymentInsurance"
+                                   data-ng-if="showIsReplaceByZeroInputCheckBox"
+                                   data-ng-change="resetTaxesAndCalculate()"
+                                   data-ng-model="(model.transactionHeader.ExcludedEarningAndSourceDeductions|filter:{EarningsAndDeductionsTypeId: ApplicationConstants.EarningsAndDeductionsType.SourceDeductionEmploymentInsurance})[0].IsExcluded">
+                            <label for="Amount_SourceDeductionEmploymentInsurance"></label>
+                            <label for="Amount_SourceDeductionEmploymentInsurance" class="transaction-amount-summary-label-text">{{ApplicationConstants.EarningsAndDeductionsType.SourceDeductionEmploymentInsurance | lookup:lists.earningsAndDeductionsTypeList:'id':'text'}}</label>
+                        </td>
+                        <td data-ng-repeat="bill in model.transactionCalculation.AmountSummary.AmountSummaryBills">&nbsp;</td>
+                        <td><span class="pull-right" data-ng-class="(model.transactionHeader.ExcludedEarningAndSourceDeductions|filter:{EarningsAndDeductionsTypeId: ApplicationConstants.EarningsAndDeductionsType.SourceDeductionEmploymentInsurance})[0].IsExcluded ? 'transaction-amount-summary-amount-strikethrough' : ''">{{model.transactionCalculation.AmountSummary.AmountSummaryEmployer.Amount_SourceDeductionEmploymentInsurance|currency:model.transactionHeader.CurrencyCode + " $"}}</span></td>
+                        <td data-ng-repeat="payee in model.transactionCalculation.AmountSummary.AmountSummaryPayees">
+                            <span class="pull-right" data-ng-class="(model.transactionHeader.ExcludedEarningAndSourceDeductions|filter:{EarningsAndDeductionsTypeId: ApplicationConstants.EarningsAndDeductionsType.SourceDeductionEmploymentInsurance})[0].IsExcluded ? 'transaction-amount-summary-amount-strikethrough' : ''">{{payee.Amount_SourceDeductionEmploymentInsurance|currency:model.transactionHeader.CurrencyCode + " $"}}</span>
+                        </td>
+                    </tr>
+                    <tr data-ng-if="showSummaryEarningsAndDeductions(model.transactionCalculation.AmountSummary, 'Amount_SourceDeductionParentalInsurancePlan')">
+                        <td class="transaction-amount-summary-table-first-col">
+                            <label class="transaction-amount-summary-checkbox-view"
+                                   data-ng-if="showIsReplaceByZeroIcon"
+                                   data-ng-class="(model.transactionHeader.ExcludedEarningAndSourceDeductions|filter:{EarningsAndDeductionsTypeId: ApplicationConstants.EarningsAndDeductionsType.SourceDeductionParentalInsurancePlan})[0].IsExcluded ? 'transaction-amount-summary-checkbox-view-red' : 'transaction-amount-summary-checkbox-view-green'"></label>
+                            <input type="checkbox" class="transaction-amount-summary-checkbox" id="Amount_SourceDeductionParentalInsurancePlan"
+                                   data-ng-if="showIsReplaceByZeroInputCheckBox"
+                                   data-ng-change="resetTaxesAndCalculate()"
+                                   data-ng-model="(model.transactionHeader.ExcludedEarningAndSourceDeductions|filter:{EarningsAndDeductionsTypeId: ApplicationConstants.EarningsAndDeductionsType.SourceDeductionParentalInsurancePlan})[0].IsExcluded">
+                            <label for="Amount_SourceDeductionParentalInsurancePlan"></label>
+                            <label for="Amount_SourceDeductionParentalInsurancePlan" class="transaction-amount-summary-label-text">{{ApplicationConstants.EarningsAndDeductionsType.SourceDeductionParentalInsurancePlan | lookup:lists.earningsAndDeductionsTypeList:'id':'text'}}</label>
+                        </td>
+                        <td data-ng-repeat="bill in model.transactionCalculation.AmountSummary.AmountSummaryBills">&nbsp;</td>
+                        <td>
+                            <span class="pull-right" data-ng-class="(model.transactionHeader.ExcludedEarningAndSourceDeductions|filter:{EarningsAndDeductionsTypeId: ApplicationConstants.EarningsAndDeductionsType.SourceDeductionParentalInsurancePlan})[0].IsExcluded ? 'transaction-amount-summary-amount-strikethrough' : ''">{{model.transactionCalculation.AmountSummary.AmountSummaryEmployer.Amount_SourceDeductionParentalInsurancePlan|currency:model.transactionHeader.CurrencyCode + " $"}}</span>
+                        </td>
+                        <td data-ng-repeat="payee in model.transactionCalculation.AmountSummary.AmountSummaryPayees">
+                            <span class="pull-right" data-ng-class="(model.transactionHeader.ExcludedEarningAndSourceDeductions|filter:{EarningsAndDeductionsTypeId: ApplicationConstants.EarningsAndDeductionsType.SourceDeductionParentalInsurancePlan})[0].IsExcluded ? 'transaction-amount-summary-amount-strikethrough' : ''">{{payee.Amount_SourceDeductionParentalInsurancePlan|currency:model.transactionHeader.CurrencyCode + " $"}}</span>
+                        </td>
+                    </tr>
+                    <tr data-ng-if="showSummaryEarningsAndDeductions(model.transactionCalculation.AmountSummary, 'Amount_SourceDeductionHealthCare')">
+                        <td class="transaction-amount-summary-table-first-col">
+                            <label class="transaction-amount-summary-checkbox-view"
+                                   data-ng-if="showIsReplaceByZeroIcon"
+                                   data-ng-class="(model.transactionHeader.ExcludedEarningAndSourceDeductions|filter:{EarningsAndDeductionsTypeId: ApplicationConstants.EarningsAndDeductionsType.SourceDeductionHealthCare})[0].IsExcluded ? 'transaction-amount-summary-checkbox-view-red' : 'transaction-amount-summary-checkbox-view-green'"></label>
+                            <input type="checkbox" class="transaction-amount-summary-checkbox" id="Amount_SourceDeductionHealthCare"
+                                   data-ng-if="showIsReplaceByZeroInputCheckBox"
+                                   data-ng-change="resetTaxesAndCalculate()"
+                                   data-ng-model="(model.transactionHeader.ExcludedEarningAndSourceDeductions|filter:{EarningsAndDeductionsTypeId: ApplicationConstants.EarningsAndDeductionsType.SourceDeductionHealthCare})[0].IsExcluded">
+                            <label for="Amount_SourceDeductionHealthCare"></label>
+                            <label for="Amount_SourceDeductionHealthCare" class="transaction-amount-summary-label-text">{{ApplicationConstants.EarningsAndDeductionsType.SourceDeductionHealthCare | lookup:lists.earningsAndDeductionsTypeList:'id':'text'}}</label>
+                        </td>
+                        <td data-ng-repeat="bill in model.transactionCalculation.AmountSummary.AmountSummaryBills">&nbsp;</td>
+                        <td>
+                            <span class="pull-right" data-ng-class="(model.transactionHeader.ExcludedEarningAndSourceDeductions|filter:{EarningsAndDeductionsTypeId: ApplicationConstants.EarningsAndDeductionsType.SourceDeductionHealthCare})[0].IsExcluded ? 'transaction-amount-summary-amount-strikethrough' : ''">{{model.transactionCalculation.AmountSummary.AmountSummaryEmployer.Amount_SourceDeductionHealthCare|currency:model.transactionHeader.CurrencyCode + " $"}}</span>
+                        </td>
+                        <td data-ng-repeat="payee in model.transactionCalculation.AmountSummary.AmountSummaryPayees">
+                            <span class="pull-right" data-ng-class="(model.transactionHeader.ExcludedEarningAndSourceDeductions|filter:{EarningsAndDeductionsTypeId: ApplicationConstants.EarningsAndDeductionsType.SourceDeductionHealthCare})[0].IsExcluded ? 'transaction-amount-summary-amount-strikethrough' : ''">{{payee.Amount_SourceDeductionHealthCare|currency:model.transactionHeader.CurrencyCode + " $"}}</span>
+                        </td>
+                    </tr>
+                    <tr data-ng-if="showSummaryEarningsAndDeductions(model.transactionCalculation.AmountSummary, 'Amount_SourceDeductionQuebecTrainingFee')">
+                        <td class="transaction-amount-summary-table-first-col">
+                            <label class="transaction-amount-summary-checkbox-view"
+                                   data-ng-if="showIsReplaceByZeroIcon"
+                                   data-ng-class="(model.transactionHeader.ExcludedEarningAndSourceDeductions |filter:{EarningsAndDeductionsTypeId: ApplicationConstants.EarningsAndDeductionsType.SourceDeductionQuebecTrainingFee})[0].IsExcluded ? 'transaction-amount-summary-checkbox-view-red' : 'transaction-amount-summary-checkbox-view-green'">
+                            </label>
+                            <input type="checkbox" class="transaction-amount-summary-checkbox" id="Amount_SourceDeductionQuebecTrainingFee"
+                                   data-ng-if="showIsReplaceByZeroInputCheckBox"
+                                   data-ng-change="resetTaxesAndCalculate()"
+                                   data-ng-model="(model.transactionHeader.ExcludedEarningAndSourceDeductions|filter:{EarningsAndDeductionsTypeId: ApplicationConstants.EarningsAndDeductionsType.SourceDeductionQuebecTrainingFee})[0].IsExcluded">
+                            <label for="Amount_SourceDeductionQuebecTrainingFee"></label>
+                            <label for="Amount_SourceDeductionQuebecTrainingFee" class="transaction-amount-summary-label-text">
+                                {{ApplicationConstants.EarningsAndDeductionsType.SourceDeductionQuebecTrainingFee | lookup:lists.earningsAndDeductionsTypeList:'id':'text'}}
+                            </label>
+                        </td>
+                        <td data-ng-repeat="bill in model.transactionCalculation.AmountSummary.AmountSummaryBills">&nbsp;</td>
+                        <td>
+                            <span class="pull-right" data-ng-class="(model.transactionHeader.ExcludedEarningAndSourceDeductions|filter:{EarningsAndDeductionsTypeId: ApplicationConstants.EarningsAndDeductionsType.SourceDeductionQuebecTrainingFee})[0].IsExcluded ? 'transaction-amount-summary-amount-strikethrough' : ''">
+                                {{model.transactionCalculation.AmountSummary.AmountSummaryEmployer.Amount_SourceDeductionQuebecTrainingFee |currency:model.transactionHeader.CurrencyCode + " $"}}
+                            </span>
+                        </td>
+                        <td data-ng-repeat="payee in model.transactionCalculation.AmountSummary.AmountSummaryPayees">
+                            <span class="pull-right" data-ng-class="(model.transactionHeader.ExcludedEarningAndSourceDeductions|filter:{EarningsAndDeductionsTypeId: ApplicationConstants.EarningsAndDeductionsType.SourceDeductionQuebecTrainingFee})[0].IsExcluded ? 'transaction-amount-summary-amount-strikethrough' : ''">
+                                {{payee.Amount_SourceDeductionQuebecTrainingFee |currency:model.transactionHeader.CurrencyCode + " $"}}
+                            </span>
+                        </td>
+                    </tr>
+                    <tr data-ng-if="showSummaryEarningsAndDeductions(model.transactionCalculation.AmountSummary, 'Amount_SourceDeductionWCB')">
+                        <td class="transaction-amount-summary-table-first-col">
+                            <label class="transaction-amount-summary-checkbox-view"
+                                   data-ng-if="showIsReplaceByZeroIcon"
+                                   data-ng-class="(model.transactionHeader.ExcludedEarningAndSourceDeductions|filter:{EarningsAndDeductionsTypeId: ApplicationConstants.EarningsAndDeductionsType.SourceDeductionWCB})[0].IsExcluded ? 'transaction-amount-summary-checkbox-view-red' : 'transaction-amount-summary-checkbox-view-green'"></label>
+                            <input type="checkbox" class="transaction-amount-summary-checkbox" id="Amount_SourceDeductionWCB"
+                                   data-ng-if="showIsReplaceByZeroInputCheckBox"
+                                   data-ng-change="resetTaxesAndCalculate()"
+                                   data-ng-model="(model.transactionHeader.ExcludedEarningAndSourceDeductions|filter:{EarningsAndDeductionsTypeId: ApplicationConstants.EarningsAndDeductionsType.SourceDeductionWCB})[0].IsExcluded">
+                            <label for="Amount_SourceDeductionWCB"></label>
+                            <label for="Amount_SourceDeductionWCB" class="transaction-amount-summary-label-text">{{ApplicationConstants.EarningsAndDeductionsType.SourceDeductionWCB | lookup:lists.earningsAndDeductionsTypeList:'id':'text'}}</label>
+                        </td>
+                        <td data-ng-repeat="bill in model.transactionCalculation.AmountSummary.AmountSummaryBills">&nbsp;</td>
+                        <td>
+                            <span class="pull-right" data-ng-class="(model.transactionHeader.ExcludedEarningAndSourceDeductions|filter:{EarningsAndDeductionsTypeId: ApplicationConstants.EarningsAndDeductionsType.SourceDeductionWCB})[0].IsExcluded ? 'transaction-amount-summary-amount-strikethrough' : ''">{{model.transactionCalculation.AmountSummary.AmountSummaryEmployer.Amount_SourceDeductionWCB|currency:model.transactionHeader.CurrencyCode + " $"}}</span>
+                        </td>
+                        <td data-ng-repeat="payee in model.transactionCalculation.AmountSummary.AmountSummaryPayees">
+                            <span class="pull-right" data-ng-class="(model.transactionHeader.ExcludedEarningAndSourceDeductions|filter:{EarningsAndDeductionsTypeId: ApplicationConstants.EarningsAndDeductionsType.SourceDeductionWCB})[0].IsExcluded ? 'transaction-amount-summary-amount-strikethrough' : ''">{{payee.Amount_SourceDeductionWCB|currency:model.transactionHeader.CurrencyCode + " $"}}</span>
+                        </td>
+                    </tr>
+                    <tr data-ng-if="showSummaryEarningsAndDeductions(model.transactionCalculation.AmountSummary, 'Amount_SourceDeductionQuebecPensionPlan')">
+                        <td class="transaction-amount-summary-table-first-col">
+                            <label class="transaction-amount-summary-checkbox-view"
+                                   data-ng-if="showIsReplaceByZeroIcon"
+                                   data-ng-class="(model.transactionHeader.ExcludedEarningAndSourceDeductions|filter:{EarningsAndDeductionsTypeId: ApplicationConstants.EarningsAndDeductionsType.SourceDeductionQuebecPensionPlan})[0].IsExcluded ? 'transaction-amount-summary-checkbox-view-red' : 'transaction-amount-summary-checkbox-view-green'"></label>
+                            <input type="checkbox" class="transaction-amount-summary-checkbox" id="Amount_SourceDeductionQuebecPensionPlan"
+                                   data-ng-if="showIsReplaceByZeroInputCheckBox"
+                                   data-ng-change="resetTaxesAndCalculate()"
+                                   data-ng-model="(model.transactionHeader.ExcludedEarningAndSourceDeductions|filter:{EarningsAndDeductionsTypeId: ApplicationConstants.EarningsAndDeductionsType.SourceDeductionQuebecPensionPlan})[0].IsExcluded">
+                            <label for="Amount_SourceDeductionQuebecPensionPlan"></label>
+                            <label for="Amount_SourceDeductionQuebecPensionPlan" class="transaction-amount-summary-label-text">{{ApplicationConstants.EarningsAndDeductionsType.SourceDeductionQuebecPensionPlan | lookup:lists.earningsAndDeductionsTypeList:'id':'text'}}</label>
+                        </td>
+                        <td data-ng-repeat="bill in model.transactionCalculation.AmountSummary.AmountSummaryBills">&nbsp;</td>
+                        <td>
+                            <span class="pull-right" data-ng-class="(model.transactionHeader.ExcludedEarningAndSourceDeductions|filter:{EarningsAndDeductionsTypeId: ApplicationConstants.EarningsAndDeductionsType.SourceDeductionQuebecPensionPlan})[0].IsExcluded ? 'transaction-amount-summary-amount-strikethrough' : ''">{{model.transactionCalculation.AmountSummary.AmountSummaryEmployer.Amount_SourceDeductionQuebecPensionPlan|currency:model.transactionHeader.CurrencyCode + " $"}}</span>
+                        </td>
+                        <td data-ng-repeat="payee in model.transactionCalculation.AmountSummary.AmountSummaryPayees">
+                            <span class="pull-right" data-ng-class="(model.transactionHeader.ExcludedEarningAndSourceDeductions|filter:{EarningsAndDeductionsTypeId: ApplicationConstants.EarningsAndDeductionsType.SourceDeductionQuebecPensionPlan})[0].IsExcluded ? 'transaction-amount-summary-amount-strikethrough' : ''">{{payee.Amount_SourceDeductionQuebecPensionPlan|currency:model.transactionHeader.CurrencyCode + " $"}}</span>
+                        </td>
+                    </tr>
+                    <tr data-ng-if="showSummaryEarningsAndDeductions(model.transactionCalculation.AmountSummary, 'Amount_SourceDeductionNonResidentWithholding')">
+                        <td class="transaction-amount-summary-table-first-col">
+                            <label class="transaction-amount-summary-checkbox-view"
+                                   data-ng-if="showIsReplaceByZeroIcon"
+                                   data-ng-class="(model.transactionHeader.ExcludedEarningAndSourceDeductions|filter:{EarningsAndDeductionsTypeId: ApplicationConstants.EarningsAndDeductionsType.SourceDeductionNonResidentWithHolding})[0].IsExcluded ? 'transaction-amount-summary-checkbox-view-red' : 'transaction-amount-summary-checkbox-view-green'"></label>
+                            <input type="checkbox" class="transaction-amount-summary-checkbox" id="Amount_SourceDeductionNonResidentWithholding"
+                                   data-ng-if="showIsReplaceByZeroInputCheckBox"
+                                   data-ng-change="resetTaxesAndCalculate()"
+                                   data-ng-model="(model.transactionHeader.ExcludedEarningAndSourceDeductions|filter:{EarningsAndDeductionsTypeId: ApplicationConstants.EarningsAndDeductionsType.SourceDeductionNonResidentWithHolding})[0].IsExcluded">
+                            <label for="Amount_SourceDeductionNonResidentWithholding"></label>
+                            <label for="Amount_SourceDeductionNonResidentWithholding" class="transaction-amount-summary-label-text">{{ApplicationConstants.EarningsAndDeductionsType.SourceDeductionNonResidentWithHolding | lookup:lists.earningsAndDeductionsTypeList:'id':'text'}}</label>
+                        </td>
+                        <td data-ng-repeat="bill in model.transactionCalculation.AmountSummary.AmountSummaryBills">&nbsp;</td>
+                        <td>
+                            <span class="pull-right" data-ng-class="(model.transactionHeader.ExcludedEarningAndSourceDeductions|filter:{EarningsAndDeductionsTypeId: ApplicationConstants.EarningsAndDeductionsType.SourceDeductionNonResidentWithHolding})[0].IsExcluded ? 'transaction-amount-summary-amount-strikethrough' : ''">{{model.transactionCalculation.AmountSummary.AmountSummaryEmployer.Amount_SourceDeductionNonResidentWithholding|currency:model.transactionHeader.CurrencyCode + " $"}}</span>
+                        </td>
+                        <td data-ng-repeat="payee in model.transactionCalculation.AmountSummary.AmountSummaryPayees">
+                            <span class="pull-right" data-ng-class="(model.transactionHeader.ExcludedEarningAndSourceDeductions|filter:{EarningsAndDeductionsTypeId: ApplicationConstants.EarningsAndDeductionsType.SourceDeductionNonResidentWithHolding})[0].IsExcluded ? 'transaction-amount-summary-amount-strikethrough' : ''">{{payee.Amount_SourceDeductionNonResidentWithholding|currency:model.transactionHeader.CurrencyCode + " $"}}</span>
+                        </td>
+                    </tr>
+                    <tr data-ng-if="showSummaryEarningsAndDeductions(model.transactionCalculation.AmountSummary, 'Amount_SourceDeductionAdditionalTax')">
+                        <td class="transaction-amount-summary-table-first-col">
+                            <label class="transaction-amount-summary-checkbox-view"
+                                   data-ng-if="showIsReplaceByZeroIcon"
+                                   data-ng-class="(model.transactionHeader.ExcludedEarningAndSourceDeductions|filter:{EarningsAndDeductionsTypeId: ApplicationConstants.EarningsAndDeductionsType.SourceDeductionAdditionalTax})[0].IsExcluded ? 'transaction-amount-summary-checkbox-view-red' : 'transaction-amount-summary-checkbox-view-green'"></label>
+                            <input type="checkbox" class="transaction-amount-summary-checkbox" id="Amount_SourceDeductionAdditionalTax"
+                                   data-ng-if="showIsReplaceByZeroInputCheckBox"
+                                   data-ng-change="resetTaxesAndCalculate()"
+                                   data-ng-model="(model.transactionHeader.ExcludedEarningAndSourceDeductions|filter:{EarningsAndDeductionsTypeId: ApplicationConstants.EarningsAndDeductionsType.SourceDeductionAdditionalTax})[0].IsExcluded">
+                            <label for="Amount_SourceDeductionAdditionalTax"></label>
+                            <label for="Amount_SourceDeductionAdditionalTax" class="transaction-amount-summary-label-text">{{ApplicationConstants.EarningsAndDeductionsType.SourceDeductionAdditionalTax | lookup:lists.earningsAndDeductionsTypeList:'id':'text'}}</label>
+                        </td>
+                        <td data-ng-repeat="bill in model.transactionCalculation.AmountSummary.AmountSummaryBills">&nbsp;</td>
+                        <td>
+                            <span class="pull-right" data-ng-class="(model.transactionHeader.ExcludedEarningAndSourceDeductions|filter:{EarningsAndDeductionsTypeId: ApplicationConstants.EarningsAndDeductionsType.SourceDeductionAdditionalTax})[0].IsExcluded ? 'transaction-amount-summary-amount-strikethrough' : ''">{{model.transactionCalculation.AmountSummary.AmountSummaryEmployer.Amount_SourceDeductionAdditionalTax|currency:model.transactionHeader.CurrencyCode + " $"}}</span>
+                        </td>
+                        <td data-ng-repeat="payee in model.transactionCalculation.AmountSummary.AmountSummaryPayees">
+                            <span class="pull-right" data-ng-class="(model.transactionHeader.ExcludedEarningAndSourceDeductions|filter:{EarningsAndDeductionsTypeId: ApplicationConstants.EarningsAndDeductionsType.SourceDeductionAdditionalTax})[0].IsExcluded ? 'transaction-amount-summary-amount-strikethrough' : ''">{{payee.Amount_SourceDeductionAdditionalTax|currency:model.transactionHeader.CurrencyCode + " $"}}</span>
+                        </td>
+                    </tr>
+
+
+
+                    <tr data-ng-if="showSummaryEarningsAndDeductions(model.transactionCalculation.AmountSummary, 'Amount_SourceDeductionMedicare')">
+                        <td class="transaction-amount-summary-table-first-col">
+                            <label class="transaction-amount-summary-checkbox-view"
+                                   data-ng-if="showIsReplaceByZeroIcon"
+                                   data-ng-class="(model.transactionHeader.ExcludedEarningAndSourceDeductions|filter:{EarningsAndDeductionsTypeId: ApplicationConstants.EarningsAndDeductionsType.SourceDeductionMedicare})[0].IsExcluded ? 'transaction-amount-summary-checkbox-view-red' : 'transaction-amount-summary-checkbox-view-green'"></label>
+                            <input type="checkbox" class="transaction-amount-summary-checkbox" id="Amount_SourceDeductionMedicare"
+                                   data-ng-if="showIsReplaceByZeroInputCheckBox"
+                                   data-ng-change="resetTaxesAndCalculate()"
+                                   data-ng-model="(model.transactionHeader.ExcludedEarningAndSourceDeductions|filter:{EarningsAndDeductionsTypeId: ApplicationConstants.EarningsAndDeductionsType.SourceDeductionMedicare})[0].IsExcluded">
+                            <label for="Amount_SourceDeductionMedicare"></label>
+                            <label for="Amount_SourceDeductionMedicare" class="transaction-amount-summary-label-text">{{ApplicationConstants.EarningsAndDeductionsType.SourceDeductionMedicare | lookup:lists.earningsAndDeductionsTypeList:'id':'text'}}</label>
+                        </td>
+                        <td data-ng-repeat="bill in model.transactionCalculation.AmountSummary.AmountSummaryBills">&nbsp;</td>
+                        <td>
+                            <span class="pull-right" data-ng-class="(model.transactionHeader.ExcludedEarningAndSourceDeductions|filter:{EarningsAndDeductionsTypeId: ApplicationConstants.EarningsAndDeductionsType.SourceDeductionMedicare})[0].IsExcluded ? 'transaction-amount-summary-amount-strikethrough' : ''">{{model.transactionCalculation.AmountSummary.AmountSummaryEmployer.Amount_SourceDeductionMedicare|currency:model.transactionHeader.CurrencyCode + " $"}}</span>
+                        </td>
+                        <td data-ng-repeat="payee in model.transactionCalculation.AmountSummary.AmountSummaryPayees">&nbsp;</td>
+                    </tr>
+                    <tr data-ng-if="showSummaryEarningsAndDeductions(model.transactionCalculation.AmountSummary, 'Amount_SourceDeductionSocialSecurity')">
+                        <td class="transaction-amount-summary-table-first-col">
+                            <label class="transaction-amount-summary-checkbox-view"
+                                   data-ng-if="showIsReplaceByZeroIcon"
+                                   data-ng-class="(model.transactionHeader.ExcludedEarningAndSourceDeductions|filter:{EarningsAndDeductionsTypeId: ApplicationConstants.EarningsAndDeductionsType.SourceDeductionSocialSecurity})[0].IsExcluded ? 'transaction-amount-summary-checkbox-view-red' : 'transaction-amount-summary-checkbox-view-green'"></label>
+                            <input type="checkbox" class="transaction-amount-summary-checkbox" id="Amount_SourceDeductionSocialSecurity"
+                                   data-ng-if="showIsReplaceByZeroInputCheckBox"
+                                   data-ng-change="resetTaxesAndCalculate()"
+                                   data-ng-model="(model.transactionHeader.ExcludedEarningAndSourceDeductions|filter:{EarningsAndDeductionsTypeId: ApplicationConstants.EarningsAndDeductionsType.SourceDeductionSocialSecurity})[0].IsExcluded">
+                            <label for="Amount_SourceDeductionSocialSecurity"></label>
+                            <label for="Amount_SourceDeductionSocialSecurity" class="transaction-amount-summary-label-text">{{ApplicationConstants.EarningsAndDeductionsType.SourceDeductionSocialSecurity | lookup:lists.earningsAndDeductionsTypeList:'id':'text'}}</label>
+                        </td>
+                        <td data-ng-repeat="bill in model.transactionCalculation.AmountSummary.AmountSummaryBills">&nbsp;</td>
+                        <td>
+                            <span class="pull-right" data-ng-class="(model.transactionHeader.ExcludedEarningAndSourceDeductions|filter:{EarningsAndDeductionsTypeId: ApplicationConstants.EarningsAndDeductionsType.SourceDeductionSocialSecurity})[0].IsExcluded ? 'transaction-amount-summary-amount-strikethrough' : ''">{{model.transactionCalculation.AmountSummary.AmountSummaryEmployer.Amount_SourceDeductionSocialSecurity|currency:model.transactionHeader.CurrencyCode + " $"}}</span>
+                        </td>
+                        <td data-ng-repeat="payee in model.transactionCalculation.AmountSummary.AmountSummaryPayees">&nbsp;</td>
+                    </tr>
+                    <tr data-ng-if="showSummaryEarningsAndDeductions(model.transactionCalculation.AmountSummary, 'Amount_SourceDeductionFudi')">
+                        <td class="transaction-amount-summary-table-first-col">
+                            <label class="transaction-amount-summary-checkbox-view"
+                                   data-ng-if="showIsReplaceByZeroIcon"
+                                   data-ng-class="(model.transactionHeader.ExcludedEarningAndSourceDeductions|filter:{EarningsAndDeductionsTypeId: ApplicationConstants.EarningsAndDeductionsType.SourceDeductionFudi})[0].IsExcluded ? 'transaction-amount-summary-checkbox-view-red' : 'transaction-amount-summary-checkbox-view-green'"></label>
+                            <input type="checkbox" class="transaction-amount-summary-checkbox" id="Amount_SourceDeductionFudi"
+                                   data-ng-if="showIsReplaceByZeroInputCheckBox"
+                                   data-ng-change="resetTaxesAndCalculate()"
+                                   data-ng-model="(model.transactionHeader.ExcludedEarningAndSourceDeductions|filter:{EarningsAndDeductionsTypeId: ApplicationConstants.EarningsAndDeductionsType.SourceDeductionFudi})[0].IsExcluded">
+                            <label for="Amount_SourceDeductionFudi"></label>
+                            <label for="Amount_SourceDeductionFudi" class="transaction-amount-summary-label-text">{{ApplicationConstants.EarningsAndDeductionsType.SourceDeductionFudi | lookup:lists.earningsAndDeductionsTypeList:'id':'text'}}</label>
+                        </td>
+                        <td data-ng-repeat="bill in model.transactionCalculation.AmountSummary.AmountSummaryBills">&nbsp;</td>
+                        <td>
+                            <span class="pull-right" data-ng-class="(model.transactionHeader.ExcludedEarningAndSourceDeductions|filter:{EarningsAndDeductionsTypeId: ApplicationConstants.EarningsAndDeductionsType.SourceDeductionFudi})[0].IsExcluded ? 'transaction-amount-summary-amount-strikethrough' : ''">{{model.transactionCalculation.AmountSummary.AmountSummaryEmployer.Amount_SourceDeductionFudi|currency:model.transactionHeader.CurrencyCode + " $"}}</span>
+                        </td>
+                        <td data-ng-repeat="payee in model.transactionCalculation.AmountSummary.AmountSummaryPayees">&nbsp;</td>
+                    </tr>
+                    <tr data-ng-if="showSummaryEarningsAndDeductions(model.transactionCalculation.AmountSummary, 'Amount_SourceDeductionSui')">
+                        <td class="transaction-amount-summary-table-first-col">
+                            <label class="transaction-amount-summary-checkbox-view"
+                                   data-ng-if="showIsReplaceByZeroIcon"
+                                   data-ng-class="(model.transactionHeader.ExcludedEarningAndSourceDeductions|filter:{EarningsAndDeductionsTypeId: ApplicationConstants.EarningsAndDeductionsType.SourceDeductionSui})[0].IsExcluded ? 'transaction-amount-summary-checkbox-view-red' : 'transaction-amount-summary-checkbox-view-green'"></label>
+                            <input type="checkbox" class="transaction-amount-summary-checkbox" id="Amount_SourceDeductionSui"
+                                   data-ng-if="showIsReplaceByZeroInputCheckBox"
+                                   data-ng-change="resetTaxesAndCalculate()"
+                                   data-ng-model="(model.transactionHeader.ExcludedEarningAndSourceDeductions|filter:{EarningsAndDeductionsTypeId: ApplicationConstants.EarningsAndDeductionsType.SourceDeductionSui})[0].IsExcluded">
+                            <label for="Amount_SourceDeductionSui"></label>
+                            <label for="Amount_SourceDeductionSui" class="transaction-amount-summary-label-text">{{ApplicationConstants.EarningsAndDeductionsType.SourceDeductionSui | lookup:lists.earningsAndDeductionsTypeList:'id':'text'}}</label>
+                        </td>
+                        <td data-ng-repeat="bill in model.transactionCalculation.AmountSummary.AmountSummaryBills">&nbsp;</td>
+                        <td>
+                            <span class="pull-right" data-ng-class="(model.transactionHeader.ExcludedEarningAndSourceDeductions|filter:{EarningsAndDeductionsTypeId: ApplicationConstants.EarningsAndDeductionsType.SourceDeductionSui})[0].IsExcluded ? 'transaction-amount-summary-amount-strikethrough' : ''">{{model.transactionCalculation.AmountSummary.AmountSummaryEmployer.Amount_SourceDeductionSui|currency:model.transactionHeader.CurrencyCode + " $"}}</span>
+                        </td>
+                        <td data-ng-repeat="payee in model.transactionCalculation.AmountSummary.AmountSummaryPayees">&nbsp;</td>
+                    </tr>
+                    <tr data-ng-if="showSummaryEarningsAndDeductions(model.transactionCalculation.AmountSummary, 'Amount_SourceDeductionBenefits')">
+                        <td class="transaction-amount-summary-table-first-col">
+                            <label class="transaction-amount-summary-checkbox-view"
+                                   data-ng-if="showIsReplaceByZeroIcon"
+                                   data-ng-class="(model.transactionHeader.ExcludedEarningAndSourceDeductions |filter:{EarningsAndDeductionsTypeId: ApplicationConstants.EarningsAndDeductionsType.SourceDeductionBenefits})[0].IsExcluded ? 'transaction-amount-summary-checkbox-view-red' : 'transaction-amount-summary-checkbox-view-green'">
+                            </label>
+                            <input type="checkbox" class="transaction-amount-summary-checkbox" id="Amount_SourceDeductionBenefits"
+                                   data-ng-if="showIsReplaceByZeroInputCheckBox"
+                                   data-ng-change="resetTaxesAndCalculate()"
+                                   data-ng-model="(model.transactionHeader.ExcludedEarningAndSourceDeductions|filter:{EarningsAndDeductionsTypeId: ApplicationConstants.EarningsAndDeductionsType.SourceDeductionBenefits})[0].IsExcluded">
+                            <label for="Amount_SourceDeductionBenefits"></label>
+                            <label for="Amount_SourceDeductionBenefits" class="transaction-amount-summary-label-text">
+                                {{ApplicationConstants.EarningsAndDeductionsType.SourceDeductionBenefits | lookup:lists.earningsAndDeductionsTypeList:'id':'text'}}
+                            </label>
+                        </td>
+                        <td data-ng-repeat="bill in model.transactionCalculation.AmountSummary.AmountSummaryBills">&nbsp;</td>
+                        <td>
+                            <span class="pull-right" data-ng-class="(model.transactionHeader.ExcludedEarningAndSourceDeductions|filter:{EarningsAndDeductionsTypeId: ApplicationConstants.EarningsAndDeductionsType.SourceDeductionBenefits})[0].IsExcluded ? 'transaction-amount-summary-amount-strikethrough' : ''">
+                                {{model.transactionCalculation.AmountSummary.AmountSummaryEmployer.Amount_SourceDeductionBenefits |currency:model.transactionHeader.CurrencyCode + " $"}}
+                            </span>
+                        </td>
+                        <td data-ng-repeat="payee in model.transactionCalculation.AmountSummary.AmountSummaryPayees">
+                            <span class="pull-right" data-ng-class="(model.transactionHeader.ExcludedEarningAndSourceDeductions|filter:{EarningsAndDeductionsTypeId: ApplicationConstants.EarningsAndDeductionsType.SourceDeductionBenefits})[0].IsExcluded ? 'transaction-amount-summary-amount-strikethrough' : ''">
+                                {{payee.Amount_SourceDeductionBenefits | currency:model.transactionHeader.CurrencyCode + " $"}}
+                            </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="transaction-amount-summary-table-first-col bold">
+                            Total Deductions
+                        </td>
+                        <td data-ng-repeat="bill in model.transactionCalculation.AmountSummary.AmountSummaryBills">&nbsp;</td>
+                        <td><span class="pull-right bold">{{model.transactionCalculation.AmountSummary.AmountSummaryEmployer.Amount_TotalDeductions|currency:model.transactionHeader.CurrencyCode + " $"}}</span></td>
+                        <td data-ng-repeat="payee in model.transactionCalculation.AmountSummary.AmountSummaryPayees"><span class="pull-right bold">{{payee.Amount_TotalDeductions|currency:model.transactionHeader.CurrencyCode + " $"}}</span></td>
+                    </tr>
+
+                    <tr data-ng-if="showSummaryEarningsAndDeductions(model.transactionCalculation.AmountSummary, 'Amount_PayeeAdvance')||showSummaryEarningsAndDeductions(model.transactionCalculation.AmountSummary, 'Amount_PayeeGarnishee')">
+                        <td class="transaction-amount-summary-table-first-col"><span class="h4">Advances and Garnishees</span></td>
+                        <td data-ng-repeat="bill in model.transactionCalculation.AmountSummary.AmountSummaryBills">&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td data-ng-repeat="payee in model.transactionCalculation.AmountSummary.AmountSummaryPayees">&nbsp;</td>
+                    </tr>
+                    <tr data-ng-if="showSummaryEarningsAndDeductions(model.transactionCalculation.AmountSummary, 'Amount_PayeeAdvance')">
+                        <td class="transaction-amount-summary-table-first-col">
+                            <label class="transaction-amount-summary-checkbox-view"
+                                   data-ng-if="showIsReplaceByZeroIcon"
+                                   data-ng-class="(model.transactionHeader.ExcludedEarningAndSourceDeductions|filter:{EarningsAndDeductionsTypeId: ApplicationConstants.EarningsAndDeductionsType.Advance})[0].IsExcluded ? 'transaction-amount-summary-checkbox-view-red' : 'transaction-amount-summary-checkbox-view-green'"></label>
+                            <input type="checkbox" class="transaction-amount-summary-checkbox" id="Amount_PayeeAdvance"
+                                   data-ng-if="showIsReplaceByZeroInputCheckBox"
+                                   data-ng-change="resetTaxesAndCalculate()"
+                                   data-ng-model="(model.transactionHeader.ExcludedEarningAndSourceDeductions|filter:{EarningsAndDeductionsTypeId: ApplicationConstants.EarningsAndDeductionsType.Advance})[0].IsExcluded">
+                            <label for="Amount_PayeeAdvance"></label>
+                            <label for="Amount_PayeeAdvance" class="transaction-amount-summary-label-text">{{ApplicationConstants.EarningsAndDeductionsType.Advance | lookup:lists.earningsAndDeductionsTypeList:'id':'text'}}</label>
+                        </td>
+                        <td data-ng-repeat="bill in model.transactionCalculation.AmountSummary.AmountSummaryBills">&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td data-ng-repeat="payee in model.transactionCalculation.AmountSummary.AmountSummaryPayees">
+                            <span class="pull-right" data-ng-class="(model.transactionHeader.ExcludedEarningAndSourceDeductions|filter:{EarningsAndDeductionsTypeId: ApplicationConstants.EarningsAndDeductionsType.Advance})[0].IsExcluded ? 'transaction-amount-summary-amount-strikethrough' : ''">{{payee.Amount_PayeeAdvance|currency:model.transactionHeader.CurrencyCode + " $"}}</span>
+                        </td>
+                    </tr>
+                    <tr data-ng-if="showSummaryEarningsAndDeductions(model.transactionCalculation.AmountSummary, 'Amount_PayeeGarnishee')">
+                        <td class="transaction-amount-summary-table-first-col">
+                            <label class="transaction-amount-summary-checkbox-view"
+                                   data-ng-if="showIsReplaceByZeroIcon"
+                                   data-ng-class="(model.transactionHeader.ExcludedEarningAndSourceDeductions|filter:{EarningsAndDeductionsTypeId: ApplicationConstants.EarningsAndDeductionsType.Garnishee})[0].IsExcluded ? 'transaction-amount-summary-checkbox-view-red' : 'transaction-amount-summary-checkbox-view-green'"></label>
+                            <input type="checkbox" class="transaction-amount-summary-checkbox" id="Amount_PayeeGarnishee"
+                                   data-ng-if="showIsReplaceByZeroInputCheckBox"
+                                   data-ng-change="resetTaxesAndCalculate()"
+                                   data-ng-model="(model.transactionHeader.ExcludedEarningAndSourceDeductions|filter:{EarningsAndDeductionsTypeId: ApplicationConstants.EarningsAndDeductionsType.Garnishee})[0].IsExcluded">
+                            <label for="Amount_PayeeGarnishee"></label>
+                            <label for="Amount_PayeeGarnishee" class="transaction-amount-summary-label-text">{{ApplicationConstants.EarningsAndDeductionsType.Garnishee | lookup:lists.earningsAndDeductionsTypeList:'id':'text'}}</label>
+                        </td>
+                        <td data-ng-repeat="bill in model.transactionCalculation.AmountSummary.AmountSummaryBills">&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td data-ng-repeat="payee in model.transactionCalculation.AmountSummary.AmountSummaryPayees">
+                            <span class="pull-right" data-ng-class="(model.transactionHeader.ExcludedEarningAndSourceDeductions|filter:{EarningsAndDeductionsTypeId: ApplicationConstants.EarningsAndDeductionsType.Garnishee})[0].IsExcluded ? 'transaction-amount-summary-amount-strikethrough' : ''">{{payee.Amount_PayeeGarnishee|currency:model.transactionHeader.CurrencyCode + " $"}}</span>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="h4" colspan="{{1+model.transactionCalculation.AmountSummary.AmountSummaryBills.length+1+model.transactionCalculation.AmountSummary.AmountSummaryPayees.length}}">Total Amounts</td>
+                    </tr>
+                    <tr>
+                        <td class="transaction-amount-summary-table-first-col bold">
+                            Total Amount
+                        </td>
+                        <td data-ng-repeat="bill in model.transactionCalculation.AmountSummary.AmountSummaryBills"><span class="pull-right bold">{{bill.Amount_BillTotalAll|currency:model.transactionHeader.CurrencyCode + " $"}}</span></td>
+                        <td><span class="pull-right bold">{{model.transactionCalculation.AmountSummary.AmountSummaryEmployer.Amount_TotalDeductions|currency:model.transactionHeader.CurrencyCode + " $"}}</span></td>
+                        <td data-ng-repeat="payee in model.transactionCalculation.AmountSummary.AmountSummaryPayees"><span class="pull-right bold">{{payee.Amount_PayeeTotalAll|currency:model.transactionHeader.CurrencyCode + " $"}}</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="panel-internal transaction-amount-summary-detail-summary" style="margin: 10px -5px" >
+    <div class="panel-body">
+        <div class="col-lg-12">
+            <p class="h4 center">Gross Profit</p>
+        </div>
+        <div class="col-lg-12 table-responsive">
+            <table class="table table-striped table-bordered table-hover table-condensed" data-ng-show="model.transactionCalculation.AmountSummary">
+                <thead>
+                    <tr>
+                        <th class="bold">Description</th>
+                        <th class="bold"><span class="pull-right">Amount</span></th>
+                    </tr>
+                </thead>
+                <tbody class="transaction-amount-summary-table-body">
+                    <tr>
+                        <td><label class="transaction-amount-summary-label-text">Gross Bill</label></td>
+                        <td><span class="pull-right">{{model.transactionCalculation.AmountSummary.Amount_BillsTotalGross|currency:model.transactionHeader.CurrencyCode + " $"}}</span></td>
+                    </tr>
+                    <tr>
+                        <td><label class="transaction-amount-summary-label-text">Minus Gross Pay</label></td>
+                        <td><span class="pull-right">{{model.transactionCalculation.AmountSummary.Amount_PayeesTotalGross|currency:model.transactionHeader.CurrencyCode + " $"}}</span></td>
+                    </tr>
+                    <tr>
+                        <td><label class="transaction-amount-summary-label-text">Minus Employer Costs</label></td>
+                        <td><span class="pull-right">{{model.transactionCalculation.AmountSummary.AmountSummaryEmployer.Amount_TotalDeductions|currency:model.transactionHeader.CurrencyCode + " $"}}</span></td>
+                    </tr>
+                    <tr data-ng-if="model.transactionCalculation.AmountSummary.Amount_EmployerCPPAmountAfterMaxDeduction>0">
+                        <td><label class="transaction-amount-summary-label-text">CPP Amount After Max Deduction</label></td>
+                        <td><span class="pull-right">{{model.transactionCalculation.AmountSummary.Amount_EmployerCPPAmountAfterMaxDeduction|currency:model.transactionHeader.CurrencyCode + " $"}}</span></td>
+                    </tr>
+                    <tr data-ng-if="model.transactionCalculation.AmountSummary.Amount_EmployerEIAmountAfterMaxDeduction>0">
+                        <td><label class="transaction-amount-summary-label-text">EI Amount After Max Deduction</label></td>
+                        <td><span class="pull-right">{{model.transactionCalculation.AmountSummary.Amount_EmployerEIAmountAfterMaxDeduction|currency:model.transactionHeader.CurrencyCode + " $"}}</span></td>
+                    </tr>
+                    <tr data-ng-if="model.transactionCalculation.AmountSummary.Amount_EmployerPIPAmountAfterMaxDeduction>0">
+                        <td><label class="transaction-amount-summary-label-text">PIP Amount After Max Deduction</label></td>
+                        <td><span class="pull-right">{{model.transactionCalculation.AmountSummary.Amount_EmployerPIPAmountAfterMaxDeduction|currency:model.transactionHeader.CurrencyCode + " $"}}</span></td>
+                    </tr>
+                    <tr data-ng-if="model.transactionCalculation.AmountSummary.Amount_EmployerHealthTaxLiability>0">
+                        <td><label class="transaction-amount-summary-label-text">EHT Liability for Canadian SP</label></td>
+                        <td><span class="pull-right">{{model.transactionCalculation.AmountSummary.Amount_EmployerHealthTaxLiability|currency:model.transactionHeader.CurrencyCode + " $"}}</span></td>
+                    </tr>
+                    <tr data-ng-if="model.transactionCalculation.AmountSummary.Amount_EmployerQPPAmountAfterMaxDeduction>0">
+                        <td><label class="transaction-amount-summary-label-text">QPP Amount After Max Deduction</label></td>
+                        <td><span class="pull-right">{{model.transactionCalculation.AmountSummary.Amount_EmployerQPPAmountAfterMaxDeduction|currency:model.transactionHeader.CurrencyCode + " $"}}</span></td>
+                    </tr>
+                    <tr data-ng-if="model.transactionCalculation.AmountSummary.Amount_PayeesTotalPaymentOtherEarningVacationPay_Accrued!==null">
+                        <td><label class="transaction-amount-summary-label-text">Minus Accrued Vacation Pay</label></td>
+                        <td><span class="pull-right">{{model.transactionCalculation.AmountSummary.Amount_PayeesTotalPaymentOtherEarningVacationPay_Accrued|currency:model.transactionHeader.CurrencyCode + " $"}}</span></td>
+                    </tr>
+                    <tr data-ng-if="showSummaryEarningsAndDeductions(model.transactionCalculation.AmountSummary, 'Amount_BillsTotalRebateAccrual')">
+                        <td>
+                            <label class="transaction-amount-summary-checkbox-view"
+                                   data-ng-if="showIsReplaceByZeroIcon"
+                                   data-ng-class="(model.transactionHeader.ExcludedEarningAndSourceDeductions|filter:{EarningsAndDeductionsTypeId: ApplicationConstants.EarningsAndDeductionsType.Rebate})[0].IsExcluded ? 'transaction-amount-summary-checkbox-view-red' : 'transaction-amount-summary-checkbox-view-green'"></label>
+                            <input type="checkbox" class="transaction-amount-summary-checkbox" id="Amount_BillsTotalRebateAccrual"
+                                   data-ng-if="showIsReplaceByZeroInputCheckBox"
+                                   data-ng-change="resetTaxesAndCalculate()"
+                                   data-ng-model="(model.transactionHeader.ExcludedEarningAndSourceDeductions|filter:{EarningsAndDeductionsTypeId: ApplicationConstants.EarningsAndDeductionsType.Rebate})[0].IsExcluded">
+                            <label for="Amount_BillsTotalRebateAccrual"></label>
+                            <label for="Amount_BillsTotalRebateAccrual" data-ng-class="showIsReplaceByZeroIcon||showIsReplaceByZeroInputCheckBox?'transaction-amount-summary-label-text':'transaction-amount-summary-label-text-no-checkbox'">Minus {{ApplicationConstants.EarningsAndDeductionsType.Rebate | lookup:lists.earningsAndDeductionsTypeList:'id':'text'}}</label>
+                            <label class="transaction-amount-summary-label-text" data-ng-if="model.transactionCalculation.AmountSummary.Percent_BillFirstOrDefault_RebateAccrual">{{model.transactionCalculation.AmountSummary.Percent_BillFirstOrDefault_RebateAccrual}} %</label>
+                        </td>
+                        <td>
+                            <span class="pull-right" data-ng-class="(model.transactionHeader.ExcludedEarningAndSourceDeductions|filter:{EarningsAndDeductionsTypeId: ApplicationConstants.EarningsAndDeductionsType.Rebate})[0].IsExcluded ? 'transaction-amount-summary-amount-strikethrough' : ''">{{model.transactionCalculation.AmountSummary.Amount_BillsTotalRebateAccrual|currency:model.transactionHeader.CurrencyCode + " $"}}</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="bold">Gross Profit</td>
+                        <td><span class="pull-right bold">{{model.transactionCalculation.AmountSummary.Amount_GrossProfit|currency:model.transactionHeader.CurrencyCode + " $"}}</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

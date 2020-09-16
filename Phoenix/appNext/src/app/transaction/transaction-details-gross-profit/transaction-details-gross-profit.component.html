@@ -1,0 +1,86 @@
+<div class="col-lg-12 table-responsive" *ngIf="transaction  && transaction.TransactionCalculation">
+  <table class="table table-striped table-bordered table-hover table-condensed" *ngIf="transaction.TransactionCalculation.AmountSummary">
+    <thead>
+      <tr>
+        <th class="bold">Description</th>
+        <th class="bold"><span class="pull-right">Amount</span></th>
+      </tr>
+    </thead>
+    <tbody class="transaction-amount-summary-table-body">
+      <tr>
+        <td><label class="transaction-amount-summary-label-text">Gross Bill</label></td>
+        <td><span class="pull-right">
+            {{transaction.TransactionCalculation.AmountSummary.Amount_BillsTotalGross | currency:
+            transaction.CurrencyCode + " $"}}
+          </span></td>
+      </tr>
+      <tr>
+        <td><label class="transaction-amount-summary-label-text">Minus Gross Pay</label></td>
+        <td><span class="pull-right">{{transaction.TransactionCalculation.AmountSummary.Amount_PayeesTotalGross
+            |currency:transaction.CurrencyCode + " $"}}</span></td>
+      </tr>
+      <tr>
+        <td><label class="transaction-amount-summary-label-text">Minus Employer Costs</label></td>
+        <td><span class="pull-right">{{transaction.TransactionCalculation.AmountSummary.AmountSummaryEmployer.Amount_TotalDeductions|currency:transaction.CurrencyCode
+            + " $"}}</span></td>
+      </tr>
+      <tr *ngIf="transaction.TransactionCalculation.AmountSummary.Amount_EmployerCPPAmountAfterMaxDeduction>0">
+        <td><label class="transaction-amount-summary-label-text">CPP Amount After Max Deduction</label></td>
+        <td><span class="pull-right">{{transaction.TransactionCalculation.AmountSummary.Amount_EmployerCPPAmountAfterMaxDeduction|currency:transaction.CurrencyCode
+            + " $"}}</span></td>
+      </tr>
+      <tr *ngIf="transaction.TransactionCalculation.AmountSummary.Amount_EmployerEIAmountAfterMaxDeduction>0">
+        <td><label class="transaction-amount-summary-label-text">EI Amount After Max Deduction</label></td>
+        <td><span class="pull-right">{{transaction.TransactionCalculation.AmountSummary.Amount_EmployerEIAmountAfterMaxDeduction|currency:transaction.CurrencyCode
+            + " $"}}</span></td>
+      </tr>
+      <tr *ngIf="transaction.TransactionCalculation.AmountSummary.Amount_EmployerPIPAmountAfterMaxDeduction>0">
+        <td><label class="transaction-amount-summary-label-text">PIP Amount After Max Deduction</label></td>
+        <td><span class="pull-right">{{transaction.TransactionCalculation.AmountSummary.Amount_EmployerPIPAmountAfterMaxDeduction|currency:transaction.CurrencyCode
+            + " $"}}</span></td>
+      </tr>
+      <tr *ngIf="transaction.TransactionCalculation.AmountSummary.Amount_EmployerHealthTaxLiability>0">
+        <td><label class="transaction-amount-summary-label-text">EHT Liability for Canadian SP</label></td>
+        <td><span class="pull-right">{{transaction.TransactionCalculation.AmountSummary.Amount_EmployerHealthTaxLiability|currency:transaction.CurrencyCode
+            + " $"}}</span></td>
+      </tr>
+      <tr *ngIf="transaction.TransactionCalculation.AmountSummary.Amount_EmployerQPPAmountAfterMaxDeduction>0">
+        <td><label class="transaction-amount-summary-label-text">QPP Amount After Max Deduction</label></td>
+        <td><span class="pull-right">{{transaction.TransactionCalculation.AmountSummary.Amount_EmployerQPPAmountAfterMaxDeduction|currency:transaction.CurrencyCode
+            + " $"}}</span></td>
+      </tr>
+      <tr *ngIf="transaction.TransactionCalculation.AmountSummary.Amount_PayeesTotalPaymentOtherEarningVacationPay_Accrued!==null">
+        <td><label class="transaction-amount-summary-label-text">Minus Accrued Vacation Pay</label></td>
+        <td><span class="pull-right">{{transaction.TransactionCalculation.AmountSummary.Amount_PayeesTotalPaymentOtherEarningVacationPay_Accrued|currency:transaction.CurrencyCode
+            + " $"}}</span></td>
+      </tr>
+      <tr *ngIf="showSummaryEarningsAndDeductions('Amount_BillsTotalRebateAccrual')">
+        <td>
+          <label class="transaction-amount-summary-checkbox-view" *ngIf="showIsReplaceByZeroIcon" [ngClass]="getModel('ExcludedEarningAndSourceDeductions', {EarningsAndDeductionsTypeId: phxConstants.EarningsAndDeductionsType.Rebate}).IsExcluded
+                                ? 'transaction-amount-summary-checkbox-view-red' : 'transaction-amount-summary-checkbox-view-green'"></label>
+          <input type="checkbox" class="transaction-amount-summary-checkbox" id="Amount_BillsTotalRebateAccrual" *ngIf="showIsReplaceByZeroInputCheckBox"
+            [(ngModel)]="getModel('ExcludedEarningAndSourceDeductions', {EarningsAndDeductionsTypeId: phxConstants.EarningsAndDeductionsType.Rebate}).IsExcluded"
+            (ngModelChange)="resetTaxesAndCalculate()">
+          <label for="Amount_BillsTotalRebateAccrual"></label>
+          <label for="Amount_BillsTotalRebateAccrual" [ngClass]="(showIsReplaceByZeroIcon||showIsReplaceByZeroInputCheckBox )?
+                            'transaction-amount-summary-label-text':'transaction-amount-summary-label-text-no-checkbox'">
+            Minus {{phxConstants.EarningsAndDeductionsType.Rebate | lookupNoCache :
+            html.lists.earningsAndDeductionsTypeList:'id':'text'}}</label>
+          <label class="transaction-amount-summary-label-text" *ngIf="transaction.TransactionCalculation.AmountSummary.Percent_BillFirstOrDefault_RebateAccrual">
+            {{transaction.TransactionCalculation.AmountSummary.Percent_BillFirstOrDefault_RebateAccrual}}
+            %</label>
+        </td>
+        <td>
+          <span class="pull-right" [ngClass]="getModel('ExcludedEarningAndSourceDeductions', {EarningsAndDeductionsTypeId: phxConstants.EarningsAndDeductionsType.Rebate}).IsExcluded
+                            ? 'transaction-amount-summary-amount-strikethrough' : ''">{{transaction.TransactionCalculation.AmountSummary.Amount_BillsTotalRebateAccrual|currency:transaction.CurrencyCode
+            + " $"}}</span>
+        </td>
+      </tr>
+      <tr>
+        <td class="bold">Gross Profit</td>
+        <td><span class="pull-right bold">{{transaction.TransactionCalculation.AmountSummary.Amount_GrossProfit|currency:transaction.CurrencyCode
+            + " $"}}</span></td>
+      </tr>
+    </tbody>
+  </table>
+</div>

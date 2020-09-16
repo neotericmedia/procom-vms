@@ -1,0 +1,171 @@
+<div class="content-group form-horizontal" data-ng-form="formAssignmentCreate" style="height:100%;">
+    <div data-loading-spinner="selfScope.workOrderCreateInProgress"></div>
+    <div class="row" data-ng-disabled="selfScope.workOrderCreateInProgress">
+        <div class="col-lg-8">
+            <div class="panel-internal" data-ng-if="$state.params.atsSourceId>0">
+                <div class="content-group form-horizontal">
+                    <div class="form-group">
+                        <div class="col-lg-10">
+                            <h4>Application Transaction System Result</h4>
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-12">
+                        <label class="col-lg-4 control-label label-to-right" data-original-title="" title="">Source</label>
+                        <div class="col-lg-8">
+                            <label class="control-label">{{$state.params.atsSourceId|lookup:selfScope.lists.listAtsSource}}</label>
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-12" data-ng-show="selfScope.ats.PlacementId>0">
+                        <label class="col-lg-4 control-label label-to-right" data-original-title="" title="">Placement ID</label>
+                        <div class="col-lg-8">
+                            <label class="control-label">{{selfScope.ats.PlacementId}}</label>
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-12" data-ng-show="selfScope.ats.PlacementId==0&&$state.params.atsPlacementId>0">
+                        <label class="col-lg-4 control-label label-to-right" data-original-title="" title="">Placement ID</label>
+                        <div class="col-lg-8">
+                            <label class="control-label alert-danger">No ATS result on requested id: {{$state.params.atsPlacementId}}</label>
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-12" data-ng-show="selfScope.ats.PlacementId>0">
+                        <label class="col-lg-4 control-label label-to-right" data-original-title="" title="">Start Date</label>
+                        <div class="col-lg-8">
+                            <label class="control-label">{{selfScope.ats.StartDate|date:ApplicationConstants.formatDateSorting}}</label>
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-12" data-ng-show="selfScope.ats.PlacementId>0">
+                        <label class="col-lg-4 control-label label-to-right" data-original-title="" title="">End Date</label>
+                        <div class="col-lg-8">
+                            <label class="control-label">{{selfScope.ats.EndDate|date:ApplicationConstants.formatDateSorting}}</label>
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-12" data-ng-repeat="rate in selfScope.ats.BillingRates">
+                        <label class="col-lg-4 control-label label-to-right" data-original-title="" title="">{{rate.RateTypeId|lookup:selfScope.lists.listRateType}} Billing Rate</label>
+                        <div class="col-lg-8">
+                            <label class="control-label">$ {{rate.Rate|currency:""}} {{selfScope.ats.BillingRateUnitId|lookup:selfScope.lists.listRateUnit}}</label>
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-12" data-ng-repeat="rate in selfScope.ats.PaymentRates">
+                        <label class="col-lg-4 control-label label-to-right" data-original-title="" title="">{{rate.RateTypeId|lookup:selfScope.lists.listRateType}} Payment Rate</label>
+                        <div class="col-lg-8">
+                            <label class="control-label">$ {{rate.Rate|currency:""}} {{selfScope.ats.PaymentRateUnitId|lookup:selfScope.lists.listRateUnit}}</label>
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-12" data-ng-show="selfScope.ats.OrganizationIdClient>0">
+                        <label class="col-lg-4 control-label label-to-right" data-original-title="" title="">Client Company</label>
+                        <div class="col-lg-8">
+                            <label class="control-label">{{selfScope.ats.OrganizationIdClient}} - {{selfScope.ats.OrganizationClientDisplayName}}</label>
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-12" data-ng-show="selfScope.ats.UserProfileIdWorker>0">
+                        <label class="col-lg-4 control-label label-to-right" data-original-title="" title="">User Profile Worker</label>
+                        <div class="col-lg-8">
+                            <label class="control-label">{{selfScope.ats.UserProfileIdWorker}} - {{selfScope.ats.UserProfileWorkerName}}</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-lg-4 control-label label-to-right" data-original-title="" title="">Line Of Business</label>
+                <div class="col-lg-8">
+                    <label class="control-label">{{selfScope.resultModel.lineOfBusinessId|lookup:selfScope.lists.listLineOfBusiness}}</label>
+                </div>
+            </div>
+            <div class="form-group" data-ng-if="!selfScope.resultModel.MappedOrganizationIdClient">
+                <label data-for-property="SuggestedOrganizationIdClient" for="SuggestedOrganizationIdClient" data-model-property="selfScope.resultModel.SuggestedOrganizationIdClient"
+                    class="col-lg-4 control-label req-lab-right" data-original-title="" title="">Work Order Client Company</label>
+                <div class="col-lg-8">
+                    <div class="input-group select2-bootstrap-append">
+                        <ui-select name="SuggestedOrganizationIdClient" data-ng-model="selfScope.resultModel.SuggestedOrganizationIdClient" theme="select2"
+                            class="form-control" tagging="selfScope.tagHandler" required>
+                            <ui-select-match placeholder=" -- select one --">{{$select.selected.Id}} - {{$select.selected.DisplayName}} </ui-select-match>
+                            <ui-select-choices repeat="item.Id as item in  selfScope.lists.listOrganizationClient | uiSelectChoicesFilter: $select.search: 'Id' : 'DisplayName'">
+                                <span data-ng-bind-html="item.Id | highlight: $select.search"></span> -
+                                <span data-ng-bind-html="item.DisplayName | highlight: $select.search"></span>
+                            </ui-select-choices>
+                        </ui-select>
+                        <span class="input-group-btn">
+                            <button tabindex="-1" data-ng-click="selfScope.resultModel.SuggestedOrganizationIdClient=undefined" class="btn btn-default">
+                                <i class="material-icons md-18">clear</i>
+                            </button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group" data-ng-if="selfScope.resultModel.MappedOrganizationIdClient>0">
+                <label class="col-lg-4 control-label" data-original-title="" title="">Mapped Client Company</label>
+                <div class="col-lg-8">
+                    {{selfScope.resultModel.MappedOrganizationIdClient}} - {{selfScope.resultModel.MappedOrganizationIdClient|lookupnocache:selfScope.lists.listOrganizationClient:'Id':'DisplayName'}}
+                </div>
+            </div>
+            <div class="form-group">
+                <label for-property="templateId" for="templateId" data-model-property="selfScope.templateId" class="col-lg-4 control-label label-to-right"
+                    data-original-title="" title="">Work Order Template</label>
+                <div class="col-lg-8">
+                    <div class="input-group select2-bootstrap-append">
+                        <ui-select name="templateId" data-ng-model="selfScope.templateId" theme="select2" class="form-control">
+                            <ui-select-match placeholder=" -- select one --">{{$select.selected.Name}} ({{$select.selected.Description}})</ui-select-match>
+                            <ui-select-choices repeat="item.Id as item in selfScope.lists.listWorkOrderTemplates | filter:{Entity:{WorkOrders:{WorkOrderVersions:{LineOfBusinessId: selfScope.resultModel.lineOfBusinessId, BillingInfoes:{OrganizationIdClient: selfScope.resultModel.SuggestedOrganizationIdClient}}}}}:true |  uiSelectChoicesFilter: $select.search: 'Name':'Description'">
+                                <span data-ng-bind-html="item.Name | highlight: $select.search"></span>
+                                (
+                                <span data-ng-bind-html="item.Description | highlight: $select.search"></span>)
+                            </ui-select-choices>
+                        </ui-select>
+                        <span class="input-group-btn">
+                            <button tabindex="-1" data-ng-click="selfScope.templateId=undefined" class="btn btn-default">
+                                <i class="material-icons md-18">clear</i>
+                            </button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group" data-ng-if="!selfScope.resultModel.MappedUserProfileIdWorker">
+                <label data-for-property="SuggestedUserProfileIdWorker" for="SuggestedUserProfileIdWorker" data-model-property="selfScope.resultModel.SuggestedUserProfileIdWorker"
+                    class="col-lg-4 control-label req-lab-right" data-original-title="" title="">Work Order User Profile Worker</label>
+                <div class="col-lg-8">
+                    <div class="input-group select2-bootstrap-append">
+                        <ui-select name="SuggestedUserProfileIdWorker" data-ng-model="selfScope.resultModel.SuggestedUserProfileIdWorker" theme="select2"
+                            class="form-control" tagging="selfScope.tagHandler" required>
+                            <ui-select-match placeholder=" -- select one --">{{$select.selected.Id}} - {{$select.selected.Contact.FullName}} - {{$select.selected.ProfileTypeId | lookup:selfScope.lists.listCodeValue.listProfileType}}
+                            </ui-select-match>
+                            <ui-select-choices repeat="item.Id as item in  selfScope.lists.listUserProfileWorker | uiSelectChoicesFilter: $select.search: 'Id' : 'Contact.FullName'">
+                                    <span data-ng-bind-html="item.Id | highlight: $select.search"></span> -
+                                    <span data-ng-bind-html="item.Contact.FullName | highlight: $select.search"></span> -
+                                    <span data-ng-bind-html="item.ProfileTypeId | lookup:selfScope.lists.listCodeValue.listProfileType"></span>
+                            </ui-select-choices>
+                        </ui-select>
+                        <span class="input-group-btn">
+                            <button tabindex="-1" data-ng-click="selfScope.resultModel.SuggestedUserProfileIdWorker=undefined" class="btn btn-default">
+                                <i class="material-icons md-18">clear</i>
+                            </button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group" data-ng-if="selfScope.resultModel.MappedUserProfileIdWorker>0">
+                <label class="col-lg-4 control-label" data-original-title="" title="">Mapped User Profile Worker</label>
+                <div class="col-lg-8">
+                    {{selfScope.resultModel.MappedUserProfileIdWorker}} - {{selfScope.resultModel.MappedUserProfileIdWorker|lookupnocache:selfScope.lists.listUserProfileWorker:'Id':'Contact.FullName'}}
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="panel-body" data-pt-validation-messages="selfScope.ValidationMessages"></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4">
+    </div>
+</div>
+<div class="col-lg-12" data-ng-if="!selfScope.workOrderCreateInProgress">
+    <div class="row panel-footer">
+        <div class="col-lg-6"></div>
+        <div class="col-lg-6">
+            <div class="pull-right">
+                <button type="button" class="btn btn-primary" data-ng-click="selfScope.workOrderCreate()" data-ng-disabled="!formAssignmentCreate.$valid">Next</button>
+            </div>
+        </div>
+    </div>
+</div>
+</div>

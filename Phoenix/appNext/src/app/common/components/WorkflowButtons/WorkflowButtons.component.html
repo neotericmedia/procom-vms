@@ -1,0 +1,56 @@
+﻿<!--TOP Buddons //-->
+
+<div class="btn-group btn-payroll-search-nav" *ngIf="workflowAvailableActions">
+    <div class="payroll-btn-wrapper">
+        <button type="button" class="btn btn-clouds dropdown-toggle" data-toggle="dropdown">
+            <span class="payroll-btn-name">Actions</span> <span class="caret ml payroll-btn-caret"></span>
+        </button>
+        <ul class="dropdown-menu bordered">
+            <li *ngFor="let b of workflowAvailableActions" (click)="editMode(b.TaskResultId)" style="cursor:pointer;">
+                <a> {{b.Name}} </a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<!-- Bottom Buttons//-->
+<div   *ngIf="actionButtons"> 
+    <div>
+         <dx-button 
+            text="Cancel and Discard"
+            (onClick)="callCommand()" 
+        ></dx-button>
+        
+        <dx-button
+            type= "default" 
+            text="Submit"  
+            (onClick)="callCommand(actionButtons[0])"
+            disabled="{{!isValid ? 'disabled' : ''}}"
+        ></dx-button> 
+         
+
+      
+    </div>
+</div>
+
+<!-- Workflow Buttons//-->
+<div *ngIf="workflowActionButtons">
+    <div class="btn-toolbar">
+        <div class="pull-right">
+            <button type="button" *ngFor="let action of workflowActionButtons | orderBy:'DisplayButtonOrder'; let i = index" class="btn btn-default"
+                (click)="executeWorkflowAction(action)" [class.btn-primary]="i === 0" [class.btn-danger]="action.btnDanger" [disabled]="!isValid">
+            {{action.Name}}
+        </button>
+        </div>
+    </div>
+</div>
+
+<!-- Decline Modal -->
+<app-phx-dialog-comment
+    (onclose)="declineReasonClosed($event)"
+    [title]="'Decline'" 
+    [inputname]="'Enter the decline reason:'" 
+    [helpblock]="'Reason for declining must be entered'"
+    [saveButtonText]="'Decline'"
+    [cancelButtonText]="'Cancel'">
+</app-phx-dialog-comment>

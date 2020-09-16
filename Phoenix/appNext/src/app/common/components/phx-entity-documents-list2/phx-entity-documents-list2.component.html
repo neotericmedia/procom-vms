@@ -1,0 +1,17 @@
+<app-phx-data-table #grd [columns]="columns" [configuration]="dataTableConfiguration" [dataSourceUrl]="dataSourceUrl"
+ [dataSourceParams]="oDataParams" [componentName]="dataGridComponentName" (rowClick)="onRowClick($event)"
+ exportFileName="Documents" (contextMenuOpenTab)="onContextMenuOpenTab($event)">
+	<div *dxTemplate="let document of 'actionCellTemplate'">
+		<a type="button" class="btn btn-default btn-material" title="View" target="_blank" *ngIf="document.data.PdfDocumentPublicId !== '00000000-0000-0000-0000-000000000000'"
+		 [href]="getPdfStreamByPublicId(document.data.PublicId)"><i class="material-icons">remove_red_eye</i></a>
+		<button type="button" class="btn btn-default btn-material" (click)="documentDelete(document.data)" title="Delete" *ngIf="canDeleteDocument(document.data)"><i
+			 class="material-icons">delete</i></button>
+	</div>
+	<!-- <div *dxTemplate="let role of 'orgRolesTemplate'">
+		<i *ngIf='role.data.IsOrganizationClientRole' class="icon icon-small icon-organization-client ng-scope role-icon" title="Client"></i>
+		<i *ngIf='role.data.IsOrganizationIndependentContractorRole' class="icon icon-small icon-organization-independentcontractor ng-scope role-icon" title="Independent Contractor"></i>
+        <i *ngIf='role.data.IsOrganizationLimitedLiabilityCompanyRole' class="icon icon-small icon-organization-limitedliabilitycompany ng-scope role-icon" title="Limited Liability Company"></i>
+		<i *ngIf='role.data.IsOrganizationSubVendorRole' class="icon icon-small icon-organization-independentcontractor ng-scope role-icon" title="Sub Vendor"></i>
+		<i *ngIf='role.data.IsOrganizationInternalRole' class="icon icon-small icon-organization-internal ng-scope role-icon" title="Internal"></i>
+	</div> -->
+</app-phx-data-table>

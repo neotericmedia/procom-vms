@@ -1,0 +1,99 @@
+<div class="content-group form-horizontal" data-ng-form="selfScope.formAssignmentCreateSetup" style="height:100%;">
+    <div data-loading-spinner="selfScope.getDataInProgress"></div>
+    <div class="row" data-ng-disabled="selfScope.getDataInProgress">
+        <div class="col-md-10 col-lg-9 col-xl-8 col-xxl-7 col-xxxl-6">
+            <div class="form-group">
+                <label for-property="lineOfBusinessId" for="lineOfBusinessId" data-model-property="selfScope.lineOfBusinessId" class="col-md-5 control-label label-to-right req-lab-right" data-original-title="" title="">Line Of Business</label>
+                <div class="col-md-7">
+                    <div class="input-group select2-bootstrap-append">
+                        <ui-select name="lineOfBusinessId" data-ng-model="selfScope.lineOfBusinessId" theme="select2" class="form-control" data-ng-change="selfScope.onChangeLineOfbusinessId()" required>
+                            <ui-select-match placeholder=" -- select one --">{{$select.selected.text}}</ui-select-match>
+                            <ui-select-choices repeat="item.id as item in selfScope.lists.listLineOfBusiness | uiSelectChoicesFilter: $select.search: 'text'"><span data-ng-bind-html="item.text | highlight: $select.search"></span></ui-select-choices>
+                        </ui-select>
+                        <span class="input-group-btn">
+                            <button tabindex="-1" data-ng-click="selfScope.lineOfBusinessId=undefined" class="btn btn-default"><i class="material-icons md-18">clear</i></button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div data-ng-if="!selfScope.disableATS">
+                <div class="form-group hide">
+                    <label for-property="atsSourceId" for="atsSourceId" data-model-property="selfScope.atsSourceId" class="col-md-5 control-label label-to-right" data-ng-class="selfScope.lineOfBusinessId==ApplicationConstants.LineOfBusiness.Regular?'req-lab-right':''" data-original-title="" title="">ATS Source</label>
+                    <div class="col-md-7">
+                        <div class="input-group select2-bootstrap-append">
+                            <ui-select name="atsSourceId" data-ng-model="selfScope.atsSourceId" theme="select2" class="form-control" data-ng-required="selfScope.lineOfBusinessId==ApplicationConstants.LineOfBusiness.Regular" data-ng-change="selfScope.onChangeAtsSourceId()">
+                                <ui-select-match placeholder=" -- select one --">{{$select.selected.text}}</ui-select-match>
+                                <ui-select-choices repeat="item.id as item in selfScope.lists.listAtsSource | uiSelectChoicesFilter: $select.search: 'text'"><span data-ng-bind-html="item.text | highlight: $select.search"></span></ui-select-choices>
+                            </ui-select>
+                            <span class="input-group-btn">
+                                <button tabindex="-1" data-ng-click="selfScope.atsSourceId=undefined" class="btn btn-default"><i class="material-icons md-18">clear</i></button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group" data-ng-show="selfScope.atsSourceId>0">
+                    <label for-property="atsPlacementId" for="atsPlacementId" data-model-property="selfScope.atsPlacementId" class="col-md-5 control-label label-to-right" data-ng-class="selfScope.lineOfBusinessId==ApplicationConstants.LineOfBusiness.Regular?'req-lab-right':''" data-original-title="" title="">ATS Placement ID</label>
+                    <div class="col-md-7">
+                        <input type="text" data-ng-model="selfScope.atsPlacementId" name="atsPlacementId" maxlength-message="Required" max="999999"
+                               data-float-between-input="{from:1, to:999999, decimalplaces:0, doesemptytozero:'false'}"
+                               class="form-control ng-scope"
+                               data-ng-required="selfScope.lineOfBusinessId==ApplicationConstants.LineOfBusiness.Regular"
+                               data-ng-change="selfScope.onChangePlacementId()"
+                               data-ng-model-options='{ debounce: 500 }'>
+                    </div>
+                </div>
+            </div>
+
+            <div class="duplicate-workorder-warning" data-ng-show="selfScope.displayWarningMessage && selfScope.duplicateWorkOrders.length > 0">
+                <p>We've found the following work orders with this ATS ID. Select to review, or edit to change an existing work order.</p>
+            </div>
+            <div class="duplicate-workorder-warning" data-ng-show="selfScope.displayWarningMessage && selfScope.duplicateWorkOrders.length === 0">
+                <p>We haven't found any work order with this ATS ID.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-10 col-lg-9 col-xl-8 col-xxl-7 col-xxxl-6">
+            <div data-ng-if="!selfScope.getDataInProgress">
+                <div class="pull-right padding-10" style="margin-top: -5px;">
+                    <button type="button" class="btn btn-primary" data-ng-click="selfScope.workOrderCreate()" ng-if="selfScope.duplicateWorkOrders.length === 0" data-ng-disabled="!selfScope.formAssignmentCreateSetup.$valid || selfScope.checkingDuplicateWorkOrders">Next</button>
+                    <button type="button" class="btn btn-primary" data-ng-click="selfScope.workOrderCreate()" ng-if="selfScope.duplicateWorkOrders.length > 0" data-ng-disabled="!selfScope.formAssignmentCreateSetup.$valid || selfScope.checkingDuplicateWorkOrders">Create New</button>
+                </div>
+                <div ng-if="selfScope.checkingDuplicateWorkOrders" class="pull-right text-right text-primary error-box">
+                    <strong>Looking for matching work orders...</strong>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-10 col-lg-9 col-xl-8 col-xxl-7 col-xxxl-6">
+            <div class="panel-footer duplicate-workorder-footer" data-ng-show="selfScope.duplicateWorkOrders.length > 0">
+                <div class="duplicate-workorder-table">
+                    <div class="row bg-gray-strong duplicate-workorder-table-header">
+                        <div class="col-xs-4 col-sm-2 duplicate-workorder-table-cell text-black">Work Order</div>
+                        <div class="col-xs-4 col-sm-2 duplicate-workorder-table-cell text-black">Worker Name</div>
+                        <div class="col-xs-4 col-sm-2 duplicate-workorder-table-cell text-black">Status</div>
+                        <div class="clearfix visible-xs-block"></div>
+                        <div class="col-xs-4 col-sm-2 duplicate-workorder-table-cell text-black">Start Date</div>
+                        <div class="col-xs-4 col-sm-2 duplicate-workorder-table-cell text-black">End Date</div>
+                        <div class="col-xs-4 col-sm-2 duplicate-workorder-table-cell text-black">Action</div>
+                    </div>
+                    <div class="row duplicate-workorder-table-row" data-ng-repeat="workOrder in selfScope.duplicateWorkOrders">
+                        <div class="col-xs-4 col-sm-2 text-black duplicate-workorder-table-cell">{{workOrder.WorkOrderFullNumber}}</div>
+                        <div class="col-xs-4 col-sm-2 text-black duplicate-workorder-table-cell">{{workOrder.WorkerName}}</div>
+                        <div class="col-xs-4 col-sm-2 text-black duplicate-workorder-table-cell">{{workOrder.WorkOrderStatus}}</div>
+                        <div class="clearfix visible-xs-block"></div>
+                        <div class="col-xs-4 col-sm-2 text-black duplicate-workorder-table-cell">{{workOrder.StartDate}}</div>
+                        <div class="col-xs-4 col-sm-2 text-black duplicate-workorder-table-cell">{{workOrder.EndDate}}</div>
+                        <div class="col-xs-4 col-sm-2 text-black duplicate-workorder-table-cell">
+                            <a class="duplicate-workorder-table-action" data-ng-click="selfScope.openWorkOrder(workOrder)">Select</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+        
+</div>

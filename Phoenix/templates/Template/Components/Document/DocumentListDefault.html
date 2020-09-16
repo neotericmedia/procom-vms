@@ -1,0 +1,59 @@
+﻿<div class="row" data-cg-busy="loadItemsPromise" style="margin: 0px;">
+    <div class="document-list table-responsive">
+        <table class="table table-striped table-content table-hover" data-st-table="documents" data-st-pagination-scroll="pageSize"
+            data-st-pipe="getEntityDocumentsST" data-st-column-widths="[25, 20, 25, 25, 15]">
+            <thead>
+                <tr>
+                    <th data-st-sort="Name" data-st-sort-default="">File Name</th>
+                    <th data-st-sort="UploadedByFullName">Uploaded By</th>
+                    <th data-st-sort="DocumentTypeId">Document Type</th>
+                    <th data-st-sort="UploadedDatetime">Date</th>
+                    <th>Action</th>
+                </tr>
+                <tr>
+                    <th>
+                        <input data-st-advanced-search="'Name'" class="input-sm form-control" type="search" />
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="'UploadedByFullName'" class="input-sm form-control" type="search" />
+                    </th>
+                    <th>
+                        <select data-st-advanced-search="{property: 'DocumentTypeId', ignoreQuotes: true}" class="input-sm form-control" data-st-as-width-override="315"
+                            data-st-as-options-override="lists.documentTypeList"></select>
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="'UploadedDatetime'" data-st-as-operator-override="'ge'" close-on-date-selection="false" show-button-bar="false"
+                            show-weeks="false" class="input-sm form-control" data-st-as-lazy-attributes="{'uib-datepicker' : ApplicationConstants.formatDate}"
+                            data-st-as-height-override="400" data-st-as-width-override="315" />
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr data-ng-repeat="document in documents">
+                    <td>
+                        <span>{{document.Name}}</span>
+                    </td>
+                    <td>
+                        <span>{{document.UploadedByContactFirstName}} {{document.UploadedByContactLastName}}</span>
+                    </td>
+                    <td>
+                        <span>{{getDocumentTypeName(document.DocumentTypeId)}}</span>
+                    </td>
+                    <td>
+                        <span>{{document.UploadedDatetime | date:ApplicationConstants.formatDateTimeHM}}</span>
+                    </td>
+                    <td>
+                        <a type="button" class="btn btn-default btn-material" title="View" target="_blank" data-ng-if="document.PdfDocumentPublicId!='00000000-0000-0000-0000-000000000000'"
+                            data-ng-href="{{getPdfStreamByPublicId(document.PdfDocumentPublicId)}}"><i class="material-icons">remove_red_eye</i></a>
+                        <button type="button" class="btn btn-default btn-material" data-ng-click="documentDelete(document)" title="Delete" data-ng-show="document.canDelete"><i class="material-icons">delete</i></button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="record-count">
+            <span><span class="record-count-value">{{totalItemCount || 0}}</span> records out of a total of <span class="record-count-value">{{ documents? documents.length : 0}}</span>            are loaded</span>
+        </div>
+        <div class="panel-body" data-ng-if="ValidationMessages.length>0" data-pt-validation-messages="ValidationMessages"></div>
+    </div>
+</div>

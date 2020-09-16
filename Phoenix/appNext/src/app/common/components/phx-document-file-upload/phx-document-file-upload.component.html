@@ -1,0 +1,184 @@
+<button *ngIf="showAddButton" #buttonAdd [disabled]="!editable" class="btn btn-default" (click)="showModal()">
+  {{'common.phxDocumentFileUpload.addBtn' | phxTranslate}}
+</button>
+<div bsModal #fileUploadModal="bs-modal" class="modal fade file-upload-modal" data-backdrop="false" tabindex="-1" role="dialog"
+  aria-hidden="false">
+  <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+          <div class="modal-header header">
+              <span>{{'common.phxDocumentFileUpload.title' | phxTranslate}}</span>
+              <button class="btn btn-material btn-borderless pull-right" (click)="close()">
+                  <i class="material-icons">close</i>
+              </button>
+          </div>
+          <div class="modal-body" ng2FileDrop (fileOver)="fileOverBase($event)" [uploader]="uploader" [ngClass]="{'file-over': hasBaseDropZoneOver}">
+              <div class="container">
+                  <div class="row message-header text-center">
+                      <div class="col-md-12">
+                          <span [innerHTML]="configuration?.UploadTitle"></span>
+                      </div>
+                  </div>
+                  <div class="row">
+                      <div class="col-md-12 text-center">
+                          <label class="btn btn-default btn-file">{{'common.phxDocumentFileUpload.addBtn' |
+                              phxTranslate}}
+                              <input type="file" class="hidden" ng2FileSelect [uploader]="uploader" multiple />
+                          </label>
+                          <button class="btn btn-primary" (click)="startUpload()" [disabled]="uploader?.queue?.length==0||
+                          (configuration?.customUiConfig
+                          &&configuration?.customUiConfig?.objectDate?.isRequared
+                          &&configuration?.customUiConfig?.objectDate.value==null)
+                          ||
+                          (configuration?.customUiConfig
+                          &&configuration?.customUiConfig?.objectComment!=null
+                          &&configuration?.customUiConfig?.objectComment?.isRequared
+                          &&(configuration?.customUiConfig?.objectComment?.value.length < configuration?.customUiConfig?.objectComment.minlength
+                          ||configuration?.customUiConfig?.objectComment?.value.length > configuration?.customUiConfig?.objectComment.maxlength)
+                          )">{{'common.phxDocumentFileUpload.uploadBtn'
+                              | phxTranslate}}</button>
+                      </div>
+                  </div>
+                  <div class="row message-accepted-file-types text-center" *ngIf="configuration && configuration.SupportedFileExtensions">
+                      <div class="col-md-12">
+                          <div>{{'common.phxDocumentFileUpload.acceptedFileTypesLabel' | phxTranslate}}:
+                              {{configuration?.SupportedFileExtensions}}</div>
+                      </div>
+                      <div class="row" *ngIf="configuration && uploader.queue.length > configuration?.limitMultiFileUploads">
+                        <strong class="error text-danger ">Only {{ configuration.limitMultiFileUploads }} file(s) can be uploaded at a time</strong>
+                      </div>
+                      <div class="row" *ngFor=" let message of validationMessages">
+                        <strong class="error text-danger ">{{ message }}</strong>
+                      </div>
+                  </div>
+                  <div class="row">
+                      <div class="col-md-12" style="margin-bottom: 40px">
+                          <table class="table">
+                              <thead>
+                                  <tr>
+                                      <th [class.col-md-6]="uploader.options.isHTML5" [class.col-md-10]="!uploader.options.isHTML5">{{'common.phxDocumentFileUpload.nameColumnHeader'
+                                          | phxTranslate}}</th>
+                                      <th class="col-md-2" *ngIf="uploader.options.isHTML5">{{'common.phxDocumentFileUpload.sizeColumnHeder'
+                                          | phxTranslate}}</th>
+                                      <th class="col-md-2" *ngIf="uploader.options.isHTML5">{{'common.phxDocumentFileUpload.progressColumnHeader'
+                                          | phxTranslate}}</th>
+                                      <th class="col-md-1">{{'common.phxDocumentFileUpload.statusColumnHeader' |
+                                          phxTranslate}}</th>
+                                      <th class="col-md-1">{{'common.phxDocumentFileUpload.actionsColumnHeader' |
+                                          phxTranslate}}</th>
+                                  </tr>
+                              </thead>
+                              <tbody *ngFor="let item of uploader.queue">
+                                  <tr>
+                                      <td>
+                                          <i class="material-icons">insert_drive_file</i>
+                                          <div class="file-name">
+                                              <strong>{{ item?.file?.name }}</strong>
+                                          </div>
+                                      </td>
+                                      <td *ngIf="uploader.options.isHTML5" nowrap>{{ item?.file?.size/1024/1024 |
+                                          number:'.2' }} {{'common.phxDocumentFileUpload.megabyteShort'
+                                          | phxTranslate}}</td>
+                                      <td *ngIf="uploader.options.isHTML5">
+                                          <div class="progress" style="margin-bottom: 0;">
+                                              <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': item.progress + '%' }"></div>
+                                          </div>
+                                      </td>
+                                      <td>
+                                          <span *ngIf="item.isSuccess">
+                                              <i class="material-icons">check</i>
+                                          </span>
+                                          <span *ngIf="item.isCancel">
+                                              <i class="material-icons">cancel</i>
+                                          </span>
+                                          <span *ngIf="item.isError">
+                                              <i class="material-icons">error</i>
+                                          </span>
+                                      </td>
+                                      <td nowrap>
+                                          <!-- <button type="button" class="btn btn-success btn-xs" (click)="item.upload()" [disabled]="item.isReady || item.isUploading || item.isSuccess">
+                                              <span class="glyphicon glyphicon-upload"></span> Upload
+                                          </button>
+                                          <button type="button" class="btn btn-warning btn-xs" (click)="item.cancel()" [disabled]="!item.isUploading">
+                                                  <i class="material-icons">cancel</i> Cancel
+                                          </button> -->
+                                          <button type="button" class="btn btn-default btn-material btn-borderless"
+                                              (click)="item.remove()" [title]="'common.phxDocumentFileUpload.remove' | phxTranslate">
+                                              <i class="material-icons">delete</i>
+                                          </button>
+                                      </td>
+                                  </tr>
+                                  <tr *ngIf="configuration?.customUiConfig?.objectDate">
+                                      <td colspan="2">
+                                          <div class="form-group">
+                                              <label class="col-lg-3 control-label" [ngClass]="configuration?.customUiConfig?.objectDate?.isRequared&&configuration.customUiConfig.objectDate.value==null
+                                              ?'req-lab-right ng-invalid ng-invalid-required'
+                                              :'label-to-right'"
+                                                  title="">{{configuration.customUiConfig.objectDate.label}}</label>
+                                              <div class="col-lg-4" id="datepickerCustomDateTime" style="display:block;">
+                                                  <app-phx-date-box class="col-lg-10" [(ngModel)]="configuration?.customUiConfig?.objectDate.value"
+                                                      type="date" [required]="configuration?.customUiConfig.objectDate.isRequared"></app-phx-date-box>
+                                              </div>
+                                          </div>
+                                      </td>
+                                  </tr>
+                                  <tr *ngIf="configuration?.customUiConfig?.objectComment">
+                                      <td colspan="2">
+                                          <div class="form-group">
+                                              <label class="col-lg-2 control-label" title="" [ngClass]="configuration.customUiConfig.objectComment.isRequared
+                                              &&(
+                                                  configuration.customUiConfig.objectComment.value==null
+                                                  ||configuration.customUiConfig.objectComment.value.length<configuration.customUiConfig.objectComment.minlength
+                                                  ||configuration.customUiConfig.objectComment.value.length>configuration.customUiConfig.objectComment.maxlength
+                                               )
+                                              ?'req-lab-right ng-invalid ng-invalid-required'
+                                              :'label-to-right'">{{configuration.customUiConfig.objectComment.label}}</label>
+                                              <div class="col-lg-10">
+                                                  <input class="form-control"
+                                                      name="objectComment" maxlength="{{configuration.customUiConfig.objectComment.maxlength}}"
+                                                      minlength="{{configuration.customUiConfig.objectComment.minlength}}"
+                                                      required="configuration.customUiConfig.objectComment.isRequared"
+                                                      [(ngModel)]="configuration.customUiConfig.objectComment.value" />
+                                                  <span class="help-block">{{configuration.customUiConfig.objectComment.helpBlock}}</span>
+                                              </div>
+                                          </div>
+                                      </td>
+                                  </tr>
+                                  <tr *ngIf="configuration?.customUiConfig?.objectDocumentType">
+                                      <td colspan="2">
+                                          <div class="form-group">
+                                              <label class="col-lg-2 control-label" title="" [ngClass]="configuration.customUiConfig.objectDocumentType.isRequared
+                                              && (
+                                                  configuration.customUiConfig.objectDocumentType.value === null
+                                               )
+                                              ? 'req-lab-right ng-invalid ng-invalid-required'
+                                              : 'label-to-right'">{{configuration.customUiConfig.objectDocumentType.label}}</label>
+                                              <div class="col-lg-10">
+                                                  <app-phx-select-box [items]="docTypeList" textField="text"
+                                                      [(ngModel)]="item.DocumentTypeId"
+                                                      valueField="id">
+                                                  </app-phx-select-box>
+                                                  <span class="help-block">{{configuration?.customUiConfig.objectDocumentType.helpBlock}}</span>
+                                              </div>
+                                          </div>
+                                      </td>
+                                  </tr>
+                              </tbody>
+                          </table>
+                          <div>
+                              <div>
+                                  {{'common.phxDocumentFileUpload.progressLabel' | phxTranslate}}:
+                                  <div class="progress">
+                                      <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': uploader.progress + '%' }"></div>
+                                  </div>
+                              </div>
+                          </div>
+                          <!-- <div *ngIf="error && error.length > 0" class="submit-invalid-message alert alert-danger alert-dismissable error-box" style="text-align: left">
+                              <strong>Error!</strong> {{ error }}
+                          </div> -->
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>

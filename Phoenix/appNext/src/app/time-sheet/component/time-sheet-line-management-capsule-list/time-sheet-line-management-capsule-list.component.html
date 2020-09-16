@@ -1,0 +1,11 @@
+<div *ngIf="timeSheet">
+
+  <div *ngFor="let obj of summaryList; trackBy: trackbyFn;">
+    <app-time-sheet-line-management-capsule 
+      [timeSheet]="timeSheet" [capsule]="obj.capsule" [totalUnits]="obj.totalUnits"
+      [projectVersionId]="obj.projectVersionId" [editable]="editable" [disabled]="disabled" [visible]="obj.visible && (!editable || canDisplayCapsule(obj.capsule))"
+      (prefill)="onPrefill($event)" (clear)="onClear($event)" (capsuleRemove)="onCapsuleRemove($event)" (spotlight)="onSpotlight($event)"
+      (capsuleClick)="onCapsuleClick($event)"></app-time-sheet-line-management-capsule>
+  </div>
+
+</div>

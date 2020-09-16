@@ -1,0 +1,189 @@
+<div class="form-group">
+  <div class="col-lg-12">
+    <h4>Commissions</h4>
+  </div>
+</div>
+<form [formGroup]="inputFormGroup" *ngIf="inputFormGroup">
+
+  <div class="form-group">
+    <phx-form-control [control]="inputFormGroup.controls.SalesPatternId" labelText="Sales Pattern" [editable]="readOnlyStorage.IsEditable && checkPtFiledAccessibility('WorkOrderVersion','SalesPatternId')"
+      viewModeText="{{inputFormGroup.controls.SalesPatternId.value | lookupNoCache: html.lists.salesPatterns:'Id':'Description'}}">
+      <app-phx-select-box [formControl]="inputFormGroup.controls.SalesPatternId" [items]="html.lists.salesPatterns" textField="Description"
+        valueField="Id" placeholder="-- select one --">
+      </app-phx-select-box>
+    </phx-form-control>
+  </div>
+
+  <div *ngIf="inputFormGroup.controls.SalesPatternId.value">
+    <div class="form-group">
+      <label for-property="JobOwner" for="JobOwner" class="col-lg-4 control-label label-to-right">Job Owner</label>
+      <div class="col-lg-8">
+        <div class="fieldViewMode form-control-static ">
+          {{inputFormGroup.controls.JobOwner.value?.FullName}}
+        </div>
+      </div>
+    </div>
+    <div class="form-group" *ngFor="let support of inputFormGroup.controls.SupportingJobOwners.value; let i = index">
+      <label for="SupportingJobOwner" class="col-lg-4 control-label label-to-right" *ngIf="i === 0">Support</label>
+      <div class="col-lg-4" *ngIf="i > 0"></div>
+      <div class="col-lg-8">
+        <div class="fieldViewMode form-control-static ">
+          {{support.FullName}}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="!inputFormGroup.controls.SalesPatternId.value">
+    <div class="form-group">
+      <phx-form-control labelText="Job Owner Uses Support?" [control]="inputFormGroup.controls.JobOwnerUsesSupport" [editable]="readOnlyStorage.IsEditable && checkPtFiledAccessibility('WorkOrderVersion','JobOwnerUsesSupport')"
+        viewModeText="{{inputFormGroup.controls.JobOwnerUsesSupport.value ? 'Yes' : 'No'}}">
+        <label class="radio-inline">
+          <input class="form-check-input" type="radio" [value]="true" required formControlName="JobOwnerUsesSupport">Yes</label>
+        <label class="radio-inline">
+          <input class="form-check-input" type="radio" [value]="false" required formControlName="JobOwnerUsesSupport">No</label>
+      </phx-form-control>
+    </div>
+    <div class="form-group job-owner-use-support">
+      <form [formGroup]="inputFormGroup.controls.JobOwner">
+        <phx-form-control [control]="inputFormGroup.controls.JobOwner.controls.UserProfileIdSales" labelText="Job Owner" [editable]="readOnlyStorage.IsEditable && checkPtFiledAccessibility('WorkOrderVersion.JobOwner','UserProfileIdSales')"
+          viewModeText="{{inputFormGroup.controls.JobOwner.controls.UserProfileIdSales.value | lookupNoCache: html.lists.JobOwners:'Id':'Contact.FullName'}}">
+          <app-phx-select-box [formControl]="inputFormGroup.controls.JobOwner.controls.UserProfileIdSales" placeholder="-- select one --"
+            [items]="html.lists.JobOwners" textField="Contact.FullName" valueField="Id">
+          </app-phx-select-box>
+        </phx-form-control>
+      </form>
+    </div>
+    <div *ngIf="inputFormGroup.controls.JobOwnerUsesSupport.value">
+      <div class="form-group" *ngIf="!inputFormGroup.get('SupportingJobOwners').value||inputFormGroup.get('SupportingJobOwners').value.length===0">
+        <label for="SupportingJobOwner" class="col-lg-4 control-label label-to-right small-label">Support</label>
+        <div class="col-lg-8" *ngIf="readOnlyStorage.IsEditable">
+          <div class="pull-right">
+            <button type="button" class="btn btn-sm btn-default btn-material" (click)="addSupportingJobOwner()">
+              <i class="material-icons">add</i>
+            </button>
+            <!-- data-ng if = actionButton.show.workOrderAddRemoveSubEntities -->
+          </div>
+        </div>
+      </div>
+      <div class="form-group" formArrayName="SupportingJobOwners" *ngFor="let item of inputFormGroup.get('SupportingJobOwners').controls; let i = index;">
+        <div *ngIf="i > 0"></div>
+        <phx-form-control [control]="inputFormGroup.get('SupportingJobOwners')" labelText="{{i === 0 ? 'Support' : ''}}" [editable]="readOnlyStorage.IsEditable && checkPtFiledAccessibility('WorkOrderVersion.SupportingJobOwners','UserProfileIdSales')"
+          viewModeText="{{item.controls.UserProfileIdSales.value | lookupNoCache: html.lists.SupportJobOwners:'Id':'Contact.FullName'}}">
+          <div class="col-md-10 padding-0">
+            <app-phx-select-box [formControl]="item.controls.UserProfileIdSales" placeholder="-- select one --" [items]="html.lists.SupportJobOwners | filterSelectChoicesByUsage: inputFormGroup.get('SupportingJobOwners').value:item.value:'UserProfileIdSales':'Id': 'Contact.FullName'"
+              textField="Contact.FullName" valueField="Id">
+            </app-phx-select-box>
+          </div>
+          <div class="col-xs-1 pull-right padding-0">
+            <button type="button" class="btn btn-sm btn-default btn-material supp-del pull-right" (click)="removeSupportingJobOwner(i)">
+              <i class="material-icons">delete</i>
+            </button>
+            <!-- data-ng-if="actionButton.show.workOrderAddRemoveSubEntities"-->
+          </div>
+
+        </phx-form-control>
+        <div class="col-lg-2 pull-right" *ngIf="readOnlyStorage.IsEditable">
+          <button type="button" class="btn btn-sm btn-default btn-material supp-add pull-right" *ngIf="i === inputFormGroup.get('SupportingJobOwners').value.length - 1"
+            (click)="addSupportingJobOwner()" style="margin-top: 5px;">
+            <i class="material-icons">add</i>
+          </button>
+          <!--data-ng-if="actionButton.show.workOrderAddRemoveSubEntities&&$last"-->
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="workOrder && inputFormGroup && workOrder.WorkOrderVersion.LineOfBusinessId === phxConstants.LineOfBusiness.R">
+
+    <!-- <div *ngIf="workOrder && inputFormGroup"> -->
+      <div class="form-group" *ngIf="!inputFormGroup.get('Recruiters').value||inputFormGroup.get('Recruiters').value.length===0
+                                        && workOrder.WorkOrderVersion.LineOfBusinessId === phxConstants.LineOfBusiness.R">
+        <label for="Recruiter" class="col-lg-4 control-label label-to-right">Recruiter(s)</label>
+        <div class="col-lg-8">
+          <div class="fieldViewMode form-control-static label-to-left">No Recruiter on this Work Order</div>
+          <div class="pull-right">
+            <button type="button" class="btn btn-sm btn-default btn-material" *ngIf="readOnlyStorage.IsEditable" (click)="addRecruiter()">
+              <i class="material-icons">add</i>
+            </button>
+            <!--data-ng-if="actionButton.show.workOrderAddRemoveSubEntities"-->
+          </div>
+        </div>
+      </div>
+    <!-- </div> -->
+
+    <!-- <div *ngIf="workOrder && inputFormGroup"> -->
+      <ng-container >
+        <div class="form-group" formArrayName="Recruiters" *ngFor="let item of inputFormGroup.get('Recruiters').controls; let i = index;">
+          <phx-form-control [control]="inputFormGroup.get('Recruiters')" labelText="{{i === 0 ? 'Recruiter(s)' : ''}}" [editable]="readOnlyStorage.IsEditable && checkPtFiledAccessibility('WorkOrderVersion.Recruiters','UserProfileIdSales')"
+            viewModeText="{{item.controls.UserProfileIdSales.value | lookupNoCache: html.lists.Recruiters:'Id':'Contact.FullName'}}">
+            <div class="col-md-10 padding-0">
+              <app-phx-select-box [formControl]="item.controls.UserProfileIdSales" [items]="html.lists.Recruiters | filterSelectChoicesByUsage: inputFormGroup.get('Recruiters').value:item.value:'UserProfileIdSales':'Id': 'Contact.FullName'"
+                textField="Contact.FullName" valueField="Id" placeholder="-- select one --">
+              </app-phx-select-box>
+            </div>
+            <div class="col-xs-1 pull-right padding-0">
+              <button type="button" class="btn btn-sm btn-default btn-material supp-del pull-right" (click)="removeRecruiter(i)">
+                <i class="material-icons">delete</i>
+              </button>
+              <!--data-ng-if="actionButton.show.workOrderAddRemoveSubEntities"-->
+            </div>
+          </phx-form-control>
+
+          <div class="col-lg-2 pull-right" *ngIf="readOnlyStorage.IsEditable">
+            <button type="button" class="btn btn-sm btn-default btn-material supp-add pull-right" *ngIf="i === inputFormGroup.get('Recruiters').value.length - 1"
+              (click)="addRecruiter()" style="margin-top: 5px;">
+              <i class="material-icons">add</i>
+            </button>
+            <!--data-ng-if="actionButton.show.workOrderAddRemoveSubEntities && $last"-->
+          </div>
+        </div>
+      </ng-container>
+    <!-- </div> -->
+  </div>
+
+  <div *ngIf="inputFormGroup">
+    <div class="form-group" *ngIf="inputFormGroup.get('WorkOrderVersionCommissions').value.length>0 && canViewCommissionRates()">
+      <div class="col-lg-12">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>
+                <span class="col-lg-4 text-right">Name&nbsp;&nbsp;</span>
+                <span class="col-lg-8">Commission Description</span>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr formArrayName="WorkOrderVersionCommissions" *ngFor="let commission of inputFormGroup.get('WorkOrderVersionCommissions').controls; let i = index;">
+              <td *ngIf="commission.controls.IsApplicable.value === true">
+                <ng-container *ngIf="commission.value.CommissionRates.length > 0">
+                  <div class="col-lg-12 input-group select2-bootstrap-append" [formGroupName]="i">
+                    <phx-form-control [control]="commission.controls.CommissionRateHeaderId" labelText="{{commission.controls.FullName.value}}"
+                      [editable]="readOnlyStorage.IsEditable && commission.value.CommissionRates.length > 1 && checkPtFiledAccessibility('WorkOrderVersion.WorkOrderVersionCommissions','CommissionRateHeaderId')"
+                      viewModeText="{{commission.controls.CommissionRateHeaderId.value | lookupNoCache: commission.controls.CommissionRates.value:'CommissionRateHeaderId':'Description'}}">
+                      <app-phx-select-box [formControl]="commission.controls.CommissionRateHeaderId" (valueChanged)="onChangeCommissionRateHeaderId()"
+                        placeholder="-- select one --" [items]="commission.controls.CommissionRates.value" textField="Description"
+                        valueField="CommissionRateHeaderId">
+                      </app-phx-select-box>
+                    </phx-form-control>
+                  </div>
+                </ng-container>
+                <ng-container *ngIf="commission.controls.CommissionRates.value.length===0&&!commission.value.CommissionRates.CommissionRateHeaderId">
+                  <div class="col-lg-12 input-group select2-bootstrap-append">
+                    <phx-form-control [control]="commission.controls.CommissionRateHeaderId" labelText="{{commission.value.FullName}}" [editable]="readOnlyStorage.IsEditable"
+                      [editable]="commission.controls.CommissionRates.value.length===0&&!commission.value.CommissionRates.CommissionRateHeaderId"
+                      viewModeText="{{commission.controls.CommissionRateHeaderId.value | lookupNoCache: commission.controls.CommissionRates.value:'CommissionRateHeaderId':'Description'}}">
+                      <div class="col-lg-8 text-warning wo-commission-supporter-div padding-0">
+                        &nbsp;&nbsp;&nbsp;No Rates Applicable
+                      </div>
+                    </phx-form-control>
+                  </div>
+                </ng-container>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</form>

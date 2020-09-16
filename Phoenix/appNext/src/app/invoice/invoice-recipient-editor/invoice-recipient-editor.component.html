@@ -1,0 +1,42 @@
+  <form [formGroup]="form">
+    <phx-form-control [control]="form.controls['RecipientUserProfileId']" [labelText]="labelText" [editable]="editable"
+      viewModeText="{{recipient?.InvoiceRecipientUserProfileName}} - {{recipient?.DeliveryMethodId | CodeValue:codeValueGroups.DeliveryMethod}}">
+      <div [class.profile-container]="showDeleteButton === true">
+        <app-phx-select-box formControlName="RecipientUserProfileId" [items]="recipientItems" 
+          textField="Name" valueField="Id" [value]="recipient.InvoiceRecipientUserProfileId" (valueChanged)="onRecipientChange($event)">
+        </app-phx-select-box>
+      </div>
+      <div class="delete-container">
+        <button type="button" class="btn btn-material btn-default pull-right" (click)="delete()" *ngIf="showDeleteButton === true">
+          <i class="material-icons">delete</i>
+        </button>
+      </div>
+    </phx-form-control>
+
+    <div class="delivery-method-container" *ngIf="showDeliveryMethod === true && editable">
+      <phx-form-control [control]="form.controls['DeliveryMethodId']" labelText="" [editable]="editable" viewModeText=""
+        [layoutType]="PhxFormControlLayoutType.InputOnly" *ngIf="showDeliveryMethod === true">
+        <label class="radio-inline">
+          <input class="form-check-input" type="radio" formControlName="DeliveryMethodId" [value]="DeliveryMethod.HardCopy" (click)="onSelectDeliverMethod(DeliveryMethod.HardCopy)" required>
+          {{1 | CodeValue:codeValueGroups.DeliveryMethod}}
+        </label>
+        <label class="radio-inline">
+          <input class="form-check-input" type="radio" formControlName="DeliveryMethodId" [value]="DeliveryMethod.SoftCopy" (click)="onSelectDeliverMethod(DeliveryMethod.SoftCopy)" required>
+          {{2 | CodeValue:codeValueGroups.DeliveryMethod}}
+        </label>
+        <label class="radio-inline" *ngIf="recipient.InvoiceRecipientTypeId===RecipientType.To">
+          <input class="form-check-input" type="radio" formControlName="DeliveryMethodId" [value]="DeliveryMethod.InternalProfile" (click)="onSelectDeliverMethod(DeliveryMethod.InternalProfile)" required>
+          {{4 | CodeValue:codeValueGroups.DeliveryMethod}}
+        </label>
+      </phx-form-control>
+    </div>
+
+    <phx-form-control [control]="form.controls['DeliverToUserProfileId']" [labelText]="ResKeys.detail.CCDeliveryToLabel | phxTranslate" [editable]="editable"
+      viewModeText="{{recipient.DeliverToUserProfileName}} - {{recipient.DeliverToUserProfileId}}"
+      *ngIf="recipient.InvoiceRecipientTypeId === RecipientType.To && recipient.DeliveryMethodId === DeliveryMethod.InternalProfile">
+      <app-phx-select-box formControlName="DeliverToUserProfileId" [items]="deliverToItems" 
+        textField="Name" valueField="Id" [value]="recipient.DeliverToUserProfileId" (valueChanged)="onDeliverToChange($event)">
+      </app-phx-select-box>
+    </phx-form-control>
+
+  </form>

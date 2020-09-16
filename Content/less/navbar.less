@@ -1,0 +1,149 @@
+// Core variables and mixins
+@import "variables.less";
+@import "mixins.less";
+//
+// Navbar optional components
+// --------------------------------------------------
+.navbar-inverse {
+    background-color: #fff;
+}
+
+.navbar {
+    padding-left: 0;
+    padding-right: 0;
+    border: none;
+    margin: 0;
+    position: relative;
+    .box-shadow(none);
+    .border-radius(0);
+    min-height: @navbar-height;
+    border-bottom: 2px solid grey;
+
+    .navbar-nav {
+        margin: 0px;
+
+        .btn-icon {
+            padding: 0;
+            width: 50px;
+            font-size: 24px;
+            line-height: 50px;
+        }
+    }
+
+    .badge-count {
+        padding: 3px;
+        color: #fecc00;
+        background-color: transparent;
+    }
+
+
+    > .container {
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    .navbar-container {
+        padding-left: 10px;
+        padding-right: 10px;
+
+        &.container {
+            padding-left: 0;
+            padding-right: 0;
+        }
+    }
+
+    @media only screen and (max-width: @screen-tablet) {
+        .navbar-container {
+            padding-left: 15px;
+            padding-right: 15px;
+        }
+    }
+}
+
+.navbar-brand {
+    min-width: @sidebar-width;
+    text-align: left;
+}
+
+.navbar-inverse .navbar-nav > .open > a, .navbar-inverse .navbar-nav > .open > a:hover, .navbar-inverse .navbar-nav > .open > a:focus {
+    color: #fff;
+    background-color: inherit;
+    border-color: transparent;
+}
+
+@media only screen and (max-width:768px) {
+    .navbar-brand > img {
+        display: block;
+        width: 100%;
+        margin: 12px auto;
+    }
+
+    .navbar-nav > li {
+        float: left;
+        margin-top: 1px;
+    }
+
+
+    .navbar {
+        min-height: @navbar-height - 20;
+    }
+}
+
+
+.navbar-inverse {
+    .container-full {
+        background-color: @navbar-inverse-content-bg;
+    }
+
+    .navbar-brand {
+        background-color: @navbar-inverse-brand-bg;
+    }
+
+    .navbar-nav > li > .btn-logout {
+        &:hover {
+            background-color: @navbar-inverse-brand-bg;
+        }
+    }
+}
+
+.navbar-fixed-top, .navbar-fixed-bottom {
+    position: fixed;
+}
+
+.tabbable-bordered {
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+
+    > .tab-content {
+        border-width: 0 1px 1px 1px;
+        padding: 18px 18px 9px 18px;
+        -webkit-border-radius: 0 0 4px 4px;
+        -moz-border-radius: 0 0 4px 4px;
+        border-radius: 0 0 4px 4px;
+        border-color: #D35400 #D35400 transparent;
+    }
+}
+
+.sidemenuBorder {
+    border-left: 6px solid transparent;
+}
+
+.sideSubmenuBorder {
+    border-left: 2px solid transparent;
+}
+
+.sideSubSubmenuBorder {
+    border-left: 2px solid transparent;
+    margin-left: 0px !important;
+    padding-left: 50px !important;
+}
+
+#expensetab .nav-tabs {
+    background-color: #F6F6F6;
+    margin-top: -20px;
+}
+
+    #expensetab .nav-tabs > li:first-child {
+        margin-left: 15px;
+    }

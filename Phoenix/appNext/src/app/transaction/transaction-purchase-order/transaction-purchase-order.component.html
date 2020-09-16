@@ -1,0 +1,7 @@
+<app-phx-data-table #grid [columns]="columns" [configuration]="dataTableConfiguration" [dataSourceUrl]="'purchaseorder/getWorkOrderPurchaseOrderLinesByTransactionHeaderId/' + transactionHeaderId"
+  [dataSourceParams]='odataParams' componentName="PurchaseOrderSearch" (selectionChanged)="onRowSelected($event)">
+  <div *dxTemplate="let d of 'viewCurrencyCodeTemplate'">
+    <div style="text-align: right" *ngIf="d.data.CurrencyId">{{d.data[d.column.dataField] | pxCurrency}}
+      {{displayCurrencyCode(d.data.CurrencyId)}}</div>
+  </div>
+</app-phx-data-table>

@@ -1,0 +1,15 @@
+<div class="content-group form-horizontal">
+    <app-purchaseorderlinetoworkorder [purchaseOrderSearchLines]="purchaseOrderSearchLines"
+        (itemClicked)="onItemClicked($event)"></app-purchaseorderlinetoworkorder>
+</div>
+
+<div class="modal-footer">
+    <button type="button" class="btn btn-default" (click)="cancel()">Cancel</button>
+</div>
+<app-phx-modal title="" #modalLineAdd>
+    <app-purchaseorderlinepopup [LineId]="lineId" [poLineNum]="lineNumber" [poNumber]="poNumber"
+        [workOderPurchaseOrderLineId]="workOderPurchaseOrderLineId" [AssignmentId]="AssignmentId"
+        [workorderId]="workorderId" [workorderNumber]="workorderNumber" [workorderVersion]="workorderVersion" [POmodal]="modalLineAdd"
+        (outputEvent)="onOutputEvent($event)" (cancelEvent)="onCancel($event)">
+    </app-purchaseorderlinepopup>
+</app-phx-modal>

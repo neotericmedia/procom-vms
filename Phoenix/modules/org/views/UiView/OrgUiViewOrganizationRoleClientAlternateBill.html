@@ -1,0 +1,55 @@
+﻿<div data-ng-form="formAlternateBills">
+	<div class="form-group">
+		<div class="col-xs-9">
+			<h4>Alternate Bills</h4>
+		</div>
+		<div class="col-xs-2 padding-10">
+			<div class="btn-toolbar">
+				<button type="button" class="btn btn-material btn-default"
+						data-ng-show="scopeOrg.actionScope.show.organizationClientRoleEditAlternateBill && (scopeOrg.entity.OrganizationClientRoles[0].OrganizationClientRoleAlternateBills || []).length == 0"
+						data-ng-disabled="!formAlternateBills.$valid "
+						data-ng-click="scopeOrg.actionScope.event.role.client.addAlternateBill()">
+					<i class="material-icons">add</i>
+				</button>
+			</div>
+		</div>
+	</div>
+	<div data-ng-repeat="alternateBill in scopeOrg.entity.OrganizationClientRoles[0].OrganizationClientRoleAlternateBills" class="panel-organization-client-alternate-bills" data-ng-form="alternateBillForm">
+		<div class="form-group">
+			<label data-for-property="AlternateBillLegalName" for="AlternateBillLegalName" data-model-property="alternateBill.AlternateBillLegalName" class="col-md-3 control-label req-lab-right" data-original-title="" title="">Name</label>
+			<div class="col-md-7">
+				<input type="text" data-ng-model="alternateBill.AlternateBillLegalName" name="AlternateBillLegalName" data-required-message="Required" data-ng-required="true" data-ng-minlength="1"
+					   data-ng-maxlength="128" data-length-message="LengthRange" class="form-control ng-valid-maxlength ng-valid-minlength" required="required" maxlength="128"
+					   data-ng-change="alternateBill.AlternateBillCode = scopeOrg.constructOrganizationCode(alternateBill.AlternateBillLegalName)"
+					   data-pt-field-view="scopeOrg.ptFieldViewConfigOnChangeStatusId">
+			</div>
+		</div>
+		<div class="form-group">
+			<label data-for-property="AlternateBillCode" for="AlternateBillCode" data-model-property="alternateBill.AlternateBillCode" class="col-md-3 control-label req-lab-right" data-original-title="" title="">Code</label>
+			<div class="col-md-7">
+				<input type="text" data-ng-model="alternateBill.AlternateBillCode" name="AlternateBillCode" data-required-message="Required" data-ng-required="true" data-ng-minlength="1"
+					   data-ng-maxlength="6" data-length-message="LengthRange" class="form-control ng-valid-maxlength ng-valid-minlength" required="required" maxlength="6"
+					   data-pt-field-view="scopeOrg.ptFieldViewConfigOnChangeStatusId">
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-md-10">
+				<button type="button" class="btn btn-material btn-default pull-right" data-ng-click="scopeOrg.actionScope.event.role.client.removeAlternateBill(alternateBill)" data-ng-show="scopeOrg.actionScope.show.organizationClientRoleEditAlternateBill">
+					<i class="material-icons">delete</i>
+				</button>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-10 padding-10">
+		<div class="pull-right" data-ng-if="scopeOrg.actionScope.show.organizationClientRoleEditAlternateBill && (scopeOrg.entity.OrganizationClientRoles[0].OrganizationClientRoleAlternateBills || []).length > 0">
+			<div class="btn-toolbar">
+				<button type="button" class="btn btn-material btn-default"
+						data-ng-disabled="!formAlternateBills.$valid"
+						data-ng-click="scopeOrg.actionScope.event.role.client.addAlternateBill()">
+					<i class="material-icons email-add-button-icon">add</i>
+				</button>
+			</div>
+		</div>
+	</div>
+
+</div>

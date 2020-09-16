@@ -1,0 +1,81 @@
+section.row {
+    margin: 30px 0;
+    padding-bottom: 25px;
+    border-bottom: 1px solid #ddd;
+    max-width: 750px;
+}
+h2 {
+    color: #333;
+    font-size: 2.1em;
+    margin-top: 0;
+    &.header {
+        display: none;
+    }
+}
+.account-content-justify {
+    display: inline-block;
+    width: 100%;
+}
+.icons-account {
+    display: inline-block;
+    margin-right: 15px;
+    vertical-align: top;
+    .material-icons {
+        color: #999;
+    }
+}
+.profile-picture {
+    width: 48px;
+    height: 48px;
+    font-size: 48px;
+    margin-bottom: 10px;
+}
+
+.mobile-header {
+    display: inline-block;
+    vertical-align: top;
+    width: 77%;
+    @media screen and (min-width: 375px) {
+        width: 80%;
+    }
+    @media screen and (min-width: 414px) {
+        width: 83%;
+    }
+    h2 {
+        line-height: 1.25em;
+    }
+}
+
+@media screen and (max-width: 650px) {
+    .icons-account {
+        margin-right: 10px;
+    }
+    button.btn {
+        display: block;
+        width: 75%;
+        margin: 10px auto;
+    }
+}
+
+@media screen and (min-width: 650px) {
+    .account-content-justify {
+        width: calc(~'100% - 68px');
+    }
+    .mobile-header {
+        display: none;
+    }
+    h2 {
+        &.header {
+            display: block;
+        }
+    }
+    .btn-row {
+        max-width: 750px;
+        width: 100%;
+    }
+    button.btn {
+        float: right;
+        margin-top: 10px;
+        margin-right: 5px;
+    }
+}

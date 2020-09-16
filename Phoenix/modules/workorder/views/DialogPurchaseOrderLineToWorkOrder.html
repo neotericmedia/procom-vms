@@ -1,0 +1,18 @@
+﻿<div class="modal-content" data-ng-form="formPurchaseOrderLineToWorkOrderDialog">    
+        <div class="modal-header">
+            <span class="modal-title" data-ng-if="model.purchaseOrderLineIndex < 0">Purchase Order Lines</span>
+            <span class="modal-title" data-ng-if="model.purchaseOrderLineIndex >= 0">
+                {{model.purchaseOrderEntity.PurchaseOrderNumber}} Line {{model.purchaseOrderEntity.PurchaseOrderLines[model.purchaseOrderLineIndex].PurchaseOrderLineNumber}}
+            </span>
+            <div class="btn pull-right" data-ng-click="cancel()"><i class="material-icons">cancel</i></div>
+        </div>
+        <div class="modal-body">
+            <div class="content-group form-horizontal">
+                <app-purchaseorderlinetoworkorder data-ng-show="model.purchaseOrderLineIndex < 0"  [purchase-order-search-lines]="model.purchaseOrderSearchLines" (item-clicked)="rowCallback('click', $event)"></app-purchaseorderlinetoworkorder>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-ng-click="cancel()">Cancel</button>
+            <!--<button type="button" class="btn btn-primary" data-ng-click="save()">Ok</button>-->
+        </div>
+</div>

@@ -1,0 +1,99 @@
+<app-phx-panel>
+  <form *ngIf="inputFormGroup && currentProfile">
+    <app-contact-profile-details [readOnlyStorage]="readOnlyStorage" [inputFormGroup]="inputFormGroup">
+
+    </app-contact-profile-details>
+    <app-phx-panel [formGroup]="inputFormGroup" headerTitle="Personal Info">
+
+      <phx-form-control name="CorporationName" [control]="inputFormGroup.controls.CorporationName" labelText="Company Name"
+        [editable]="readOnlyStorage.IsEditable" viewModeText="{{inputFormGroup.value.CorporationName}}">
+        <input type="text" class="form-control" formControlName="CorporationName" />
+      </phx-form-control>
+
+      <phx-form-control name="BusinessNumber" [control]="inputFormGroup.controls.BusinessNumber" labelText="Business Number"
+        [editable]="readOnlyStorage.IsEditable" viewModeText="{{inputFormGroup.value.BusinessNumber}}">
+        <input type="text" class="form-control" formControlName="BusinessNumber" />
+      </phx-form-control>
+
+      <phx-form-control name="SIN" [control]="inputFormGroup.controls.SIN" labelText="Social Insurance Number"
+        [editable]="readOnlyStorage.IsEditable" viewModeText="{{inputFormGroup.value.SIN}}">
+        <input type="text" class="form-control" maxlength="9" formControlName="SIN" phxFloatBetweenInput='{"from":0, "to":999999999, "decimalplaces":0}' />
+      </phx-form-control>
+
+      <phx-form-control [control]="inputFormGroup.controls.DateOfBirth" labelText="Date Of Birth" [editable]="readOnlyStorage.IsEditable"
+        viewModeText="{{inputFormGroup.value.DateOfBirth | date:phxConstants.DateFormat.mediumDate}}">
+        <app-phx-date-box [displayFormat]="phxConstants.DateFormat.MMM_dd_yyyy" [formControl]="inputFormGroup.controls.DateOfBirth"
+          (onValueChanged)="datePickerCallback()" type="date"></app-phx-date-box>
+      </phx-form-control>
+
+    </app-phx-panel>
+    <div class="form-group">
+      <app-contact-sales-taxes [inputFormGroup]="inputFormGroup" [forInternalProfile]="false" [readOnlyStorage]="readOnlyStorage"
+        (outputEvent)="outputEvent">
+
+      </app-contact-sales-taxes>
+    </div>
+
+    <app-contact-profile-payment-methods [inputFormGroup]="inputFormGroup" [isEditable]="areComplianceFieldsEditable"
+      [isProfileW2OrTempOrSP]="isProfileW2OrTempOrSP" [validateComplianceDraft]="validateComplianceDraft"
+      [readOnlyStorage]="readOnlyStorage">
+
+    </app-contact-profile-payment-methods>
+
+    <app-contact-payroll-setup [inputFormGroup]="inputFormGroup" [isComplianceFieldEditable]="areComplianceFieldsEditable"
+      [currentProfile]="currentProfile" [readOnlyStorage]="readOnlyStorage">
+
+    </app-contact-payroll-setup>
+
+    <app-phx-panel *ngIf="currentProfile.ProfileTypeId === phxConstants.UserProfileType.WorkerCanadianSp" headerTitle="T4A Form Eligibility">
+
+      <phx-form-control name="IsApplyWorkerSPGovernmentRuling" [control]="inputFormGroup.controls.IsApplyWorkerSPGovernmentRuling"
+        labelText="Worker has SP Government Ruling" [editable]="readOnlyStorage.IsEditable && areComplianceFieldsEditable"
+        viewModeText="{{inputFormGroup.value.IsApplyWorkerSPGovernmentRuling | boolToYesNo}}">
+        <label class="radio-inline">
+          <input class="form-check-input" type="radio" (click)="onClickYesGovRulings($event)" [formControl]="inputFormGroup.controls.IsApplyWorkerSPGovernmentRuling"
+            [value]="true">Yes</label>
+        <label class="radio-inline">
+          <input class="form-check-input" type="radio" [formControl]="inputFormGroup.controls.IsApplyWorkerSPGovernmentRuling"
+            [value]="false">No</label>
+        <span *ngIf="currentProfile.IsApplyWorkerSPGovernmentRuling" class="form-control-static pull-right">Note: No
+          deductions will be applied</span>
+      </phx-form-control>
+
+      <app-contact-t4a-form-eligibilities *ngIf="currentProfile.IsApplyWorkerSPGovernmentRuling"
+        [areComplianceFieldsEditable]="areComplianceFieldsEditable" [inputFormGroup]="inputFormGroup" [currentProfile]="currentProfile"
+        [readOnlyStorage]="readOnlyStorage" (outputEvent)="onOutputEvent()">
+
+      </app-contact-t4a-form-eligibilities>
+
+    </app-phx-panel>
+
+    <app-contact-profile-worker-eligibility [readOnlyStorage]="readOnlyStorage" [profile]="currentProfile"
+      [inputFormGroup]="inputFormGroup">
+
+    </app-contact-profile-worker-eligibility>
+
+    <div class="flex-row">
+      <div class="flex-row__child">
+        <app-contact-phonenumbers [readOnlyStorage]="readOnlyStorage" [inputFormGroup]="inputFormGroup" (outputEvent)="onOutputEvent()">
+
+        </app-contact-phonenumbers>
+      </div>
+      <div class="flex-row__child">
+        <app-contact-addresses [readOnlyStorage]="readOnlyStorage" [addDefaultAddress]="true" [inputFormGroup]="inputFormGroup"
+          (outputEvent)="onOutputEvent()">
+
+        </app-contact-addresses>
+      </div>
+    </div>
+
+    <app-phx-panel headerTitle="User Profile Compliance Documents">
+      <app-compliance-document [entityTypeId]="phxConstants.EntityType.UserProfile" [entityId]="currentProfile.IdOriginal"
+        [entityName]="currentProfile.Contact.FullName" (complianceDocumentOutput)="onComplianceDocumentOutput($event)"
+        [referenceEntityLink]="refLink" [triggerToRefresh]="triggerComplianceDocumentRefresh">
+
+      </app-compliance-document>
+    </app-phx-panel>
+
+  </form>
+</app-phx-panel>

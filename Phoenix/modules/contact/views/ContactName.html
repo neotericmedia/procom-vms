@@ -1,0 +1,124 @@
+<div class="contact-names" data-ng-form="contact.contactForm">
+    <div class="content-group col-lg-6">
+        <div class="form-group col-lg-12">
+            <label for-property="PersonTitleId" for="PersonTitleId" data-model-property="contact.currentContact.PersonTitleId" class="control-label"
+                data-original-title="" title="">Title</label>
+            <div class="input-group select2-bootstrap-append">
+                <ui-select name="PersonTitleId" data-ng-model="contact.currentContact.PersonTitleId" theme="select2" class="form-control"
+                    data-pt-field-view="edit.ptFieldViewStatus" data-ng-change="contact.titleChanged(contact.currentContact.PersonTitleId)">
+                    <ui-select-match placeholder="-- Select One --">{{$select.selected.text}}</ui-select-match>
+                    <ui-select-choices repeat="item.id as item in contact.titles | uiSelectChoicesFilter: $select.search: 'text'">
+                        <span data-ng-bind-html="item.text | highlight: $select.search"></span>
+                    </ui-select-choices>
+                </ui-select>
+                <span class="input-group-btn">
+                    <button tabindex="-1" data-ng-click="contact.currentContact.PersonTitleId = undefined" class="btn btn-default btn-contact-drp">
+                        <i class="material-icons md-18">clear</i>
+                    </button>
+                </span>
+            </div>
+
+        </div>
+        <div class="form-group col-lg-12">
+            <label for-property="FirstName" for="FirstName" data-model-property="contact.currentContact.FirstName" class="control-label req-lab-right"
+                data-original-title="" title="">First Name</label>
+            <input type="text" ng-model="contact.currentContact.FirstName" name="FirstName" data-required-message="Required" data-ng-required="true"
+                class="form-control" required="required" data-ng-change="contact.firstNameChanged(contact.currentContact.FirstName)"
+                data-ng-maxlength="32" maxlength="32" data-pt-field-view="edit.ptFieldViewStatus">
+        </div>
+        <div class="form-group col-lg-12">
+            <label for-property="LastName" for="LastName" data-model-property="contact.currentContact.LastName" class="control-label req-lab-right"
+                data-original-title="" title="">Last Name</label>
+            <input type="text" ng-model="contact.currentContact.LastName" name="LastName" data-required-message="Required" data-ng-required="true"
+                class="form-control" required="required" data-ng-change="contact.lastNameChanged(contact.currentContact.LastName)"
+                data-ng-maxlength="32" maxlength="32" data-pt-field-view="edit.ptFieldViewStatus">
+        </div>
+    </div>
+    <div class="content-group col-lg-6">
+        <div class="form-group col-lg-12">
+            <label for-property="PreferredPersonTitleId" for="PreferredPersonTitleId" data-model-property="contact.currentContact.PreferredPersonTitleId"
+                class="control-label" data-original-title="" title="">Pref Title</label>
+            <div class="input-group select2-bootstrap-append">
+                <ui-select name="PreferredPersonTitleId" data-ng-model="contact.currentContact.PreferredPersonTitleId" theme="select2" class="form-control"
+                    data-pt-field-view="edit.ptFieldViewStatus">
+                    <ui-select-match placeholder="-- Select One --">{{$select.selected.text}}</ui-select-match>
+                    <ui-select-choices repeat="item.id as item in contact.titles | uiSelectChoicesFilter: $select.search: 'text'">
+                        <span data-ng-bind-html="item.text | highlight: $select.search"></span>
+                    </ui-select-choices>
+                </ui-select>
+                <span class="input-group-btn">
+                    <button tabindex="-1" data-ng-click="contact.currentContact.PreferredPersonTitleId = undefined" class="btn btn-default btn-contact-drp">
+                        <i class="material-icons md-18">clear</i>
+                    </button>
+                </span>
+            </div>
+        </div>
+        <div class="form-group col-lg-12">
+            <label for-property="PreferredFirstName" for="PreferredFirstName" data-model-property="contact.currentContact.PreferredFirstName"
+                class="control-label req-lab-right" data-original-title="" title="">Pref First Name</label>
+            <input type="text" ng-model="contact.currentContact.PreferredFirstName" name="PreferredFirstName" class="form-control" data-ng-required="true"
+                data-ng-maxlength="32" maxlength="32" data-pt-field-view="edit.ptFieldViewStatus">
+        </div>
+        <div class="form-group col-lg-12">
+            <label for-property="PreferredLastName" for="PreferredLastName" data-model-property="contact.currentContact.PreferredLastName"
+                class="control-label req-lab-right" data-original-title="" title="">Pref Last Name</label>
+            <input type="text" ng-model="contact.currentContact.PreferredLastName" name="PreferredLastName" class="form-control" data-ng-required="true"
+                data-ng-maxlength="32" maxlength="32" data-pt-field-view="edit.ptFieldViewStatus">
+        </div>
+    </div>
+    <div class="content-group col-lg-6">
+        <div class="form-group col-lg-12">
+            <label for-property="CultureId" for="CultureId" data-model-property="contact.currentContact.CultureId" class="control-label req-lab-right"
+                uib-tooltip-html="contact.cultureTooltip" placement="top" data-original-title="" title="">
+                Preferred Language
+                <span class="btn btn-material">
+                    <i class="material-icons md-18">info_outline</i>
+                </span>
+            </label>
+            <div class="input-group select2-bootstrap-append" data-ng-if="contact.currentContact.LoginUserId == null">
+                <ui-select name="CultureId" data-ng-model="contact.currentContact.CultureId" theme="select2" class="form-control" data-pt-field-view="edit.ptFieldViewStatus"
+                    required>
+                    <ui-select-match placeholder="-- Select One --">{{$select.selected.text}}</ui-select-match>
+                    <ui-select-choices repeat="item.id as item in contact.cultureOptions | uiSelectChoicesFilter: $select.search: 'text'">
+                        <span data-ng-bind-html="item.text | highlight: $select.search"></span>
+                    </ui-select-choices>
+                </ui-select>
+                <span class="input-group-btn">
+                    <button tabindex="-1" data-ng-click="contact.currentContact.CultureId = undefined" class="btn btn-default btn-contact-drp">
+                        <i class="material-icons md-18">clear</i>
+                    </button>
+                </span>
+            </div>
+            <div class="input-group" data-ng-if="contact.currentContact.LoginUserId != null">
+                {{ contact.currentContact.LoginPreferredCultureId |lookup:contact.cultureOptions}}
+            </div>
+        </div>
+    </div>
+    <div class="content-group col-lg-6">
+        <div class="form-group col-lg-12">
+            <label class="control-label">Login:</label>
+            <!--<input type="text" readonly ng-model="contact.currentContact.LoginName" name="LoginName" class="form-control" data-pt-field-view="edit.ptFieldViewStatus">-->
+            <span class="form-control-static col-xs-12 no-padding-h fieldViewMode">{{contact.currentContact.LoginName}}</span>
+        </div>
+    </div>
+    <div class="col-sm-12">
+        <h4>Collaborators</h4>
+    </div>
+    <div class="form-group">
+        <div class="content-group col-lg-6">
+            <div class="form-group col-lg-12">
+                <label class="control-label">Created By</label>
+                <span class="form-control-static col-xs-12 no-padding-h fieldViewMode">{{contact.currentContact.CreatedByName}}</span>
+            </div>
+        </div>
+        <div class="content-group col-lg-6">
+            <div class="col-lg-12">
+
+                <label ng-if="contact.currentContact.SourceId !== null" class="control-label">Editor</label>
+                <label ng-if="contact.currentContact.SourceId === null" class="control-label">Last Edited By</label>
+                <span class="form-control-static col-xs-12 no-padding-h fieldViewMode">{{contact.currentContact.EditorUserProfileName}}</span>
+            </div>
+        </div>
+    </div>
+    <div class="form-group" data-pt-error-box="contact.currentContact.brokenRules"></div>
+</div>

@@ -1,0 +1,64 @@
+﻿<div class="form-horizontal wo-tab-po" data-ng-form="formWorkOrderPurchaseOrder">
+    <div class="content-group">
+        <div class="panel-internal panel-full" data-ng-form="billingInfosForm">
+            <div class="form-group">
+                <div class="col-xs-10">
+                    <h4>Purchase Order Lines</h4>
+                </div>
+                <div class="col-xs-2" style="margin-top: 10px;">
+                    <button type="button" class="btn btn-default btn-material dropdown-toggle btn-narrow material-icons pull-right" data-ng-click="addWorkOrderPurchaseOrderLine(OrganizationId)">
+                        add
+                    </button>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-lg-12">
+                    <table class="table table-striped table-content table-hover" style="background-color: white;">
+                        <thead class="align-table-cells-center" style="background-color: #EAEAEA;">
+                            <tr>
+                                <th scope="col">PO</th>
+                                <th scope="col" >Depletion Group</th>
+                                <th scope="col" >Start Date</th>
+                                <th scope="col" >End Date</th>
+                                <th scope="col" >Amount Committed</th>
+                                <th scope="col" >Funds Reserved</th>
+                                <th scope="col" >Funds Spent</th>
+                                <th scope="col" >Funds Remaining</th>
+                                <th scope="col" >Work Units Remaining</th>
+                                <th scope="col" >Action</th>
+                                <th scope="col" >Status</th>
+                            </tr>
+                        </thead>
+                        <tbody class="align-table-cells-center">
+                            <tr data-ng-repeat="po in CurrentWorkOrderVersion.WorkOrderPurchaseOrderLines" data-ng-click="purchaseOrderLineOpen(po, $index)" class="po-tr">
+                                <td>
+                                    <!-- Task 18125 <a data-ui-sref="purchaseorder.edit.details.line({purchaseOrderId: po.PurchaseOrderId, purchaseOrderLineId:po.PurchaseOrderLineId })" style="cursor: pointer;">{{po.PurchaseOrderNumber}} Line {{po.PurchaseOrderLineNumber}}</a>-->
+                                    <span class="po-td-text">{{po.PurchaseOrderNumber}} Line {{po.PurchaseOrderLineNumber}}</span>
+                                </td>
+                                <td><span class="po-td-text">{{po.PurchaseOrderDepletionGroupId | lookup:lists.purchaseOrderDepletedGroupList}}</span></td>
+                                <td><span class="po-td-text">{{(po.StartDate|date:ApplicationConstants.formatDate)||'N/A'}}</span></td>
+                                <td><span class="po-td-text">{{(po.EndDate|date:ApplicationConstants.formatDate)||'N/A'}}</span></td>
+                                <td><span class="po-td-text">{{po.AmountCommited|currency:"$"}}</span></td>
+                                <td><span class="po-td-text">{{po.AmountReserved|currency:"$"}}</span></td>
+                                <td><span class="po-td-text">{{po.AmountSpent|currency:"$"}}</span></td>
+                                <td><span class="po-td-text">{{po.AmountCommited-po.AmountReserved-po.AmountSpent|currency:"$"}}</span></td>
+                                <td><span class="po-td-text">{{(primaryFirstBillingRate>0) ? ((po.AmountCommited-po.AmountReserved-po.AmountSpent)/primaryFirstBillingRate|number:2) : "--" }} {{primaryworkunit}}</span></td>
+                                <td class="po-edit-td" data-ng-click="$event.stopPropagation()">
+                                    <div class="form-control-static">
+                                        <a title="Activate"target="_blank" class="btn btn-clouds ng-scope btn-po-edit" data-ng-hide="po.StatusId==2" data-ng-click="purchaseOrderLineActivate(po, $index)">
+                                            <i class="material-icons">check</i>
+                                        </a>
+                                        <a title="View" target="_blank" class="btn btn-clouds ng-scope btn-po-edit" data-ng-click="purchaseOrderLineOpen(po, $index)">
+                                            <i class="material-icons">edit</i>
+                                        </a>
+                                    </div>
+                                </td>
+                                <td><span class="po-td-text" data-ng-class="po.StatusId==ApplicationConstants.PurchaseOrderStatus.Active?'text-warning':''">{{getCodeText(po.StatusId)}}</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

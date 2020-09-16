@@ -1,0 +1,34 @@
+<div class="panel panel-default headstone">
+  <div class="row">
+    <div class="col col-lg-1">
+      <div class="form-group">
+        <label class="control-label ">Id</label>
+        <div>{{demo?.Id}}</div>
+      </div>
+    </div>
+    <div class="col col-lg-1">
+      <div class="form-group">
+        <label class="control-label ">Work Order</label>
+        <div>{{demo?.WorkOrderNumber}}</div>
+      </div>
+    </div>
+    <div class="col col-lg-6">
+      <div class="form-group">
+        <label class="control-label ">Worker</label>
+        <div>{{demo?.WorkerName}}</div>
+      </div>
+    </div>
+    <div class="col col-lg-2">
+      <div class="form-group">
+        <label class="control-label ">Total</label>
+        <div>{{demo?.Total | number : '1.2-2'}}&nbsp;{{demo?.CurrencyId| CodeValue:codeValueGroups.Currency:'code'}}</div>
+      </div>
+    </div>
+    <div class="col col-lg-2">
+      <div class="form-group">
+        <label class="control-label ">Items #</label>
+        <div>{{demo?.ItemsCount}}</div>
+      </div>
+    </div>
+  </div>
+</div>

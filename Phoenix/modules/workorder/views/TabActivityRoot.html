@@ -1,0 +1,34 @@
+﻿<div class="tabbable-left">
+    <div class="tabbable">
+        <ul class="nav nav-tabs bg-white" style="height: 100%">
+            <li data-ng-class="{ active : $state.includes('workorder.edit.activity.notes')}"><a data-ui-sref="workorder.edit.activity.notes">Notes</a></li>
+            <li data-ng-class="{ active : $state.includes('workorder.edit.activity.history')}"><a data-ui-sref="workorder.edit.activity.history">Change History</a></li>
+            <!--<li data-ng-class="{ active : $state.includes('workorder.edit.activity.audit')}"><a data-ui-sref="workorder.edit.activity.audit">Change Audit</a></li>-->
+            <li data-ng-class="{ active : $state.includes('workorder.edit.activity.transaction')}"><a data-ui-sref="workorder.edit.activity.transaction">Transaction</a></li>
+            <li data-ng-class="{ active : $state.includes('workorder.edit.activity.documents')}"><a data-ui-sref="workorder.edit.activity.documents">Additional Documents</a></li>
+            <li data-ng-class="{ active : $state.includes('workorder.edit.activity.workflow')}"><a data-ui-sref="workorder.edit.activity.workflow">Work Flow</a></li>
+        </ul>
+        <div class="tab-content">
+            <div data-ng-class="{ active : $state.includes('workorder.edit.activity.notes')}" class="tab-pane">
+                <div class="col-xs-12" data-ui-view="workOrderActivitiesNotes" data-autoscroll="false"></div>
+            </div>
+            <div data-ng-class="{ active : $state.includes('workorder.edit.activity.history')}" class="tab-pane">
+                <div class="col-xs-12" data-ui-view="workOrderActivitiesHistory" data-autoscroll="false"></div>
+            </div>
+            <!--<div data-ng-class="{ active : $state.includes('workorder.edit.activity.audit')}" class="tab-pane">
+                <div class="col-xs-12" data-ui-view="workOrderActivitiesAudit" data-autoscroll="false"></div>
+            </div>-->
+            <div data-ng-class="{ active : $state.includes('workorder.edit.activity.transaction')}" class="tab-pane">
+                <div class="col-xs-12" data-ui-view="workOrderActivitiesTransaction" data-autoscroll="false"></div>
+            </div>
+            <div data-ng-class="{ active : $state.includes('workorder.edit.activity.documents')}" class="tab-pane">
+                <div class="col-xs-12" data-ui-view="workOrderActivitiesDocuments" data-autoscroll="false">
+                </div>
+            </div>
+            <div data-ng-class="{ active : $state.includes('workorder.edit.activity.workflow')}" class="tab-pane">
+                <div class="col-xs-12" data-ui-view="workOrderActivitiesWorkflow" data-autoscroll="false">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,220 @@
+﻿<div ng-if="scopeOrg.entity && scopeOrg.entity.OrganizationInternalRoles && scopeOrg.entity.OrganizationInternalRoles.length > 0 && scopeOrg.entity.OrganizationInternalRoles[0].Id !== 0">
+
+
+    <div class="content-group">
+        <div class="content-left">
+            <div class="panel panel-internal mln mrn ">
+                <div class="panel-body">
+                    <div class="form-group">
+                        <div class="col-lg-10">
+                            <h4>Role Details</h4>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label data-for-property="OrganizationRoleStatusId" for="OrganizationRoleStatusId" data-model-property="scopeOrg.entity.OrganizationInternalRoles[0].OrganizationRoleStatusId"
+                               class="col-lg-3 control-label label-to-right req-lab-right" data-original-title="" title="">Role Status</label>
+                        <div class="col-lg-4">
+                            <ui-select name="OrganizationRoleStatusId" theme="select2" class="form-control" required="required" data-ng-model="scopeOrg.entity.OrganizationInternalRoles[0].OrganizationRoleStatusId"
+                                       data-pt-field-view="scopeOrg.ptFieldViewConfigOnChangeStatusId" data-pt-field-view-model-validation="{ { scopeOrg.entity.OrganizationInternalRoles[0] } }">
+                                <ui-select-match placeholder="-- Select One --">{{$select.selected.text}}</ui-select-match>
+                                <ui-select-choices repeat="item.id as item in scopeOrg.lists.organizationRoleStatusTypeList | uiSelectChoicesFilter: $select.search: 'text'">
+                                    <span data-ng-bind-html="item.text | highlight: $select.search"></span>
+                                </ui-select-choices>
+                            </ui-select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="content-right">
+            <div class="panel panel-internal mln mrn ">
+                <div class="panel-body">
+                    <div class="form-group">
+                        <div class="col-lg-10">
+                            <h4>Application Date</h4>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label data-for-property="ApplicationDate" for="ApplicationDate" data-model-property="scopeOrg.entity.OrganizationInternalRoles[0].ApplicationDate"
+                               class="col-lg-3 control-label label-to-right req-lab-right" data-original-title="" title="">Current Application Date</label>
+                        <div class="col-lg-4 fieldViewMode form-control-static">{{scopeOrg.entity.OrganizationInternalRoles[0].ApplicationDate |date:ApplicationConstants.formatDate}}</div>
+                        <div class="col-lg-4 " ng-if="scopeOrg.actionScope.show.OrganizationInternalRoleRollOver" >
+                            <button type="button" 
+                                    class="btn btn-default pull-right"
+                                    data-ng-click="scopeOrg.actionScope.event.role.internal.rolloverConfirmation()">
+                                Rollover
+                            </button>
+                        </div>
+                       
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+
+    <div class="panel panel-internal mln mrn ">
+        <div class="panel-body" ng-if="scopeOrg.actionScope.event.role.internal.headerFooterImage">
+            <div class="form-group">
+                <div class="col-lg-10">
+                    <h4>Organization Header/Footer Images</h4>
+                </div>
+            </div>
+            <div class="form-group">
+                <label data-for-property="DocumentIdHeader" for="DocumentIdHeader" data-model-property="scopeOrg.entity.OrganizationInternalRoles[0].DocumentIdHeader"
+                       class="col-lg-3 control-label label-to-right req-lab-right" data-original-title="" title="">Portrait Header Image (7.5in x 1in)</label>
+                <div class="col-lg-9">
+                    <div ng-class="{'col-sm-9' : scopeOrg.actionScope.show.addEditDeleteHeaderFooterImage === true, 'col-sm-12' : scopeOrg.actionScope.show.addEditDeleteHeaderFooterImage === false }">
+
+                        <div class="fieldViewMode form-control-static">
+                            <a class="doc-anchor" title="{{scopeOrg.entity.OrganizationInternalRoles[0].DocumentHeaderName}}" target="_blank" ng-href="{{scopeOrg.actionScope.event.role.internal.headerFooterImage.createDocumentLink(scopeOrg.entity.OrganizationInternalRoles[0].DocumentHeaderPublicId)}}">{{scopeOrg.entity.OrganizationInternalRoles[0].DocumentHeaderName}}</a>
+
+                            <div ng-if="scopeOrg.entity.OrganizationInternalRoles[0].DocumentIdHeader == null">File has not been uploaded</div>
+                        </div>
+
+                    </div>
+                    <div class="col-sm-3" ng-if="scopeOrg.actionScope.show.addEditDeleteHeaderFooterImage">
+                        <button class="btn btn-default btn-material " ng-if="scopeOrg.entity.OrganizationInternalRoles[0].DocumentIdHeader == null"
+                                data-ng-click="scopeOrg.actionScope.event.role.internal.headerFooterImage.uploadDocument(ApplicationConstants.DocumentTypes.InternalOrganizationPortraitHeader)">
+                            <i class="material-icons">add</i>
+                        </button>
+                        <button class="btn btn-default btn-material " ng-if="scopeOrg.entity.OrganizationInternalRoles[0].DocumentIdHeader != null"
+                                data-ng-click="scopeOrg.actionScope.event.role.internal.headerFooterImage.uploadDocument(ApplicationConstants.DocumentTypes.InternalOrganizationPortraitHeader)">
+                            <i class="material-icons">edit</i>
+                        </button>
+                        <button class="btn btn-default btn-material " ng-if="scopeOrg.entity.OrganizationInternalRoles[0].DocumentIdHeader != null"
+                                data-ng-click="scopeOrg.actionScope.event.role.internal.headerFooterImage.deleteImage(scopeOrg.entity.OrganizationInternalRoles[0].Id, ApplicationConstants.DocumentTypes.InternalOrganizationPortraitHeader)">
+                            <i class="material-icons">delete</i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label data-for-property="DocumentIdFooter" for="DocumentIdFooter" data-model-property="scopeOrg.entity.OrganizationInternalRoles[0].DocumentIdFooter"
+                       class="col-lg-3 control-label label-to-right req-lab-right" data-original-title="" title="">Portrait Footer Image (7.5in x 1in)</label>
+                <div class="col-lg-9">
+                    <div ng-class="{'col-sm-9' : scopeOrg.actionScope.show.addEditDeleteHeaderFooterImage === true, 'col-sm-12' : scopeOrg.actionScope.show.addEditDeleteHeaderFooterImage === false }">
+
+                        <div class="fieldViewMode form-control-static">
+                            <a class="doc-anchor" title="{{scopeOrg.entity.OrganizationInternalRoles[0].DocumentFooterName}}" target="_blank" ng-href="{{scopeOrg.actionScope.event.role.internal.headerFooterImage.createDocumentLink(scopeOrg.entity.OrganizationInternalRoles[0].DocumentFooterPublicId)}}">{{scopeOrg.entity.OrganizationInternalRoles[0].DocumentFooterName}}</a>
+
+                            <div ng-if="scopeOrg.entity.OrganizationInternalRoles[0].DocumentIdFooter == null">File has not been uploaded</div>
+                        </div>
+
+                    </div>
+                    <div class="col-sm-3" ng-if="scopeOrg.actionScope.show.addEditDeleteHeaderFooterImage">
+                        <button class="btn btn-default btn-material " ng-if="scopeOrg.entity.OrganizationInternalRoles[0].DocumentIdFooter == null"
+                                data-ng-click="scopeOrg.actionScope.event.role.internal.headerFooterImage.uploadDocument(ApplicationConstants.DocumentTypes.InternalOrganizationPortraitFooter)">
+                            <i class="material-icons">add</i>
+                        </button>
+                        <button class="btn btn-default btn-material " ng-if="scopeOrg.entity.OrganizationInternalRoles[0].DocumentIdFooter != null"
+                                data-ng-click="scopeOrg.actionScope.event.role.internal.headerFooterImage.uploadDocument(ApplicationConstants.DocumentTypes.InternalOrganizationPortraitFooter)">
+                            <i class="material-icons">edit</i>
+                        </button>
+                        <button class="btn btn-default btn-material " ng-if="scopeOrg.entity.OrganizationInternalRoles[0].DocumentIdFooter != null"
+                                data-ng-click="scopeOrg.actionScope.event.role.internal.headerFooterImage.deleteImage(scopeOrg.entity.OrganizationInternalRoles[0].Id, ApplicationConstants.DocumentTypes.InternalOrganizationPortraitFooter)">
+                            <i class="material-icons">delete</i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label data-for-property="DocumentIdLandscapeHeader" for="DocumentIdLandscapeHeader" data-model-property="scopeOrg.entity.OrganizationInternalRoles[0].DocumentIdLandscapeHeader"
+                       class="col-lg-3 control-label label-to-right req-lab-right" data-original-title="" title="">Landscape Header Image (10in x 0.5in)</label>
+                <div class="col-lg-9">
+                    <div ng-class="{'col-sm-9' : scopeOrg.actionScope.show.addEditDeleteHeaderFooterImage === true, 'col-sm-12' : scopeOrg.actionScope.show.addEditDeleteHeaderFooterImage === false }">
+
+                        <div class="fieldViewMode form-control-static">
+                            <a class="doc-anchor" title="{{scopeOrg.entity.OrganizationInternalRoles[0].DocumentLandscapeHeaderName}}" target="_blank" ng-href="{{scopeOrg.actionScope.event.role.internal.headerFooterImage.createDocumentLink(scopeOrg.entity.OrganizationInternalRoles[0].DocumentLandscapeHeaderPublicId)}}">{{scopeOrg.entity.OrganizationInternalRoles[0].DocumentLandscapeHeaderName}}</a>
+
+                            <div ng-if="scopeOrg.entity.OrganizationInternalRoles[0].DocumentIdLandscapeHeader == null">File has not been uploaded</div>
+                        </div>
+
+                    </div>
+                    <div class="col-sm-3" ng-if="scopeOrg.actionScope.show.addEditDeleteHeaderFooterImage">
+                        <button class="btn btn-default btn-material " ng-if="scopeOrg.entity.OrganizationInternalRoles[0].DocumentIdLandscapeHeader == null"
+                                data-ng-click="scopeOrg.actionScope.event.role.internal.headerFooterImage.uploadDocument(ApplicationConstants.DocumentTypes.InternalOrganizationLandscapeHeader)">
+                            <i class="material-icons">add</i>
+                        </button>
+                        <button class="btn btn-default btn-material " ng-if="scopeOrg.entity.OrganizationInternalRoles[0].DocumentIdLandscapeHeader != null"
+                                data-ng-click="scopeOrg.actionScope.event.role.internal.headerFooterImage.uploadDocument(ApplicationConstants.DocumentTypes.InternalOrganizationLandscapeHeader)">
+                            <i class="material-icons">edit</i>
+                        </button>
+                        <button class="btn btn-default btn-material " ng-if="scopeOrg.entity.OrganizationInternalRoles[0].DocumentIdLandscapeHeader != null"
+                                data-ng-click="scopeOrg.actionScope.event.role.internal.headerFooterImage.deleteImage(scopeOrg.entity.OrganizationInternalRoles[0].Id, ApplicationConstants.DocumentTypes.InternalOrganizationLandscapeHeader)">
+                            <i class="material-icons">delete</i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label data-for-property="DocumentIdLandscapeFooter" for="DocumentIdLandscapeFooter" data-model-property="scopeOrg.entity.OrganizationInternalRoles[0].DocumentIdLandscapeFooter"
+                       class="col-lg-3 control-label label-to-right req-lab-right" data-original-title="" title="">Landscape Footer Image (10in x 0.5in)</label>
+                <div class="col-lg-9">
+                    <div ng-class="{'col-sm-9' : scopeOrg.actionScope.show.addEditDeleteHeaderFooterImage === true, 'col-sm-12' : scopeOrg.actionScope.show.addEditDeleteHeaderFooterImage === false }">
+
+                        <div class="fieldViewMode form-control-static">
+                            <a class="doc-anchor" title="{{scopeOrg.entity.OrganizationInternalRoles[0].DocumentLandscapeFooterName}}" target="_blank" ng-href="{{scopeOrg.actionScope.event.role.internal.headerFooterImage.createDocumentLink(scopeOrg.entity.OrganizationInternalRoles[0].DocumentLandscapeFooterPublicId)}}">{{scopeOrg.entity.OrganizationInternalRoles[0].DocumentLandscapeFooterName}}</a>
+
+                            <div ng-if="scopeOrg.entity.OrganizationInternalRoles[0].DocumentIdLandscapeFooter == null">File has not been uploaded</div>
+                        </div>
+
+                    </div>
+                    <div class="col-sm-3" ng-if="scopeOrg.actionScope.show.addEditDeleteHeaderFooterImage">
+                        <button class="btn btn-default btn-material " ng-if="scopeOrg.entity.OrganizationInternalRoles[0].DocumentIdLandscapeFooter == null"
+                                data-ng-click="scopeOrg.actionScope.event.role.internal.headerFooterImage.uploadDocument(ApplicationConstants.DocumentTypes.InternalOrganizationLandscapeFooter)">
+                            <i class="material-icons">add</i>
+                        </button>
+                        <button class="btn btn-default btn-material " ng-if="scopeOrg.entity.OrganizationInternalRoles[0].DocumentIdLandscapeFooter != null"
+                                data-ng-click="scopeOrg.actionScope.event.role.internal.headerFooterImage.uploadDocument(ApplicationConstants.DocumentTypes.InternalOrganizationLandscapeFooter)">
+                            <i class="material-icons">edit</i>
+                        </button>
+                        <button class="btn btn-default btn-material " ng-if="scopeOrg.entity.OrganizationInternalRoles[0].DocumentIdLandscapeFooter != null"
+                                data-ng-click="scopeOrg.actionScope.event.role.internal.headerFooterImage.deleteImage(scopeOrg.entity.OrganizationInternalRoles[0].Id, ApplicationConstants.DocumentTypes.InternalOrganizationLandscapeFooter)">
+                            <i class="material-icons">delete</i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div data-ng-if="scopeOrg.actionScope.event.role.internal.headerFooterImage.docTypeId > 0">
+            <div class="form-group">
+                <div class="col-lg-12">
+                    <div data-pt-document-upload="" data-entity-type-id="ApplicationConstants.EntityType.OrganizationInternalRole" data-entity-id="scopeOrg.entity.OrganizationInternalRoles[0].Id"
+                        data-show-description-input="true" data-enable-image-resize="false" data-max-file-size="20971520" data-accept-file-types="scopeOrg.actionScope.event.role.internal.headerFooterImage.acceptFileTypes"
+                        data-limit-multi-file-uploads="1" data-func-callback-on-done="scopeOrg.actionScope.event.role.internal.headerFooterImage.documentUploadCallbackOnDone"
+                        data-header-text="Upload image to internal organization" data-content-text1="scopeOrg.actionScope.event.role.internal.headerFooterImage.contentText1"
+                        data-content-text2="20 MB file size limit" data-workflow-pending-task-id="scopeOrg.actionScope.event.role.entity.WorkflowPendingTaskId"
+                        data-document-header-text-custom="scopeOrg.actionScope.event.role.internal.headerFooterImage.dataHeaderText"
+                        data-document-type-id-single="scopeOrg.actionScope.event.role.internal.headerFooterImage.docTypeId">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="panel panel-internal mln mrn" data-ng-form="formEmployerAccrualsAndLiabilities">
+    <div class="form-group">
+        <div class="col-lg-10">
+            <h4>Employer Accruals and Liabilities</h4>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for-property="AccrueEmployerHealthTaxLiability"
+               for="AccrueEmployerHealthTaxLiability"
+               data-model-property="scopeOrg.entity.OrganizationInternalRoles[0].IsAccrueEmployerHealthTaxLiability"
+               class="col-lg-4 control-label label-to-right req-lab-right"
+               data-original-title=""
+               title="">Accrue Employer Health Tax Liability for Canadian SP</label>
+        <div class="col-lg-8">
+            <pt-input-radio name="AccrueEmployerHealthTaxLiability"
+                            data-ng-required="true"
+                            data-template-type="input-radio"
+                            data-ng-model="scopeOrg.entity.OrganizationInternalRoles[0].IsAccrueEmployerHealthTaxLiability"
+                            data-options="[{ key: true, value: 'Yes' },{ key: false, value: 'No' }]"
+                            data-pt-field-view="scopeOrg.ptFieldViewConfigOnChangeStatusId" />
+        </div>
+    </div>
+</div>

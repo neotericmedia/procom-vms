@@ -1,0 +1,114 @@
+<div>
+  <div *ngIf="html.access.organizationIndependentContractorRoleAdvanceView || html.access.organizationIndependentContractorRoleAdvanceNew
+    || html.access.organizationSubvendorRoleAdvanceView">
+    <div class="btn-group btn-garnishee-search-nav" *ngIf="!activeAdvanceCount
+      && (html.access.organizationIndependentContractorRoleAdvanceNew || html.access.organizationSubvendorRoleAdvanceView)">
+      <div class="garnishee-btn-wrapper">
+        <button type="button" class="btn btn-clouds dropdown-toggle" data-toggle="dropdown">
+          <span class="payroll-btn-name">Actions</span>
+          <span class="caret ml payroll-btn-caret"></span>
+        </button>
+        <ul class="dropdown-menu">
+          <li style="cursor: pointer;">
+            <a (click)="onClickAddNewAdvance()">Add Advance</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="smart-table-wrapper garnishee-search-table">
+      <div style="position: relative;">
+        <table class="table table-striped table-content table-hover fixed-columns ng-isolate-scope table-layout-fixed">
+          <thead>
+            <tr>
+              <th (click)="sortBy(html.organizationAdvanceColumnsKey.Id)" style="width: 10%;" [ngClass]="(html.tableState.sort.predicate === html.organizationAdvanceColumnsKey.Id && sortNumber === 0)
+                ? 'st-sort-ascent': (html.tableState.sort.predicate === html.organizationAdvanceColumnsKey.Id && sortNumber === 1
+                ? 'st-sort-descent': '')">ID</th>
+              <th (click)="sortBy(html.organizationAdvanceColumnsKey.Description)" style="width: 22%;" [ngClass]="(html.tableState.sort.predicate === html.organizationAdvanceColumnsKey.Description)
+                ? (sortNumber === 0 ? 'st-sort-ascent':(sortNumber === 1 ? 'st-sort-descent': '')): ''">Description</th>
+              <th (click)="sortBy(html.organizationAdvanceColumnsKey.AmountInitial)" style="width: 17%;" [ngClass]="(html.tableState.sort.predicate === html.organizationAdvanceColumnsKey.AmountInitial)
+                ? (sortNumber === 0 ? 'st-sort-ascent':(sortNumber === 1 ? 'st-sort-descent': '')): ''">Advance Amount</th>
+              <th (click)="sortBy(html.organizationAdvanceColumnsKey.PaidAmount)" style="width: 17%;" [ngClass]="(html.tableState.sort.predicate === html.organizationAdvanceColumnsKey.PaidAmount)
+                ? (sortNumber === 0 ? 'st-sort-ascent':(sortNumber === 1 ? 'st-sort-descent': '')): ''">Amount Paid</th>
+              <th (click)="sortBy(html.organizationAdvanceColumnsKey.PaybackRemainder)" style="width: 17%;" [ngClass]="(html.tableState.sort.predicate === html.organizationAdvanceColumnsKey.PaybackRemainder)
+                ? (sortNumber === 0 ? 'st-sort-ascent':(sortNumber === 1 ? 'st-sort-descent': '')): ''">Amount Remaining</th>
+              <th (click)="sortBy(html.organizationAdvanceColumnsKey.AdvanceStatusId)" style="width: 17%;" [ngClass]="(html.tableState.sort.predicate === html.organizationAdvanceColumnsKey.AdvanceStatusId)
+                ? (sortNumber === 0 ? 'st-sort-ascent':(sortNumber === 1 ? 'st-sort-descent': '')): ''">Status</th>
+            </tr>
+            <tr>
+              <th style="width: 10%; overflow: visible;">
+                <app-phx-advance-filter [inputFilter]="inputFilterForId" (onColumnClick)="onColumnClicked($event)" (onClose)="closeAllFilterPopup($event)"
+                  (onGo)="onGo($event)" (onClear)="onClear($event)" [canShow]="html.filterSelectedStatus.isIdClicked" [columnId]="this.html.organizationAdvanceColumnsKey.Id">
+                </app-phx-advance-filter>
+              </th>
+              <th style="width: 22%; overflow: visible;">
+                <app-phx-advance-filter [inputFilter]="inputFilterForDescription" (onColumnClick)="onColumnClicked($event)" (onClose)="closeAllFilterPopup($event)"
+                  (onGo)="onGo($event)" (onClear)="onClear($event)" [canShow]="html.filterSelectedStatus.isDescriptionClicked"
+                  [columnId]="this.html.organizationAdvanceColumnsKey.Description"></app-phx-advance-filter>
+              </th>
+              <th style="width: 17%; overflow: visible;">
+                <app-phx-advance-filter [inputFilter]="inputFilterForAmountInitial" (onColumnClick)="onColumnClicked($event)" (onClose)="closeAllFilterPopup($event)"
+                  (onGo)="onGo($event)" (onClear)="onClear($event)" [canShow]="html.filterSelectedStatus.isAdvanceAmountClicked"
+                  [columnId]="this.html.organizationAdvanceColumnsKey.AmountInitial"></app-phx-advance-filter>
+              </th>
+              <th style="width: 17%; overflow: visible;">
+                <app-phx-advance-filter [inputFilter]="inputFilterForPaidAmount" (onColumnClick)="onColumnClicked($event)" (onClose)="closeAllFilterPopup($event)"
+                  (onGo)="onGo($event)" (onClear)="onClear($event)" [canShow]="html.filterSelectedStatus.isPaidAmountClicked"
+                  [columnId]="this.html.organizationAdvanceColumnsKey.PaidAmount"></app-phx-advance-filter>
+              </th>
+              <th style="width: 17%; overflow: visible;">
+                <app-phx-advance-filter [inputFilter]="inputFilterForPaybackRemainder" (onColumnClick)="onColumnClicked($event)" (onClose)="closeAllFilterPopup($event)"
+                  (onGo)="onGo($event)" (onClear)="onClear($event)" [canShow]="html.filterSelectedStatus.isPaybackRemainderClicked"
+                  [columnId]="this.html.organizationAdvanceColumnsKey.PaybackRemainder"></app-phx-advance-filter>
+              </th>
+              <th style="width: 17%; overflow: visible;">
+                <app-phx-advance-filter [inputFilter]="inputFilterForStatus" (onColumnClick)="onColumnClicked($event)" (onClose)="closeAllFilterPopup($event)"
+                  (onGo)="onGo($event)" (onClear)="onClear($event)" [canShow]="html.filterSelectedStatus.isStatusClicked" [columnId]="this.html.organizationAdvanceColumnsKey.AdvanceStatusId">
+                </app-phx-advance-filter>
+              </th>
+            </tr>
+          </thead>
+          <tbody style="max-height: 615px; width:100%;" infiniteScroll [infiniteScrollDistance]="html.scrollConfig.infiniteScrollDistance"
+            [scrollWindow]="html.scrollConfig.scrollWindow" [infiniteScrollThrottle]="html.scrollConfig.infiniteScrollThrottle"
+            (scrolled)="onScroll()" *ngIf="html.commonLists.advanceList.Items?.length > 0">
+            <tr *ngFor="let item of html.commonLists.advanceList.Items" (click)="onClickEditAdvance(item.Id);">
+              <td style="width: 10%; padding-left:15px;">{{item.Id}}</td>
+              <td style="width: 22%; padding-left:15px;">{{item.Description}}</td>
+              <td style="width: 17%; padding-left:15px;">
+                {{item.AmountInitial ? (item.CurrencyId | lookup: listCurrency:'id':'code') : ''}} {{item.AmountInitial ? (item.AmountInitial
+                | phxDisplayCurrency) : 'Unlimited'}}
+              </td>
+              <td style="width: 17%; padding-left:15px;">{{item.CurrencyId | lookup:listCurrency:'id':'code'}} {{item.PaidAmount | phxDisplayCurrency}}</td>
+              <td style="width: 17%; padding-left:15px;">
+                {{item.PaybackRemainder ? (item.CurrencyId | lookup: listCurrency:'id':'code') : ''}} {{item.PaybackRemainder ? (item.PaybackRemainder
+                | phxDisplayCurrency) : 'Unlimited'}}
+              </td>
+              <td style="width: 17%; padding-left:15px;">
+                <span>{{item.AdvanceStatusId | lookupNoCache:html.commonLists.statusList}}
+                </span>
+              </td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr>
+              <td colspan="2" style="padding: 20px 0;">
+                <span>Total Count: {{html.commonLists.advanceList.Count}}; Items Loaded: {{ html.commonLists.advanceList.Items
+                  ? html.commonLists.advanceList.Items.length: 0}}
+                </span>
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+  </div>
+  <app-phx-modal [buttons]="modalFabButtons" title="" #modalAdvanceNew>
+    <app-organization-advances-new [organizationId]="organizationId" [modal]="modalAdvanceNew" (outputEvent)="onOutputEvent($event)"
+      [organizationDetails]="organization">
+    </app-organization-advances-new>
+  </app-phx-modal>
+  <app-phx-modal [buttons]="modalFabButtons" title="" #modalAdvanceEdit>
+    <app-organization-advances-details [organizationId]="organizationId" [modal]="modalAdvanceEdit" [advanceId]="advanceId" [activeAny]="activeAny"
+      (outputEvent)="onOutputEvent($event)">
+    </app-organization-advances-details>
+  </app-phx-modal>
+</div>

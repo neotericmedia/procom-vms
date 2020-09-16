@@ -1,0 +1,52 @@
+
+<phx-form-control name="restrictions" [labelText]="labelText" [editable]="editable" viewModeText="">
+    
+  <div class="btn-group" *ngIf="dropdowmitems">
+
+    <button class="btn btn-clouds dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true"
+      aria-expanded="true">
+      {{dropdownText}}
+      <span class="caret"></span>
+    </button>
+    <ul *ngIf="dropdowmitems && dropdowmitems.length > 0" class="dropdown-menu bordered" aria-labelledby="dropdownMenu1">
+      <li *ngFor="let item of dropdowmitems" (click)="itemClick(item)" class="action-link">
+        <a> {{item.name}} </a>
+      </li>
+    </ul>
+  </div>
+  <!-- <div *ngIf="!dropdowmitems || dropdowmitems.length === 0">
+    Oops! No {{labelText | lowercase}} items!
+  </div> -->
+</phx-form-control>
+
+<div bsModal [config]="{ show: false, backdrop: 'static', keyboard: true }" #itemModal="bs-modal" class="modal fade item-modal"
+  tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-sm itemModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <span>
+          {{dropdownText}} - {{selectedRestriction?.name}}
+        </span>
+        <div class="btn pull-right btn-default btn-material btn-borderless" (click)="cancel()">
+          <i class="material-icons">close</i>
+        </div>
+      </div>
+      <ng-content></ng-content>
+      
+      <div class="modal-body" *ngIf="selectedRestriction">
+        <app-restriction-selector #restrictionSelector [restrictionSelectorType]="selectedRestriction.restrcitionSelectorType" [labelText]="selectedRestriction.name"
+          [items]="items" [selectedItems]="selectedItems"></app-restriction-selector>
+      </div>
+      <div class="modal-footer">
+        <div class="btn-toolbar pull-right">
+          <button type="button" class="btn btn-default" (click)="cancel()">
+            Cancel
+          </button>
+          <button type="button" class="btn btn-default btn-primary" (click)="ok()">
+            OK
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,57 @@
+<div bsModal #dialogCommentModal="bs-modal" [config]="{ show: false, backdrop: 'static', keyboard: true }" class="modal fade"
+  tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4>{{ title }} - {{ subTitle }}</h4>
+      </div>
+      <div class="modal-body" *ngIf="model">
+        <div class="form-horizontal">
+          <div class="form-group">
+            <div class="row">
+              <label class="col-lg-5 col-xs-12 control-label " title="">Number of selected cheques:</label>
+              <div class="col-lg-7 col-xs-12">
+                <div class="value-label">{{model.ChequeCount}}</div>
+              </div>
+            </div>
+            <div class="row">
+              <label class="col-lg-5 col-xs-12 control-label " title="">Total Amount:</label>
+              <div class="col-lg-7 col-xs-12">
+                <div class="value-label">{{model.TotalAmount | number : '1.2-2'}} {{model.CurrencyId | CodeValue:codeValueGroups.Currency:'code'}}</div>
+              </div>
+            </div>
+            <div class="row">
+              <label class="col-lg-5 col-xs-12 control-label " title="">{{dateLabel}}: *</label>
+              <div class="col-lg-7 col-xs-12">
+                <div class="form-control-static">
+                  <dx-date-box type="date" [(value)]="model.Date"></dx-date-box>
+                </div>
+              </div>
+            </div>
+            <div class="row pull-left" *ngIf="isReasonVisible">
+              <label class="col-lg-12 col-xs-12 control-label" title="">{{reasonLabel}} *</label>
+            </div>
+            <div class="row" *ngIf="isReasonVisible">
+              <div class="col-lg-12 col-xs-12">
+                <div class="form-control-static">
+                  <textarea rows="5" [(ngModel)]="model.Reason" required [maxLength]="500"></textarea>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div class="pull-right">
+          <button type="button" class="pull-left btn btn-default" (click)="cancelClicked()">
+            Cancel
+          </button>
+          <button type="button" class="pull-left btn btn-primary" (click)="saveClicked()" [disabled]="!model?.Date || (isReasonVisible && model?.Reason?.trim() === '')">
+            Continue
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

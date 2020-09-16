@@ -1,0 +1,26 @@
+﻿<div data-ng-form="entityForm" ng-repeat="entity in model">
+    <div class="row page-header">
+        <h3>
+            {{entity.ObjectName}}
+        </h3>
+        <hr/>
+    </div> 
+    <div class="row">
+        <div class="col-md-3"></div><div class="col-md-3 col-lg-4"><h4><strong>OLD</strong></h4></div><div class="col-md-3 col-lg-4"><h4><strong>NEW</strong></h4></div>
+    </div>
+    <div class="row" data-ng-repeat="property in entity.OldText.Lines">
+        <div class="col-md-3">
+            <span data-ng-show="!property.Removed" style="color: gray" >{{property.Key}}:</span>
+        </div>
+        <div class="col-md-3 col-lg-4">
+            <span data-ng-show="!property.Removed" data-ng-class="getDiffLineStyle(property.Value,property.Changed)">{{property.Value}}</span>
+            <br data-ng-show="!property.Removed" /> 
+        </div>
+        <div class="col-md-3 col-lg-4">
+            <span data-ng-show="!entity.NewText.Lines[$index].Removed" data-ng-class="getDiffLineStyle(entity.NewText.Lines[$index].Value,entity.NewText.Lines[$index].Changed)"> {{entity.NewText.Lines[$index].Value}}</span>
+            <br data-ng-show="!entity.NewText.Lines[$index].Removed" /> 
+        </div>
+    </div>
+   
+</div>
+

@@ -1,0 +1,474 @@
+﻿<style>
+    .detail-summary .no-margin-left {
+        margin-left: 0;
+    }
+
+    .detail-summary .center {
+        text-align: center;
+    }
+
+    table.my-salestax-popup0 tbody tr td {
+        border-bottom: none;
+        padding: 0.25em 10px;
+    }
+
+    .border-vertical-left {
+        border-left: 1px solid #dddddd;
+    }
+
+    .border-vertical-right {
+        border-right: 1px solid #dddddd;
+    }
+
+    .template-stat-detail {
+        width: 300px;
+    }
+
+    table.app-stat-detail-popup tbody tr td {
+        border-bottom: none;
+        padding: 0.05em 10px;
+        text-align: left;
+        vertical-align: top;
+    }
+
+    /* bootstrap override*/
+    .tooltip-inner {
+        max-width: 350px;
+        width: auto;
+    }
+
+    .payment-balance-detail-table {
+        margin-top: 12px;
+    }
+    .payment-balance-detail-table tr td {
+        padding: 4px !important;
+        border: 1px solid #eaeaea !important;
+    }
+    .payment-balance-detail-table .payment-date {
+        white-space: nowrap;
+    }
+    .payment-balance-detail-table .payment-number {
+        white-space: nowrap;
+    }
+    .payment-balance-detail-table .currency {
+        white-space: nowrap;
+        text-align: right;
+    }
+    .payment-balance-detail-table .summary-row {
+        font-weight: 600;
+    }
+</style>
+<script type="text/ng-template" id="statHolidayDetailTooltipTemplate.html">
+    <div style="width:auto">
+        <div data-ng-repeat="statHolidayDetail in transactionLine.PaymentTransactionLineStatHolidayDetails">
+            <p>
+                <span>{{statHolidayDetail.HolidayName}}, </span>
+                <span>{{statHolidayDetail.HolidayDate | date:ApplicationConstants.formatDate}}</span>
+            </p>
+            <table class="app-stat-detail-popup">
+                <tbody>
+                    <tr data-ng-if="statHolidayDetail.IsManualOverride !== null">
+                        <td>Overridden</td>
+                        <td>{{statHolidayDetail.IsManualOverride | lookup:lists.YesNo:'value':'text' }}</td>
+                    </tr>
+                    <tr data-ng-if="statHolidayDetail.IsSubdivisionHolidayPreviouslyPaid !== null">
+                        <td>Previously Paid</td>
+                        <td>{{statHolidayDetail.IsSubdivisionHolidayPreviouslyPaid | lookup:lists.YesNo:'value':'text'}}</td>
+                    </tr>
+                    <tr data-ng-if="statHolidayDetail.IsFlatStatPayApplied !== null">
+                        <td>Flat Pay</td>
+                        <td>{{statHolidayDetail.IsFlatStatPayApplied | lookup:lists.YesNo:'value':'text'}}</td>
+                    </tr>
+                    <tr data-ng-if="statHolidayDetail.RangeStartDate !== null">
+                        <td>Range Start</td>
+                        <td>{{statHolidayDetail.RangeStartDate | date:ApplicationConstants.formatDate}}</td>
+                    </tr>
+                    <tr data-ng-if="statHolidayDetail.RangeEndDate !== null">
+                        <td>Range End</td>
+                        <td>{{statHolidayDetail.RangeEndDate | date:ApplicationConstants.formatDate}}</td>
+                    </tr>
+                    <tr data-ng-if="statHolidayDetail.TransactionMinDate !== null">
+                        <td>Transaction Min Date</td>
+                        <td>{{statHolidayDetail.TransactionMinDate | date:ApplicationConstants.formatDate}}</td>
+                    </tr>
+                    <tr data-ng-if="statHolidayDetail.TransactionMaxDate !== null">
+                        <td>Transaction Max Date</td>
+                        <td>{{statHolidayDetail.TransactionMaxDate | date:ApplicationConstants.formatDate}}</td>
+                    </tr>
+                    <tr data-ng-if="statHolidayDetail.TransactionCount !== null">
+                        <td>Transaction Count</td>
+                        <td>{{statHolidayDetail.TransactionCount}}</td>
+                    </tr>
+                    <tr data-ng-if="statHolidayDetail.WorkDayCountActual !== null">
+                        <td>Workday Count Actual</td>
+                        <td>{{statHolidayDetail.WorkDayCountActual}}</td>
+                    </tr>
+                    <tr data-ng-if="statHolidayDetail.WorkDayCountAdjusted !== null">
+                        <td>Workday Count Adjusted</td>
+                        <td>{{statHolidayDetail.WorkDayCountAdjusted}}</td>
+                    </tr>
+                    <tr data-ng-if="statHolidayDetail.SumUnits !== null">
+                        <td>Sum Units</td>
+                        <td>{{statHolidayDetail.SumUnits}}</td>
+                    </tr>
+                    <tr data-ng-if="statHolidayDetail.AverageUnits !== null">
+                        <td>Average Units</td>
+                        <td>{{statHolidayDetail.AverageUnits}}</td>
+                    </tr>
+                    <tr data-ng-if="statHolidayDetail.CalculatedUnits !== null">
+                        <td>Calculated Units</td>
+                        <td>{{statHolidayDetail.CalculatedUnits}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</script>
+<div class="form-horizontal">
+    <div class="form-group">
+        <div class="panel panel-heading">
+            <div class="col-lg-5">
+                <div class="col-sm-4 control-label form-group">
+                    <div class="text-gray text-center">Billing(s)</div>
+                    <div class="text-gray text-center">Pre Tax</div>
+                    <p class="h4 text-center">
+                        {{model.transactionCalculation.AmountSummary.Amount_BillsTotalPreTax|currency:model.transactionHeader.CurrencyCode + " $"}}
+                    </p>
+                </div>
+                <div class="col-sm-4 control-label form-group">
+                    <div class="text-gray text-center">Billing(s)</div>
+                    <div class="text-gray text-center">Sales Tax</div>
+                    <p class="h4 text-center">
+                        {{model.transactionCalculation.AmountSummary.Amount_BillsTotalSalesTax|currency:model.transactionHeader.CurrencyCode + " $"}}
+                    </p>
+                </div>
+                <div class="col-sm-4 control-label form-group">
+                    <div class="text-gray text-center">Billing(s)</div>
+                    <div class="text-gray text-center">Total</div>
+                    <p class="h4 text-center">
+                        {{model.transactionCalculation.AmountSummary.Amount_BillsTotalAll|currency:model.transactionHeader.CurrencyCode + " $"}}
+                    </p>
+                </div>
+            </div>
+            <div class="col-lg-7">
+                <div class="col-sm-3 control-label form-group">
+                    <div class="text-gray text-center">Payment(s)</div>
+                    <div class="text-gray text-center">Pre Tax</div>
+                    <p class="h4 text-center">
+                        {{model.transactionCalculation.AmountSummary.Amount_PayeesTotalPreTax|currency:model.transactionHeader.CurrencyCode + " $"}}
+                    </p>
+                </div>
+                <div class="col-sm-3 control-label form-group">
+                    <div class="text-gray text-center">Payment(s)</div>
+                    <div class="text-gray text-center">Sales Tax</div>
+                    <p class="h4 text-center">
+                        {{model.transactionCalculation.AmountSummary.Amount_PayeesTotalSalesTax|currency:model.transactionHeader.CurrencyCode + " $"}}
+                    </p>
+                </div>
+                <div class="col-sm-3 control-label form-group">
+                    <div class="text-gray text-center">Payment(s)</div>
+                    <div class="text-gray text-center">Deductions</div>
+                    <p class="h4 text-center">
+                        {{model.transactionCalculation.AmountSummary.Amount_PayeesTotalDeductionsAndAdvancesAndGarneshees|currency:model.transactionHeader.CurrencyCode + " $"}}
+                    </p>
+                </div>
+                <div class="col-sm-3 control-label form-group">
+                    <div class="text-gray text-center">Payment(s)</div>
+                    <div class="text-gray text-center">Total</div>
+                    <p class="h4 text-center">
+                        {{model.transactionCalculation.AmountSummary.Amount_PayeesTotalAll|currency:model.transactionHeader.CurrencyCode + " $"}}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="content-group">
+        <show-busy-controlled associate="viewLoading"></show-busy-controlled>
+        <div class="col-xxxl-8">
+            <div class="panel-internal" style="margin: 0 -5px" data-ng-repeat="billingTransaction in model.transactionHeader.BillingTransactions">
+                <div class="panel-body">
+                    <div class="col-lg-7">
+                        <div class="form-group">
+                            <label class="col-lg-6 control-label" data-original-title="" title="">Client Organization</label>
+                            <div class="col-lg-6 form-control-static">
+                                {{billingTransaction.OrganizationClientDisplayName}} - {{billingTransaction.OrganizationIdClient}}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-6 control-label" data-original-title="" title="">Billing Transaction Number</label>
+                            <div class="col-lg-6 form-control-static">
+                                {{billingTransaction.BillingTransactionNumber}}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-6 control-label" data-original-title="" title="">Billing Transaction Date</label>
+                            <div class="col-lg-6 form-control-static">
+                                {{billingTransaction.BillingDate| date:ApplicationConstants.formatDate}}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-6 control-label" data-original-title="" title="">Billing Transaction Is Internal</label>
+                            <div class="col-lg-6 form-control-static">
+                                {{billingTransaction.IsInternalTransaction ? "Yes" : "No"}}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-6 control-label" data-original-title="" title="">Billing Transaction Payment Status</label>
+                            <div class="col-lg-6 form-control-static">
+                                {{billingTransaction.BillingTransactionPaymentStatus| lookup:model.ARStatuses}}
+                            </div>
+                        </div>
+
+                        <div class="form-group" >
+                            <label class="col-lg-6 control-label" data-original-title="" title="">Billing Transaction Payment Balance</label>
+                            <div class="col-lg-6 form-control-static">
+                                {{billingTransaction.TotalAmount - billingTransaction.BillingTransactionARPaymentAmount | currency:billingTransaction.CurrencyCode + " $"}}
+                                <div style="display: inline-block; margin-left: 12px;" data-ng-init="billingTransaction.showARPayment = false">
+                                    <a style="cursor: pointer;" data-ng-if="!billingTransaction.showARPayment" data-ng-click="billingTransaction.showARPayment = true">Show Detail</a>
+                                    <a style="cursor: pointer;" data-ng-if="billingTransaction.showARPayment" data-ng-click="billingTransaction.showARPayment = false">Hide Detail</a>
+                                </div>
+                                <div data-ng-if="billingTransaction.showARPayment">
+                                    <table class="table table-striped table-hover payment-balance-detail-table">
+                                        <tbody>
+                                            <tr>
+                                                <td>Opening Balance</td>
+                                                <td class="currency">{{billingTransaction.TotalAmount | currency:billingTransaction.CurrencyCode + " $"}}</td>
+                                            </tr>
+                                            <tr data-ng-repeat="ARPayment in billingTransaction.BillingTransactionARPayment">
+                                                <td>Less Payment Received <span class="payment-date">{{ARPayment.ClientLastPaymentDate}}</span> - <span class="payment-number">{{ARPayment.PaymentNumber}}</span></td>
+                                                <td class="currency">{{ARPayment.PaymentAmount | currency:billingTransaction.CurrencyCode + " $"}}</td>
+                                            </tr>
+                                            <tr class="summary-row">
+                                                <td>Remaining Balance</td>
+                                                <td class="currency">{{billingTransaction.TotalAmount - billingTransaction.BillingTransactionARPaymentAmount | currency:billingTransaction.CurrencyCode + " $"}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    <div class="col-lg-5">
+                        <div class="form-group" data-ng-if="billingTransaction.InvoiceNote1">
+                            <label class="col-lg-4 control-label" data-original-title="" title="">Invoice Note 1</label>
+                            <div class="col-lg-8 text-overflow-ellipsis form-control-static">
+                                {{billingTransaction.InvoiceNote1}}
+                            </div>
+                        </div>
+                        <div class="form-group" data-ng-if="billingTransaction.InvoiceNote2">
+                            <label class="col-lg-4 control-label" data-original-title="" title="">Invoice Note 2</label>
+                            <div class="col-lg-8 text-overflow-ellipsis form-control-static">
+                                {{billingTransaction.InvoiceNote2}}
+                            </div>
+                        </div>
+                        <div class="form-group" data-ng-if="billingTransaction.InvoiceNote3">
+                            <label class="col-lg-4 control-label" data-original-title="" title="">Invoice Note 3</label>
+                            <div class="col-lg-8 text-overflow-ellipsis form-control-static">
+                                {{billingTransaction.InvoiceNote3}}
+                            </div>
+                        </div>
+                        <div class="form-group" data-ng-if="billingTransaction.InvoiceNote4">
+                            <label class="col-lg-4 control-label" data-original-title="" title="">Invoice Note 4</label>
+                            <div class="col-lg-8 text-overflow-ellipsis form-control-static">
+                                {{billingTransaction.InvoiceNote4}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12 table-responsive">
+                        <table class="table table-striped table-hover" style="border: none">
+                            <thead>
+                                <tr>
+                                    <!--<th scope="col">Line#</th>-->
+                                    <th scope="col">Number</th>
+                                    <th scope="col">Type</th>
+                                    <th scope="col">Description</th>
+                                    <th scope="col" class="text-right">Units</th>
+                                    <th scope="col">Currency</th>
+                                    <th scope="col" class="text-right">Rate</th>
+                                    <th scope="col" class="text-right">Pre-Tax</th>
+                                    <th scope="col" class="text-right">Sales Tax</th>
+                                    <th scope="col" class="text-right">Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr data-ng-repeat="transactionLine in billingTransaction.BillingTransactionLines" data-ng-init="vmsDiscountProcessedRecordId = billingTransaction.VmsDiscountProcessedRecordId; vmsProcessedRecord = model.transactionHeader.VmsProcessedRecord; vmsExpenseProcessedRecord = model.transactionHeader.VmsExpenseProcessedRecord; vmsCommissionProcessedRecord = model.transactionHeader.VmsCommissionProcessedRecord; vmsFixedPriceProcessedRecord = model.transactionHeader.VmsFixedPriceProcessedRecord; reversedBillingTransactionId = billingTransaction.ReversedBillingTransactionId">
+                                    <td>{{transactionLine.BillingTransactionLineNumber}}</td>
+                                    <td>Bill</td>
+                                    <td>
+                                        <a data-ng-if="!reversedBillingTransactionId && !vmsProcessedRecordId && !vmsDiscountProcessedRecordId && vmsExpenseProcessedRecord"
+                                           ui-sref="vms.batch.expense.details({vmsExpenseProcessedRecordId: vmsExpenseProcessedRecord.Id})"
+                                           style="cursor: pointer;">{{transactionLine.Description}}</a>
+
+                                        <a data-ng-if="!reversedBillingTransactionId && !vmsDiscountProcessedRecordId && !vmsExpenseProcessedRecordId && vmsProcessedRecord"
+                                           ui-sref="vms.batch.timesheet.details({vmsTimesheetProcessedRecordId: vmsProcessedRecord.Id})"
+                                           style="cursor: pointer;">{{transactionLine.Description}}</a>
+
+                                        <a data-ng-if="!reversedBillingTransactionId && vmsDiscountProcessedRecordId" ui-sref="vms.batch.discount.details({vmsDiscountProcessedRecordId: vmsDiscountProcessedRecordId})"
+                                           style="cursor: pointer;">{{transactionLine.Description}}</a>
+
+                                        <a data-ng-if="!reversedBillingTransactionId && !vmsDiscountProcessedRecordId && vmsCommissionProcessedRecord" ui-sref="vms.batch.commission.details({vmsCommissionProcessedRecordId: vmsCommissionProcessedRecord.Id})"
+                                           style="cursor: pointer;">{{transactionLine.Description}}</a>
+                                           
+                                        <a data-ng-if="!reversedBillingTransactionId && !vmsDiscountProcessedRecordId && vmsFixedPriceProcessedRecord" ui-sref="vms.batch.fixedprice.details({vmsFixedPriceProcessedRecordId: vmsFixedPriceProcessedRecord.Id})"
+                                           style="cursor: pointer;">{{transactionLine.Description}}</a>
+
+                                        <span data-ng-if="reversedBillingTransactionId || (!vmsDiscountProcessedRecordId && !vmsExpenseProcessedRecord && !vmsProcessedRecord && !vmsCommissionProcessedRecord && !vmsFixedPriceProcessedRecord)">{{transactionLine.Description}}</span>
+                                    </td>
+
+                                    <td class="text-right">{{transactionLine.Units|currency:" "}} {{transactionLine.RateUnitId|lookup:lists.RateUnits}}</td>
+                                    <td>{{billingTransaction.CurrencyCode}}</td>
+                                    <td>
+                                        <span class="pull-right">{{transactionLine.Rate|currency}}</span>
+                                    </td>
+                                    <td>
+                                        <span class="pull-right">{{transactionLine.PreTaxTotal|currency}}</span>
+                                    </td>
+                                    <td class="text-right">
+                                        <div uib-dropdown class="dropdown" dropdown-append-to-body>
+                                            <a uib-dropdown-toggle aria-haspopup="true" aria-expanded="false" ng-show="transactionLine.BillingTransactionLineSalesTaxes.length">
+                                                {{transactionLine.SalesTaxTotal|currency}}
+                                            </a>
+                                            <span ng-show="!transactionLine.BillingTransactionLineSalesTaxes.length">{{transactionLine.SalesTaxTotal|currency}}</span>
+                                            <table class="dropdown-menu app-salestax-popup" uib-dropdown-menu>
+                                                <tbody>
+                                                    <tr data-ng-repeat="tlst in transactionLine.BillingTransactionLineSalesTaxes">
+                                                        <td>{{tlst.SalesTaxName}}</td>
+                                                        <td>{{tlst.Rate | abs}}<span ng-if="tlst.Rate">%</span></td>
+                                                        <td class="text-right">{{tlst.Amount|currency}}</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="pull-right">{{transactionLine.Total|currency}}</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-internal" style="margin: 10px -5px" data-ng-repeat="paymentTransaction in model.transactionHeader.PaymentTransactions">
+                <div class="panel-body">
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="col-lg-7 control-label" data-original-title="" title="">Supplier Organization</label>
+                            <div class="col-lg-5 form-control-static">
+                                {{paymentTransaction.PayeeName}}{{paymentTransaction.PayeeOrganizationIdSupplier ? ' - ' + paymentTransaction.PayeeOrganizationIdSupplier:''}}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-7 control-label" data-original-title="" title="">Payment Transaction Number</label>
+                            <div class="col-lg-5 form-control-static">
+                                {{paymentTransaction.PaymentTransactionNumber}}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-7 control-label" data-original-title="" title="">Payment Transaction Date</label>
+                            <div class="col-lg-5 form-control-static">
+                                {{paymentTransaction.CreatedDatetime|date:ApplicationConstants.formatDate}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="col-lg-6 control-label" title="">Planned Release Date</label>
+                            <div class="col-lg-6 form-control-static">
+                                <span data-ng-if="paymentTransaction.PlannedReleaseDate">{{paymentTransaction.PlannedReleaseDate|date:ApplicationConstants.formatDate}}</span>
+                                <span data-ng-if="!paymentTransaction.PlannedReleaseDate">N/A</span>
+                                <span data-ng-if="paymentTransaction.IsPaymentStopped" class="warning-visual-cue"><i class="material-icons md-18">warning</i>Stop Payment</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-6 control-label" title="">Payment Release Date</label>
+                            <div class="col-lg-6 form-control-static">
+                                {{paymentTransaction.PaymentDate|date:ApplicationConstants.formatDate}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12 table-responsive" style="position:static">
+                        <table class="table table-striped table-hover" style="border: none">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Number</th>
+                                    <th scope="col">Type</th>
+                                    <th scope="col">Description</th>
+                                    <th scope="col" class="text-right">Units</th>
+                                    <th scope="col">Currency</th>
+                                    <th scope="col">
+                                        <span class="pull-right">Rate</span>
+                                    </th>
+                                    <th scope="col">
+                                        <span class="pull-right">Pre-Tax</span>
+                                    </th>
+                                    <th scope="col">
+                                        <span class="pull-right">Sales Tax</span>
+                                    </th>
+                                    <th scope="col">
+                                        <span class="pull-right">Total</span>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr data-ng-repeat="transactionLine in paymentTransaction.PaymentTransactionLines">
+                                    <td>{{transactionLine.PaymentTransactionLineNumber}}</td>
+                                    <td>Pay</td>
+                                    <td>
+                                        <span>{{transactionLine.Description}}</span>
+                                        <span ng-if="transactionLine.RateTypeId === ApplicationConstants.RateType.Stat && transactionLine.PaymentTransactionLineStatHolidayDetails.length">
+                                            <a href="javascript:;" uib-tooltip-template="'statHolidayDetailTooltipTemplate.html'" tooltip-class="template-stat-detail" tooltip-placement="top">
+                                                <i class="material-icons" style="color:#333333; font-size: 15px;">info</i>
+                                            </a>
+                                        </span>
+                                    </td>
+                                    <td class="text-right">{{transactionLine.Units|currency:" "}} {{transactionLine.RateUnitId|lookup:lists.RateUnits}}</td>
+                                    <td>{{paymentTransaction.CurrencyCode}}</td>
+                                    <td>
+                                        <span class="pull-right">{{transactionLine.Rate|currency}}</span>
+                                    </td>
+                                    <td>
+                                        <span class="pull-right">{{transactionLine.PreTaxTotal|currency}}</span>
+                                    </td>
+                                    <td class="text-right">
+                                        <div uib-dropdown class="dropdown" dropdown-append-to-body>
+                                            <a uib-dropdown-toggle aria-expanded="false" ng-show="transactionLine.PaymentTransactionLineSalesTaxes.length">
+                                                {{transactionLine.SalesTaxTotal|currency}}
+                                            </a>
+                                            <span ng-show="!transactionLine.PaymentTransactionLineSalesTaxes.length">{{transactionLine.SalesTaxTotal|currency}}</span>
+                                            <table class="dropdown-menu app-salestax-popup" uib-dropdown-menu>
+                                                <tbody>
+                                                    <tr data-ng-repeat="tlst in transactionLine.PaymentTransactionLineSalesTaxes">
+                                                        <td>{{tlst.SalesTaxName}}</td>
+                                                        <td>{{tlst.Rate | abs}}<span ng-if="tlst.Rate">%</span></td>
+                                                        <td class="text-right">{{tlst.Amount|currency}}</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="pull-right">{{transactionLine.Total|currency}}</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xxxl-4">
+            <div class="panel-internal detail-summary" style="margin: 0 -5px 10px -5px;min-height: 105px" data-ng-if="model.transactionHeader.BillingTransactions[0].PurchaseOrderLineId != null && model.transactionHeader.BillingTransactions[0].PurchaseOrderLineId > 0">
+                <div class="col-lg-12">
+                    <p class="h4 center">Purchase Order</p>
+                </div>
+                <div class="panel-body center">
+                    <a data-ui-sref="purchaseorder.edit.details.line({purchaseOrderId: model.transactionHeader.BillingTransactions[0].PurchaseOrderLine.PurchaseOrderId, purchaseOrderLineId:model.transactionHeader.BillingTransactions[0].PurchaseOrderLine.Id })"
+                       style="cursor: pointer;">{{model.transactionHeader.BillingTransactions[0].PurchaseOrderLine.PurchaseOrderNumber}}Line{{model.transactionHeader.BillingTransactions[0].PurchaseOrderLine.PurchaseOrderLineNumber}}</a>
+                </div>
+            </div>
+            <div data-ui-view="transactionAmountSummary" data-autoscroll="false"></div>
+        </div>
+    </div>
+</div>

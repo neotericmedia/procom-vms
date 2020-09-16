@@ -1,0 +1,124 @@
+<div class="vms-fee-details col-lg-12" *ngIf="vmsFeeData">
+  <div class="col-lg-12 vms-fee-actions-wrapper">
+    <div class="col-lg-3 vms-fee-actions-drp" *ngIf="vmsFeeData.VmsFeeVersion.WorkflowAvailableActions && vmsFeeData.VmsFeeVersion.WorkflowAvailableActions.length">
+      <app-phx-workflow-buttons (callWorkflowCommand)="onClickWorkflowAction($event)" [openDefaultDeclineDialog]="false"
+        [workflowAvailableActions]="vmsFeeData.VmsFeeVersion.WorkflowAvailableActions" [isButtonBar]="false">
+      </app-phx-workflow-buttons>
+    </div>
+  </div>
+  <div class="vms-fee-entity-wrapper col-lg-10">
+    <div class="vms-fee-header panel-heading headstone">
+      <div class="row">
+        <div class="col-lg-1 col-md-1">
+          <label class="control-label col-xs-12 ">ID</label>
+          <span class="col-xs-12">{{vmsFeeData.Id}}</span>
+        </div>
+        <div class="col-lg-5 col-md-5">
+          <label class="control-label col-xs-12 ">Organization</label>
+          <span class=" col-xs-12 ">{{vmsFeeData.OrganizationDisplayName || 'N/A'}}</span>
+        </div>
+        <div class="col-lg-2 col-md-2">
+          <label class="control-label col-xs-12 ">Status</label>
+          <div class="col-xs-12">
+            <span *ngIf="!isWorkflowRunning && !vmsFeeData.selectedActionId" [ngClass]="vmsFeeData.VmsFeeVersion.VmsFeeVersionStatusId==phxConstants.VmsFeeVersionStatus.Active? 'text-warning' : ''">
+              {{vmsFeeData.VmsFeeVersion.VmsFeeVersionStatusId|lookup:vmsFeeVersionStatuses}}</span>
+            <span *ngIf="!isWorkflowRunning && vmsFeeData.selectedActionId">
+              {{vmsFeeData.selectedActionId|lookup: actionStatuses}}</span>
+            <span *ngIf="isWorkflowRunning">Workflow Is Running</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel" [formGroup]="vmsForm" *ngIf="vmsForm">
+      <div class="panel-body">
+        <div class="form-horizontal">
+          <div class="form-group">
+            <phx-form-control [control]="vmsForm.controls.OrganizationId" labelText="Organization" [editable]="funcToCheckViewStatus('vmsFeeData', 'OrganizationId')"
+              viewModeText="{{vmsForm.controls.OrganizationId.value | lookupNoCache: clientOrganizations:'Id':'DisplayName'}}">
+              <app-phx-select-box [formControl]="vmsForm.controls.OrganizationId" [items]="clientOrganizations"
+                textField="DisplayName" valueField="Id" placeholder="-- select one --" [disabled]="vmsForm.controls.OrganizationId.value > 0 && vmsFeeVersionId">
+              </app-phx-select-box>
+            </phx-form-control>
+          </div>
+          <div class="form-group">
+            <phx-form-control [control]="vmsForm.controls.Description" labelText="Description" [editable]="funcToCheckViewStatus('vmsFeeData', 'Description')"
+              viewModeText="{{vmsForm.controls.Description.value}}">
+              <input type="text" formControlName="Description" class="form-control">
+            </phx-form-control>
+          </div>
+          <div class="form-group">
+            <phx-form-control [control]="vmsForm.controls.LineOfBusinessId" labelText="Line Of Business" [editable]="funcToCheckViewStatus('vmsFeeData.VmsFeeVersion', 'LineOfBusinessId')"
+              viewModeText="{{vmsForm.controls.LineOfBusinessId.value | lookupNoCache: lineOfBusiness:'id':'text'}}">
+              <app-phx-select-box [formControl]="vmsForm.controls.LineOfBusinessId" [items]="lineOfBusiness" textField="text"
+                valueField="id" placeholder="-- select one --">
+              </app-phx-select-box>
+            </phx-form-control>
+          </div>
+          <div class="form-group">
+            <phx-form-control [control]="vmsForm.controls.RebateTypeId" labelText="Vms Fee Type" [editable]="funcToCheckViewStatus('vmsFeeData.VmsFeeVersion', 'RebateTypeId')"
+              viewModeText="{{vmsForm.controls.RebateTypeId.value | lookupNoCache: vmsFeeTypes:'id':'text'}}">
+              <ng-container *ngIf="funcToCheckViewStatus('vmsFeeData.VmsFeeVersion', 'RebateTypeId')">
+                <app-phx-select-box [formControl]="vmsForm.controls.RebateTypeId" [items]="vmsFeeTypes" textField="text"
+                  valueField="id" placeholder="-- select one --" (valueChanged)="rebateChanged($event)">
+                </app-phx-select-box>
+              </ng-container>
+            </phx-form-control>
+          </div>
+          <div class="form-group" *ngIf="vmsForm.controls.RebateTypeId.value == phxConstants.RebateType.Percentage">
+            <phx-form-control [control]="vmsForm.controls.Rate" labelText="Rate" [editable]="funcToCheckViewStatus('vmsFeeData.VmsFeeVersion', 'Rate')"
+              viewModeText="{{vmsForm.controls.Rate.value}}">
+              <div class="input-group col-lg-6 padding-0">
+                <input [formControl]="vmsForm.controls.Rate" type="text" class="form-control" phxFloatBetweenInput='{"from":0, "to":100, "decimalplaces":4}' />
+                <span class="input-group-addon"><b>%</b></span>
+              </div>
+            </phx-form-control>
+          </div>
+          <div class="form-group" *ngIf="vmsForm.controls.RebateTypeId.value != phxConstants.RebateType.Percentage">
+            <phx-form-control [control]="vmsForm.controls.Rate" labelText="Rate" [editable]="funcToCheckViewStatus('vmsFeeData.VmsFeeVersion', 'Rate')"
+              viewModeText="{{vmsForm.controls.Rate.value}}">
+              <div class="input-group col-lg-6 padding-0">
+                <span class="input-group-addon"><b>$</b></span>
+                <input [formControl]="vmsForm.controls.Rate" type="text" class="form-control" phxFloatBetweenInput='{"from":0, "to":99999999999999999.99, "decimalplaces":2}' />
+              </div>
+            </phx-form-control>
+          </div>
+          <div class="form-group">
+            <phx-form-control [control]="vmsForm.controls.EffectiveDate" [editable]="funcToCheckViewStatus('vmsFeeData.VmsFeeVersion', 'EffectiveDate')"
+              labelText="Effective Date" viewModeText="{{vmsForm.controls.EffectiveDate.value | date: phxConstants.DateFormat.mediumDate}}">
+              <div class="col-lg-6 padding-0">
+                <app-phx-date-box type="date" [displayFormat]="phxConstants.DateFormat.MMM_dd_yyyy" [formControl]="vmsForm.controls.EffectiveDate"></app-phx-date-box>
+              </div>
+            </phx-form-control>
+          </div>
+        </div>
+      </div>
+      <div class="panel-footer" *ngIf="showAction()">
+        <app-phx-state-action-buttons [stateActions]="stateActions" [displayType]="StateActionDisplayType.BUTTON"></app-phx-state-action-buttons>
+      </div>
+    </div>
+    <div *ngIf="validationMessages.length" class="alert alert-danger alert-dismissable error-box">
+      <div *ngFor="let message of validationMessages">
+        <div>
+          {{message}}
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-2">
+    <div class="vms-fee-versions">
+      <div class="vms-fee-version-group">
+        <div class="version-version-item" *ngFor="let version of vmsFeeData.VmsFeeVersions" (click)="onVersionClick(version)"
+          [ngClass]="(vmsFeeData.VmsFeeVersion.VmsFeeVersionStatusId !== phxConstants.VmsFeeVersionStatus.New && vmsFeeData.selectedActionId !== actionStatusType.ToScheduleChange && vmsFeeData.selectedActionId !== actionStatusType.ToCorrect && version.Id === vmsFeeData.VmsFeeVersion.Id) ? 'active' : ''">
+          <div>
+            <div><span class="small-text">
+                Effective Date:&nbsp;</span>{{version.EffectiveDate|date:phxConstants.DateFormat.mediumDate}}</div>
+            <span [ngClass]="version.VmsFeeVersionStatusId==phxConstants.VmsFeeVersionStatus.Active?'text-warning':''">
+              <span class="small-text">Status:&nbsp;</span>
+              {{version.VmsFeeVersionStatusId| lookup:vmsFeeVersionStatuses}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

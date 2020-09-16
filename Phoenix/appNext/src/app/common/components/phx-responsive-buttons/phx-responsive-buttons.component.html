@@ -1,0 +1,9 @@
+<div *ngIf="buttons && buttons.length > 0" [ngClass]="{'inline-btn' : placedOnModal && !isMobile}">
+  <app-phx-fab [fabButtons]="buttons" *ngIf="(placedOnModal && isMobile) || !placedOnModal"></app-phx-fab>
+  <div class="btn-group" *ngIf="buttons.length > 0 && placedOnModal && !isMobile">
+    <button *ngFor="let button of buttons" class="btn btn-{{button.btnType}} {{button.btnClasses?.join(' ')}}" [disabled]="button.disabled && button.disabled()"
+      (click)="onButtonClick(button)">
+      {{button.tooltip}}
+    </button>
+  </div>
+</div>

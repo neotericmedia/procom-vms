@@ -1,0 +1,92 @@
+<div class="row ">
+  <div class="form-group col-md-4 remove-padding-on-sides">
+    <app-phx-select-box *ngIf="stateActions.length > 0 && canEdit" [value]="selectedAction" [items]="actionsArr"
+      textField="DisplayName" valueField="actionId" placeholder="Actions" (valueChanged)="actionSelect($event.value)">
+    </app-phx-select-box>
+  </div>
+  <!-- <div class="form-group col-md-4 remove-padding-on-sides">
+    <app-phx-select-box-badge *ngIf="showClients" [value]="organizationIdClient" [items]="OrgClients" textField="ClientOrgDisplayName" badgeField="ConflictCount"
+      valueField="OrganizationIdClient" placeholder="Select Conflict Transaction" (valueChanged)="newClientOrgSelected($event.value)">
+    </app-phx-select-box-badge>
+  </div> -->
+</div>
+
+<div class="row ">
+  <div class="vms-transaction-conflict-search">
+    <app-phx-data-table #phxTable [configuration]="dataTableConfiguration" [dataSourceUrl]="dataSourceUrl"
+      [dataSourceParams]='oDataParams' height="400" [columns]="columns" [exportFileName]="exportFileName"
+      [componentName]="dataGridComponentName" (selectionChanged)="selections($event)" (rowClick)="dxRowClick($event)"
+      (responseReceived)="dataReceived($event)">
+      <div *dxTemplate="let d of 'reasonTemplate'">
+        <span style="white-space: pre">{{d.value | replaceHtmlBreakWithNewLine}}</span>
+      </div>
+      <div *dxTemplate="let s of 'currencyTemplate'">
+        <span>{{s.value | number:'.2'}} {{displayCurrencyCode(s)}}</span>
+      </div>
+      <div *dxTemplate="let item of 'actionTemplate'">
+        <div class="btn-group">
+          <button *ngIf="canEdit" type="button" class="btn btn-xs btn-default" (click)="editNote(item, $event)">Edit
+            Note</button>
+        </div>
+      </div>
+    </app-phx-data-table>
+
+    <div class="vms-transaction-conflict-report" [ngClass]="{ out: !Id, in: Id}">
+    </div>
+  </div>
+  <div class="vms-conflict-resolving-table" *ngIf="WorkOrderMappingDataset?.length == 0">
+    <div class="vms-conflict-no-wovs"> There are no Payment Transactions associated with selected Vms Discount item.
+    </div>
+  </div>
+  <div *ngIf="selectedAction || selectedIds.length>0" class="btn-toolbar">
+
+    <div *ngIf="selectedAction===phxConstants.StateAction.VmsUnitedStatesSourceDeductionProcessedRecordIntercompanyTransfer">
+      <div class="form-group col-md-4 pull-right remove-padding-on-right-side">
+        <app-phx-select-box [value]="organizationIdInternal" [items]="listOrganizationsInternal" textField="DisplayName"
+          valueField="Id" placeholder="Select Internal Organization" (valueChanged)="transferOrganization($event.value)">
+        </app-phx-select-box>
+      </div>
+      <label class="vms-org-lbl control-label pull-right" [ngClass]="{'req-lab-right':!transferToOrganization}" style="text-align:right;margin-top:8px;">Transfer
+        To</label>
+    </div>
+    <div class="col-lg-12 vms-conflict-resolve-table-wrapper">
+
+      <div class="vms-conflict-resolving-table" *ngIf="WorkOrderMappingDataset?.length > 0">
+        <h4>Payment Transaction Mapping</h4>
+        <div class="vms-child-table">
+          <div class="vms-child-table-header bg-gray-strong">
+            <div *ngIf="canEdit" class="vms-cell vms-cell-chk">Select</div>
+            <div class="vms-cell vms-cell-8">Transaction Number</div>
+            <div class="vms-cell vms-cell-8">First Name</div>
+            <div class="vms-cell vms-cell-8">Last Name</div>
+            <div class="vms-cell vms-cell-name">Date</div>
+            <div class="vms-cell vms-cell-name">Start Date</div>
+            <div class="vms-cell vms-cell-name">End Date</div>
+            <div class="vms-cell vms-cell-chk">Pre-Tax Total</div>
+          </div>
+          <div class="vms-child-table-body" *ngFor="let wov of WorkOrderMappingDataset let i = index;">
+            <div *ngIf="canEdit" class="vms-cell vms-cell-chk"><input type="checkbox" class="wov-chk" [(ngModel)]="wov.IsSelected"
+                [disabled]="!anythingToResolve() && !wov.IsSelected" /></div>
+            <div class="vms-cell vms-cell-name" title="{{wov.PaymentTransactionNumber || 'N/A'}}"><span>{{wov.PaymentTransactionNumber
+                || 'N/A'}}</span></div>
+            <div class="vms-cell vms-cell-name" title="{{wov.FirstName || 'N/A'}}"><span>{{wov.FirstName || 'N/A'}}</span></div>
+            <div class="vms-cell vms-cell-name" title="{{wov.LastName || 'N/A'}}"><span>{{wov.LastName || 'N/A'}}</span></div>
+            <div class="vms-cell vms-cell-name" title="{{wov.Date | date: 'MMM dd, yyyy'}}">{{wov.Date | date: 'MMM dd,
+              yyyy'}}</div>
+            <div class="vms-cell vms-cell-name" title="{{wov.StartDate | date: 'MMM dd, yyyy'}}">{{wov.StartDate |
+              date: 'MMM dd, yyyy'}}</div>
+            <div class="vms-cell vms-cell-name" title="{{wov.EndDate ? (wov.EndDate | date: 'MMM dd, yyyy') : 'Terminated'}}">{{wov.EndDate
+              ? (wov.EndDate | date: 'MMM dd, yyyy') : 'Terminated'}}</div>
+            <div class="vms-cell vms-cell-chk" title="Pre-Tax Total">{{wov.PreTaxTotal | number:'1.2-2'}}</div>
+          </div>
+
+        </div>
+      </div>
+      <app-phx-state-action-buttons class="form-group col-md-4 pull-right remove-padding-on-right-side" [stateActions]="stateActions"
+      [availableStateActions]="availableStateActions"></app-phx-state-action-buttons>
+    </div>
+  </div>
+</div>
+<br><br>
+
+<app-phx-dialog [config]="phxDialogComponentConfigModel"></app-phx-dialog>

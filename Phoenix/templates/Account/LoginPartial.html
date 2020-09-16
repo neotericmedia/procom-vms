@@ -1,0 +1,36 @@
+﻿@model Procom.Phoenix.Web.Models.LoginModel
+
+@using (Html.BeginForm("Login", "Account", FormMethod.Post, new { @class = "form-horizontal", @role = "form" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <h1>Sign In</h1>
+    <div class="login-fields">
+        <p>Login to FlexBackOffice</p>
+        <div class="field">
+            @Html.LabelFor(m => m.UserEmail, new { @class = "col-lg-4  control-label" })
+            @Html.TextBoxFor(m => m.UserEmail, new { ng_model = "user.UserEmail", @class = "form-control input-lg username-field", placeholder = "Email Address" })
+            @Html.ValidationMessageFor(m => m.UserEmail)
+        </div>
+        <div class="field">
+            @Html.LabelFor(m => m.Password, new { @class = "col-lg-4 control-label" })
+            @Html.PasswordFor(m => m.Password, new { ng_model = "user.Password", @class = "form-control input-lg password-field", placeholder = "Password" })
+            @Html.ValidationMessageFor(m => m.Password)
+        </div>
+    </div>
+    <div class="login-actions">
+        <span class="login-checkbox" style="display: none">
+            <label class="checkbox">
+                <input type="checkbox" value="true" class="field login-checkbox" data-ng-model="user.RememberMe" name="RememberMe" id="RememberMe">
+                Remember me
+            </label>
+        </span>
+        <span id="loading" style="display: none;">Loading . . .</span>
+        <button class="login-action btn btn-primary" onclick="$('#Password').val() && $('#loading').show();">Sign In</button>
+    </div>
+
+    <div class="login-recover">
+        @Html.ActionLink("Recover your password", "ForgotPassword", "Account")
+    </div>
+}

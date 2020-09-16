@@ -1,0 +1,22 @@
+<div [formGroup]="testForm">
+  <!-- Label text using default styling -->
+  <h4 style="margin-top:0">Label Text</h4>
+  <phx-form-control [control]="testForm.controls['firstInput']" labelText="this is text">
+    <input formControlName="firstInput" />
+  </phx-form-control>
+  <!-- Custom label styling -->
+  <h4>Custom label styling</h4>
+  <phx-form-control [control]="testForm.controls['secondInput']">
+    <phx-form-control-label [control]="testForm.controls['secondInput']" class="col-lg-3">Hiii</phx-form-control-label>
+    <input formControlName="secondInput" />
+  </phx-form-control>
+  <!-- Custom validation styling -->
+  <h4>Custom validation styling</h4>
+  <phx-form-control [control]="testForm.controls['thirdInput']" [showValidationMessages]="false">
+    <phx-form-control-label [control]="testForm.controls['thirdInput']" class="col-lg-3">Hiii</phx-form-control-label>
+    <div class="col-lg-9">
+      <input formControlName="thirdInput" />
+      <phx-form-control-validation *ngIf="!testForm.controls['thirdInput'].pristine" [control]="testForm.controls['thirdInput']"></phx-form-control-validation>
+    </div>
+  </phx-form-control>
+</div>

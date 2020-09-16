@@ -1,0 +1,24 @@
+<div class="search">
+  <div id="searchCapsules">
+    <div class="inner-addon right-addon">
+      <i class="glyphicon glyphicon-search"></i>
+      <input type="text" class="form-control" [placeholder]="'common.generic.search' | phxTranslate" [ngModel]="filter" [phxDebounce]="500"
+        (onDebounce)="filterCapsule($event)" />
+    </div>
+  </div>
+
+  <div id="sortCapsules" *ngIf="showSort">
+    <div class="no-padding-h pull-right">
+      <button class="btn btn-link sortOrder" (click)="updateSortOrder(!sortAsc)" [tooltip]="sortAsc ? ('timesheet.lineManagement.sortAscending' | phxTranslate) : 'timesheet.lineManagement.sortDescending' | phxTranslate"
+        triggers="hover" placement="top">
+        <i class="material-icons">{{ sortAsc ? 'arrow_upward' : 'arrow_downward' }}</i>
+      </button>
+    </div>
+    <div class="sortModes">
+      <app-phx-select-box [items]="sortModes" [value]="sortMode" valueField="value" textField="DisplayText" [showClearButton]="false"
+        [searchable]="false" (valueChanged)="updateSortMode($event.value)">
+      </app-phx-select-box>
+    </div>
+  </div>
+
+</div>

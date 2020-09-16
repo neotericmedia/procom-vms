@@ -1,0 +1,23 @@
+<br />
+<app-phx-navigation-bar [navigationBarContent]="html.navigationBarContent" [url]="routerState?.url" *ngIf="this.html.navigationBarContent"></app-phx-navigation-bar>
+
+<div>
+  <div *ngIf="routerState?.routerPath === html.phxConstants.WorkorderNavigationName.notes">
+    <app-phx-notes [entityId]="html?.entityId" [entityTypeId]="html.phxConstants.EntityType.WorkOrder" (countUpdated)="updateNotesCount()">
+    </app-phx-notes>
+  </div>
+  <div *ngIf="routerState?.routerPath === html.phxConstants.WorkorderNavigationName.history">
+    <app-changeHistory [entityTypeId]="html.entityTypeId" [entityId]="html.entityId" [cultureId]="html.cultureId"
+      [blackList]="html.changeHistoryBlackList"></app-changeHistory>
+  </div>
+  <div *ngIf="routerState?.routerPath === html.phxConstants.WorkorderNavigationName.transaction">
+    <app-workorder-tab-activity-transaction></app-workorder-tab-activity-transaction>
+  </div>
+  <div *ngIf="routerState?.routerPath === html.phxConstants.WorkorderNavigationName.documents">
+    <app-workorder-tab-activity-documents>
+    </app-workorder-tab-activity-documents>
+  </div>
+  <div *ngIf="routerState?.routerPath === html.phxConstants.WorkorderNavigationName.workflow">
+    <app-phx-state-history [entityTypeId]="html.entityTypeId" [entityId]="html.entityId"></app-phx-state-history>
+  </div>
+</div>

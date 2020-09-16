@@ -1,0 +1,54 @@
+.content-single{
+
+    border: solid 1px #c5c5c5;
+}
+
+.btnAdd{
+    float:right;
+    position: relative;
+    margin-top:-38px;
+    margin-right:18px;
+}
+.dx-field-label{
+    width:234px !important; 
+}
+.dx-field-value{
+    width:300px !important;
+    float: left;
+}
+
+.dx-field input{
+    width:50%;
+
+}
+.btnRemove{
+    position: relative;
+    margin-top:-36px;
+    margin-right:2px;
+    float:right;
+}
+.percentSpan:before{
+
+    content:'%';
+}
+
+.form-invalid:after{
+    content:'*';
+    color:red; 
+}
+
+ .bold{
+     font-weight: 600;
+ }
+ .viewMode{
+     font-size:13px;
+     font-weight:600;
+     position:relative;
+     top:6px;
+ }
+ .wcb-sub-tab-content{
+    padding:10px 0 0 10px;
+}
+ .del-wcb-btn{
+     margin-right:-7px;
+ }

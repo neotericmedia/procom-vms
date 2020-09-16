@@ -1,0 +1,127 @@
+﻿<div class="row commission-report">
+    <div class="form-group col-lg-6">
+        <label for-property="CommissionUserProfileId" for="CommissionUserProfileId" data-model-property="vm.CommissionUserProfileId" class="col-lg-6 control-label label-to-right" data-original-title="" title="">Pending Interest Report for:</label>
+        <div class="col-lg-6">
+            <div class="input-group select2-bootstrap-append" data-ng-if="vm.HasAdministratorView">
+                <ui-select name="CommissionUserProfileId" data-ng-model="vm.commissionUserProfileId" data-on-select="vm.onUserSelected($item.CommissionUserProfileId)" theme="select2" class="form-control">
+                    <ui-select-match placeholder="-- Select One --">{{$select.selected.CommissionUserProfileFirstName}} {{$select.selected.CommissionUserProfileLastName}}</ui-select-match>
+                    <ui-select-choices repeat="item.CommissionUserProfileId as item in vm.commissionUsers| orderBy:'CommissionUserProfileFirstName'| uiSelectChoicesFilter: $select.search:'CommissionUserProfileId':'CommissionUserProfileFirstName':'CommissionUserProfileLastName'">
+                        <span data-ng-bind-html="item.CommissionUserProfileFirstName | highlight: $select.search"></span>
+                        <span data-ng-bind-html="item.CommissionUserProfileLastName | highlight: $select.search"></span>
+                    </ui-select-choices>
+                </ui-select>
+                <span class="input-group-btn">
+                    <button tabindex="-1" data-ng-click="vm.onUserSelected(null)" class="btn btn-default"><i class="material-icons md-18">clear</i></button>
+                </span>
+            </div>
+            <div class="form-control-static" data-ng-if="!vm.HasAdministratorView">
+                {{vm.DisplayOwnName}}
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-offset-2 col-lg-4 text-right">
+        <h5 ng-show="items && items.length">Total Interest to Sales: {{vm.total | currency : "$" : 2}}</h5>
+    </div>
+</div>
+<style>
+    .r-table-div2 {
+        margin-bottom: 16px; /* The titles we display in the SmartTable are long and are wrapped, so the header overlaps the first data row. */
+    }
+</style>
+<div class="smart-table-wrapper">
+    <div class="row" data-cg-busy="loadItemsPromise">
+        <table data-st-table-struct='[{"stTableValue" : "items"}, {"stPipeValue" : "callServer"}, {"widthValues" : "[9, 11, 14, 5, 8, 5, 4, 4, 5, 5, 5, 5, 3]"}, {"stPaginationValue" : "pageSize"}]'>
+            <thead data-st-head="1700px">
+                <tr>
+                    <th class="" data-st-sort="TransactionNumber" title="Transaction">Transaction</th>
+                    <th class="" data-st-sort="WorkerName" title="Worker Name">Worker</th>
+                    <th class="" data-st-sort="ClientOrganization" title="Client">Client</th>
+                    <th class="" data-st-sort="InvoiceReleaseDate" title="Invoice Date">Invoice<br />Date</th>
+                    <th class="" data-st-sort="WorkerPayReleaseDate" title="Payment Date">Payment<br />Date</th>
+                    <th class="text-right" data-st-sort="PaymentAmount" title="Payment Amount">Payment<br />Amount</th>
+                    <th class="text-right" data-st-sort="DaysPassed" data-st-sort-default="reverse" title="Days Passed">Days<br />Passed</th>
+                    <th class="text-right" data-st-sort="DaysInterestAccrued" title="Interest Days">Interest<br />Days</th>
+                    <th class="text-right" data-st-sort="CommissionRate" title="Commission Rate">Commission<br />Rate</th>
+                    <th class="text-right" data-st-sort="InterestIncurred" title="Interest Incurred">Interest<br />Incurred</th>
+                    <th class="text-right" data-st-sort="InterestOnTransaction" title="Interest on Transaction">Interest&nbsp;on<br />Transaction</th>
+                    <th class="text-right" data-st-sort="InterestToSales" title="Interest to Sales">Interest<br />to&nbsp;Sales</th>
+                    <th class="" data-st-pen-name="Action">Action</th>
+                </tr>
+                <tr>
+                    <th>
+                        <input data-st-advanced-search="'TransactionNumber'" placeholder="" class="input-sm form-control" type="search" />
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="'WorkerName'" placeholder="" class="input-sm form-control" type="search" />
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="'ClientOrganization'" placeholder="" class="input-sm form-control" type="search" />
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="'InvoiceReleaseDate'"
+                               data-st-as-operator-override="'le'"
+                               close-on-date-selection="false" show-button-bar="false" show-weeks="false" class="input-sm form-control"
+                               data-st-as-lazy-attributes="{'uib-datepicker' : ApplicationConstants.formatDate}"
+                               data-st-as-height-override="400"
+                               data-st-as-width-override="315" />
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="'WorkerPayReleaseDate'"
+                               data-st-as-operator-override="'le'"
+                               close-on-date-selection="false" show-button-bar="false" show-weeks="false" class="input-sm form-control"
+                               data-st-as-lazy-attributes="{'uib-datepicker' : ApplicationConstants.formatDate}"
+                               data-st-as-height-override="400"
+                               data-st-as-width-override="315" />
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="{property: 'PaymentAmount', ignoreQuotes: true, valueSuffix: 'M'}" placeholder=""
+                               class="input-sm form-control numberType" data-safe-restrict-input="[^0123456789.]" />
+                    </th>
+                    <th>
+                    </th>
+                    <th>
+                    </th>
+                    <th>
+                    </th>
+                    <th>
+                    </th>
+                    <th>
+                    </th>
+                    <th>
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody class="pendingInterestBody">
+                <tr class="pendingInterestTr" data-ng-repeat="item in items" data-ui-sref-tr="transaction.view.summary({transactionHeaderId:item.TransactionId})" style="cursor:pointer">
+                    <td>{{::item.TransactionNumber + ' (' + item.TransactionId + ')'}}</td>
+                    <td>{{::item.WorkerName}}</td>
+                    <td>{{::item.ClientOrganization}}</td>
+                    <td>{{::item.InvoiceReleaseDate}}</td>
+                    <td>{{::item.WorkerPayReleaseDate}}</td>
+                    <td class="nowrap text-right">{{::item.PaymentAmount | currency}}</td>
+                    <td class="text-right">{{::item.DaysPassed}}</td>
+                    <td class="text-right">{{::item.DaysInterestAccrued}}</td>
+                    <td class="nowrap text-right">{{::item.CommissionRate | displayPercentageView:2}}</td>
+                    <td class="nowrap text-right">{{::item.InterestIncurred | currency}}</td>
+                    <td class="nowrap text-right">{{::item.InterestOnTransaction | currency}}</td>
+                    <td class="nowrap text-right">{{::item.InterestToSales | currency}}</td>
+                    <td>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-xs btn-clouds" title="View"><i class="fontello-icon-eye-1"></i>&nbsp;</button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="13">
+                        <span>Total Count: {{totalItemCount || 0}}; Items Loaded: {{ items ? items.length : 0}}</span>
+                        <button class="btn btn-default pull-right" data-ng-click="getExcel()" data-ng-disabled="!items || !items.length">Export to Excel</button>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>
+

@@ -1,0 +1,8 @@
+<div class="remittance-batch-details">
+    <app-phx-data-table *ngIf="dataSourceUrl" #phxTable [configuration]="dataTableConfiguration" [dataSourceUrl]="dataSourceUrl" [dataSourceParams]='odataParams'
+                        [columns]="columns" [exportFileName]="'payroll'" [componentName]="'PayrollBatch'">
+    </app-phx-data-table>
+</div>
+<div style="margin-top: 2em;">
+    <button  (click)="download()" >Download batch copy</button>
+</div>

@@ -1,0 +1,84 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "project": {
+    "name": "phoenix-client"
+  },
+  "apps": [
+    {
+      "root": "src",
+      "outDir": "dist",
+      "assets": ["assets", "favicon16.png", "favicon32.png"],
+      "index": "index.html",
+      "main": "main.ts",
+      "polyfills": "polyfills.ts",
+      "test": "test.ts",
+      "tsconfig": "tsconfig.app.json",
+      "testTsconfig": "tsconfig.spec.json",
+      "prefix": "app",
+      "styles": [
+        "../node_modules/toastr/build/toastr.css",
+        "../node_modules/Select2/select2.css",
+        "../node_modules/select2-bootstrap-css/select2-bootstrap.css",
+        "../node_modules/animate.css/animate.css",
+        "../node_modules/bootstrap/dist/css/bootstrap.css",
+        "../node_modules/font-awesome/css/font-awesome.css",
+        "../../../Content/fonts/fontello/css/fontello.css",
+        "../../../Content/fonts/fontello/css/fontello-codes.css",
+        "../../../Content/fonts/fontello/css/fontello-ie7.css",
+        "../../../Content/fonts/fontello/css/fontello-ie7-codes.css",
+        "../../../Content/fonts/appicon/style.css",
+        "../../../Content/fonts/fontawesome/less/myIcons.css",
+        "../../../custom-vendor/notyfy/themes/boo-notyfylight.css",
+        "../node_modules/devextreme/dist/css/dx.common.css",
+        "../node_modules/devextreme/dist/css/dx.light.css",
+        "styles.less",
+        "../node_modules/selectize/dist/css/selectize.css",
+        "../node_modules/selectize/dist/css/selectize.default.css",
+        "../node_modules/material-design-icons/iconfont/material-icons.css"
+      ],
+      "scripts": ["../node_modules/jquery/dist/jquery.min.js", "../node_modules/bootstrap/dist/js/bootstrap.min.js"],
+      "environmentSource": "environments/environment.ts",
+      "environments": {
+        "dev": "environments/environment.ts",
+        "Localhost": "environments/environment.localhost.ts",
+        "prod": "environments/environment.prod.ts",
+        "Carbon": "environments/environment.carbon.ts",
+        "Debug": "environments/environment.ts",
+        "DEMO": "environments/environment.demo.ts",
+        "DEV": "environments/environment.dev.ts",
+        "DEV2": "environments/environment.dev2.ts",
+        "CI": "environments/environment.ci.ts",
+        "Release": "environments/environment.prod.ts",
+        "Nickel": "environments/environment.nickel.ts",
+        "Staging": "environments/environment.staging.ts",
+        "Zinc": "environments/environment.zinc.ts",
+        "Uranium1": "environments/environment.uranium1.ts"
+      }
+    }
+  ],
+  "e2e": {
+    "protractor": {
+      "config": "./protractor.conf.js"
+    }
+  },
+  "lint": [
+    {
+      "project": "src/tsconfig.app.json"
+    },
+    {
+      "project": "src/tsconfig.spec.json"
+    },
+    {
+      "project": "e2e/tsconfig.e2e.json"
+    }
+  ],
+  "test": {
+    "karma": {
+      "config": "./karma.conf.js"
+    }
+  },
+  "defaults": {
+    "styleExt": "less",
+    "component": {}
+  }
+}

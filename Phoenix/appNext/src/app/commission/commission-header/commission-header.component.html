@@ -1,0 +1,46 @@
+<div class="panel panel-default headstone" *ngIf="commissionDetails">
+  <div class="row">
+    <div class="col col-lg-2">
+      <div class="form-group">
+        <label class="control-label">User Id</label>
+        <div>{{commissionDetails.CommissionUserProfileId}} </div>
+      </div>
+    </div>
+    <div class="col col-lg-2">
+      <div class="form-group">
+        <label class="control-label">User Name</label>
+        <div>{{commissionDetails.CommissionUserProfileFirstName + ' ' +
+          commissionDetails.CommissionUserProfileLastName}}</div>
+      </div>
+    </div>
+    <div class="col col-lg-2">
+      <div class="form-group">
+        <label class="control-label">User Status</label>
+        <div>{{commissionDetails.CommissionUserProfileStatusName}}</div>
+      </div>
+    </div>
+    <div class="col col-lg-2">
+      <div class="form-group">
+        <label class="control-label">Commission Type</label>
+        <div>{{commissionDetails.CommissionRateTypeId | lookupNoCache: commissionRate:'id':'text'}}</div>
+      </div>
+    </div>
+    <div class="col col-lg-2">
+      <div class="form-group">
+        <label class="control-label">Commission Role</label>
+        <div>
+          <div>{{commissionDetails.CommissionRoleId | lookupNoCache: commissionRole:'id':'text'}}</div>
+        </div>
+      </div>
+    </div>
+    <div class="col col-lg-2">
+      <div class="form-group">
+        <label class="control-label">Commission Status</label>
+        <span class="col-xs-12" *ngIf="!customStatusId || commissionRateHeaderStatusId === phxConstants.CommissionRateHeaderStatus.InActive" [ngClass]="commissionRateVersionStatusId == phxConstants.CommissionRateHeaderStatus.Active ? 'text-warning':''">
+          {{commissionRateHeaderStatusId|lookup:listCommissionRateHeaderStatus}}
+        </span>
+        <span class="col-xs-12" *ngIf="customStatusId && commissionRateHeaderStatusId !== phxConstants.CommissionRateHeaderStatus.InActive">{{customStatusId|lookup:listCustomStatus}}</span>
+      </div>
+    </div>
+  </div>
+</div>

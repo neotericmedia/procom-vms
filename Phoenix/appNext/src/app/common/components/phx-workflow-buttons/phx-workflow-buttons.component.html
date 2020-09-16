@@ -1,0 +1,40 @@
+<div class="btn-toolbar link-bar" *ngIf="workflowActionLinks && workflowActionLinks.length > 0 && !isButtonBar">
+    <!-- TOP action DropDown -->
+    <div class="btn-group">
+        <div class="payroll-btn-wrapper">
+            <button class="btn btn-clouds dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="true">
+                {{'common.generic.actions' | phxTranslate}}...
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu bordered" aria-labelledby="dropdownMenu1">
+                <li *ngFor="let action of workflowActionLinks" (click)="executeWorkflowAction(action)" [ngClass]="{'action-link': !(disabled)}">
+                    <a> {{action.Name}} </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<ng-container *ngIf="workflowActionButtons && workflowActionButtons.length > 0 && isButtonBar">
+    <div class="btn-toolbar button-bar" [ngClass]="{ 'mobile-center' : isMobileCenter, 'open' : isFabOpen, 'mobileFab' : isMobileFab }">
+        <!-- Workflow Buttons -->
+        <div class="btn-group" [ngClass]="{ 'open' : isFabOpen }">
+            <button type="button" *ngFor="let action of workflowActionButtons" class="btn btn-default action-button"
+                (click)="executeWorkflowAction(action)" [disabled]="disabled || (action.checkValidation && !valid)"
+                [class.btn-primary]="action['CssClass'] === 'primary'" [class.btn-default]="action['CssClass'] === 'default'"
+                [class.btn-danger]="action['CssClass'] === 'danger'" [class.btn-secondary]="action['CssClass'] === 'secondary'">
+                {{action.Name}}
+            </button>
+        </div>
+    </div>
+    <div *ngIf="isMobileFab" class="mBtn" (click)="toggleFab()">
+        <i class="material-icons">{{ isFabOpen ? 'close' : 'more_vert' }}</i>
+    </div>
+</ng-container>
+
+<!-- Decline Comment Modal -->
+<app-phx-dialog-comment (onclose)="declineReasonClosed($event)" [title]="workflowAction.Name" [inputname]="'common.phxWorkflowButtons.declineReasonLabel' | phxTranslate : workflowAction.Name.toLowerCase()"
+    [helpblock]="'common.phxWorkflowButtons.declineHelpblock' | phxTranslate : workflowAction.Name" [saveButtonText]="workflowAction.Name"
+    [cancelButtonText]="'common.generic.cancel' | phxTranslate" [saveButtonClass]="'primary'">
+</app-phx-dialog-comment>

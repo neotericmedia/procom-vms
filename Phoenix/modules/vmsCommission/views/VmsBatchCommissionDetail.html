@@ -1,0 +1,95 @@
+﻿<div class="row" data-ng-init="vmsBatchCommissionDetails.initialize(vmsBatchCommission)">
+    <div class="col-lg-12">
+        <div class="panel panel-internal panel-contact">
+            <div class="contact-name">
+                <h4>VMS Processed Record</h4>
+                <table class="table">
+                    <thead class="my-thead">
+                        <tr>
+                            <th>Import Date</th>
+                            <th> Third Party Worker ID</th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th class="text-right">Bill Amount</th>
+                            <th class="text-right">Pay Amount</th>
+                            <th>From Date</th>
+                            <th>To Date</th>
+                            <th>Reason</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style="cursor:pointer" data-ui-sref="vms-commission.document.details({internalOrganizationId: vmsBatchCommissionDetails.vmsBatchCommission.processedRecordDetails.OrganizationIdInternal, documentId: vmsBatchCommissionDetails.vmsBatchCommission.processedRecordDetails.DocumentId})">
+                            <td>{{::vmsBatchCommissionDetails.vmsBatchCommission.processedRecordDetails.ImportDate | date:ApplicationConstants.formatDateComma}}</td>
+                            <td>{{::vmsBatchCommissionDetails.vmsBatchCommission.processedRecordDetails.WorkOrderReference}}</td>
+                            <td>{{::vmsBatchCommissionDetails.vmsBatchCommission.processedRecordDetails.FirstName}}</td>
+                            <td>{{::vmsBatchCommissionDetails.vmsBatchCommission.processedRecordDetails.LastName}}</td>
+                            <td class="text-right">{{::vmsBatchCommissionDetails.vmsBatchCommission.processedRecordDetails.BillAmount | number: 2 | currency: '$'}}</td>
+                            <td class="text-right">{{::vmsBatchCommissionDetails.vmsBatchCommission.processedRecordDetails.PayAmount | number: 2 | currency: '$'}}</td>
+                            <td>{{::vmsBatchCommissionDetails.vmsBatchCommission.processedRecordDetails.StartDate | date:ApplicationConstants.formatDateComma}}</td>
+                            <td>{{::vmsBatchCommissionDetails.vmsBatchCommission.processedRecordDetails.EndDate | date:ApplicationConstants.formatDateComma}}</td>
+                            <td ng-bind-html="::vmsBatchCommissionDetails.vmsBatchCommission.processedRecordDetails.Reason || 'N/A'"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>        
+    <div class="col-lg-12" ng-if="vmsBatchCommissionDetails.vmsBatchCommission.processedRecordDetails.BillingTransaction">
+        <div class="panel panel-internal panel-contact">
+            <div class="contact-name">
+                <h4>Transaction</h4>
+                <table class="table">
+                    <thead class="my-thead">
+                        <tr>
+                            <th>Work Order</th>
+                            <th>Transaction No</th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style="cursor:pointer" data-ui-sref-tr="transaction.view.summary({transactionHeaderId: vmsBatchCommissionDetails.vmsBatchCommission.processedRecordDetails.TransactionHeaderId})">
+                            <td>{{::vmsBatchCommissionDetails.vmsBatchCommission.processedRecordDetails.BillingTransaction.AssignmentId}}.{{::vmsBatchCommissionDetails.vmsBatchCommission.processedRecordDetails.BillingTransaction.WorkOrderNumber}}</td>
+                            <td>{{::vmsBatchCommissionDetails.vmsBatchCommission.processedRecordDetails.BillingTransaction.BillingTransactionNumber}}</td>
+                            <td>{{::vmsBatchCommissionDetails.vmsBatchCommission.processedRecordDetails.BillingTransaction.FirstName}}</td>
+                            <td>{{::vmsBatchCommissionDetails.vmsBatchCommission.processedRecordDetails.BillingTransaction.LastName}}</td>
+                            <td>{{::vmsBatchCommissionDetails.vmsBatchCommission.processedRecordDetails.BillingTransaction.StartDate| date: ApplicationConstants.formatDate}}</td>
+                            <td>{{::vmsBatchCommissionDetails.vmsBatchCommission.processedRecordDetails.BillingTransaction.EndDate| date: ApplicationConstants.formatDate}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-12" ng-if="vmsBatchCommissionDetails.vmsBatchCommission.processedRecordDetails.WorkOrder && vmsBatchCommissionDetails.vmsBatchCommission.processedRecordDetails.WorkOrder.WorkOrderId">
+        <div class="panel panel-internal panel-contact">
+            <div class="contact-name">
+                <h4>Work Order Mapping</h4>
+                <table class="table">
+                    <thead class="my-thead">
+                        <tr>
+                            <th>Work Order</th>
+                            <th> Third Party Worker ID</th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style="cursor:pointer" data-ui-sref-tr="workorder.edit.core({assignmentId: vmsBatchCommissionDetails.vmsBatchCommission.processedRecordDetails.WorkOrder.AssignmentId, workOrderId: vmsBatchCommissionDetails.vmsBatchCommission.processedRecordDetails.WorkOrder.WorkOrderId, workOrderVersionId: vmsBatchCommissionDetails.vmsBatchCommission.processedRecordDetails.WorkOrder.WorkOrderVersionId})">
+                            <td>{{::vmsBatchCommissionDetails.vmsBatchCommission.processedRecordDetails.WorkOrder.WorkOrderNumber}}</td>
+                            <td>{{::vmsBatchCommissionDetails.vmsBatchCommission.processedRecordDetails.WorkOrder.WorkerId}}</td>
+                            <td>{{::vmsBatchCommissionDetails.vmsBatchCommission.processedRecordDetails.WorkOrder.FirstName}}</td>
+                            <td>{{::vmsBatchCommissionDetails.vmsBatchCommission.processedRecordDetails.WorkOrder.LastName}}</td>
+                            <td>{{::vmsBatchCommissionDetails.vmsBatchCommission.processedRecordDetails.WorkOrder.StartDate| date: ApplicationConstants.formatDate}}</td>
+                            <td>{{::vmsBatchCommissionDetails.vmsBatchCommission.processedRecordDetails.WorkOrder.EndDate| date: ApplicationConstants.formatDate}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

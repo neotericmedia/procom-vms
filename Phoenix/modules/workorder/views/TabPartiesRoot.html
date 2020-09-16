@@ -1,0 +1,757 @@
+﻿<div class="content-group form-horizontal" data-ng-form="formWorkOrderPartiesAndRates">
+    <div class="content-left">
+        <div class="panel-internal" data-ng-form="billingInfosForm">
+            <div class="form-group">
+                <div class="col-lg-10">
+                    <h4>Billing Party</h4>
+                </div>
+                <div class="col-lg-2">
+                    <div class="btn-toolbar" data-ng-if="false && actionButton.show.workOrderAddRemoveSubEntities">
+                        <button type="button" class="btn btn-clouds pull-right material-icons" data-ng-disabled="CurrentWorkOrderVersion.BillingInfoes.length>=lists.listOrganizationClient.length"
+                                data-ng-if="CurrentWorkOrderVersion.BillingInfoes[0].OrganizationIdClient>0" data-ng-click="addBillingInfo()"
+                                title="used {{CurrentWorkOrderVersion.BillingInfoes.length}} from {{lists.listOrganizationClient.length}} Client Organizations">
+                            add
+                        </button>
+                    </div>
+                </div>
+                <!--data-ng-disabled="!payPartiesForm.$valid || model.entity.BillingInfoes.length>=lists.listOrganizationClient.length"-->
+            </div>
+            <div data-ng-repeat="billingInfo in CurrentWorkOrderVersion.BillingInfoes" data-ng-form="billingInfoForm" style="border: none; padding-top: 0;">
+                <div role="form">
+                    <div class="form-group">
+                        <div class="col-lg-10">
+                            <p class="form-control-static" data-ng-if="billingInfo.OrganizationIdClient>0">
+                                <a data-ui-sref="org.edit.details({organizationId: billingInfo.OrganizationIdClient })">
+                                    {{billingInfo.OrganizationIdClient | lookup:lists.listOrganizationClient:'Id':'DisplayName'}}
+                                    - {{billingInfo.OrganizationIdClient}}
+                                </a>
+                            </p>
+                        </div>
+                        <div class="col-lg-2" data-ng-if="CurrentWorkOrderVersion.BillingInfoes.length>1 && $index > 0">
+                            <button type="button" class="btn btn-default btn-material pull-right" data-ng-click="removeBillingInfo(billingInfo)">
+                                <i class="material-icons">delete</i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="form-group" data-ng-if="!billingInfo.OrganizationIdClient || billingInfo.OrganizationIdClient==0">
+                        <label for-property="OrganizationIdClient" for="OrganizationIdClient" data-model-property="billingInfo.OrganizationIdClient"
+                               class="col-lg-3 control-label" data-original-title="" title="">Client Company</label>
+                        <div class="col-lg-9">
+                            <div class="input-group select2-bootstrap-append">
+                                <ui-select name="OrganizationIdClient" data-ng-model="billingInfo.OrganizationIdClient" theme="select2" class="form-control"
+                                           required data-ng-change="onChangeOrganizationIdClient(billingInfo)">
+                                    <ui-select-match placeholder=" -- select one --">{{$select.selected.DisplayName}} - {{$select.selected.Id}}</ui-select-match>
+                                    <ui-select-choices repeat="item.Id as item in lists.listOrganizationClient  | uiSelectChoicesFilteredByUsage : $select.search: CurrentWorkOrderVersion.BillingInfoes : billingInfo: 'OrganizationIdClient': 'Id': 'DisplayName': 'Id'">
+                                        <span data-ng-bind-html="item.DisplayName | highlight: $select.search"></span>
+                                        <span data-ng-bind-html="' - ' + item.Id  | highlight: $select.search"></span>
+                                    </ui-select-choices>
+                                </ui-select>
+                                <span class="input-group-btn" data-ng-if="actionButton.show.workOrderAddRemoveSubEntities">
+                                    <button tabindex="-1" data-ng-click="billingInfo.OrganizationIdClient=undefined;onChangeOrganizationIdClient(billingInfo)"
+                                            class="btn btn-default">
+                                        <i class="material-icons md-18">clear</i>
+                                    </button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group" data-ng-if="billingInfo.OrganizationIdClient>0">
+                        <label for-property="OrganizationIdClient" for="OrganizationIdClient" data-model-property="billingInfo.OrganizationIdClient"
+                               class="col-lg-4 control-label label-to-right" data-original-title="" title="">Client Company</label>
+                        <div class="col-lg-8 col-xl-6">
+                            <p class="form-control-static">
+                                {{billingInfo.OrganizationIdClient | lookupnocache:lists.listOrganizationClient:'Id':'DisplayName'}}
+                                - {{billingInfo.OrganizationIdClient}}
+                            </p>
+                        </div>
+                        <div class="col-lg-12 col-xl-2 pull-right">
+                            <button type="button" class="btn btn-clouds pull-right" data-ng-click="eraseBillingInfo(billingInfo)" data-ng-if="actionButton.show.workOrderAddRemoveSubEntities"
+                                    data-ng-disabled="model.entity.AtsPlacementId>0 || CurrentWorkOrder.TransactionHeaderCount>0 || CurrentWorkOrder.WorkOrderVersionActiveCount>1">
+                                Change
+                            </button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for-property="UserProfileIdClient" for="UserProfileIdClient" data-model-property="billingInfo.UserProfileIdClient"
+                               class="col-lg-4 control-label label-to-right req-lab-right" data-original-title="" title="">Client Manager</label>
+                        <div class="col-lg-8">
+                            <div class="input-group select2-bootstrap-append">
+                                <ui-select name="UserProfileIdClient" data-ng-model="billingInfo.UserProfileIdClient" theme="select2" class="form-control"
+                                           required data-pt-field-view="model.ptFieldViewConfigOnChangeStatusId" data-pt-field-view-custom="{{billingInfo.UserProfileIdClient|lookupnocache:billingInfo.profilesListForBillingOrganization:'Id':'Contact.FullName'}} - {{billingInfo.UserProfileIdClient}}">
+                                    <ui-select-match placeholder=" -- select one --">{{$select.selected.Contact.FullName}} - {{$select.selected.Contact.Id}}</ui-select-match>
+                                    <ui-select-choices repeat="item.Id as item in  billingInfo.profilesListForBillingOrganization  | uiSelectChoicesFilter: $select.search: 'Contact.FullName': 'Contact.Id'">
+                                        <span data-ng-bind-html="item.Contact.FullName | highlight: $select.search"></span>
+                                        <span data-ng-bind-html="' - ' + item.Contact.Id  | highlight: $select.search"></span>
+                                    </ui-select-choices>
+                                </ui-select>
+                                <span class="input-group-btn" data-ng-if="actionButton.show.workOrderAddRemoveSubEntities">
+                                    <button tabindex="-1" data-ng-click="billingInfo.UserProfileIdClient=undefined" class="btn btn-default">
+                                        <i class="material-icons md-18">clear</i>
+                                    </button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for-property="Hours" for="Hours" data-model-property="billingInfo.Hours" class="col-lg-4 control-label label-to-right req-lab-right"
+                               data-original-title="" title="">Hours Per Day</label>
+                        <div class="col-lg-8" data-ng-show="CurrentWorkOrderVersion.BillingInfoes[0]==billingInfo">
+                            <input ng-init="billingInfo.Hours=floatApplyTwoDecimalPlaces(billingInfo.Hours)" type="text" ng-model="billingInfo.Hours"
+                                   name="Hours" maxlength-message="Required" max="24" data-float-between-input="{from:0, to:24, decimalplaces:2, doesemptytozero:'true'}"
+                                   ng-blur="billingInfo.Hours=floatApplyTwoDecimalPlaces(billingInfo.Hours)" data-required-message="Required"
+                                   data-pt-field-view="model.ptFieldViewConfigOnChangeStatusId" data-ng-required="true" class="form-control ng-scope"
+                                   required="required">
+                        </div>
+                        <div class="col-lg-8" data-ng-if="CurrentWorkOrderVersion.BillingInfoes[0]!=billingInfo">
+                            <p class="form-control-static">{{billingInfo.Hours | number:2}}</p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for-property="CurrencyId" for="CurrencyId" data-model-property="billingInfo.CurrencyId" class="col-lg-4 control-label label-to-right req-lab-right"
+                               data-original-title="" title="">Currency</label>
+                        <div class="col-lg-8">
+                            <div class="input-group select2-bootstrap-append">
+                                <ui-select name="CurrencyId" data-ng-model="billingInfo.CurrencyId" data-ng-change="onChangeBillingInfoCurrencyId(billingInfo.CurrencyId)"
+                                           theme="select2" class="form-control" data-pt-field-view="model.ptFieldViewConfigOnChangeStatusId"
+                                           required>
+                                    <ui-select-match placeholder=" -- select one --">{{$select.selected.text}}</ui-select-match>
+                                    <ui-select-choices repeat="item.id as item in lists.currencies | uiSelectChoicesFilter: $select.search: 'text'">
+                                        <span data-ng-bind-html="item.text | highlight: $select.search"></span>
+                                    </ui-select-choices>
+                                </ui-select>
+                                <span class="input-group-btn" data-ng-if="actionButton.show.workOrderAddRemoveSubEntities">
+                                    <button tabindex="-1" data-ng-click="billingInfo.CurrencyId=undefined" class="btn btn-default">
+                                        <i class="material-icons md-18">clear</i>
+                                    </button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-internal" data-ng-form="billingInfoRatesForm">
+                        <div class="form-group" style="margin-top:30px">
+                            <div class="col-lg-10">
+                                <h4>Rates</h4>
+                            </div>
+                        </div>
+                        <div data-ng-repeat="billingRate in billingInfo.BillingRates" data-ng-form="billingInfoRateForm" style="border: none;">
+                            <div role="form">
+                                <div data-ng-if="billingInfo.BillingRates[0]==billingRate">
+                                    <div class="form-group">
+                                        <label for-property="Rate" for="Rate" data-model-property="billingRate.Rate" class="col-lg-4 control-label label-to-right req-lab-right"
+                                               data-original-title="" title="">Primary Rate</label>
+                                        <div class="col-lg-8">
+                                            <div class="input-group">
+                                                <input type="text" data-float-between-input="{from:0, to:999999.99, decimalplaces:2, doesemptytozero:'false'}" ng-model="billingRate.Rate"
+                                                       ng-blur="billingRate.Rate=floatApplyTwoDecimalPlaces(billingRate.Rate)" name="Rate"
+                                                       data-required-message="Required" data-pt-field-view="model.ptFieldViewConfigOnChangeStatusId"
+                                                       data-pt-field-view-model-validation="{ { billingRate } }" data-ng-required="true"
+                                                       class="form-control form-control ng-scope" required="required">
+                                                <span class="input-group-addon">$</span>
+                                                <!--<span class="input-group-addon" style="padding: 3px 6px;"><i class="material-icons" style="font-size: 20px;">attach_money</i></span>-->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div data-ng-if="billingInfo.BillingRates[0]!=billingRate">
+                                    <div class="form-group">
+                                        <div data-ng-if="!billingRate.RateTypeId||billingRate.RateTypeId==0">
+                                            <label for-property="RateTypeId" for="RateTypeId" data-model-property="billingRate.RateTypeId" class="col-lg-4 control-label req-lab-right"
+                                                   data-original-title="" title="">Rate Type</label>
+                                            <div class="col-lg-8">
+                                                <div class="select2-bootstrap-append">
+                                                    <ui-select name="RateTypeId" data-ng-model="billingRate.RateTypeId" theme="select2" class="form-control" required data-ng-change="rateTypesMirroring()">
+                                                        <ui-select-match placeholder=" -- select one --">{{$select.selected.text}}</ui-select-match>
+                                                        <ui-select-choices repeat="item.id as item in lists.workOrderRateTypes  | uiSelectChoicesFilteredByUsage : $select.search: billingInfo.BillingRates : billingRate: 'RateTypeId': 'id': 'text'">
+                                                            <span data-ng-bind-html="item.text | highlight: $select.search"></span>
+                                                        </ui-select-choices>
+                                                    </ui-select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div data-ng-if="billingRate.RateTypeId>0">
+                                            <label class="col-lg-4 control-label label-to-right req-lab-right small-label" data-model-property="billingRate.Rate" for="Rate"
+                                                   for-property="Rate">{{billingRate.RateTypeId | lookup:lists.workOrderRateTypes}}</label>
+                                            <div class="col-xs-10 col-sm-11 col-lg-6 col-xl-7">
+                                                <input type="text" name="Rate" data-float-between-input="{from:0, to:999999.99, decimalplaces:2, doesemptytozero:'false'}"
+                                                       ng-model="billingRate.Rate" ng-blur="billingRate.Rate=floatApplyTwoDecimalPlaces(billingRate.Rate)"
+                                                       data-required-message="Required" data-pt-field-view="model.ptFieldViewConfigOnChangeStatusId"
+                                                       data-ng-required="true" class="form-control form-control ng-scope input-align-right"
+                                                       required="required" />
+                                            </div>
+                                            <div class="col-xs-1 pull-right" data-ng-if="actionButton.show.workOrderAddRemoveSubEntities && CurrentWorkOrderVersion.BillingInfoes[0]==billingInfo && billingInfo.BillingRates.length>1">
+                                                <button type="button" class="btn btn-default btn-material pull-right" data-ng-click="removeBillingPartyRate(billingInfo,billingRate)">
+                                                    <i class="material-icons">delete</i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div data-ng-if="billingRate.RateTypeId>0">
+                                    <div class="form-group">
+                                        <label for-property="RateUnitId" for="RateUnitId" data-model-property="billingRate.RateUnitId" class="col-lg-4 control-label label-to-right req-lab-right"
+                                               data-original-title="" title="">Rate Unit</label>
+                                        <div class="col-lg-8">
+                                            <div class="input-group select2-bootstrap-append">
+                                                <ui-select name="RateUnitId" data-ng-model="billingRate.RateUnitId" theme="select2" class="form-control" data-pt-field-view="model.ptFieldViewConfigOnChangeStatusId"
+                                                           data-pt-field-view-model-validation="{ { billingRate } }" data-ng-change="updatePaymentPartyRateUnit(billingRate)"
+                                                           required>
+                                                    <ui-select-match placeholder=" -- select one --">{{$select.selected.text}}</ui-select-match>
+                                                    <ui-select-choices repeat="item.id as item in lists.workOrderRateUnits | uiSelectChoicesFilter: $select.search: 'text'">
+                                                        <span data-ng-bind-html="item.text | highlight: $select.search"></span>
+                                                    </ui-select-choices>
+                                                </ui-select>
+                                                <span class="input-group-btn" data-ng-if="actionButton.show.workOrderAddRemoveSubEntities">
+                                                    <button tabindex="-1" data-ng-click="billingRate.RateUnitId=undefined" class="btn btn-default">
+                                                        <i class="material-icons md-18">clear</i>
+                                                    </button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div data-ng-if="model.entity.workerProfileTypeId == ApplicationConstants.UserProfileType.WorkerTemp || model.entity.workerProfileTypeId == ApplicationConstants.UserProfileType.WorkerCanadianSp">
+                                    <div class="form-group">
+                                        <div class="col-lg-12"></div>
+                                        <label class="control-label label-to-right" style="visibility: hidden"> Apply Deduction </label>
+                                    </div>
+                                </div>
+                                <div class="form-group" data-pt-error-box="billingRate.BrokenRules" style="margin-bottom: 0;"></div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-lg-10"></div>
+                            <div class="col-lg-2">
+                                <div class="btn-toolbar" data-ng-if="actionButton.show.workOrderAddRemoveSubEntities">
+                                    <button type="button" class="btn btn-default btn-material pull-right" data-ng-disabled="billingInfo.BillingRates.length>=lists.workOrderRateTypes.length || !ValidToAddBillingRate(billingInfo.BillingRates)"
+                                            data-ng-if="CurrentWorkOrderVersion.BillingInfoes[0]==billingInfo" data-ng-click="addBillingPartyRate(billingInfo)"
+                                            title="used {{billingInfo.BillingRates.length}} from {{lists.workOrderRateTypes.length}} available rates">
+                                        <i class="material-icons">add</i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- REBATE -->
+                    <div class="form-group">
+                        <div class="col-lg-10">
+                            <h4>Rebate and VMS Fee</h4>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-4 control-label" for="hasRebate" data-model-property="CurrentWorkOrderVersion.HasRebate">Rebate</label>
+                        <div class="col-lg-8" style="margin-bottom:5px;">
+                            <fieldset ng-disabled="!CurrentWorkOrderVersion.LineOfBusinessId || !CurrentWorkOrderVersion.BillingInfoes[0].OrganizationIdClient">
+                                <pt-input-radio name="hasRebate" data-template-type="input-radio" data-ng-model="CurrentWorkOrderVersion.HasRebate" data-options="[{ key: true, value: 'Yes' },{ key: false, value: 'No' }]"
+                                                data-change-callback="onChangeHasRebateOrHasVmsFee" data-pt-field-view="model.ptFieldViewConfigOnChangeStatusId" />
+                            </fieldset>
+                        </div>
+                    </div>
+                    <div data-ng-show="CurrentWorkOrderVersion.HasRebate">
+                        <div class="form-group">
+                            <label class="col-lg-4 control-label" for="RebateHeaderId" data-model-property="CurrentWorkOrderVersion.RebateHeaderId">Rebate Selection</label>
+                            <div class="col-lg-8">
+                                <div class="input-group select2-bootstrap-append">
+                                    <ui-select name="RebateHeaderId" data-ng-model="CurrentWorkOrderVersion.RebateHeaderId" theme="select2" class="form-control"
+                                               data-ng-change="CurrentWorkOrderVersion.RebateTypeId = undefined; CurrentWorkOrderVersion.RebateRate = undefined"
+                                               data-pt-field-view="model.ptFieldViewConfigOnChangeStatusId" data-pt-field-view-custom="{{CurrentWorkOrderVersion.RebateHeaderId|lookupnocache:availableRebates:'headerId':'description'}}">
+                                        <ui-select-match placeholder=" -- select one --">{{$select.selected.description}}</ui-select-match>
+                                        <ui-select-choices repeat="item.headerId as item in availableRebates | uiSelectChoicesFilter: $select.search: 'description'">
+                                            <span data-ng-bind-html="item.description | highlight: $select.search"></span>
+                                        </ui-select-choices>
+                                    </ui-select>
+                                    <span class="input-group-btn">
+                                        <button tabindex="-1" data-ng-click="CurrentWorkOrderVersion.RebateHeaderId=null" class="btn btn-default">
+                                            <i class="material-icons md-18">clear</i>
+                                        </button>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-4 control-label label-to-right" data-ng-class="(CurrentWorkOrderVersion.RebateHeaderId || CurrentWorkOrderVersion.RebateTypeId) ? 'req-lab-right-valid' : 'req-lab-right'">Rebate Type</label>
+                            <div class="col-lg-8">
+                                <div class="input-group select2-bootstrap-append" data-ng-if="!CurrentWorkOrderVersion.RebateHeaderId">
+                                    <ui-select name="RebateTypeId" data-ng-model="CurrentWorkOrderVersion.RebateTypeId" theme="select2" class="form-control"
+                                               data-ng-change="CurrentWorkOrderVersion.RebateRate = undefined" data-pt-field-view="model.ptFieldViewConfigOnChangeStatusId">
+                                        <ui-select-match placeholder=" -- select one --">{{$select.selected.text}}</ui-select-match>
+                                        <ui-select-choices repeat="item.id as item in lists.rebateTypes | uiSelectChoicesFilter: $select.search: 'text'">
+                                            <span data-ng-bind-html="item.text | highlight: $select.search"></span>
+                                        </ui-select-choices>
+                                    </ui-select>
+                                    <span class="input-group-btn">
+                                        <button tabindex="-1" data-ng-click="CurrentWorkOrderVersion.RebateTypeId=undefined; CurrentWorkOrderVersion.RebateRate=undefined" class="btn btn-default btn-rebate-drp">
+                                            <i class="material-icons md-18">clear</i>
+                                        </button>
+                                    </span>
+                                </div>
+                                <div class="form-control-static" data-ng-if="!!CurrentWorkOrderVersion.RebateHeaderId">
+                                    {{getRebateType(availableRebates, CurrentWorkOrderVersion.RebateHeaderId)}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-4 control-label label-to-right" data-ng-class="(CurrentWorkOrderVersion.RebateHeaderId || CurrentWorkOrderVersion.RebateRate) ? 'req-lab-right-valid' : 'req-lab-right'">
+                                Rebate Rate
+                            </label>
+                            <div class="col-lg-8">
+                                <div class="input-group" data-ng-if="!CurrentWorkOrderVersion.RebateHeaderId && (CurrentWorkOrderVersion.RebateTypeId == ApplicationConstants.RebateType.Percentage)">
+                                    <input type="text" name="RebateRate" class="form-control form-control ng-scope input-align-right" data-float-between-input="{from:0, to:100, decimalplaces:4, doesemptytozero:'false'}"
+                                           data-ng-model="CurrentWorkOrderVersion.RebateRate" data-required-message="Required" data-pt-field-view="model.ptFieldViewConfigOnChangeStatusId"
+                                           data-ng-required="true">
+                                    <span class="input-group-addon">
+                                        <b>%</b>
+                                    </span>
+                                </div>
+                                <div class="input-group" data-ng-if="!CurrentWorkOrderVersion.RebateHeaderId && (CurrentWorkOrderVersion.RebateTypeId == ApplicationConstants.RebateType.Amount)">
+                                    <span class="input-group-addon rebate-addon">
+                                        <b>$</b>
+                                    </span>
+                                    <input type="text" name="RebateRate" class="form-control form-control ng-scope input-align-right" data-float-between-input="{from:0, to:100000000000, decimalplaces:2, doesemptytozero:'false'}"
+                                           data-ng-model="CurrentWorkOrderVersion.RebateRate" data-required-message="Required" data-pt-field-view="model.ptFieldViewConfigOnChangeStatusId"
+                                           data-ng-required="true">
+                                </div>
+                                <div class="form-control-static" data-ng-if="!!CurrentWorkOrderVersion.RebateHeaderId">
+                                    {{getRebateOrVmsFeeRate(availableRebates, CurrentWorkOrderVersion.RebateHeaderId)}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /REBATE -->
+                    <!-- VMSFEE -->
+                    <div class="form-group">
+                        <label class="col-lg-4 control-label" for="hasVmsFee" data-model-property="CurrentWorkOrderVersion.HasVmsFee">VMS Fee</label>
+                        <div class="col-lg-8" style="margin-bottom:5px;">
+                            <fieldset ng-disabled="!CurrentWorkOrderVersion.LineOfBusinessId || !CurrentWorkOrderVersion.BillingInfoes[0].OrganizationIdClient">
+                                <pt-input-radio name="hasVmsFee" data-template-type="input-radio" data-ng-model="CurrentWorkOrderVersion.HasVmsFee" data-options="[{ key: true, value: 'Yes' },{ key: false, value: 'No' }]"
+                                                data-change-callback="onChangeHasRebateOrHasVmsFee" data-pt-field-view="model.ptFieldViewConfigOnChangeStatusId" />
+                            </fieldset>
+                        </div>
+                    </div>
+                    <div data-ng-show="CurrentWorkOrderVersion.HasVmsFee">
+                        <div class="form-group">
+                            <label class="col-lg-4 control-label" for="VmsFeeHeaderId" data-model-property="CurrentWorkOrderVersion.VmsFeeHeaderId">VMS Fee Selection</label>
+                            <div class="col-lg-8">
+                                <div class="input-group select2-bootstrap-append">
+                                    <ui-select name="VmsFeeHeaderId" data-ng-model="CurrentWorkOrderVersion.VmsFeeHeaderId" theme="select2" class="form-control"
+                                               data-ng-change="CurrentWorkOrderVersion.VmsFeeTypeId = undefined; CurrentWorkOrderVersion.VmsFeeRate = undefined"
+                                               data-pt-field-view="model.ptFieldViewConfigOnChangeStatusId" data-pt-field-view-custom="{{CurrentWorkOrderVersion.VmsFeeHeaderId|lookupnocache:availableVmsFees:'headerId':'description'}}">
+                                        <ui-select-match placeholder=" -- select one --">{{$select.selected.description}}</ui-select-match>
+                                        <ui-select-choices repeat="item.headerId as item in availableVmsFees | uiSelectChoicesFilter: $select.search: 'description'">
+                                            <span data-ng-bind-html="item.description | highlight: $select.search"></span>
+                                        </ui-select-choices>
+                                    </ui-select>
+                                    <span class="input-group-btn">
+                                        <button tabindex="-1" data-ng-click="CurrentWorkOrderVersion.VmsFeeHeaderId=null" class="btn btn-default">
+                                            <i class="material-icons md-18">clear</i>
+                                        </button>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-4 control-label label-to-right" data-ng-class="(CurrentWorkOrderVersion.VmsFeeHeaderId || CurrentWorkOrderVersion.VmsFeeTypeId) ? 'req-lab-right-valid' : 'req-lab-right'">VMS Fee Type</label>
+                            <div class="col-lg-8">
+                                <div class="input-group select2-bootstrap-append" data-ng-if="!CurrentWorkOrderVersion.VmsFeeHeaderId">
+                                    <ui-select name="VmsFeeTypeId" data-ng-model="CurrentWorkOrderVersion.VmsFeeTypeId" theme="select2" class="form-control"
+                                               data-ng-change="CurrentWorkOrderVersion.VmsFeeRate = undefined" data-pt-field-view="model.ptFieldViewConfigOnChangeStatusId">
+                                        <ui-select-match placeholder=" -- select one --">{{$select.selected.text}}</ui-select-match>
+                                        <ui-select-choices repeat="item.id as item in lists.rebateTypes | uiSelectChoicesFilter: $select.search: 'text'">
+                                            <span data-ng-bind-html="item.text | highlight: $select.search"></span>
+                                        </ui-select-choices>
+                                    </ui-select>
+                                    <span class="input-group-btn">
+                                        <button tabindex="-1" data-ng-click="CurrentWorkOrderVersion.VmsFeeTypeId=undefined; CurrentWorkOrderVersion.VmsFeeRate=undefined" class="btn btn-default btn-rebate-drp">
+                                            <i class="material-icons md-18">clear</i>
+                                        </button>
+                                    </span>
+                                </div>
+                                <div class="form-control-static" data-ng-if="!!CurrentWorkOrderVersion.VmsFeeHeaderId">
+                                    {{getRebateType(availableVmsFees, CurrentWorkOrderVersion.VmsFeeHeaderId)}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-4 control-label label-to-right" data-ng-class="(CurrentWorkOrderVersion.VmsFeeHeaderId || CurrentWorkOrderVersion.VmsFeeRate) ? 'req-lab-right-valid' : 'req-lab-right'">
+                                VMS Fee Rate
+                            </label>
+                            <div class="col-lg-8">
+                                <div class="input-group" data-ng-if="!CurrentWorkOrderVersion.VmsFeeHeaderId && (CurrentWorkOrderVersion.VmsFeeTypeId == ApplicationConstants.RebateType.Percentage)">
+                                    <input type="text" name="RebateRate" class="form-control form-control ng-scope input-align-right" data-float-between-input="{from:0, to:100, decimalplaces:4, doesemptytozero:'false'}"
+                                           data-ng-model="CurrentWorkOrderVersion.VmsFeeRate" data-required-message="Required" data-pt-field-view="model.ptFieldViewConfigOnChangeStatusId"
+                                           data-ng-required="true">
+                                    <span class="input-group-addon">
+                                        <b>%</b>
+                                    </span>
+                                </div>
+                                <div class="input-group" data-ng-if="!CurrentWorkOrderVersion.VmsFeeHeaderId && (CurrentWorkOrderVersion.VmsFeeTypeId == ApplicationConstants.RebateType.Amount)">
+                                    <span class="input-group-addon rebate-addon">
+                                        <b>$</b>
+                                    </span>
+                                    <input type="text" name="VmsFeeRate" class="form-control form-control ng-scope input-align-right" data-float-between-input="{from:0, to:100000000000, decimalplaces:2, doesemptytozero:'false'}"
+                                           data-ng-model="CurrentWorkOrderVersion.VmsFeeRate" data-required-message="Required" data-pt-field-view="model.ptFieldViewConfigOnChangeStatusId"
+                                           data-ng-required="true">
+                                </div>
+                                <div class="form-control-static" data-ng-if="!!CurrentWorkOrderVersion.VmsFeeHeaderId">
+                                    {{getRebateOrVmsFeeRate(availableVmsFees, CurrentWorkOrderVersion.VmsFeeHeaderId)}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /VMSFEE -->
+                    <div class="form-group" data-pt-error-box="billingInfo.BrokenRules"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="content-right">
+        <div class="panel-internal form-horizontal" data-ng-form="paymentInfosForm">
+            <div class="form-group">
+                <div class="col-lg-12">
+                    <h4>Payment Parties</h4>
+                </div>
+            </div>
+            <div data-ng-repeat="paymentInfo in CurrentWorkOrderVersion.PaymentInfoes" data-ng-form="paymentInfoForm" style="border: none;padding-top: 0;">
+
+                <div role="form">
+                    <div class="form-group">
+                        <div class="col-lg-10">
+                            <p class="form-control-static" data-ng-if="paymentInfo.OrganizationIdSupplier>0">
+                                <a data-ui-sref="org.edit.details({organizationId: paymentInfo.OrganizationIdSupplier })">{{paymentInfo.OrganizationSupplierDisplayName}} - {{paymentInfo.OrganizationIdSupplier}}</a>
+                            </p>
+                            <p class="form-control-static" data-ng-if="paymentInfo.OrganizationIdSupplier==null &&(model.entity.workerProfileTypeId == ApplicationConstants.UserProfileType.WorkerTemp || model.entity.workerProfileTypeId == ApplicationConstants.UserProfileType.WorkerCanadianSp || model.entity.workerProfileTypeId == ApplicationConstants.UserProfileType.WorkerUnitedStatesW2)">
+                                <a data-ng-if="model.entity.workerProfileTypeId==ApplicationConstants.UserProfileType.WorkerTemp" data-ui-sref="EditWorkerTempProfile({ contactId:model.entity.workerContactId, profileId: model.entity.UserProfileIdWorker })">{{paymentInfo.OrganizationSupplierDisplayName}}</a>
+                                <a data-ng-if="model.entity.workerProfileTypeId==ApplicationConstants.UserProfileType.WorkerCanadianSp" data-ui-sref="EditWorkerCanadianSPProfile({ contactId:model.entity.workerContactId, profileId: model.entity.UserProfileIdWorker })">{{paymentInfo.OrganizationSupplierDisplayName}}</a>
+                                <a data-ng-if="model.entity.workerProfileTypeId==ApplicationConstants.UserProfileType.WorkerUnitedStatesW2" data-ui-sref="EditWorkerUnitedStatesW2Profile({ contactId:model.entity.workerContactId, profileId: model.entity.UserProfileIdWorker })">{{paymentInfo.OrganizationSupplierDisplayName}}</a>
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="form-group" data-ng-if="!window.isProduction && (model.entity.workerProfileTypeId==ApplicationConstants.UserProfileType.WorkerTemp || model.entity.workerProfileTypeId==ApplicationConstants.UserProfileType.WorkerCanadianSp)" >
+                        <div class="col-lg-10">
+                            <p class="form-control-static">
+                                <strong>Download T4: </strong>
+                                <span ng-repeat="year in lists.t4PrintableYears" >
+                                    <a ng-href="{{downloadT4(CurrentWorkOrderVersion.Id, year)}}" target="_blank">{{ year }} </a>
+                                    <span ng-if="!$last"> | </span>
+                                </span>
+                            </p>
+                        </div>
+                    </div> 
+
+                    <div class="form-group" data-ng-if="!window.isProduction && model.entity.workerProfileTypeId==ApplicationConstants.UserProfileType.WorkerCanadianSp">
+                        <div class="col-lg-10">
+                            <p class="form-control-static">
+                                <strong>Download T4A: </strong>
+                                <span ng-repeat="year in lists.t4PrintableYears" >
+                                    <a ng-href="{{downloadT4A(CurrentWorkOrderVersion.Id, year)}}" target="_blank">{{ year }} </a>
+                                    <span ng-if="!$last"> | </span>
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="form-group" data-ng-if="CurrentWorkOrderVersion.PaymentInfoes[0]==paymentInfo && (!model.entity.UserProfileIdWorker || model.entity.UserProfileIdWorker==0)">
+                        <label for-property="OrganizationIdSupplier" for="OrganizationIdSupplier" data-model-property="paymentInfo.OrganizationIdSupplier"
+                               class="col-lg-3 label-to-right" data-original-title="" title="">Worker</label>
+                        <div class="col-lg-9">
+                            <div class="input-group select2-bootstrap-append">
+                                <ui-select name="AssignmentUserProfileId" data-ng-model="model.entity.UserProfileIdWorker" theme="select2" class="form-control"
+                                           required data-ng-change="onChangeWorkerId(paymentInfo)">
+                                    <ui-select-match placeholder=" -- select one --">
+                                        {{$select.selected.Contact.FullName}} - {{$select.selected.Contact.Id}}{{
+$select.selected.Id
+                                        ? "- Profile: " + $select.selected.Id : ""
+                                        }} - {{
+$select.selected.ProfileTypeId |
+                                        lookup:lists.profileTypeList
+                                        }}
+                                    </ui-select-match>
+                                    <ui-select-choices repeat="item.Id as item in lists.listUserProfileWorker  | uiSelectChoicesFilter : $select.search: 'Contact.FullName': 'Contact.Id'">
+                                        <span data-ng-bind-html="item.Contact.FullName | highlight: $select.search"></span>
+                                        <span data-ng-bind-html="' - ' + item.Contact.Id | highlight: $select.search"></span>
+                                        <span data-ng-bind-html="' - Profile: ' + item.Id | highlight: $select.search"></span>
+                                        <span data-ng-bind-html="' - ' + (item.ProfileTypeId | lookup:lists.profileTypeList)"></span>
+                                    </ui-select-choices>
+                                </ui-select>
+                                <span class="input-group-btn" data-ng-if="actionButton.show.workOrderAddRemoveSubEntities">
+                                    <button tabindex="-1" data-ng-click=" model.entity.UserProfileIdWorker=undefined" class="btn btn-default">
+                                        <i class="material-icons md-18">clear</i>
+                                    </button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group" data-ng-if="CurrentWorkOrderVersion.PaymentInfoes[0]!=paymentInfo && (!paymentInfo.OrganizationIdSupplier || paymentInfo.OrganizationIdSupplier==0) && CurrentWorkOrderVersion.PaymentInfoes.length>1 && model.entity.UserProfileIdWorker>0">
+                        <label for-property="OrganizationIdSupplier" for="OrganizationIdSupplier" data-model-property="paymentInfo.OrganizationIdSupplier"
+                               class="col-lg-4 label-to-right req-lab-right" data-original-title="" title="Supplier Organization">Supplier Organization</label>
+                        <div class="col-lg-8">
+                            <div class="input-group select2-bootstrap-append">
+                                <ui-select name="OrganizationIdSupplier" data-ng-model="paymentInfo.OrganizationIdSupplier" theme="select2" class="form-control"
+                                           required data-ng-change="onChangeOrganizationIdSupplier(paymentInfo)">
+                                    <ui-select-match placeholder=" -- select one --">{{$select.selected.DisplayName}} - {{$select.selected.Id}}</ui-select-match>
+                                    <ui-select-choices repeat="item.Id as item in lists.listOrganizationSupplier  | uiSelectChoicesFilteredByUsage : $select.search: CurrentWorkOrderVersion.PaymentInfoes : paymentInfo: 'OrganizationIdSupplier': 'Id': 'DisplayName': 'Id'">
+                                        <span data-ng-bind-html="item.DisplayName | highlight: $select.search"></span>
+                                        <span data-ng-bind-html="' - ' + item.Id  | highlight: $select.search"></span>
+                                    </ui-select-choices>
+                                </ui-select>
+                                <span class="input-group-btn" data-ng-if="actionButton.show.workOrderAddRemoveSubEntities">
+                                    <button tabindex="-1" data-ng-click="paymentInfo.OrganizationIdSupplier=undefined" class="btn btn-default">
+                                        <i class="material-icons md-18">clear</i>
+                                    </button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group" data-ng-if="CurrentWorkOrderVersion.PaymentInfoes[0]==paymentInfo && model.entity.UserProfileIdWorker>0">
+                        <label for-property="OrganizationIdSupplier" for="OrganizationIdSupplier" data-model-property="paymentInfo.OrganizationIdSupplier"
+                               class="col-lg-4 control-label label-to-right" data-original-title="" title="">Worker</label>
+                        <div class="col-lg-8 col-xl-6">
+                            <p class="form-control-static" data-ng-class="{isDraft: profileIsDraft(model.entity.UserProfileIdWorker)}">
+                                {{model.entity.UserProfileIdWorker|lookupnocache:lists.listUserProfileWorker:'Id':'Contact.FullName'}}
+                                - {{model.entity.UserProfileIdWorker |lookupnocache:lists.listUserProfileWorker:'Id':'Contact.Id'}}
+                                - {{model.entity.UserProfileIdWorker |lookupnocache:lists.listUserProfileWorker:'Id':'ProfileTypeId'|lookup:lists.profileTypeList}}
+                                - Profile: {{model.entity.UserProfileIdWorker}}
+                            </p>
+                        </div>
+                        <!--    http://tfs:8080/tfs/DefaultCollection/Development/_workitems#_a=edit&id=27774:  <div class="col-lg-2" data-ng-if="paymentInfo.OrganizationIdSupplier>0||paymentInfo.OrganizationIdSupplier==null">  -->
+                        <div class="col-lg-12 col-xl-2 pull-right">
+                            <button type="button" class="btn btn-clouds pull-right" data-ng-click="erasePaymentInfo(paymentInfo)" data-ng-if="actionButton.show.assignmentChangeWorker"
+                                    data-ng-disabled="model.entity.AtsPlacementId>0">
+                                Change
+                            </button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for-property="UserProfileIdSupplier" for="UserProfileIdSupplier" data-model-property="paymentInfo.UserProfileIdSupplier"
+                               class="col-lg-4 control-label label-to-right req-lab-right" data-original-title="" title="">Primary Contact</label>
+                        <div class="col-lg-8">
+                            <div class="input-group select2-bootstrap-append">
+                                <ui-select name="UserProfileIdSupplier" data-ng-model="paymentInfo.UserProfileIdSupplier" theme="select2" class="form-control"
+                                           required data-pt-field-view="model.ptFieldViewConfigOnChangeStatusId" data-pt-field-view-custom="{{paymentInfo.UserProfileIdSupplier| lookupnocache:paymentInfo.profilesListForPaymentOrganization:'Id':'Contact.FullName'}} - {{paymentInfo.UserProfileIdSupplier}}">
+                                    <ui-select-match placeholder=" -- select one --">{{$select.selected.Contact.FullName}} - {{$select.selected.Contact.Id}}</ui-select-match>
+                                    <ui-select-choices repeat="item.Id as item in  paymentInfo.profilesListForPaymentOrganization | filter: {ProfileTypeId : '!' + ApplicationConstants.UserProfileType.WorkerSubVendor} | uiSelectChoicesFilter: $select.search: 'Contact.FullName': 'Contact.Id'">
+                                        <span data-ng-bind-html="item.Contact.FullName | highlight: $select.search"></span>
+                                        <span data-ng-bind-html="' - ' + item.Contact.Id  | highlight: $select.search"></span>
+                                    </ui-select-choices>
+                                </ui-select>
+                                <span class="input-group-btn" data-ng-if="actionButton.show.workOrderAddRemoveSubEntities">
+                                    <button tabindex="-1" data-ng-click="paymentInfo.UserProfileIdSupplier=undefined" class="btn btn-default">
+                                        <i class="material-icons md-18">clear</i>
+                                    </button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-4 control-label label-to-right">Hours Per Day</label>
+                        <div class="col-lg-8">
+                            <p class="form-control-static">{{paymentInfo.Hours | number: 2}}&nbsp;</p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for-property="CurrencyId" for="CurrencyId" data-model-property="paymentInfo.CurrencyId" class="col-lg-4 control-label label-to-right req-lab-right"
+                               data-original-title="" title="">Currency</label>
+                        <div class="col-lg-8">
+                            <div class="input-group select2-bootstrap-append">
+                                <ui-select name="CurrencyId" data-ng-model="paymentInfo.CurrencyId" data-ng-change="onChangePaymentInfoCurrencyId(paymentInfo.CurrencyId)"
+                                           theme="select2" class="form-control" data-pt-field-view="model.ptFieldViewConfigOnChangeStatusId"
+                                           required>
+                                    <ui-select-match placeholder=" -- select one --">{{$select.selected.text}}</ui-select-match>
+                                    <ui-select-choices repeat="item.id as item in lists.currencies | uiSelectChoicesFilter: $select.search: 'text'">
+                                        <span data-ng-bind-html="item.text | highlight: $select.search"></span>
+                                    </ui-select-choices>
+                                </ui-select>
+                                <span class="input-group-btn" data-ng-if="actionButton.show.workOrderAddRemoveSubEntities">
+                                    <button tabindex="-1" data-ng-click="paymentInfo.CurrencyId=undefined" class="btn btn-default">
+                                        <i class="material-icons md-18">clear</i>
+                                    </button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-internal" data-ng-form="paymentInfoRatesForm">
+                        <div class="form-group" style="margin-top:30px">
+                            <div class="col-lg-10">
+                                <h4>Rates</h4>
+                            </div>
+                            <div class="col-lg-2">
+                            </div>
+                        </div>
+                        <div data-ng-repeat="paymentRate in paymentInfo.PaymentRates" class="wo-payment-info-rate-form" data-ng-form="paymentInfoRateForm"
+                             style="border: none;">
+                            <div role="form">
+                                <div data-ng-if="paymentInfo.PaymentRates[0]==paymentRate">
+                                    <div class="form-group">
+                                        <label for-property="Rate" for="Rate" data-model-property="paymentRate.Rate" class="col-lg-4 control-label label-to-right req-lab-right"
+                                               data-original-title="" title="">Primary Rate</label>
+                                        <div class="col-lg-8">
+                                            <div class="input-group">
+                                                <input type="text" name="Rate" data-float-between-input="{from:0, to:999999.99, decimalplaces:2, doesemptytozero:'false'}"
+                                                       ng-model="paymentRate.Rate" ng-blur="paymentRate.Rate=floatApplyTwoDecimalPlaces(paymentRate.Rate)"
+                                                       data-required-message="Required" data-pt-field-view="model.ptFieldViewConfigOnChangeStatusId"
+                                                       data-pt-field-view-model-validation="{ { paymentRate } }" data-ng-required="true"
+                                                       class="form-control form-control ng-scope" required="required">
+                                                <span class="input-group-addon">$</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div data-ng-if="paymentInfo.PaymentRates[0]!=paymentRate">
+                                    <div class="form-group">
+                                        <label class="control-label req-lab-right col-lg-4 label-to-right" data-model-property="paymentRate.Rate" for="Rate" for-property="Rate">{{paymentRate.RateTypeId | lookup:lists.workOrderRateTypes}}</label>
+                                        <div class="col-lg-8">
+                                            <input type="text" name="Rate" data-float-between-input="{from:0, to:999999.99, decimalplaces:2, doesemptytozero:'false'}"
+                                                   ng-model="paymentRate.Rate" ng-blur="paymentRate.Rate=floatApplyTwoDecimalPlaces(paymentRate.Rate)"
+                                                   data-required-message="Required" data-pt-field-view="model.ptFieldViewConfigOnChangeStatusId"
+                                                   data-ng-required="true" class="form-control form-control ng-scope input-align-right"
+                                                   required="required">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div data-ng-if="paymentRate.RateTypeId>0">
+                                    <div class="form-group">
+                                        <input class="form-control scope" type="hidden" name="RateUnitIdHidden" required="required" data-hidden-select="true" ng-model="paymentRate.RateUnitId" />
+                                        <div data-ng-if="CurrentWorkOrderVersion.PaymentInfoes[0]==paymentInfo">
+                                            <label for-property="RateUnitId" for="RateUnitId" data-model-property="paymentRate.RateUnitId" class="col-lg-4 control-label label-to-right req-lab-right"
+                                                   data-original-title="" title="">Rate Unit</label>
+                                            <div class="col-lg-8">
+                                                <div class="input-group select2-bootstrap-append">
+                                                    <ui-select name="RateUnitId" data-ng-model="paymentRate.RateUnitId" theme="select2" class="form-control" data-pt-field-view="model.ptFieldViewConfigOnChangeStatusId"
+                                                               data-pt-field-view-model-validation="{ { paymentRate } }" data-ng-change="updateBillingPartyAndPaymentPartyMirrorRateUnit(paymentRate)"
+                                                               required>
+                                                        <ui-select-match placeholder=" -- select one --">{{$select.selected.text}}</ui-select-match>
+                                                        <ui-select-choices repeat="item.id as item in lists.workOrderRateUnits | uiSelectChoicesFilter: $select.search: 'text'">
+                                                            <span data-ng-bind-html="item.text | highlight: $select.search"></span>
+                                                        </ui-select-choices>
+                                                    </ui-select>
+                                                    <span class="input-group-btn" data-ng-if="actionButton.show.workOrderAddRemoveSubEntities">
+                                                        <button tabindex="-1" data-ng-click="paymentRate.RateUnitId=undefined;paymentPartyRateUnitMirror(paymentRate);" class="btn btn-default">
+                                                            <i class="material-icons md-18">clear</i>
+                                                        </button>
+                                                    </span>
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+
+                                        <div data-ng-if="CurrentWorkOrderVersion.PaymentInfoes[0]!=paymentInfo">
+                                            <label class="col-lg-4 control-label label-to-right">Rate Unit</label>
+                                            <div class="col-lg-8">
+                                                <p class="form-control-static" style="font-size: 14px; line-height: 17px;">{{paymentRate.RateUnitId | lookup : lists.workOrderRateUnits}}&nbsp;</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div data-ng-if="model.entity.workerProfileTypeId == ApplicationConstants.UserProfileType.WorkerTemp || model.entity.workerProfileTypeId == ApplicationConstants.UserProfileType.WorkerCanadianSp">
+                                    <div class="form-group">
+                                        <div class="col-lg-4"></div>
+                                        <div class="col-lg-8">
+                                            <div class="pull-left" style="margin-right: 15px;">
+                                                <input type="checkbox" name="IsApplyDeductions" data-ng-model="paymentRate.IsApplyDeductions" data-ng-change="" data-pt-field-view="model.ptFieldViewConfigOnChangeStatusId"
+                                                       data-pt-field-view-model-validation="{ { paymentRate } }" />
+                                                <span> Apply Deduction</span>
+                                            </div>
+                                            <div class="pull-left" style="margin-right: 15px;" data-ng-if="model.entity.workerProfileTypeId == ApplicationConstants.UserProfileType.WorkerTemp">
+                                                <input type="checkbox" name="IsApplyVacation" data-ng-model="paymentRate.IsApplyVacation" data-ng-change="" data-pt-field-view="model.ptFieldViewConfigOnChangeStatusId"
+                                                       data-pt-field-view-model-validation="{ { paymentRate } }" />
+                                                <span> Apply Vacation</span>
+                                            </div>
+                                            <div class="pull-left" data-ng-if="model.entity.workerProfileTypeId == ApplicationConstants.UserProfileType.WorkerTemp && (paymentRate.RateUnitId === ApplicationConstants.RateUnit.Hour || paymentRate.RateUnitId === ApplicationConstants.RateUnit.Day)">
+                                                    <input type="checkbox" name="IsApplyStatHoliday" data-ng-model="paymentRate.IsApplyStatHoliday" data-ng-change="" data-pt-field-view="model.ptFieldViewConfigOnChangeStatusId"
+                                                           data-pt-field-view-model-validation="{ { paymentRate } }" />
+                                                    <span> Apply Stat Holiday</span>
+                                                </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div data-pt-error-box="paymentRate.BrokenRules" style="margin-bottom: 0;"></div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div data-pt-error-box="paymentInfo.BrokenRules"></div>
+                    <div class="form-group" data-ng-if="actionButton.show.workOrderAddRemoveSubEntities && CurrentWorkOrderVersion.PaymentInfoes.length > 1 && $index > 0">
+                        <div class="col-lg-10"></div>
+                        <div class="col-lg-2">
+                            <button type="button" class="btn btn-default btn-material pull-right" data-ng-click="removePaymentInfo(paymentInfo)">
+                                <i class="material-icons">delete</i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-lg-10"></div>
+                    <div class="col-lg-2">
+                        <div class="btn-toolbar">
+                            <!--todo - this is the add button-->
+                            <button type="button" class="btn btn-default btn-material pull-right" data-ng-disabled="CurrentWorkOrderVersion.PaymentInfoes.length>=lists.listOrganizationSupplier.length"
+                                    data-ng-if="actionButton.show.workOrderAddRemoveSubEntities && (CurrentWorkOrderVersion.PaymentInfoes[0].OrganizationIdSupplier>0||CurrentWorkOrderVersion.PaymentInfoes[0].OrganizationIdSupplier==null) && $last"
+                                    data-ng-click="addPaymentInfo()" title="used {{CurrentWorkOrderVersion.PaymentInfoes.length}} Pay Parties from {{lists.listOrganizationSupplier.length}} IndependentContractor Organizations">
+                                <i class="material-icons">add</i>
+                            </button>
+                            <!--data-ng-disabled="!payPartiesForm.$valid || model.entity.PaymentInfoes.length>=lists.listOrganizationSupplier.length"-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel-internal form-horizontal row">
+            <div class="form-group">
+                <div class="col-lg-10">
+                    <h4>Incentive Compensation</h4>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for-property="IsEligibleForCommission" for="IsEligibleForCommission" data-model-property="CurrentWorkOrderVersion.IsEligibleForCommission"
+                       class="col-lg-4 control-label label-to-right req-lab-right" data-original-title="Eligible for commissions"
+                       title="Eligible for Incentive Compensation">Eligible for Incentive Compensation</label>
+                <div class="col-lg-8">
+                    <pt-input-radio name="IsEligibleForCommission" data-ng-required="true" data-template-type="input-radio" data-change-callback="onChangeIsEligibleForCommission"
+                                    data-ng-model="CurrentWorkOrderVersion.IsEligibleForCommission" data-options="[{ key: true, value: 'Yes' },{ key: false, value: 'No' }]"
+                                    data-pt-field-view="model.ptFieldViewConfigOnChangeStatusId" />
+                </div>
+            </div>
+            <div class="form-group" ng-if="CurrentWorkOrderVersion.IsEligibleForCommission">
+                <label for-property="IsThirdPartyImport" for="IsThirdPartyImport" data-model-property="CurrentWorkOrderVersion.IsThirdPartyImport"
+                       class="col-lg-4 control-label label-to-right req-lab-right" data-watch-property="CurrentWorkOrderVersion.IsEligibleForCommission"
+                       data-original-title="Is Third Party Import" title="Is Third Party Import">Is Third Party Import</label>
+                <div class="col-lg-8" style="margin-bottom:5px;">
+                    <pt-input-radio name="IsThirdPartyImport" data-template-type="input-radio" data-change-callback="onChangeIsThirdPartyImport"
+                                    data-ng-model="CurrentWorkOrderVersion.IsThirdPartyImport" data-options="[{ key: true, value: 'Yes' },{ key: false, value: 'No' }]"
+                                    data-pt-field-view="model.ptFieldViewConfigOnChangeStatusId" required />
+                </div>
+            </div>
+            <div class="form-group" ng-if="CurrentWorkOrderVersion.IsThirdPartyImport">
+                <label for-property="CommissionThirdPartyWorkerReference" for="CommissionThirdPartyWorkerReference" data-model-property="CurrentWorkOrderVersion.CommissionThirdPartyWorkerReference"
+                       class="col-lg-4 control-label label-to-right req-lab-right" data-watch-property="CurrentWorkOrderVersion.IsThirdPartyImport"
+                       data-original-title="" title="">Third Party Worker ID</label>
+                <div class="col-lg-8">
+                    <input type="text" required ng-model="CurrentWorkOrderVersion.CommissionThirdPartyWorkerReference" name="CommissionThirdPartyWorkerReference"
+                           data-ng-maxlength="64" maxlength="64" data-pt-field-view="model.ptFieldViewConfigOnChangeStatusId" class="form-control ng-scope"
+                           required />
+                </div>
+            </div>
+
+            <!-- IS COMMISSION VACATION-->
+            <div data-ng-repeat="paymentInfo in CurrentWorkOrderVersion.PaymentInfoes" ng-if="$index === 0 && CurrentWorkOrderVersion.IsThirdPartyImport"
+                 data-ng-form="paymentInfoForm">
+                <div class="form-group" data-ng-if="paymentInfo.OrganizationIdSupplier==null && (model.entity.workerProfileTypeId==ApplicationConstants.UserProfileType.WorkerTemp)">
+                    <label for-property="IsCommissionVacation" for="IsCommissionVacation" data-model-property="paymentInfo.IsCommissionVacation"
+                           class="col-lg-4 control-label req-lab-right" data-original-title="" title="">Pay Vacation for Incentive Compensation</label>
+                    <div class="col-lg-4">
+                        <pt-input-radio name="IsCommissionVacation" data-ng-required="false" data-template-type="input-radio" data-ng-model="paymentInfo.IsCommissionVacation"
+                                        data-options="[{ key: true, value: 'Yes' },{ key: false, value: 'No' }]" data-pt-field-view="model.ptFieldViewConfigOnChangeStatusId" />
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- IS COMMISSION VACATION-->
+        </div>
+    </div>
+</div>

@@ -1,0 +1,69 @@
+h2 {
+    color: #333;
+    font-size: 2.1em;
+}
+
+.settings-wrap {
+    width: 100%;
+    padding: 15px;
+    background-color: #f6f6f6;
+    border-top: 2px solid #f8b91e;
+}
+
+.form-group.material {
+    label {
+        margin-bottom: 0;
+        margin-right: 12px;
+        padding-left: 0;
+        &:last-child {
+            margin-right: 0;
+        }
+    }
+    input[type="checkbox"], input[type="radio"] {
+        display: none;
+    }
+    i.material-icons {
+        display: inline-block;
+        color: #666;
+        cursor: pointer;
+        font-size: 1.85em;
+        text-align: center;
+        vertical-align: middle;
+    }
+}
+.btn-default {
+    color: #333;
+    background-color: #fff;
+    border-color: #ccc;
+    &.left {
+        border-top-left-radius: 3px !important;
+        border-bottom-left-radius: 3px !important;
+    }
+    &.right {
+        border-top-right-radius: 3px !important;
+        border-bottom-right-radius: 3px !important;
+    }
+}
+.btn-default:active, .btn-default.active, .open > .dropdown-toggle.btn-default {
+    color: #fff;
+    background-color: #666;
+    border-color: #adadad;
+}
+
+.btn-group.toggle {
+    display: inline-block;
+    vertical-align: top;
+}
+.time-zone {
+    display: inline-block;
+    vertical-align: text-bottom;
+    p {
+        margin: 0;
+    }
+    @media screen and (max-width: 500px) {
+        padding-top: 10px;
+    }
+}
+app-phx-date-box {
+    display: inline-block;
+}

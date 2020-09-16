@@ -1,0 +1,14 @@
+<dx-tooltip [target]="targetId" [position]="position" [visible]="visible" [elementAttr]="{class: 'test' }"
+    [showEvent]="showEvent" [hideEvent]="hideEvent" (onHiding)="onHiding($event)">
+    <ng-container *ngIf="showAnimation">
+        <dxo-animation>
+            <dxo-show [type]="showAnimationType" [from]="{ top: -100, opacity: 0 }" [to]="{ opacity: 1, top: 0 }">
+            </dxo-show>
+            <dxo-hide [type]="hideAnimationType" [from]="{ scale: 1, opacity: 1 }" [to]="{ opacity: 0, scale: 0.1 }">
+            </dxo-hide>
+        </dxo-animation>
+    </ng-container>
+    <div *dxTemplate="let data of 'content'" (mouseover)="OnMouseOverTooltip()" (mouseleave)="OnMouseLeaveTooltip()">
+        <ng-content></ng-content>
+    </div>
+</dx-tooltip>

@@ -1,0 +1,7 @@
+<div class="btn-group " *ngIf="canAccess">
+    <button type="button" class="btn btn-clouds" (click)="createNewWorkOrder()">New</button>
+</div>
+<app-phx-data-table [configuration]="dataTableConfiguration" [dataSourceUrl]="dataSourceUrl" [dataSourceParams]='oDataParams'
+    [columns]="columns" [exportFileName]="'workorder'" [componentName]="dataGridComponentName" (rowClick)="onRowClick($event)"
+    (contextMenuPreparing)="onContextMenuPreparing($event)">
+</app-phx-data-table>

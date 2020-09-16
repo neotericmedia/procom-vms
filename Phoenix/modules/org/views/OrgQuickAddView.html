@@ -1,0 +1,89 @@
+﻿<div class="row page-control" data-ng-form="formOrganization">
+    <div class="col-lg-6 no-padd-h-r-lg">
+        <div class="panel panel-internal">
+            <div class="panel-body">
+                <div class="form-horizontal" role="form">
+                    <div data-ui-view="OrgUiViewOrganizationDetails" data-autoscroll="false"></div>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-internal">
+            <div class="panel-body">
+                <div class="form-horizontal" role="form">
+                    <div class="form-group" style="margin-bottom:15px;">
+                        <label for-property="IsNonResident" for="IsNonResident" data-model-property="scopeOrg.entity.OrganizationIndependentContractorRoles[0].IsNonResident"
+                               class="col-lg-4 control-label label-to-right req-lab-right"><span>Residency&nbsp;status</span></label>
+                        <div class="col-lg-8">
+                            <pt-input-radio name="IsNonResident"
+                                            data-template-type="input-radio"
+                                            data-ng-required="true"
+                                            data-ng-model="scopeOrg.entity.OrganizationIndependentContractorRoles[0].IsNonResident"
+                                            data-options="scopeOrg.residencyStatusOptions"
+                                            data-pt-field-view="scopeOrg.ptFieldViewConfigOnChangeStatusId" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for-property="BusinessNumber" for="BusinessNumber" class="col-lg-4 control-label label-to-right req-lab-right" data-original-title=""
+                            title="" data-model-property="scopeOrg.entity.OrganizationIndependentContractorRoles[0].BusinessNumber">Business Number</label>
+                        <div class="col-lg-8">
+                            <input type="text" data-ng-model="scopeOrg.entity.OrganizationIndependentContractorRoles[0].BusinessNumber" name="BusinessNumber" data-ng-maxlength="32"
+                                maxlength="32" data-ng-minlength="1" minlength="1" data-length-message="LengthRange" class="form-control ng-valid-minlength ng-valid-maxlength" data-ng-required="true"
+                                data-pt-field-view="scopeOrg.ptFieldViewConfigOnChangeStatusId">
+                        </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label data-for-property="NotificationEmail" for="NotificationEmail" class="col-lg-4 control-label label-to-right req-lab-right"
+                                data-original-title="" title="" data-model-property="scopeOrg.entity.OrganizationIndependentContractorRoles[0].NotificationEmail">Payment Notification Email(s)</label>
+                            <div class="col-lg-8">
+                                <email-list-directive ng-model="scopeOrg.entity.OrganizationIndependentContractorRoles[0].NotificationEmail" name="NotificationEmail"
+                                    data-pt-field-view="scopeOrg.ptFieldViewConfigOnChangeStatusId"></email-list-directive>
+                            </div>
+                        </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-internal">
+            <div class="panel-body">
+                <div class="form-horizontal" role="form">
+                    <div data-ui-view="OrgUiViewOrganizationTaxNumbers" data-onload="labelwidth=4;inputwidth=8" data-autoscroll="false"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6 no-padd-h-l-lg">
+        <div class="panel panel-internal">
+            <div class="panel-body">
+                <div class="form-horizontal" role="form">
+                    <div data-ui-view="OrgUiViewOrganizationAddresses" data-autoscroll="false"></div>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-internal">
+            <div class="panel-body">
+                <div class="form-horizontal" role="form">
+                    <div data-ui-view="OrgUiViewOrganizationPrimaryContact" data-autoscroll="false"></div>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-internal">
+            <div class="panel-body">
+                <div class="form-horizontal" role="form">
+                    <div data-ui-view="OrgUiViewOrganizationCollaborators" data-autoscroll="false"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row page-control">
+    <div class="col-lg-12">
+        <div class="panel pull-right">
+            <div class="panel-body">
+                <button type="button" class="btn btn-default" data-ng-click="scopeOrg.quickAdd.onClickCancel()">Cancel</button>
+                <button type="button" class="btn btn-primary" data-ng-click="scopeOrg.quickAdd.onClickSave()" data-ng-disabled="!formOrganization.$valid">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row" data-pt-validation-messages="scopeOrg.validationMessages"></div>

@@ -1,0 +1,12 @@
+<div class="sk-three-bounce">
+  <div id="loading-Animation-Container">
+    <div class="sk-child sk-bounce1" [style.background-color]="color"></div>
+    <div class="sk-child sk-bounce2" [style.background-color]="color"></div>
+    <div class="sk-child sk-bounce3" [style.background-color]="color"></div>
+    <div class="loading-text loading-progress-text" *ngIf="progressText" [style.color]="color">{{progressText}}</div>
+    <div class="loading-text" [style.color]="color">
+      <ng-container *ngIf="translate">{{text | phxTranslate}}</ng-container>
+      <ng-container *ngIf="!translate">{{text}}</ng-container>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,285 @@
+<form [formGroup]="inputFormGroup">
+  <div class="panel-body col-lg-12">
+    <div class="col-lg-6">
+      <p class="h4">Line {{ inputFormGroup.controls.LineNumber.value }}</p>
+    </div>
+    <div class="col-lg-6">
+      <button type="button" class="btn btn-clouds fontello-icon-trash pull-right" title="Remove Line" (click)="addOrRemoveTransactionLines(inputFormGroup.controls.LineNumber.value)"
+        *ngIf="actionButton.show.transactionLineRemove && transaction && transaction.GroupedTransactionLinesByLineNumber && transaction.GroupedTransactionLinesByLineNumber.length > 1"></button>
+    </div>
+  </div>
+  <div class="panel-body">
+    <div class="form-group trn-manual-rate col-lg-6">
+      <phx-form-control [control]="inputFormGroup.controls.RateTypeId" labelText="Rate Type" viewModeText="{{inputFormGroup.controls.RateTypeId.value}}">
+        <app-phx-select-box [formControl]="inputFormGroup.controls.RateTypeId" [items]="inputFormGroup.get('RateTypeList').value"
+          textField="text" valueField="id"> </app-phx-select-box>
+      </phx-form-control>
+    </div>
+    <div class="col-lg-4"></div>
+  </div>
+  <div formArrayName="Billings">
+    <div class="panel-body" *ngFor="let billing of inputFormGroup.controls.Billings.controls; let i = index; trackBy: trackByFn">
+      <div [formGroupName]="i">
+        <div class="col-lg-12">
+          <p style="border-bottom: 1px solid #c9c9c9; margin-left: 10px; margin-right: 10px;"></p>
+        </div>
+        <div class="form-group">
+          <label class="col-lg-2 control-label" title="">Client</label>
+          <div class="col-lg-10 form-control-static">
+            <a routerLink="/next/organization/{{billing.controls.OrganizationIdClient.value}}/details"> {{
+              billing.controls.OrganizationClientDisplayName.value }} - {{ billing.controls.OrganizationIdClient.value
+              }}</a>
+          </div>
+        </div>
+        <div [formGroup]="billing.get('TransactionLine')">
+          <div class="form-group">
+            <div class="col-lg-6">
+              <phx-form-control [control]="billing.controls.TransactionLine.controls.Description" labelText="Description" [enableLabelAsterisk]="true"
+                viewModeText="{{billing.controls.TransactionLine.controls.Description.value}}">
+                <input class="form-control ng-scope" type="text" formControlName="Description" placeholder="Transaction Line Description"
+                (keyup)="onBillingDescriptionChange(i, billing.controls.TransactionLine.controls.Description.value)" />
+              </phx-form-control>
+            </div>
+          </div>
+          <div class="col-lg-3 col-lg-offset-1" style="padding: 0">
+            <div class="form-group">
+              <phx-form-control [control]="billing.controls.TransactionLine.controls.Units" labelText="Units"
+                viewModeText="{{billing.controls.TransactionLine.controls.Units.value}}">
+                <input class="form-control ng-scope" type="text" formControlName="Units" phxFloatBetweenInput='{"from":0, "to":9999999.99, "decimalplaces":2}'
+                (keyup)="onBillingUnitsChange(i, billing.controls.TransactionLine.controls.Units.value)" />
+              </phx-form-control>
+            </div>
+            <div class="form-group">
+              <label class="col-lg-4 control-label">Currency</label>
+              <div class="col-lg-8 form-control-static">{{ billing.controls.CurrencyId.value | lookupNoCache:
+                html.lists.currencyList:'id':'code' }}</div>
+            </div>
+          </div>
+          <div class="col-lg-8" style="padding: 0">
+            <div class="col-lg-3">
+              <div class="form-group">
+                <div class="text-lg-right text-md-left text-sm-left" style="padding-top: 8px; font-weight: 600;" *ngIf="inputFormGroup.controls.RateTypeId.value !== phxConstants.RateType.Other">Rate</div>
+                <div class="row" style="min-height: 9px"></div>
+                <div>
+                  <div class="text-lg-right text-md-left text-sm-left" *ngIf="inputFormGroup.controls.RateTypeId.value !== phxConstants.RateType.Other">
+                    {{ billing.controls.TransactionLine.value?.Rate | currency }}&nbsp;/&nbsp;{{
+                    billing.controls.TransactionLine.value?.RateUnitId | lookupNoCache:
+                    html.lists.rateUnitList:'id':'text' }}
+                  </div>
+                  <div class="row" *ngIf="inputFormGroup.controls.RateTypeId.value === phxConstants.RateType.Other">
+                    <phx-form-control [control]="billing.controls.TransactionLine.controls.Rate.valid ? billing.controls.TransactionLine.controls.RateUnitId: billing.controls.TransactionLine.controls.Rate"
+                      labelText="Rate" [layoutType]="layoutType.Stacked" viewModeText="">
+                      <div class="input-group col-lg-10 manualRateUnit">
+                        <span class="input-group-addon" style="padding:9px 7px;">$</span>
+                        <phx-form-control [control]="billing.controls.TransactionLine.controls.Rate" labelText=""
+                          [layoutType]="4" viewModeText="{{billing.controls.TransactionLine.controls.Rate.value}}">
+                          <input class="form-control ng-scope" type="text" formControlName="Rate"
+                            phxFloatBetweenInput='{"from":0, "to":9999999.99, "decimalplaces":2}'/>
+                        </phx-form-control>
+                      </div>
+                      <div class="col-lg-2"><span>/</span></div>
+                      <div class="input-group select2-bootstrap-append col-lg-10 manualRateUnit">
+                        <phx-form-control [control]="billing.controls.TransactionLine.controls.RateUnitId" labelText=""
+                          [layoutType]="4" viewModeText="{{billing.controls.TransactionLine.controls.RateUnitId.value}}">
+                          <app-phx-select-box [formControl]="billing.controls.TransactionLine.controls.RateUnitId"
+                            (valueChanged)="onRateUnitChange()" [items]="html.lists.rateUnitList" textField="text"
+                            valueField="id"> </app-phx-select-box>
+                        </phx-form-control>
+                      </div>
+                    </phx-form-control>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-3">
+              <div class="control-label form-group">
+                <div class="text-lg-right text-md-left text-sm-left"><label>Pre-Tax</label></div>
+                <div class="row" style="min-height: 9px"></div>
+                <div class="text-lg-right text-md-left text-sm-left">{{ billing.controls.PreTaxTotal.value | currency
+                  }}</div>
+              </div>
+            </div>
+            <div class="col-lg-3">
+              <div class="control-label form-group">
+                <div class="text-lg-right text-md-left text-sm-left"><label>Sales Tax</label></div>
+                <div class="row" style="min-height: 9px"></div>
+                <div class="text-lg-right text-md-left text-sm-left">
+                  <div class="dropdown">
+                    <div *ngIf="billing.controls.SalesTaxTotal.value">
+                      <a href="javascript:void(0);" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        {{ billing.controls.SalesTaxTotal.value | currency }} </a>
+                      <table class="dropdown-menu app-salestax-popup">
+                        <tbody>
+                          <tr *ngFor="let tlst of billing.value.BillingTransactionLineSalesTaxes">
+                            <td>{{ tlst.SalesTaxName }}</td>
+                            <td class="text-right">{{ tlst.Amount | currency: '' }}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                    <div *ngIf="!billing.controls.SalesTaxTotal.value">{{ billing.controls.SalesTaxTotal.value |
+                      currency }}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-3">
+              <div class="control-label form-group">
+                <div class="text-lg-right text-md-left text-sm-left"><label>Total</label></div>
+                <div class="row" style="min-height: 9px"></div>
+                <div class="text-lg-right text-md-left text-sm-left">{{ billing.controls.Total.value | currency }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div formArrayName="Payments">
+    <div class="panel-body" *ngFor="let payment of inputFormGroup.controls.Payments.controls; let j = index; trackBy: trackByFn">
+      <div [formGroupName]="j">
+        <div class="col-lg-12">
+          <p style="border-bottom: 1px solid #c9c9c9; margin-left: 10px; margin-right: 10px;"></p>
+        </div>
+        <div class="form-group" *ngIf="
+            payment.value.PayeeOrganizationIdSupplier > 0 &&
+            worker &&
+            (worker.ProfileTypeId === phxConstants.UserProfileType.WorkerCanadianInc || worker.ProfileTypeId == phxConstants.UserProfileType.WorkerSubVendor ||
+              worker.ProfileTypeId == phxConstants.UserProfileType.WorkerUnitedStatesLLC)">
+          <label class="col-lg-2 control-label" title="">Supplier</label>
+          <div class="col-lg-10 form-control-static">
+            <a routerLink="/next/organization/{{payment.value.PayeeOrganizationIdSupplier}}/details">{{
+              payment.value.PayeeName }} - {{ payment.value.PayeeOrganizationIdSupplier }}</a>
+          </div>
+        </div>
+        <div class="form-group" *ngIf="worker && worker.ProfileTypeId == phxConstants.UserProfileType.WorkerTemp">
+          <label class="col-lg-2 control-label" title="">Worker:</label>
+          <div class="col-lg-10 form-control-static">
+            <a routerLink="/next/contact/{{worker.ContactId}}/profile/workertemp/{{worker.Id}}">{{
+              worker.Contact.PreferredFirstName }} {{ worker.Contact.PreferredLastName }} - {{ worker.ContactId }}
+              (Worker Temp - {{ worker.Id }})</a>
+          </div>
+        </div>
+        <div class="form-group" *ngIf="worker && worker.ProfileTypeId == phxConstants.UserProfileType.WorkerCanadianSp">
+          <label class="col-lg-2 control-label" title="">Worker:</label>
+          <div class="col-lg-10 form-control-static">
+            <a routerLink="/next/contact/{{worker.ContactId}}/profile/workercanadiansp/{{worker.Id}}">{{
+              worker.Contact.PreferredFirstName }} {{ worker.Contact.PreferredLastName }} - {{ worker.ContactId }}
+              (Worker Canadian SP - {{ worker.Id }})</a>
+          </div>
+        </div>
+        <div class="form-group" *ngIf="worker && worker.ProfileTypeId == phxConstants.UserProfileType.WorkerUnitedStatesW2">
+          <label class="col-lg-2 control-label" title="">Worker:</label>
+          <div class="col-lg-10 form-control-static">
+            <a routerLink="/next/contact/{{worker.ContactId}}/profile/workerunitedstatesw2/{{worker.Id}}">{{
+              worker.Contact.PreferredFirstName }} {{ worker.Contact.PreferredLastName }} - {{ worker.ContactId }}
+              (Worker W2 - {{ worker.Id }})</a>
+          </div>
+        </div>
+        <div [formGroup]="payment.get('TransactionLine')">
+          <div class="form-group">
+            <div class="col-lg-6">
+              <phx-form-control [control]="payment.controls.TransactionLine.controls.Description" labelText="Description" [enableLabelAsterisk]="true"
+                viewModeText="{{payment.controls.TransactionLine.controls.Description.value}}">
+                <input class="form-control ng-scope" type="text" formControlName="Description" placeholder="Transaction Line Description"/>
+              </phx-form-control>
+            </div>
+          </div>
+          <div class="col-lg-3 col-lg-offset-1" style="padding: 0">
+            <div class="form-group">
+              <phx-form-control [control]="payment.controls.TransactionLine.controls.Units" labelText="Units"
+                viewModeText="{{payment.controls.TransactionLine.controls.Units.value}}">
+                <input class="form-control ng-scope" type="text" formControlName="Units"
+                  (keyup)="onPaymentUnitsChange($event.target,j)" phxFloatBetweenInput='{"from":0, "to":9999999.99, "decimalplaces":2}' />
+              </phx-form-control>
+            </div>
+            <div class="form-group">
+              <label class="col-lg-4 control-label">Currency</label>
+              <div class="col-lg-8 form-control-static">{{ payment.controls.CurrencyId.value | lookupNoCache:
+                html.lists.currencyList:'id':'code' }}</div>
+            </div>
+          </div>
+          <div class="col-lg-8" style="padding: 0">
+            <div class="col-lg-3">
+              <div class="form-group">
+                <div class="text-lg-right text-md-left text-sm-left" style="padding-top: 8px; font-weight: 600;" *ngIf="inputFormGroup.value.RateTypeId !== phxConstants.RateType.Other">
+                  Rate
+                </div>
+                <div class="row" style="min-height: 9px"></div>
+                <div>
+                  <div class="text-lg-right text-md-left text-sm-left" *ngIf="inputFormGroup.value.RateTypeId !== phxConstants.RateType.Other">
+                    {{ payment.controls.TransactionLine.controls.Rate.value | currency }}&nbsp;/&nbsp;{{
+                    payment.controls.TransactionLine.controls.RateUnitId.value | lookupNoCache:
+                    html.lists.rateUnitList:'id':'text' }}
+                  </div>
+                  <div class="row" *ngIf="inputFormGroup.value.RateTypeId === phxConstants.RateType.Other">
+                    <phx-form-control [control]="payment.controls.TransactionLine.controls.Rate.valid ? payment.controls.TransactionLine.controls.RateUnitId: payment.controls.TransactionLine.controls.Rate"
+                      labelText="Rate" [layoutType]="layoutType.Stacked" viewModeText="">
+                      <div class="input-group col-lg-10 manualRateUnit">
+                        <span class="input-group-addon" style="padding:9px 7px;">$</span>
+                        <phx-form-control [control]="payment.controls.TransactionLine.controls.Rate" labelText=""
+                          [layoutType]="4" viewModeText="{{payment.controls.TransactionLine.controls.Rate.value}}">
+                          <input class="form-control ng-scope" type="text" formControlName="Rate"
+                          phxFloatBetweenInput='{"from":0, "to":9999999.99, "decimalplaces":2}' />
+                        </phx-form-control>
+                      </div>
+                      <div class="col-lg-2"><span>/</span></div>
+                      <div class="input-group select2-bootstrap-append col-lg-10 manualRateUnit">
+                        <phx-form-control [control]="payment.controls.TransactionLine.controls.RateUnitId" labelText=""
+                          [layoutType]="4" viewModeText="{{payment.controls.TransactionLine.controls.RateUnitId.value}}">
+                          <app-phx-select-box [formControl]="payment.controls.TransactionLine.controls.RateUnitId"
+                            (valueChanged)="onPaymentRateUnitChange()" [items]="html.lists.rateUnitList" textField="text"
+                            valueField="id">
+                          </app-phx-select-box>
+                        </phx-form-control>
+                      </div>
+                    </phx-form-control>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-3">
+              <div class="control-label form-group">
+                <div class="text-lg-right text-md-left text-sm-left"><label>Pre-Tax</label></div>
+                <div class="row" style="min-height: 9px"></div>
+                <div class="text-lg-right text-md-left text-sm-left">{{ payment.controls.PreTaxTotal.value | currency
+                  }}</div>
+              </div>
+            </div>
+            <div class="col-lg-3">
+              <div class="control-label form-group">
+                <div class="text-lg-right text-md-left text-sm-left"><label>Sales Tax</label></div>
+                <div class="row" style="min-height: 9px"></div>
+                <div class="text-lg-right text-md-left text-sm-left">
+                  <div class="dropdown">
+                    <div *ngIf="!!payment.controls.SalesTaxTotal.value">
+                      <a href="javascript:void(0);" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        {{ payment.controls.SalesTaxTotal.value | currency }} </a>
+                      <table class="dropdown-menu app-salestax-popup">
+                        <tbody>
+                          <tr *ngFor="let tlst of payment.value.PaymentTransactionLineSalesTaxes">
+                            <td>{{ tlst.SalesTaxName }}</td>
+                            <td class="text-right">{{ tlst.Amount | currency: '' }}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                    <div *ngIf="!payment.controls.SalesTaxTotal.value">{{ payment.controls.SalesTaxTotal.value |
+                      currency }}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-3">
+              <div class="control-label form-group">
+                <div class="text-lg-right text-md-left text-sm-left"><label>Total</label></div>
+                <div class="row" style="min-height: 9px"></div>
+                <div class="text-lg-right text-md-left text-sm-left">{{ payment.controls.Total.value | currency }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

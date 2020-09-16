@@ -1,0 +1,132 @@
+﻿<div data-loading-spinner="processing"></div>
+
+<div class="row" style="margin-right: 10px;">
+    <div class="col-md-3" style="padding-right: 0px;">
+        <table class="app-vms-totals" style="margin-left: 10px; margin-right: 0px;">
+            <tbody>
+                <tr class="bg-success">
+                    <td>Total Pending</td>
+                    <td class="text-right"><strong>&nbsp; {{totalPending}}</strong></td>
+                </tr>
+                <tr class="bg-warning">
+                    <td>Total Conflict</td>
+                    <td class="text-right"><strong>&nbsp; {{totalConflict}}</strong></td>
+                </tr>
+                <tr class="bg-danger">
+                    <td>Total Discarded</td>
+                    <td class="text-right"><strong>&nbsp; {{totalDiscarded}}</strong></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="form-group">
+    <div class="smart-table-wrapper">
+        <div class="row" style="margin-left: 0px; margin-right: 0px">
+            <table data-st-table-struct='[{"stTableValue" : "items"}, {"stPipeValue" : "callServer"}, {"widthValues" : "[5, 5, 5, 5, 5, 5, 5, 8, 5, 10, 6]"}]'>
+                <thead data-st-head="2400px">
+                    <tr>
+                        <th data-st-sort="PaymentTransactionNumber" data-st-sort-default="">Transaction No</th>
+                        
+                        <th data-st-sort="LastName">Last Name</th>
+                        <th data-st-sort="Date">Date</th>
+
+                        <th data-st-sort="GrossAmount">Gross</th>
+                        <th data-st-sort="MedicareAmount">Medicare</th>
+                        <th data-st-sort="SocialSecurityAmount">SocSec</th>
+                        <th data-st-sort="FudiAmount">Fudi</th>
+                        <th data-st-sort="SuiAmount">Sui</th>
+
+                        <th data-st-sort="VmsUnitedStatesSourceDeductionImportedRecordTypeIdFinal">Import To</th>
+                        <th data-st-sort="Reason">Reason</th>
+                        <th data-st-pen-name="Action">Action</th>
+                    </tr>
+                    <tr>
+                        <th>
+                            <input data-st-advanced-search="'PaymentTransactionNumber'" placeholder=""
+                                   class="input-sm form-control" type="search" />
+                        </th>
+                        <th>
+                            <input data-st-advanced-search="'LastName'" placeholder=""
+                                   class="input-sm form-control" data-safe-restrict-input="" />
+                        </th>
+                        <th>
+                            <input data-st-advanced-search="'Date'"
+                                   data-st-as-operator-override="'ge'"
+                                   close-on-date-selection="false" show-button-bar="false" show-weeks="false" class="input-sm form-control"
+                                   data-st-as-lazy-attributes="{'uib-datepicker' : ApplicationConstants.formatDate}"
+                                   data-st-as-height-override="400"
+                                   data-st-as-width-override="315" />
+                        </th>
+                        <th>
+                            <input data-st-advanced-search="{property: 'GrossAmount', ignoreQuotes: true, valueSuffix: 'M'}" placeholder=""
+                                   class="input-sm form-control numberType" data-safe-restrict-input="[^0123456789.]" />
+                        </th>
+                        <th>
+                            <input data-st-advanced-search="{property: 'MedicareAmount', ignoreQuotes: true, valueSuffix: 'M'}" placeholder=""
+                                   class="input-sm form-control numberType" data-safe-restrict-input="[^0123456789.]" />
+                        </th>
+                        <th>
+                            <input data-st-advanced-search="{property: 'SocialSecurityAmount', ignoreQuotes: true, valueSuffix: 'M'}" placeholder=""
+                                   class="input-sm form-control numberType" data-safe-restrict-input="[^0123456789.]" />
+                        </th>
+                        <th>
+                            <input data-st-advanced-search="{property: 'FudiAmount', ignoreQuotes: true, valueSuffix: 'M'}" placeholder=""
+                                   class="input-sm form-control numberType" data-safe-restrict-input="[^0123456789.]" />
+                        </th>
+                        <th>
+                            <input data-st-advanced-search="{property: 'SuiAmount', ignoreQuotes: true, valueSuffix: 'M'}" placeholder=""
+                                   class="input-sm form-control numberType" data-safe-restrict-input="[^0123456789.]" />
+                        </th>
+                        <th>
+                            <select data-st-advanced-search="{property: 'VmsUnitedStatesSourceDeductionImportedRecordTypeIdFinal', ignoreQuotes: true}" class="input-sm form-control menu-dropdown-wide180">
+                                <option value="1">Import as Pending</option>
+                                <option value="2">Import as Conflict</option>
+                                <option value="3">Discarded</option>
+                            </select>
+                        </th>
+                        <th>
+                            <input data-st-advanced-search="'Reason'" placeholder="" class="input-sm form-control" type="search" />
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr data-ng-repeat="txn in items" style="cursor: pointer" ng-class="{success:txn.VmsUnitedStatesSourceDeductionImportedRecordTypeIdFinal==ApplicationConstants.VmsUnitedStatesSourceDeductionImportedRecordType.ToProcess,warning:txn.VmsUnitedStatesSourceDeductionImportedRecordTypeIdFinal==ApplicationConstants.VmsUnitedStatesSourceDeductionImportedRecordType.Conflict,danger:txn.VmsUnitedStatesSourceDeductionImportedRecordTypeIdFinal==ApplicationConstants.VmsUnitedStatesSourceDeductionImportedRecordType.Discarded}">
+                        <td title="{{::txn.PaymentTransactionNumber}}">{{::txn.PaymentTransactionNumber}}</td>
+                        <td title="{{::txn.LastName}}">{{::txn.LastName}}</td>
+                        <td title="{{::txn.Date| date: ApplicationConstants.formatDate}}">{{::txn.Date| date: ApplicationConstants.formatDate}}</td>
+
+                        <td title="{{::txn.GrossAmount}}">{{::txn.GrossAmount | number : 2}}</td>
+                        <td title="{{::txn.MedicareAmount}}">{{::txn.MedicareAmount | number : 2}}</td>
+                        <td title="{{::txn.SocialSecurityAmount}}">{{::txn.SocialSecurityAmount | number : 2}}</td>
+                        <td title="{{::txn.FudiAmount}}">{{::txn.FudiAmount | number : 2}}</td>
+                        <td title="{{::txn.SuiAmount}}">{{::txn.SuiAmount | number : 2}}</td>
+
+                        <td title="{{txn.VmsUnitedStatesSourceDeductionImportedRecordTypeIdFinal | lookup:lists.vmsImportedRecordTypeList}}">{{txn.VmsUnitedStatesSourceDeductionImportedRecordTypeIdFinal | lookup:lists.vmsImportedRecordTypeList}}</td>
+                        <td title="{{txn.Reason}}" ng-bind-html="txn.Reason"></td>
+                        <td>
+                            <button type="button" class="btn btn-xs btn-default" data-ng-show="txn.VmsUnitedStatesSourceDeductionImportedRecordTypeIdFinal!=ApplicationConstants.VmsUnitedStatesSourceDeductionImportedRecordType.ToProcess&&txn.VmsUnitedStatesSourceDeductionImportedRecordTypeIdInitial==ApplicationConstants.VmsUnitedStatesSourceDeductionImportedRecordType.ToProcess" data-ng-click="markAsProcess(txn)" data-ng-disabled="processing" title="Mark as Ready to Process">Mark as Ready to Process</button>
+                            <button type="button" class="btn btn-xs btn-default" data-ng-show="txn.VmsUnitedStatesSourceDeductionImportedRecordTypeIdFinal!=ApplicationConstants.VmsUnitedStatesSourceDeductionImportedRecordType.Conflict&&txn.VmsUnitedStatesSourceDeductionImportedRecordTypeIdInitial!=ApplicationConstants.VmsUnitedStatesSourceDeductionImportedRecordType.Error" data-ng-click="markAsConflict(txn)" data-ng-disabled="processing" title="Mark as Conflict">Mark as Conflict</button>
+                            <button type="button" class="btn btn-xs btn-default" data-ng-show="txn.VmsUnitedStatesSourceDeductionImportedRecordTypeIdFinal!=ApplicationConstants.VmsUnitedStatesSourceDeductionImportedRecordType.Discarded&&txn.VmsUnitedStatesSourceDeductionImportedRecordTypeIdInitial!=ApplicationConstants.VmsUnitedStatesSourceDeductionImportedRecordType.Error" data-ng-click="markAsDiscarded(txn)" data-ng-disabled="processing" title="Mark as Discarded">Mark as Discarded</button>
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="9">
+                            <span>Total Count: {{totalItemCount || 0}}; Items Loaded: {{items ? items.length : 0}}</span>
+                        </td>
+                        <td>
+                            <div class="pull-right" data-ng-show="documentPublicId">
+                                <button type="button" class="btn" title="Mark as Conflict" data-ng-click="rejectFile(documentPublicId)" data-ng-disabled="!availableActions || processing">Reject File</button>
+                                <button type="button" class="btn btn-primary" title="Mark as Ready to Process" data-ng-click="processFile(documentPublicId)" data-ng-disabled="!availableActions || processing">Process File</button>
+                            </div>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>

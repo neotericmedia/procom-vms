@@ -1,0 +1,54 @@
+<div class="domain compliancedocumentrule">
+    <div class="row panel">
+        <div class="col-lg-12 more-padding-left">
+            <div class="btn-toolbar" *ngIf="showNewButton">
+                <button type="button" class="btn btn-clouds" (click)="onNew()">New</button>
+            </div>
+        </div>
+        <div class="col-lg-7">
+            <div *ngIf="ruleAreaTypeId === applicationConstants.ComplianceDocumentRuleAreaType.OrganizationClient && listOrganizationClient.length>0">
+                <div>
+                    <label class="col-lg-3 control-label label-to-left rebate-lbl padding-side-top">Client Organization</label>
+                    <div class="col-lg-7 padding-sides">
+                        <div>
+                            <app-phx-select-box [value]="currentlyActive" [items]="listOrganizationClient" textField="DisplayName" valueField="Id" placeholder="-- Select Client Organization --"
+                                (valueChanged)="organizationClientOnChange($event)">
+                            </app-phx-select-box>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <app-phx-data-table [configuration]="dataTableConfiguration" [dataSourceUrl]="dataSourceUrl" [dataSourceParams]="oDataParams"
+        [columns]="columns" [exportFileName]="'DocuentRulesManagement'" [componentName]="componentName" (rowClick)="onRowClick($event)"
+        (contextMenuOpenTab)="onContextMenuOpenTab($event)">
+        <div *dxTemplate="let restriction of 'restrictionTemplate'">
+            <span>
+                <a *ngIf="restriction?.value" (click)="showRestrictions(restriction?.data)">{{restriction?.displayValue}}
+                    <i class="material-icons md-18">open_in_new</i>
+                </a>
+                <ng-container *ngIf="!restriction?.value">{{restriction?.displayValue}}</ng-container>
+            </span>
+        </div>
+
+        <div *dxTemplate="let row of 'documentTypeListTemplate'">
+            <span>{{row?.data?.DocumentTypes}}</span>
+        </div>
+        <div *dxTemplate="let row of 'RequiredSituationTypesTemplate'">
+            <span>{{row?.data?.RequiredSituationTypes}}</span>
+        </div>
+        <div *dxTemplate="let row of 'VisibleProfileTypesTemplate'">
+            <span>{{row?.data?.VisibleProfileTypes}}</span>
+        </div>
+    </app-phx-data-table>
+</div>
+
+<app-phx-modal title="Parameters">
+    <ng-container *ngIf="selectedDocumentRestrictionList">
+        <app-restriction-summary *ngIf="selectedDocumentRestrictionList.length" [selectedRestrictionList]="selectedDocumentRestrictionList"></app-restriction-summary>
+        <ng-container *ngIf="!selectedDocumentRestrictionList.length">
+            No restrictions!
+        </ng-container>
+    </ng-container>
+</app-phx-modal>

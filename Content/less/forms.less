@@ -1,0 +1,408 @@
+// Core variables and mixins
+@import "variables.less";
+@import "mixins.less";
+
+//
+// Forms
+// --------------------------------------------------
+
+.delete-btn-group {
+	padding: 4px;
+	margin-right: 10px;
+}
+
+.col-lg-9-override {
+    width: 75%;
+}
+
+@media screen and (max-width: 1630px) {
+    .col-lg-9-override {
+        width: 60%;
+    }
+}
+
+
+.tabbable-left .tabs-left .nav-tabs > li.active {
+	border: 2px solid;
+	border-color: #ddd white #ddd #ddd;
+	margin-right: -1px;
+}
+
+.tabbable-left .tabs-left .nav-tabs > li.active > a {
+	border: none;
+}
+
+.tabbable-left .tabs-left .nav > li > a:hover  {
+	background-color: #eee;
+	display: grid;
+}
+
+.panel-hr {
+	margin-top: 5px;
+	margin-bottom: 10px;
+	border-top: 1px solid #c9c9c9;
+}
+
+.add-btn-group {
+	padding: 4px;
+}
+
+.margin-more {
+	margin-right: 19px;
+}
+
+.margin-less {
+	margin-right: 11px;
+}
+
+label {
+	font-weight: 600;
+}
+
+.label-field {
+	display: block;
+	min-height: 20px;
+
+	&.left {
+		display: inline-block;
+		float: left;
+		*display: inline;
+		*z-index: 1;
+	}
+
+	&.right {
+		display: inline-block;
+		float: right;
+		*display: inline;
+		*z-index: 1;
+	}
+}
+
+.label-text {
+	font-weight: bold;
+	font-size: 14px;
+	min-height: 24px;
+}
+
+.form-control {
+	border-radius: 0;
+	.box-shadow(inset 0 1px 1px rgba(0,0,0,.025));
+
+	&:hover {
+		border-color: darken(@input-border, 10%);
+		.box-shadow(inset 0 1px 1px rgba(0,0,0,.075));
+	}
+	// Customize the `:focus` state to imitate native WebKit styles.
+	.form-control-focus();
+	// Disabled and read-only inputs
+	// Note: HTML5 says that inputs under a fieldset > legend:first-child won't be
+	//   disabled if the fieldset is disabled. Due to implementation difficulty,
+	//   we don't honor that edge case; we style them as disabled anyway.
+	&[disabled],
+	&[readonly],
+	fieldset[disabled] & {
+		cursor: not-allowed;
+		background-color: transparent;
+		border: 1px solid transparent;
+		border-bottom-color: lighten(@input-border, 15%);
+	}
+}
+
+.form-horizontal {
+	.form-group {
+		margin-left: 0;
+		margin-right: 0;
+		margin-bottom: @form-group-margin-bottom;
+	}
+
+	.form-control-static {
+		padding-top: 7px;
+		padding-bottom: 7px;
+	}
+}
+
+
+.input-sm {
+	font-size: ceil(@font-size-base * .92); // ~13px
+}
+
+.global-search {
+	float: right;
+	margin-top: 3px;
+	width: 300px;
+	min-width: 300px;
+}
+
+@media screen and (max-width: 1060px) {
+	.global-search {
+		width: 200px;
+		min-width: 200px;
+	}
+}
+
+form {
+	.required label {
+		font-weight: bold;
+
+		&:after {
+			color: red;
+			content: ' *';
+			display: inline;
+		}
+	}
+
+	.field-validation-error {
+		color: red;
+	}
+	// classes used by AngularJS to mark fields
+	input.ng-valid {
+	}
+
+	input.ng-invalid {
+	}
+
+	input.ng-pristine {
+	}
+
+	input.ng-dirty {
+	}
+
+	input.ng-valid.ng-dirty {
+	}
+
+	input.ng-invalid.ng-dirty {
+	}
+}
+
+//.form-group {
+//    .select2-container {
+//        width: 100%;
+//    }
+//}
+
+.input-align-right {
+	text-align: right;
+}
+
+
+
+.account-container {
+	width: 390px;
+	display: block;
+	margin: 60px auto 21px auto;
+	background: #f9f9f9;
+	border: 1px solid #d5d5d5;
+
+	.content {
+		padding: 16px 28px 23px;
+
+		h1 {
+			margin-bottom: .4em;
+			color: #f90;
+			font-size: 32px;
+		}
+
+		.login-fields {
+
+			.field {
+				margin-bottom: 1.25em;
+
+			}
+
+			label {
+				font-weight: normal;
+			}
+
+			input {
+				font-family: 'Open Sans';
+				font-size: 13px;
+				color: #8e8d8d;
+				background-color: #fdfdfd;
+				width: 100%;
+				display: block;
+				margin: 0;
+				box-shadow: inset 2px 2px 4px #f1f1f1;
+				height: 40px;
+				-webkit-box-shadow: 0 0 0 30px white inset !important;
+			}
+
+			.error-box {
+				margin: 0;
+			}
+		}
+
+		.login-actions {
+			float: left;
+			width: 100%;
+			margin-top: -1em;
+			margin-bottom: 1.25em;
+
+			.login-action {
+				float: right;
+				margin-top: 18px;
+			}
+		}
+
+		span.login-checkbox {
+			float: left;
+			margin-top: 28px;
+		}
+
+		.login-recover {
+			float: left;
+			width: 100%;
+			margin: 10px 0 0;
+
+			a {
+				font-size: 0.9em;
+				text-align: center;
+				padding: 0 0 0 98px;
+			}
+		}
+	}
+}
+
+@media only screen and (min-width : 481px) {
+	.account-container {
+		position: fixed;
+		margin: 0;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+	}
+}
+
+
+@media (max-width: 480px) {
+
+	.account-container {
+		width: auto;
+		margin-top: 35px;
+		margin-left: auto;
+	}
+
+	.login-fields input {
+		width: 160px;
+	}
+
+	.register .login-fields input {
+		width: 204px;
+		padding-left: 6px;
+	}
+}
+
+div[uib-datepicker] {
+	:focus {
+		outline: 0;
+	}
+
+	table {
+		border: 0px;
+		display: table;
+		width: 100%;
+
+		tbody {
+			padding-left: 20px;
+			display: table-row-group;
+
+			tr {
+				display: table-row;
+
+				td {
+					padding: 0;
+					display: table-cell;
+					width: auto;
+					border: none;
+
+					.btn {
+						border: none;
+					}
+
+					.btn-info {
+						color: #333;
+						background-color: #fff;
+						border-color: #ccc;
+					}
+
+					.btn-info:focus,
+					.btn-info.focus {
+						color: #333;
+						background-color: #e6e6e6;
+						border-color: #8c8c8c;
+					}
+
+					.btn-info:hover {
+						color: #333;
+						background-color: #e6e6e6;
+						border-color: #adadad;
+					}
+
+					.btn-info:active,
+					.btn-info.active,
+					.open > .dropdown-toggle.btn-info {
+						color: #333;
+						background-color: #e6e6e6;
+						border-color: #adadad;
+					}
+
+					.btn-info:active:hover,
+					.btn-info.active:hover,
+					.open > .dropdown-toggle.btn-info:hover,
+					.btn-info:active:focus,
+					.btn-info.active:focus,
+					.open > .dropdown-toggle.btn-info:focus,
+					.btn-info:active.focus,
+					.btn-info.active.focus,
+					.open > .dropdown-toggle.btn-info.focus {
+						color: #333;
+						background-color: #d4d4d4;
+						border-color: #8c8c8c;
+					}
+
+					.btn-info:active,
+					.btn-info.active,
+					.open > .dropdown-toggle.btn-info {
+						background-image: none;
+					}
+
+					.btn-info.disabled:hover,
+					.btn-info[disabled]:hover,
+					fieldset[disabled] .btn-info:hover,
+					.btn-info.disabled:focus,
+					.btn-info[disabled]:focus,
+					fieldset[disabled] .btn-info:focus,
+					.btn-info.disabled.focus,
+					.btn-info[disabled].focus,
+					fieldset[disabled] .btn-info.focus {
+						background-color: #fff;
+						border-color: #ccc;
+					}
+
+					.btn-info .badge {
+						color: #fff;
+						background-color: #333;
+					}
+				}
+			}
+		}
+
+		thead {
+			padding-left: 20px;
+			display: table-header-group;
+			//width: 100%;
+			tr:first-child th {
+				//padding-left: 10px;
+				border: none;
+			}
+
+			strong {
+				padding: 0 13px;
+			}
+
+			th {
+				display: table-cell;
+				width: auto !important;
+			}
+		}
+	}
+}

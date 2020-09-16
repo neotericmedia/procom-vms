@@ -1,0 +1,36 @@
+<div class="content-group form-horizontal">
+    <div class="col-lg-12">
+        <div class="panel-internal">
+            <div class="form-group">
+                <div class="col-lg-12">
+                    <h4 style="display: inline-block;">Documents</h4>
+                    <span class="btn btn-default btn-material cmd" (click)="uploadDocument()"
+                        style="float: right; margin-top: 5px;"><i class="material-icons">add</i></span>
+
+                    <div class="row" *ngIf="html?.purchaseOrderId">
+                        <!-- <phx-entity-documents-list #documentList [entityId]="html?.purchaseOrderId"
+                         [entityTypeId]="this.html.phxConstants.EntityType.PurchaseOrder"
+                            [documentTypesList]="html.documentTypeUnfilteredSubList">
+
+                        </phx-entity-documents-list> -->
+
+                        <phx-entity-documents-list2 #documentList 
+                            [entityId]="html?.purchaseOrderId" 
+                            [entityTypeId]="this.html.phxConstants.EntityType.PurchaseOrder"
+                            [documentTypesList]="html.documentTypeUnfilteredSubList">
+
+                        </phx-entity-documents-list2>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <app-phx-document-file-upload #fileUpload [(configuration)]="html.documentFileUploadConfiguration"
+     (onSuccessItem)="onSuccessItem($event)"
+        [editable]="true" [docTypeList]="html.documentTypeSubList" [showAddButton]="false"
+         [fileUploaderOptions]="html.fileUploaderOptions_DocumentMain"
+        (onCompleteAll)="documentUploadCallbackOnDone()"></app-phx-document-file-upload>
+
+</div>

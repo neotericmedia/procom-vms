@@ -1,0 +1,6 @@
+<app-phx-data-table #dataTable [configuration]="dataTableConfiguration" [dataSource]="purchaseOrderSearchLines" [columns]="columns"
+    [componentName]="'purchaseorderline-to-workorder'" (rowClick)="onRowClick($event)">
+    <div *dxTemplate="let d of 'currencyTemplate'">
+        <span>{{d.value | number:'1.2-2'}} {{d.data.CurrencyCode}}</span>
+    </div>
+</app-phx-data-table>

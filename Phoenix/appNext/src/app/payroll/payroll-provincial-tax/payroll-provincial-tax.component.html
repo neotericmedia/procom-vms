@@ -1,0 +1,442 @@
+<div *ngIf="header">
+    <div class="col-lg-12" style="padding-left:0;height:50px;">
+        <div>
+            <div class="transaction-selection col-lg-2" *ngIf="!isInEditMode" style="padding-left:0;">
+                <app-phx-workflow-buttons (callWorkflowCommand)="onWorkflowActionSelected($event)" [workflowAvailableActions]="workflowAvailableActions"
+                    [isButtonBar]="false"></app-phx-workflow-buttons>
+            </div>
+            <label class="col-lg-2 control-label label-to-right" style="height:30px;">&nbsp;</label>
+        </div>
+    </div>
+    <div class="col-lg-10 ">
+        <div class="row">
+            <form [formGroup]="form">
+                <div class="tab-content">
+                    <div class="tabbable panel panel-tabbable">
+                        <div class="tab-content">
+                            <div class="tab-pane active">
+                                <div class="panel">
+                                    <div class="headstone panel-heading container-fluid">
+                                        <div class="row">
+                                            <div class="col-lg-1">
+                                                <label class="control-label col-xs-12 ">ID</label>
+                                                <span class="col-xs-12 " data-ng-class="model.entity.IsDraft?'text-warning':''">{{header.Id}}</span>
+                                            </div>
+                                            <div class="col-lg-3">
+                                                <label class="control-label col-xs-12 ">Province/State</label>
+                                                <span class="col-xs-12 ">{{header?.SubdivisionId | CodeValue:CodeValueGroups.Subdivision}}</span>
+                                            </div>
+                                            <div class="col-lg-3">
+                                                <label class="control-label col-xs-12 ">Created Date</label>
+                                                <span class="col-xs-12 ">{{taxVersion.CreatedDatetime | date:ApplicationConstants.DateFormat.mediumDate}}</span>
+                                            </div>
+                                            <div class="col-lg-3">
+                                                <label class="control-label col-xs-12 ">Effective Date</label>
+                                                <span class="col-xs-12 ">{{taxVersion.EffectiveDate | date:ApplicationConstants.DateFormat.mediumDate}}</span>
+                                            </div>
+                                            <div class="col-lg-2">
+                                                <label class="control-label col-xs-12 ">Status</label>
+                                                <span *ngIf="!isInEditMode && !isNew && !isForCorrection && !isForScheduleChange" [class.text-warning]="taxVersion.TaxVersionStatusId === ApplicationConstants.TaxVersionStatus.Active"
+                                                    class="col-xs-12"> {{taxVersion.TaxVersionStatusId | CodeValue:CodeValueGroups.TaxVersionStatus}}</span>
+                                                <span class="col-xs-12 " *ngIf="isInEditMode && isForCorrection">To Correct</span>
+                                                <span class="col-xs-12 " *ngIf="isInEditMode && isForScheduleChange">To Schedule Change</span>
+                                                <span class="col-xs-12 " *ngIf="isInEditMode && isNew">New</span>
+                                                <span class="col-xs-12 " *ngIf="isWorkflowRunning">Workflow Is Running</span>
+                                                <!-- <span class="col-xs-12" data-ng-if="!header.common.workflow.WorkflowIsRunning&&header.common.customStatusId == null" 
+                                                    data-ng-class="header.currentVersion.TaxVersionStatusId==ApplicationConstants.TaxVersionStatus.Active?'text-warning':''">{{tax.TaxVersionStatusId | CodeValue:CodeValueGroups.TaxVersionStatus}}</span>
+                                                        <span  class="col-xs-12 " data-ng-if="!header.common.workflow.WorkflowIsRunning&&header.common.customStatusId !== null">{{header.common.customStatusId|lookup:header.common.lists.listCustomStatus}}</span>
+                                                        <span class="col-xs-12 " data-ng-if="header.common.workflow.WorkflowIsRunning">Workflow Is Running</span> -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tabbable">
+                            <div class="tab-content">
+                                <div class="tab-pane active">
+                                    <div class="panel">
+                                        <div class="panel-body form-horizontal">
+                                            <div class="col-lg-6 panel-margin-bottom">
+                                                <phx-form-control [control]="form.controls['SubDivisionId']" labelText="Province/State" [editable]="isInEditMode && isNew"
+                                                    viewModeText="{{header.SubdivisionId | CodeValue: CodeValueGroups.Subdivision}}">
+                                                    <app-phx-select-box-code-value name="SubDivisionId" [groupName]="CodeValueGroups.Subdivision" sortByFieldName="text" [relatedValue]="ApplicationConstants.CountryCanada"
+                                                        [relatedGroupName]="CodeValueGroups.Country" formControlName="SubDivisionId">
+                                                    </app-phx-select-box-code-value>
+                                                </phx-form-control>
+                                            </div>
+                                            <div class="col-lg-6 panel-margin-bottom">
+                                                <phx-form-control name="EffectiveDate" [control]="form.controls['EffectiveDate']" labelText="Effective Date" [editable]="isInEditMode"
+                                                    viewModeText="{{taxVersion.EffectiveDate | date:ApplicationConstants.DateFormat.mediumDate}}">
+                                                    <app-phx-date-box name="EffectiveDate" formControlName="EffectiveDate" type="date"></app-phx-date-box>
+                                                </phx-form-control>
+                                            </div>
+                                            <div class="col-lg-6 panel-margin-bottom">
+                                                <phx-form-control [showValidationMessages]="true" [control]="form.controls['TD1Minimum']" name="TD1Minimum" labelText="TD1 Minimum"
+                                                    [editable]="isInEditMode" viewModeText="{{taxVersion.TD1Minimum | pxCurrency:2:'$'}}">
+                                                    <input type="text" [inputTextLimitWithDecimals]="currencyFilter" class="form-control" name="TD1Minimum" formControlName="TD1Minimum"
+                                                    />
+                                                </phx-form-control>
+                                            </div>
+                                            <div class="col-lg-6 panel-margin-bottom">
+                                                <phx-form-control [showValidationMessages]="true" name="WCBMaximum" [control]="form.controls['WCBMaximum']" labelText="WCB Maximum"
+                                                    [editable]="isInEditMode" viewModeText="{{taxVersion.WCBMaximum | pxCurrency:2:'$'}}">
+                                                    <input type="text" [inputTextLimitWithDecimals]="currencyFilter" name="WCBMaximum" class="form-control" formControlName="WCBMaximum"
+                                                    />
+                                                </phx-form-control>
+                                            </div>
+                                            <div class="col-lg-6 panel-margin-bottom">
+                                                <phx-form-control name="CanadaEmploymentAmount" [showValidationMessages]="true" [control]="form.controls['CanadaEmploymentAmount']"
+                                                    labelText="Canada Employment Amount" [editable]="isInEditMode" viewModeText="{{taxVersion.CanadaEmploymentAmount | pxCurrency:2:'$'}}">
+                                                    <input type="text" [inputTextLimitWithDecimals]="currencyFilter" name="CanadaEmploymentAmount" class="form-control" formControlName="CanadaEmploymentAmount" />
+                                                </phx-form-control>
+                                            </div>
+                                            <!-- <div class="col-lg-12 panel-body" data-pt-validation-messages="header.validationMessages"
+                                             data-ng-if="header.validationMessages"></div> -->
+
+                                            <div class="col-lg-12 panel-internal">
+                                                <div>
+                                                    <div class="row">
+                                                        <h4 class="col-lg-10 panel-title alignment-on-title">Tax Rates</h4>
+                                                        <div class="col-lg-2">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <div class="panel-body" data-ng-form="formRates">
+
+                                                        <!--   <payroll-tax-rates tax-rates="header.currentVersion.ProvincialTaxRates" pt-field-view-config-on-change-status-id="header.common.ptFieldViewConfigOnChangeStatusId"
+                                                            tax-version-status-id="header.currentVersion.TaxVersionStatusId"
+                                                            custom-status-id="header.common.customStatusId" show-buttons="header.currentVersion.TaxVersionStatusId == ApplicationConstants.TaxVersionStatus.New || header.common.customStatusId == header.common.customStatusType.ToCorrect || header.common.customStatusId == header.common.customStatusType.ToScheduleChange"> -->
+                                                        <app-payroll-taxrate #ProvincialTaxRates [fb]="fb" [taxRates]="taxVersion.ProvincialTaxRates" [displayConstant]="true" groupName="ProvincialTaxRates"
+                                                            [formTaxRate]="form" [showButtons]="isInEditMode" [editable]="isInEditMode">
+
+                                                        </app-payroll-taxrate>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-12 panel-internal">
+                                                <div>
+                                                    <div class="row">
+                                                        <h4 class="col-lg-10 panel-title alignment-on-title">Surtax Rates</h4>
+                                                        <div class="col-lg-2">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <div class="panel-body" data-ng-form="formRates">
+
+                                                        <!-- <payroll-tax-rates tax-rates="header.currentVersion.ProvincialSurtaxRates" hide-constant-column="true" pt-field-view-config-on-change-status-id="header.common.ptFieldViewConfigOnChangeStatusId"
+                                                            tax-version-status-id="header.currentVersion.TaxVersionStatusId"
+                                                            custom-status-id="header.common.customStatusId" show-buttons="header.currentVersion.TaxVersionStatusId == ApplicationConstants.TaxVersionStatus.New || header.common.customStatusId == header.common.customStatusType.ToCorrect || header.common.customStatusId == header.common.customStatusType.ToScheduleChange"> -->
+
+                                                        <app-payroll-taxrate [fb]="fb" #ProvincialSurtaxRates [taxRates]="taxVersion.ProvincialSurtaxRates" [displayConstant]="false"
+                                                            groupName="ProvincialSurtaxRates" [formTaxRate]="form" [showButtons]="isInEditMode"
+                                                            [editable]="isInEditMode">
+
+                                                        </app-payroll-taxrate>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-12 panel-internal">
+                                                <div>
+                                                    <div class="row">
+                                                        <h4 class="col-lg-10 panel-title alignment-on-title">Health Premiums</h4>
+                                                        <div class="col-lg-2">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <div class="panel-body" data-ng-form="formRates">
+                                                        <!--  <payroll-tax-rates tax-rates="header.currentVersion.ProvincialHealthPremiums" pt-field-view-config-on-change-status-id="header.common.ptFieldViewConfigOnChangeStatusId"
+                                                            tax-version-status-id="header.currentVersion.TaxVersionStatusId"
+                                                            custom-status-id="header.common.customStatusId" constant-label="Max"
+                                                            show-buttons="header.currentVersion.TaxVersionStatusId == ApplicationConstants.TaxVersionStatus.New || header.common.customStatusId == header.common.customStatusType.ToCorrect || header.common.customStatusId == header.common.customStatusType.ToScheduleChange">
+                                                      -->
+                                                        <app-payroll-taxrate [fb]="fb" #ProvincialHealthPremiums [taxRates]="taxVersion.ProvincialHealthPremiums" [displayConstant]="true"
+                                                            groupName="ProvincialHealthPremiums" [formTaxRate]="form" [showButtons]="isInEditMode"
+                                                            [editable]="isInEditMode">
+
+                                                        </app-payroll-taxrate>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="provincialTaxTypes" style="clear:both;">
+                                                <div class="content-group">
+                                                    <div class="content-left">
+                                                        <div class="panel-internal" formGroupName="TaxTypeHealthCare">
+                                                            <div class="form-group">
+                                                                <div class="col-lg-12">
+                                                                    <h4>Health Tax</h4>
+                                                                </div>
+                                                            </div>
+                                                            <phx-form-control [showValidationMessages]="true" [control]="form.controls['TaxTypeHealthCare'].controls['EmployeeRatePercentage']"
+                                                                labelText="Health Tax Rate (%)" [editable]="isInEditMode" viewModeText="{{taxVersion.TaxTypeHealthCare.EmployeeRatePercentage | number: '1.4-4'}}%">
+                                                                <div class="input-group">
+                                                                    <input [inputTextLimitWithDecimals]="percentageFilter" class="form-control" formControlName="EmployeeRatePercentage" />
+                                                                    <span class="input-group-addon">%</span>
+                                                                </div>
+                                                            </phx-form-control>
+                                                        </div>
+                                                    </div>
+                                                    <div class="content-right">
+                                                        <div class="panel-internal" formGroupName="TaxTypeParentalInsurancePlan">
+                                                            <div class="form-group">
+                                                                <div class="col-lg-12">
+                                                                    <h4>Parental Insurance Plan</h4>
+                                                                </div>
+                                                            </div>
+                                                            <phx-form-control [control]="form.controls['TaxTypeParentalInsurancePlan'].controls['IsEligible']" labelText="PIP Eligible?"
+                                                                [editable]="isInEditMode" viewModeText="{{taxVersion.TaxTypeParentalInsurancePlan.IsEligible === true ? 'Yes' : 'No'}}">
+                                                                <label class="radio-inline">
+                                                                    <input class="form-check-input" type="radio" formControlName="IsEligible" [value]="true" required>Yes</label>
+                                                                <label class="radio-inline">
+                                                                    <input class="form-check-input" type="radio" formControlName="IsEligible" [value]="false" required>No</label>
+                                                            </phx-form-control>
+                                                            <div *ngIf="taxVersion.TaxTypeParentalInsurancePlan.IsEligible">
+                                                                <phx-form-control [showValidationMessages]="true" [control]="form.controls['TaxTypeParentalInsurancePlan'].controls['MaxInsurable']"
+                                                                    labelText="Max Insurable" [editable]="isInEditMode" viewModeText="{{taxVersion.TaxTypeParentalInsurancePlan.MaxInsurable | pxCurrency:2:'$'}}">
+                                                                    <input type="text" [inputTextLimitWithDecimals]="currencyFilter" class="form-control" formControlName="MaxInsurable" />
+                                                                </phx-form-control>
+                                                                <phx-form-control [showValidationMessages]="true" [control]="form.controls['TaxTypeParentalInsurancePlan'].controls['EmployeeRatePercentage']"
+                                                                    labelText="Employee Rate (%)" [editable]="isInEditMode" viewModeText="{{taxVersion.TaxTypeParentalInsurancePlan.EmployeeRatePercentage | number: '1.4-4'}}%">
+                                                                    <div class="input-group">
+                                                                        <input type="text" [inputTextLimitWithDecimals]="percentageFilter" class="form-control" formControlName="EmployeeRatePercentage"
+                                                                        />
+                                                                        <span class="input-group-addon">%</span>
+                                                                    </div>
+                                                                </phx-form-control>
+                                                                <phx-form-control [showValidationMessages]="true" [control]="form.controls['TaxTypeParentalInsurancePlan'].controls['EmployerMultiplerPercentage']"
+                                                                    labelText="Employer Mult" [editable]="isInEditMode" viewModeText="{{taxVersion.TaxTypeParentalInsurancePlan.EmployerMultiplerPercentage | number: '1.4-4'}}%">
+                                                                    <div class="input-group">
+                                                                        <input type="text" [inputTextLimitWithDecimals]="percentageFilter" class="form-control" formControlName="EmployerMultiplerPercentage"
+                                                                        />
+                                                                        <span class="input-group-addon">%</span>
+                                                                    </div>
+                                                                </phx-form-control>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- CPP -->
+                                                <div class="content-group">
+                                                    <div class="content-left">
+                                                        <div class="panel-internal" formGroupName="TaxTypeCanadaPensionPlan">
+                                                            <div class="form-group">
+                                                                <div class="col-lg-12">
+                                                                    <h4>CPP</h4>
+                                                                </div>
+                                                            </div>
+                                                            <phx-form-control [control]="form.controls['TaxTypeCanadaPensionPlan'].controls['IsEligible']" labelText="CPP Eligible?"
+                                                                [editable]="isInEditMode" viewModeText="{{taxVersion.TaxTypeCanadaPensionPlan.IsEligible === true ? 'Yes' : 'No'}}">
+                                                                <label class="radio-inline">
+                                                                    <input class="form-check-input" type="radio" formControlName="IsEligible" [value]="true" required>Yes</label>
+                                                                <label class="radio-inline">
+                                                                    <input class="form-check-input" type="radio" formControlName="IsEligible" [value]="false" required>No</label>
+                                                            </phx-form-control>
+                                                            <div *ngIf="taxVersion.TaxTypeCanadaPensionPlan.IsEligible">
+                                                                <phx-form-control [showValidationMessages]="true" [control]="form.controls['TaxTypeCanadaPensionPlan'].controls['MinAge']"
+                                                                    labelText="Min Age" [editable]="isInEditMode" viewModeText="{{taxVersion.TaxTypeCanadaPensionPlan.MinAge}}">
+                                                                    <input type="text" [inputTextLimitWithDecimals]="numberFilter" class="form-control" formControlName="MinAge" />
+                                                                </phx-form-control>
+                                                                <phx-form-control [showValidationMessages]="true" [control]="form.controls['TaxTypeCanadaPensionPlan'].controls['MaxAge']"
+                                                                    labelText="Max Age" [editable]="isInEditMode" viewModeText="{{taxVersion.TaxTypeCanadaPensionPlan.MaxAge}}">
+                                                                    <input type="text" [inputTextLimitWithDecimals]="numberFilter" class="form-control" formControlName="MaxAge" />
+                                                                </phx-form-control>
+                                                                <phx-form-control [showValidationMessages]="true" [control]="form.controls['TaxTypeCanadaPensionPlan'].controls['MaxEarnings']"
+                                                                    labelText="Max Insurable" [editable]="isInEditMode" viewModeText="{{taxVersion.TaxTypeCanadaPensionPlan.MaxEarnings | pxCurrency:2:'$'}}">
+                                                                    <input type="text" [inputTextLimitWithDecimals]="currencyFilter" class="form-control" formControlName="MaxEarnings" />
+                                                                </phx-form-control>
+                                                                <phx-form-control [showValidationMessages]="true" [control]="form.controls['TaxTypeCanadaPensionPlan'].controls['AnnualExemption']"
+                                                                    labelText="Annual Exemption" [editable]="isInEditMode" viewModeText="{{taxVersion.TaxTypeCanadaPensionPlan.AnnualExemption | pxCurrency:2:'$'}}">
+                                                                    <input type="text" [inputTextLimitWithDecimals]="currencyFilter" class="form-control" formControlName="AnnualExemption" />
+                                                                </phx-form-control>
+                                                                <phx-form-control [showValidationMessages]="true" [control]="form.controls['TaxTypeCanadaPensionPlan'].controls['EmployeeRatePercentage']"
+                                                                    labelText="Employee Rate (%)" [editable]="isInEditMode" viewModeText="{{taxVersion.TaxTypeCanadaPensionPlan.EmployeeRatePercentage | number: '1.4-4'}}%">
+                                                                    <div class="input-group">
+                                                                        <input type="text" [inputTextLimitWithDecimals]="percentageFilter" class="form-control" formControlName="EmployeeRatePercentage"
+                                                                        />
+                                                                        <span class="input-group-addon">%</span>
+                                                                    </div>
+                                                                </phx-form-control>
+                                                                <phx-form-control [showValidationMessages]="true" [control]="form.controls['TaxTypeCanadaPensionPlan'].controls['EmployerMultiplerPercentage']"
+                                                                    labelText="Employer Mult" [editable]="isInEditMode" viewModeText="{{taxVersion.TaxTypeCanadaPensionPlan.EmployerMultiplerPercentage | number: '1.4-4'}}%">
+                                                                    <div class="input-group">
+                                                                        <input type="text" [inputTextLimitWithDecimals]="percentageFilter" class="form-control" formControlName="EmployerMultiplerPercentage"
+                                                                        />
+                                                                        <span class="input-group-addon">%</span>
+                                                                    </div>
+                                                                </phx-form-control>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="content-right">
+                                                        <div class="panel-internal" formGroupName="TaxTypeEmploymentInsurance">
+                                                            <div class="form-group">
+                                                                <div class="col-lg-12">
+                                                                    <h4>EI</h4>
+                                                                </div>
+                                                            </div>
+                                                            <phx-form-control [control]="form.controls['TaxTypeEmploymentInsurance'].controls['IsEligible']" labelText="EI Eligible?"
+                                                                [editable]="isInEditMode" viewModeText="{{taxVersion.TaxTypeEmploymentInsurance.IsEligible === true ? 'Yes' : 'No'}}">
+                                                                <label class="radio-inline">
+                                                                    <input class="form-check-input" type="radio" formControlName="IsEligible" [value]="true" required>Yes</label>
+                                                                <label class="radio-inline">
+                                                                    <input class="form-check-input" type="radio" formControlName="IsEligible" [value]="false" required>No</label>
+                                                            </phx-form-control>
+                                                            <div *ngIf="taxVersion.TaxTypeEmploymentInsurance.IsEligible">
+                                                                <phx-form-control [showValidationMessages]="true" [control]="form.controls['TaxTypeEmploymentInsurance'].controls['MaxEarnings']"
+                                                                    labelText="Max Earnings" [editable]="isInEditMode" viewModeText="{{taxVersion.TaxTypeEmploymentInsurance.MaxEarnings | pxCurrency:2:'$'}}">
+                                                                    <input type="text" [inputTextLimitWithDecimals]="currencyFilter" class="form-control" formControlName="MaxEarnings" />
+                                                                </phx-form-control>
+                                                                <phx-form-control [showValidationMessages]="true" [control]="form.controls['TaxTypeEmploymentInsurance'].controls['MaxInsurable']"
+                                                                    labelText="Max Insurable" [editable]="isInEditMode" viewModeText="{{taxVersion.TaxTypeEmploymentInsurance.MaxInsurable | pxCurrency:2:'$'}}">
+                                                                    <input type="text" [inputTextLimitWithDecimals]="currencyFilter" class="form-control" formControlName="MaxInsurable" />
+                                                                </phx-form-control>
+                                                                <phx-form-control [showValidationMessages]="true" [control]="form.controls['TaxTypeEmploymentInsurance'].controls['EmployeeRatePercentage']"
+                                                                    labelText="Employee Rate (%)" [editable]="isInEditMode" viewModeText="{{taxVersion.TaxTypeEmploymentInsurance.EmployeeRatePercentage | number: '1.4-4'}}%">
+                                                                    <div class="input-group">
+                                                                        <input type="text" [inputTextLimitWithDecimals]="percentageFilter" class="form-control" formControlName="EmployeeRatePercentage"
+                                                                        />
+                                                                        <span class="input-group-addon">%</span>
+                                                                    </div>
+                                                                </phx-form-control>
+                                                                <phx-form-control [showValidationMessages]="true" [control]="form.controls['TaxTypeEmploymentInsurance'].controls['EmployerMultiplerPercentage']"
+                                                                    labelText="Employer Mult" [editable]="isInEditMode" viewModeText="{{taxVersion.TaxTypeEmploymentInsurance.EmployerMultiplerPercentage | number: '1.4-4'}}%">
+                                                                    <div class="input-group">
+                                                                        <input type="text" [inputTextLimitWithDecimals]="percentageFilter" class="form-control" formControlName="EmployerMultiplerPercentage"
+                                                                        />
+                                                                        <span class="input-group-addon">%</span>
+                                                                    </div>
+                                                                </phx-form-control>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="content-group">
+                                                    <div class="content-left">
+                                                        <div class="panel-internal" formGroupName="TaxTypeQuebecPensionPlan">
+                                                            <div class="form-group">
+                                                                <div class="col-lg-12">
+                                                                    <h4>QPP</h4>
+                                                                </div>
+                                                            </div>
+                                                            <phx-form-control [control]="form.controls['TaxTypeQuebecPensionPlan'].controls['IsEligible']" labelText="QPP Eligible?"
+                                                                [editable]="isInEditMode" viewModeText="{{taxVersion.TaxTypeQuebecPensionPlan?.IsEligible === true ? 'Yes' : 'No'}}">
+                                                                <label class="radio-inline">
+                                                                    <input class="form-check-input" type="radio" formControlName="IsEligible" [value]="true" required>Yes</label>
+                                                                <label class="radio-inline">
+                                                                    <input class="form-check-input" type="radio" formControlName="IsEligible" [value]="false" required>No</label>
+                                                            </phx-form-control>
+                                                            <div *ngIf="taxVersion.TaxTypeQuebecPensionPlan.IsEligible">
+                                                                <phx-form-control [showValidationMessages]="true" [control]="form.controls['TaxTypeQuebecPensionPlan'].controls['MinAge']"
+                                                                    labelText="Min Age" [editable]="isInEditMode" viewModeText="{{taxVersion.TaxTypeQuebecPensionPlan.MinAge}}">
+                                                                    <input type="text" [inputTextLimitWithDecimals]="numberFilter" class="form-control" formControlName="MinAge" />
+                                                                </phx-form-control>
+                                                                <phx-form-control [showValidationMessages]="true" [control]="form.controls['TaxTypeQuebecPensionPlan'].controls['MaxAge']"
+                                                                    labelText="Max Age" [editable]="isInEditMode" viewModeText="{{taxVersion.TaxTypeQuebecPensionPlan.MaxAge}}">
+                                                                    <input type="text" [inputTextLimitWithDecimals]="numberFilter" class="form-control" formControlName="MaxAge" />
+                                                                </phx-form-control>
+                                                                <phx-form-control [showValidationMessages]="true" [control]="form.controls['TaxTypeQuebecPensionPlan'].controls['MaxEarnings']"
+                                                                    labelText="Max Insurable" [editable]="isInEditMode" viewModeText="{{taxVersion.TaxTypeQuebecPensionPlan.MaxEarnings | pxCurrency:2:'$'}}">
+                                                                    <input type="text" [inputTextLimitWithDecimals]="currencyFilter" class="form-control" formControlName="MaxEarnings" />
+                                                                </phx-form-control>
+                                                                <phx-form-control [showValidationMessages]="true" [control]="form.controls['TaxTypeQuebecPensionPlan'].controls['AnnualExemption']"
+                                                                    labelText="Annual Exemption" [editable]="isInEditMode" viewModeText="{{taxVersion.TaxTypeQuebecPensionPlan.AnnualExemption | pxCurrency:2:'$'}}">
+                                                                    <input type="text" [inputTextLimitWithDecimals]="currencyFilter" class="form-control" formControlName="AnnualExemption" />
+                                                                </phx-form-control>
+                                                                <phx-form-control [showValidationMessages]="true" [control]="form.controls['TaxTypeQuebecPensionPlan'].controls['EmployeeRatePercentage']"
+                                                                    labelText="Employee Rate (%)" [editable]="isInEditMode" viewModeText="{{taxVersion.TaxTypeQuebecPensionPlan.EmployeeRatePercentage | number: '1.4-4'}}%">
+                                                                    <div class="input-group">
+                                                                        <input type="text" [inputTextLimitWithDecimals]="percentageFilter" class="form-control" formControlName="EmployeeRatePercentage"
+                                                                        />
+                                                                        <span class="input-group-addon">%</span>
+                                                                    </div>
+                                                                </phx-form-control>
+                                                                <phx-form-control [showValidationMessages]="true" [control]="form.controls['TaxTypeQuebecPensionPlan'].controls['EmployerMultiplerPercentage']"
+                                                                    labelText="Employer Mult" [editable]="isInEditMode" viewModeText="{{taxVersion.TaxTypeQuebecPensionPlan.EmployerMultiplerPercentage | number: '1.4-4'}}%">
+                                                                    <div class="input-group">
+                                                                        <input type="text" [inputTextLimitWithDecimals]="percentageFilter" class="form-control" formControlName="EmployerMultiplerPercentage"
+                                                                        />
+                                                                        <span class="input-group-addon">%</span>
+                                                                    </div>
+                                                                </phx-form-control>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="content-right">
+                                                        <div class="panel-internal" formGroupName="TaxTypeQuebecTrainingFee">
+                                                            <div class="form-group">
+                                                                <div class="col-lg-12">
+                                                                    <h4>Quebec Training Fee</h4>
+                                                                </div>
+                                                            </div>
+                                                            <div *ngIf="taxVersion.TaxTypeQuebecTrainingFee">
+                                                                <phx-form-control [control]="form.controls['TaxTypeQuebecTrainingFee']?.controls['IsEligible']" labelText="QTF Eligible?"
+                                                                    [editable]="isInEditMode" viewModeText="{{taxVersion.TaxTypeQuebecTrainingFee?.IsEligible === true ? 'Yes' : 'No'}}">
+                                                                    <label class="radio-inline">
+                                                                        <input class="form-check-input" type="radio" formControlName="IsEligible" [value]="true" required>Yes</label>
+                                                                    <label class="radio-inline">
+                                                                        <input class="form-check-input" type="radio" formControlName="IsEligible" [value]="false" required>No</label>
+                                                                </phx-form-control>
+                                                                <div *ngIf="taxVersion.TaxTypeQuebecTrainingFee.IsEligible">
+                                                                    <phx-form-control [showValidationMessages]="true" [control]="form.controls['TaxTypeQuebecTrainingFee']?.controls['EmployeeRatePercentage']"
+                                                                        labelText="Rate (%)" [editable]="isInEditMode" viewModeText="{{taxVersion.TaxTypeQuebecTrainingFee?.EmployeeRatePercentage | number: '1.4-4'}}%">
+                                                                        <div class="input-group">
+                                                                            <input [inputTextLimitWithDecimals]="percentageFilter" class="form-control" formControlName="EmployeeRatePercentage" />
+                                                                            <span class="input-group-addon">%</span>
+                                                                        </div>
+                                                                    </phx-form-control>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-12 panel panel-internal" data-ng-if="taxVersion.TaxVersionStatusId == ApplicationConstants.TaxVersionStatus.Active||taxVersion.TaxVersionStatusId == ApplicationConstants.TaxVersionStatus.Replaced">
+                                                    <div class="panel-body">
+                                                        <app-phx-workflow-event-history [entityTypeId]="ApplicationConstants.EntityType.ProvincialTaxHeader" [entityId]="taxId">
+
+                                                        </app-phx-workflow-event-history>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="panel-footer" *ngIf="isInEditMode">
+                                                <div class="row">
+                                                    <div class="col-lg-6">
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <div class="pull-right">
+
+                                                            <button type="button" class="btn btn-default" (click)="cancelEdit($event)" *ngIf="isInEditMode && !isNew">Cancel and Discard</button>
+
+                                                            <button type="button" class="btn btn-primary" (click)="onCorrectCommand($event)" *ngIf="isForCorrection && isInEditMode"
+                                                                [disabled]="form.invalid">Correct</button>
+
+                                                            <button type="button" class="btn btn-primary" [disabled]="form.invalid" (click)="onScheduleChangeCommand($event)" *ngIf="isForScheduleChange && isInEditMode">Schedule Change</button>
+
+                                                            <button type="button" class="btn btn-default" (click)="cancelNewEdit($event)" *ngIf="isNew && isInEditMode">Cancel and Discard</button>
+
+                                                            <button type="button" class="btn btn-primary" (click)="onCreateCommand($event)" *ngIf="isNew && isInEditMode" [disabled]="form.invalid">Create</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="col-lg-2">
+        <div class="payrolltax-versions">
+            <div class="payrolltax-version-group">
+                <app-phx-tax-versions [taxVersions]="taxVersions" (selectedTaxVersion)="onTaxVersionSelected($event)" [currentVersionId]="taxVersion.Id"
+                    [editable]="isInEditMode"></app-phx-tax-versions>
+            </div>
+        </div>
+    </div>
+</div>

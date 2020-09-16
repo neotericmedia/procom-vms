@@ -1,0 +1,49 @@
+﻿<div class="row vms-conflict-main-div">
+	<div class="row">
+		<div class="col-lg-12">
+			<div class="panel-heading headstone">
+				<div class="row">
+					<div class="col-lg-1"></div>
+					<div class="col-lg-2">
+						<label class="text-gray col-xs-12">File </label>
+						<span class=" col-xs-12">{{::vmsBatchExpense.processedRecordDetails.FileName}}</span>
+					</div>
+					<div class="col-lg-3">
+						<label class="text-gray col-xs-12">Client</label>
+						<span class=" col-xs-12">{{::vmsBatchExpense.processedRecordDetails.OrganizationClient}}</span>
+					</div>
+					<div class="col-lg-2">
+						<label class="text-gray col-xs-12">Process Date</label>
+						<span class=" col-xs-12">{{::vmsBatchExpense.processedRecordDetails.ImportDate | date:ApplicationConstants.formatDateComma}}</span>
+					</div>
+					<div class="col-lg-2">
+						<label class="text-gray col-xs-12">Status</label>
+						<span class=" col-xs-12">{{::vmsBatchExpense.processedRecordDetails.FileStatus | lookup : vmsBatchExpense.vmsFileStatus}}</span>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="tabbable col-lg-12">
+			<ul class="nav nav-tabs">
+				<li data-ng-class="{ active : $state.includes('vms.batch.expense.details') }">
+					<a data-ui-sref=".details">Details</a>
+				</li>
+				<li data-ng-class="{ active : $state.includes('vms.batch.expense.workflow') }">
+					<a data-ui-sref=".workflow">Workflow</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+	<div class="row">
+		<div class="tab-content col-lg-12">
+			<div class="tab-pane active">
+				<div class="panel">
+					<div class="panel-body" data-ui-view="tabPanel" data-autoscroll="false"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,137 @@
+﻿<div data-loading-spinner="processing"></div>
+
+<div class="row" style="margin-right: 10px;">
+    <div class="col-md-3" style="padding-right: 0px;">
+        <table class="app-vms-totals" style="margin-left: 10px; margin-right: 0px;">
+            <tbody>
+                <tr class="bg-success">
+                    <td>Total Pending</td>
+                    <td class="text-right"><strong>&nbsp; {{totalPending}}</strong></td>
+                </tr>
+                <tr class="bg-warning">
+                    <td>Total Conflict</td>
+                    <td class="text-right"><strong>&nbsp; {{totalConflict}}</strong></td>
+                </tr>
+                <tr class="bg-danger">
+                    <td>Total Discarded</td>
+                    <td class="text-right"><strong>&nbsp; {{totalDiscarded}}</strong></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="form-group">
+    <div class="smart-table-wrapper">
+        <div class="row" style="margin-left: 0px; margin-right: 0px">
+            <table data-st-table-struct='[{"stTableValue" : "items"}, {"stPipeValue" : "callServer"}, {"widthValues" : "[5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]"}]'>
+                <thead data-st-head="1800px">
+                    <tr>
+                        <th data-st-sort="WorkOrderReference" data-st-sort-default="">WorkOrder Reference</th>
+                        <th data-st-sort="LastName">Last Name</th>
+                        <th data-st-sort="FirstName">First Name</th>
+                        <th data-st-sort="StartDate">From</th>
+                        <th data-st-sort="EndDate">To</th>
+                        <th data-st-sort="BillAmount">Bill Amount</th>
+                        <th data-st-sort="PayAmount">Pay Amount</th>
+                        <th data-st-sort="VmsInvoiceReference">Invoice ID</th>
+                        <th data-st-sort="VmsFixedPriceImportedRecordTypeIdFinal">Import To</th>
+                        <th data-st-sort="Reason">Reason</th>
+                        <th data-st-pen-name="Action">Action</th>
+                    </tr>
+                    <tr>
+                        <th>
+                            <input data-st-advanced-search="'WorkOrderReference'" placeholder="" class="input-sm form-control" type="search" />
+                        </th>
+                        <th>
+                            <input data-st-advanced-search="'LastName'" placeholder="" class="input-sm form-control" data-safe-restrict-input="" />
+                        </th>
+                        <th>
+                            <input data-st-advanced-search="'FirstName'" placeholder="" class="input-sm form-control" type="search" data-safe-restrict-input="" />
+                        </th>
+                        <th>
+                            <input data-st-advanced-search="'StartDate'" data-st-as-operator-override="'ge'" close-on-date-selection="false" show-button-bar="false"
+                                   show-weeks="false" class="input-sm form-control" data-st-as-lazy-attributes="{'uib-datepicker' : ApplicationConstants.formatDate}"
+                                   data-st-as-height-override="400" data-st-as-width-override="315" />
+                        </th>
+                        <th>
+                            <input data-st-advanced-search="'EndDate'" data-st-as-operator-override="'le'" close-on-date-selection="false" show-button-bar="false"
+                                   show-weeks="false" class="input-sm form-control" data-st-as-lazy-attributes="{'uib-datepicker' : ApplicationConstants.formatDate}"
+                                   data-st-as-height-override="400" data-st-as-width-override="315" />
+                        </th>
+                        <th>
+                            <input data-st-advanced-search="{property: 'BillAmount', ignoreQuotes: true, valueSuffix: 'M'}" placeholder="" class="input-sm form-control numberType"
+                                   data-safe-restrict-input="[^0123456789.]" />
+                        </th>
+                        <th>
+                            <input data-st-advanced-search="{property: 'PayAmount', ignoreQuotes: true, valueSuffix: 'M'}" placeholder="" class="input-sm form-control numberType"
+                                   data-safe-restrict-input="[^0123456789.]" />
+                        </th>
+                        <th>
+                            <input data-st-advanced-search="'InvoiceReference'" placeholder="" class="input-sm form-control" type="search" />
+                        </th>
+                        <th>
+                            <select data-st-advanced-search="{property: 'VmsFixedPriceImportedRecordTypeIdFinal', ignoreQuotes: true}" class="input-sm form-control menu-dropdown-wide180">
+                                <option value="1">Import to Processed</option>
+                                <option value="2">Import to Conflict</option>
+                                <option value="3">Discarded</option>
+                            </select>
+                        </th>
+                        <th>
+                            <input data-st-advanced-search="'Reason'" placeholder="" class="input-sm form-control" type="search" />
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr data-ng-repeat="item in items" style="cursor: pointer" ng-class="{
+                        success:item.VmsFixedPriceImportedRecordTypeIdFinal==ApplicationConstants.VmsFixedPriceImportedRecordType.ToProcess,
+                        warning:item.VmsFixedPriceImportedRecordTypeIdFinal==ApplicationConstants.VmsFixedPriceImportedRecordType.Conflict,
+                        danger:item.VmsFixedPriceImportedRecordTypeIdFinal==ApplicationConstants.VmsFixedPriceImportedRecordType.Discarded
+                        }">
+                        <td title="{{::item.WorkOrderReference}}">{{::item.WorkOrderReference}}</td>
+                        <td title="{{::item.LastName}}">{{::item.LastName}}</td>
+                        <td title="{{::item.FirstName}}">{{::item.FirstName}}</td>
+                        <td title="{{::item.StartDate| date: ApplicationConstants.formatDate}}">{{::item.StartDate | date: ApplicationConstants.formatDate}}</td>
+                        <td title="{{::item.EndDate| date: ApplicationConstants.formatDate}}">{{::item.EndDate | date: ApplicationConstants.formatDate}}</td>
+                        <td class="text-right" title="{{::item.BillAmount | currency:'$':2}}">{{::item.BillAmount | currency:'$':2}}</td>
+                        <td class="text-right" title="{{::item.PayAmount | currency:'$':2}}">{{::item.PayAmount | currency:'$':2}}</td>
+                        <td title="{{::item.VmsInvoiceReference}}">{{::item.VmsInvoiceReference}}</td>
+                        <td title="{{item.VmsFixedPriceImportedRecordTypeIdFinal | lookup:lists.vmsImportedRecordTypeList}}">{{item.VmsFixedPriceImportedRecordTypeIdFinal | lookup:lists.vmsImportedRecordTypeList}}</td>
+                        <td title="{{item.Reason}}" ng-bind-html="item.Reason"></td>
+                        <td>
+                            <button type="button" class="btn btn-xs btn-default" data-ng-show="item.VmsFixedPriceImportedRecordTypeIdFinal!=ApplicationConstants.VmsFixedPriceImportedRecordType.ToProcess && item.VmsFixedPriceImportedRecordTypeIdInitial==ApplicationConstants.VmsFixedPriceImportedRecordType.ToProcess"
+                                    data-ng-click="markAsProcess(item)" data-ng-disabled="processing" title="Mark as Ready to Process">
+                                Mark as Ready to Process
+                            </button>
+                            <button type="button" class="btn btn-xs btn-default" data-ng-show="item.VmsFixedPriceImportedRecordTypeIdFinal!=ApplicationConstants.VmsFixedPriceImportedRecordType.Conflict && item.VmsFixedPriceImportedRecordTypeIdInitial!=ApplicationConstants.VmsFixedPriceImportedRecordType.Error"
+                                    data-ng-click="markAsConflict(item)" data-ng-disabled="processing" title="Mark as Conflict">
+                                Mark as Conflict
+                            </button>
+                            <button type="button" class="btn btn-xs btn-default" data-ng-show="item.VmsFixedPriceImportedRecordTypeIdFinal!=ApplicationConstants.VmsFixedPriceImportedRecordType.Discarded && item.VmsFixedPriceImportedRecordTypeIdInitial!=ApplicationConstants.VmsFixedPriceImportedRecordType.Error"
+                                    data-ng-click="markAsDiscarded(item)" data-ng-disabled="processing" title="Mark as Discarded">
+                                Mark as Discarded
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="9">
+                            <span>Total Count: {{totalItemCount || 0}}; Items Loaded: {{items ? items.length : 0}}</span>
+                        </td>
+                        <td>
+                            <div class="pull-right" data-ng-show="documentPublicId">
+                                <button type="button" class="btn" title="Mark as Conflict" data-ng-click="rejectFile(documentPublicId)" data-ng-disabled="!availableActions || processing">Reject File</button>
+                                <button type="button" class="btn btn-primary" title="Mark as Ready to Process" data-ng-click="processFile(documentPublicId)"
+                                        data-ng-disabled="!availableActions || processing">
+                                    Process File
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>

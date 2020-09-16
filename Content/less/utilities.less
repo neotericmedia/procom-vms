@@ -1,0 +1,318 @@
+// Core variables and mixins
+@import "variables.less";
+@import "mixins.less";
+
+// ----------------------------------------------------
+// ADMIN TEMPLATE | APP Admin Template
+// --------------------------------------
+// version       : 1.09.2013 - 1.0.0
+// copyright     : (c) 2013 Petr Marasek
+// contact       : gootoboo@gmail.com
+/* 
+ * -----------------------------------------------------------------------------
+ * APP - APP UTILITIES 
+ * ----------------------------------------------------------------------------- 
+ */
+
+ @font-weight-strong: 600;
+
+// TEXT
+// ----------------------------------------------------
+
+// Remove space to inline block
+.f0 { font-size: 0; line-height: normal; }
+
+.f10c { font-size: 10px; line-height: @line-height-computed; }
+.f11c { font-size: 11px; line-height: @line-height-computed; }
+.f12c { font-size: 12px; line-height: @line-height-computed; }
+.f13c { font-size: 13px; line-height: @line-height-computed; }
+.f14c { font-size: 14px; line-height: @line-height-computed; }
+.f16c { font-size: 16px; line-height: @line-height-computed; }
+.f18c { font-size: 18px; line-height: @line-height-computed; }
+.f20c { font-size: 20px; line-height: @line-height-computed; }
+
+// Text size
+.f10 { font-size: 10px; line-height: @line-height-base; }
+.f11 { font-size: 11px; line-height: @line-height-base; }
+.f12 { font-size: 12px; line-height: @line-height-base; }
+.f13 { font-size: 13px; line-height: @line-height-base; }
+.f14 { font-size: 14px; line-height: @line-height-base; }
+.f16 { font-size: 16px; line-height: @line-height-base; }
+.f18 { font-size: 18px; line-height: @line-height-base; }
+.f20 { font-size: 20px; line-height: @line-height-base; }
+.f22 { font-size: 22px; line-height: 1; }
+.f24 { font-size: 24px; line-height: 1; }
+.f26 { font-size: 26px; line-height: 1; }
+.f28 { font-size: 28px; line-height: 1; }
+.f30 { font-size: 30px; line-height: 1; }
+.f32 { font-size: 32px; line-height: 1; }
+.f34 { font-size: 34px; line-height: 1; }
+.f36 { font-size: 36px; line-height: 1; }
+.f38 { font-size: 38px; line-height: 1; }
+.f40 { font-size: 40px; line-height: 1; }
+.f42 { font-size: 42px; line-height: 1; }
+.f50 { font-size: 50px; line-height: 1; }
+.f58 { font-size: 58px; line-height: 1; }
+.f64 { font-size: 64px; line-height: 1; }
+.f72 { font-size: 75px; line-height: 1; }
+
+strong                      { font-weight: @font-weight-strong; } // 600
+.bold                       { font-weight: 700; }
+.bold-thin                      { font-weight: 600; }
+.normal                     { font-weight: 300; }
+
+.uppercase                  { text-transform: uppercase; }
+.em                         { font-style: italic; }
+
+.va-top                     { vertical-align: top !important }
+.va-middle                  { vertical-align: middle !important }
+.clickable                  { cursor: pointer; }
+
+// TEXT
+// ----------------------------------------------------
+
+.text-justify               { text-align: justify; }
+
+.text-condensed             { line-height: 1.25; }
+.text-condensed-small       { line-height: 1.25; font-size: ceil(@font-size-base * 0.92); } // ~18px 
+
+// CLEARINGING ELEMENTS
+// ----------------------------------------------------
+
+.clear-left                 { clear: left; }
+.clear-right                { clear: right; }
+.clear-both                 { clear: both; }
+
+.ellipsis                   { .text-overflow(); display: block; }
+
+
+// DISPLAY
+// ----------------------------------------------------
+
+.block                      { display: block !important; }
+.inline-top                 { display: inline-block; vertical-align: top;  }
+.inline-middle              { display: inline-block; vertical-align: middle;  }
+
+.overflow                   { overflow:   visible; }
+.overflow-x                 { overflow-x: visible; }
+.overflow-y                 { overflow-y: visible; }
+.overflow-hidden            { overflow:   hidden !important; }
+.overflow-xhidden           { overflow-x: hidden !important; }
+.overflow-yhidden           { overflow-y: hidden !important; }
+
+
+// POSITION
+// ----------------------------------------------------
+
+.relative                   { position: relative; }
+.absolute                   { position: absolute; }
+
+
+// WRAPP
+// ----------------------------------------------------
+
+.wrap-relative { 
+  position: relative; 
+  .clearfix(); 
+
+  span& {
+    display: block;
+  }
+}
+
+.image-wrap-out             { background: #f3f3f3; border: 1px solid #e3e3e3; }
+.image-wrap-in              { border: 1px solid #fff; }
+
+// tool for correcting grid 
+// app-outer expands, app-wrapper the packaging, app-inner padding contains as grid gutter
+.app-outer                  { margin: @grid-gutter-width / -2}
+.app-wrapper                { padding: 0; }
+.app-inner                  { padding: @grid-gutter-width / 2}
+.app-outer-horizontal       { margin-right: @grid-gutter-width / -2; margin-left: @grid-gutter-width / -2}
+.app-inner-horizontal       { padding-right: @grid-gutter-width / 2; padding-left: @grid-gutter-width / 2}
+
+
+// OPACITY
+// ----------------------------------------------------
+
+.opaci15,
+.dataicon-opaci15[data-icon]:before  { .opacity(.15); }
+.opaci25,
+.dataicon-opaci25[data-icon]:before  { .opacity(.25); }
+.opaci35,
+.dataicon-opaci35[data-icon]:before  { .opacity(.35); }
+.opaci45,
+.dataicon-opaci45[data-icon]:before  { .opacity(.45); }
+.opaci50,
+.dataicon-opaci50[data-icon]:before  { .opacity(.50); }
+.opaci55,
+.dataicon-opaci55[data-icon]:before  { .opacity(.55); }
+.opaci65,
+.dataicon-opaci65[data-icon]:before  { .opacity(.65); }
+.opaci75,
+.dataicon-opaci75[data-icon]:before  { .opacity(.75); }
+.opaci85,
+.dataicon-opaci85[data-icon]:before  { .opacity(.85); }
+
+// Size border for all bordered element
+// ----------------------------------------------------
+.border-big         { border-width: 8px; }
+.border-large       { border-width: 5px; }
+.border-small       { border-width: 1px; }
+
+// REMOVING
+// ----------------------------------------------------
+
+// Remove Border
+.no-border          { border: none; }
+.no-border-top      { border-top: none !important; }
+.no-border-right    { border-right: none !important; }
+.no-border-bottom   { border-bottom: none !important; }
+.no-border-left     { border-left: none !important; }
+
+// Remove Background
+.no-bg              { background: none !important; }
+.bg-transparent     { background: transparent !important; }
+
+// No Wrap
+.no-wrap            { white-space: nowrap; }
+
+// Remove Radius
+.no-radius          { border-radius: 0; }
+
+// CORRECTION GAP and SPACE (2px 4px 8px 16px)
+// ----------------------------------------------------
+
+// Should be used to modify the default spacing between objects (not between nodes of * the same object)
+// p,m = padding,margin
+// a,t,r,b,l,h,v = all,top,right,bottom,left,horizontal,vertical
+// x,s,m,d,l,n = extra-small(@x),small(@s),medium(@m),base(@b),large(@l),none(0px)
+@x: 3px;
+@s: 5px;
+@m: 10px;
+@b: 15px;
+@l: 20px;
+@xl: 40px;
+
+.ptn, .pvn, .pan { padding-top: 0; }
+.ptx, .pvx, .pax { padding-top: @x; }
+.pts, .pvs, .pas { padding-top: @s; }
+.ptm, .pvm, .pam { padding-top: @m; }
+.ptb, .pvb, .pab { padding-top: @b; }
+.ptl, .pvl, .pal { padding-top: @l; }
+.prn, .phn, .pan { padding-right: 0; }
+.prx, .phx, .pax { padding-right: @x; }
+.prs, .phs, .pas { padding-right: @s; }
+.prm, .phm, .pam { padding-right: @m; }
+.prb, .phb, .pab { padding-right: @b; }
+.prl, .phl, .pal { padding-right: @l; }
+.pbn, .pvn, .pan { padding-bottom: 0; }
+.pbx, .pvx, .pax { padding-bottom: @x; }
+.pbs, .pvs, .pas { padding-bottom: @s; }
+.pbm, .pvm, .pam { padding-bottom: @m; }
+.pbb, .pvb, .pab { padding-bottom: @b; }
+.pbl, .pvl, .pal { padding-bottom: @l; }
+.pln, .phn, .pan { padding-left: 0; }
+.plx, .phx, .pax { padding-left: @x; }
+.pls, .phs, .pas { padding-left: @s; }
+.plm, .phm, .pam { padding-left: @m; }
+.plb, .phb, .pab { padding-left: @b; }
+.pll, .phl, .pal { padding-left: @l; }
+
+.mtn, .mvn, .man { margin-top: 0px; }
+.mtx, .mvx, .max { margin-top: @x; }
+.mts, .mvs, .mas { margin-top: @s; }
+.mtm, .mvm, .mam { margin-top: @m; }
+.mtb, .mvb, .mab { margin-top: @b; }
+.mtl, .mvl, .mal { margin-top: @l; }
+.mtxl, .mvxl, .maxl { margin-top: @xl; }
+.mrn, .mhn, .man { margin-right: 0px; }
+.mrx, .mhx, .max { margin-right: @x; }
+.mrs, .mhs, .mas { margin-right: @s; }
+.mrm, .mhm, .mam { margin-right: @m; }
+.mrb, .mhb, .mab { margin-right: @b; }
+.mrl, .mhl, .mal { margin-right: @l; }
+.mrxl, .mhxl, .maxl { margin-right: @xl; }
+.mbn, .mvn, .man { margin-bottom: 0px; }
+.mbx, .mvx, .max { margin-bottom: @x; }
+.mbs, .mvs, .mas { margin-bottom: @s; }
+.mbm, .mvm, .mam { margin-bottom: @m; }
+.mbb, .mvb, .mab { margin-bottom: @b; }
+.mbl, .mvl, .mal { margin-bottom: @l; }
+.mbxl, .mvxl, .maxl { margin-bottom: @xl; }
+.mln, .mhn, .man { margin-left: 0px; }
+.mlx, .mhx, .max { margin-left: @x; }
+.mls, .mhs, .mas { margin-left: @s; }
+.mlm, .mhm, .mam { margin-left: @m; }
+.mlb, .mhb, .mab { margin-left: @b; }
+.mll, .mhl, .mal { margin-left: @l; }
+.mlxl, .mhxl, .maxl { margin-left: @xl; }
+
+
+// Correct for form-horizontal and Columb sizing for media queries (only margin-bottom)
+.mbn-xm, .mvn-xm, .man-xm { margin-bottom: 0px; }
+.mbx-xm, .mvx-xm, .max-xm { margin-bottom: @x; }
+.mbs-xm, .mvs-xm, .mas-xm { margin-bottom: @s; }
+.mbm-xm, .mvm-xm, .mam-xm { margin-bottom: @m; }
+.mbb-xm, .mvb-xm, .mab-xm { margin-bottom: @b; }
+.mbl-xm, .mvl-xm, .mal-xm { margin-bottom: @l; }
+
+.mbn-sm, .mvn-sm, .man-sm { margin-bottom: 0px; }
+.mbx-sm, .mvx-sm, .max-sm { margin-bottom: @x; }
+.mbs-sm, .mvs-sm, .mas-sm { margin-bottom: @s; }
+.mbm-sm, .mvm-sm, .mam-sm { margin-bottom: @m; }
+.mbb-sm, .mvb-sm, .mab-sm { margin-bottom: @b; }
+.mbl-sm, .mvl-sm, .mal-sm { margin-bottom: @l; }
+
+@media (min-width: @screen-tablet) {
+
+.mbn-xm, .mvn-xm, .man-xm,
+.mbx-xm, .mvx-xm, .max-xm,
+.mbs-xm, .mvs-xm, .mas-xm,
+.mbm-xm, .mvm-xm, .mam-xm,
+.mbb-xm, .mvb-xm, .mab-xm,
+.mbl-xm, .mvl-xm, .mal-xm { margin-bottom: 0; }
+
+}
+
+@media (min-width: @screen-desktop) {
+
+.mbn-sm, .mvn-sm, .man-sm,
+.mbx-sm, .mvx-sm, .max-sm,
+.mbs-sm, .mvs-sm, .mas-sm,
+.mbm-sm, .mvm-sm, .mam-sm,
+.mbb-sm, .mvb-sm, .mab-sm,
+.mbl-sm, .mvl-sm, .mal-sm { margin-bottom: 0; }
+
+}
+
+// SET WIDTH ELEMENTS
+// ----------------------------------------------------
+// width element step 5px to 100 next 25px
+.width20    { width:  20px; }
+.width25    { width:  25px; }
+.width30    { width:  30px; }
+.width35    { width:  35px; }
+.width40    { width:  40px; }
+.width45    { width:  45px; }
+.width50    { width:  50px; }
+.width55    { width:  55px; }
+.width60    { width:  60px; }
+.width65    { width:  65px; }
+.width70    { width:  70px; }
+.width75    { width:  75px; }
+.width80    { width:  80px; }
+.width85    { width:  85px; }
+.width90    { width:  90px; }
+.width95    { width:  95px; }
+.width100   { width: 100px; }
+.width125   { width: 125px; }
+.width150   { width: 150px; }
+.width175   { width: 175px; }
+.width200   { width: 200px; }
+.width225   { width: 225px; }
+.width250   { width: 250px; }
+.width260   { width: 260px; }
+.width275   { width: 275px; }
+.width300   { width: 300px; }
+

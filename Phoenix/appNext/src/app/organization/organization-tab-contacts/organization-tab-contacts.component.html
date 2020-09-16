@@ -1,0 +1,85 @@
+<div class="ng-scope">
+  <div class="contacts ng-scope">
+    <div class="content-group form-horizontal">
+      <div class="content-full">
+        <div class="panel-internal">
+          <div class="form-group">
+            <div class="col-lg-10">
+            </div>
+            <div class="col-lg-2 right">
+              <button type="button" *ngIf="canAddProfile" (click)="onAddProfile($event)" class="btn btn-clouds">Add Profile</button>
+            </div>
+            <div class="form-group col-lg-12">
+              <div class="row" style="position: relative;">
+                <table class="table table-striped table-content table-hover fixed-columns ng-isolate-scope table-layout-fixed">
+                  <thead>
+                    <tr>
+                      <th (click)="sortBy(html.organizationContactColumnsKey.Name)" style="width: 25%;" [ngClass]="(html.tableState.sort.predicate === html.organizationContactColumnsKey.Name && sortNumber === 0) ? 'st-sort-ascent': (html.tableState.sort.predicate === html.organizationContactColumnsKey.Name && sortNumber === 1 ? 'st-sort-descent': '')">
+                        Name
+                      </th>
+                      <th (click)="sortBy(html.organizationContactColumnsKey.Profile)" style="width: 20%;" [ngClass]="(html.tableState.sort.predicate === html.organizationContactColumnsKey.Profile) ? (sortNumber === 0 ? 'st-sort-ascent':(sortNumber === 1 ? 'st-sort-descent': '')): ''">
+                        Profile
+                      </th>
+                      <th (click)="sortBy(html.organizationContactColumnsKey.ProfilePrimaryEmail)" style="width: 35%;"
+                        [ngClass]="(html.tableState.sort.predicate === html.organizationContactColumnsKey.ProfilePrimaryEmail) ? (sortNumber === 0 ? 'st-sort-ascent':(sortNumber === 1 ? 'st-sort-descent': '')): ''">
+                        Profile Primary Email
+                      </th>
+                      <th (click)="sortBy(html.organizationContactColumnsKey.Status)" style="width: 20%;" [ngClass]="(html.tableState.sort.predicate ===html.organizationContactColumnsKey.Status) ? (sortNumber === 0 ? 'st-sort-ascent':(sortNumber === 1 ? 'st-sort-descent': '')): ''">
+                        Status
+                      </th>
+                    </tr>
+                    <tr>
+                      <th style="width: 25%; overflow: visible;">
+                        <app-phx-advance-filter [inputFilter]="inputFilterForName" (onColumnClick)="onColumnClicked($event)"
+                          (onClose)="closeAllFilterPopup($event)" (onGo)="onGo($event)" (onClear)="onClear($event)"
+                          [canShow]="html.filterSelectedStatus.isNameClicked" [columnId]="this.html.organizationContactColumnsKey.Name"></app-phx-advance-filter>
+                      </th>
+                      <th style="width: 20%; overflow: visible;">
+                        <app-phx-advance-filter [inputFilter]="inputFilterForProfile" (onColumnClick)="onColumnClicked($event)"
+                          (onClose)="closeAllFilterPopup($event)" (onGo)="onGo($event)" (onClear)="onClear($event)"
+                          [canShow]="html.filterSelectedStatus.isProfileClicked" [columnId]="this.html.organizationContactColumnsKey.Profile"></app-phx-advance-filter>
+                      </th>
+                      <th style="width: 35%; overflow: visible;">
+                        <app-phx-advance-filter [inputFilter]="inputFilterForProfilePrimaryEmail" (onColumnClick)="onColumnClicked($event)"
+                          (onClose)="closeAllFilterPopup($event)" (onGo)="onGo($event)" (onClear)="onClear($event)"
+                          [canShow]="html.filterSelectedStatus.isProfilePrimaryEmailClicked" [columnId]="this.html.organizationContactColumnsKey.ProfilePrimaryEmail"></app-phx-advance-filter>
+                      </th>
+                      <th style="width: 20%; overflow: visible;">
+                        <app-phx-advance-filter [inputFilter]="inputFilterForStatus" (onColumnClick)="onColumnClicked($event)"
+                          (onClose)="closeAllFilterPopup($event)" (onGo)="onGo($event)" (onClear)="onClear($event)"
+                          [canShow]="html.filterSelectedStatus.isStatusClicked" [columnId]="this.html.organizationContactColumnsKey.Status"></app-phx-advance-filter>
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody style="height: 272.6px;" infiniteScroll [infiniteScrollDistance]="html.scrollConfig.infiniteScrollDistance"
+                    [scrollWindow]="html.scrollConfig.scrollWindow" [infiniteScrollThrottle]="html.scrollConfig.infiniteScrollThrottle"
+                    (scrolled)="onScroll()" *ngIf="html.commonLists.contactList.Items?.length > 0">
+                    <tr *ngFor="let item of html.commonLists.contactList.Items" class="ng-scope" (click)="goToContact(item)">
+                      <td style="width: 25%;" class="ng-binding">{{item.Contact.FullName}}</td>
+                      <td style="width: 20%;" class="ng-binding">{{item.ProfileTypeId |
+                        lookupNoCache:html.commonLists.profileTypeList}}</td>
+                      <td style="width: 35%;" class="ng-binding">{{item.PrimaryEmail}}</td>
+                      <td style="width: 20%;" class="ng-binding">
+                        <span [ngClass]="item.IsDraft?'text-warning':''">{{item.ProfileStatusId |
+                          lookupNoCache:html.commonLists.profileStatusesList}}</span>
+                      </td>
+                    </tr>
+                  </tbody>
+                  <tfoot>
+                    <tr>
+                      <td colspan="4">
+                        <span class="ng-binding">Total Count: {{html.commonLists.contactList.Count}}; Items Loaded: {{
+                          html.commonLists.contactList.Items
+                          ? html.commonLists.contactList.Items.length: 0}}</span>
+                      </td>
+                    </tr>
+                  </tfoot>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

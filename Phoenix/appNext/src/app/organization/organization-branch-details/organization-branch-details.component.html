@@ -1,0 +1,166 @@
+<div class="row form-horizontal">
+  <div class="col-lg-12">
+    <div class="panel">
+      <div class="panel-heading headstone">
+        <div class="row">
+          <div class="col-lg-1 col-md-1">
+            <label class="control-label col-xs-12 ">ID</label>
+            <span class="col-xs-12">{{branch?.Id ? branch?.Id : ''}}</span>
+          </div>
+          <div class="col-lg-5 col-md-5">
+            <label class="control-label col-xs-12 ">Branch Name</label>
+            <span class=" col-xs-12 ">{{branch?.Name}}</span>
+          </div>
+        </div>
+      </div>
+      <div class="content-group">
+        <form [formGroup]="form">
+          <div class="content-left">
+            <div class="form-group col-md-12">
+              <h4>
+                <span class="col-xs-12" style="padding: 0">Branch Info</span>
+              </h4>
+              <div class="panel-padding-top" *ngIf="branch">
+                <phx-form-control [showValidationMessages]="true" labelText="Branch Code" viewModeText="{{branch?.Code}}" [control]="form.controls['Code']"
+                  [editable]="editable">
+                  <input type="text" class="form-control" formControlName="Code" maxlength="6" />
+                </phx-form-control>
+                <phx-form-control [showValidationMessages]="false" labelText="Branch Name" viewModeText="{{branch?.Name}}" [control]="form.controls['Name']"
+                  [editable]="editable">
+                  <input type="text" class="form-control" formControlName="Name" maxlength="64" />
+                </phx-form-control>
+                <phx-form-control [showValidationMessages]="false" labelText="Description" viewModeText="{{branch?.Description}}" [control]="form.controls['Description']"
+                  [editable]="editable">
+                  <textarea [rows]="5" class="form-control" formControlName="Description" maxlength="128"></textarea>
+                </phx-form-control>
+              </div>
+            </div>
+            <div class="form-group col-md-12">
+              <h4>
+                <span class="col-xs-12" style="padding: 0">Branch Manager</span>
+              </h4>
+              <div class="panel-padding-top" *ngFor="let manager of form.controls['BranchManagers'].controls; let i = index; let last = last">
+                <div [formGroup]="manager">
+                  <phx-form-control labelText="Branch Manager" [editable]="editable" [control]="manager" 
+                  viewModeText="{{manager.controls['UserProfileInternalId'].value | lookupNoCache:branchManagerList:'Id':'Contact.FullName'}}">
+                    <app-phx-select-box [items]="branchManagerList | filterSelectChoicesByUsage: branch.BranchManagers:manager.value:'UserProfileInternalId':'Id': 'Contact.FullName'"
+                      textField="Contact.FullName" valueField="Id" formControlName="UserProfileInternalId">
+                    </app-phx-select-box>
+                  </phx-form-control>
+                </div>
+                <div class="form-group" *ngIf="editable" style="padding-right: 10px">
+                  <button type="button" class="btn btn-default btn-material pull-right" *ngIf="editable" (click)="removeBranchItem(i, 'BranchManagers')">
+                    <i class="material-icons">delete</i>
+                  </button>
+                </div>
+              </div>
+              <div class="form-group" style="padding: 10px 10px 0 0">
+                <button type="button" class="btn btn-default btn-material pull-right" *ngIf="editable" (click)="addBranchManager()" [disabled]="!form.get('BranchManagers').valid">
+                  <i class="material-icons">add</i>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="content-right">
+            <div class="form-group col-md-12">
+              <h4>
+                <span class="col-xs-12" style="padding: 0">Phone Number</span>
+              </h4>
+              <div class="panel-border" *ngFor="let phone of form.controls['BranchPhones'].controls; let i = index; let last = last">
+                <div [formGroup]="phone">
+                  <phx-form-control [control]="phone" labelText="Type" [editable]="editable" viewModeText="{{phone.controls.PhoneType.value | CodeValue:codeValueGroups.BranchPhoneType}}">
+                    <app-phx-select-box-code-value [formControl]="phone.controls.PhoneType" [groupName]="codeValueGroups.BranchPhoneType" sortByFieldName="text">
+                    </app-phx-select-box-code-value>
+                  </phx-form-control>
+
+                  <phx-form-control [control]="phone" labelText="Phone" [editable]="editable" viewModeText="{{phone.controls.Phone.value + (phone.controls.Extension.value !== null && phone.controls.Extension.value.trim() !== '' ? ' Ext.' + phone.controls.Extension.value : '')}}">
+                    <div class="col-xs-8 no-padding-h">
+                      <input formControlName="Phone" class="form-control" type="text" minlength="7" maxlength="15" (keypress)="keyPress($event)"
+                      />
+                    </div>
+                    <div class="col-xs-4 no-padding-h-r">
+                      <input formControlName="Extension" class="form-control" type="text" maxlength="10" (keypress)="keyPress($event)" (change)="onPhoneChange()"
+                      />
+                    </div>
+                  </phx-form-control>
+                </div>
+                <div class="form-group" *ngIf="editable" style="padding-right: 10px">
+                  <button type="button" class="btn btn-material btn-default pull-right" (click)="removeBranchItem(i, 'BranchPhones')" *ngIf="editable">
+                    <i class="material-icons">delete</i>
+                  </button>
+                </div>
+              </div>
+              <div class="form-group" style="padding: 10px 10px 0 0">
+                <button type="button" class="btn btn-default btn-material pull-right" (click)="addBranchPhone()" *ngIf="editable" [disabled]="!form.get('BranchPhones').valid">
+                  <i class="material-icons">add</i>
+                </button>
+              </div>
+            </div>
+            <div class="form-group col-md-12">
+              <h4>
+                <span class="col-xs-12" style="padding: 0">Address</span>
+              </h4>
+              <div class="panel-border" *ngFor="let address of form.controls['BranchAddresses'].controls; let i = index; let last = last">
+                <div [formGroup]="address">
+                  <phx-form-control [control]="address.controls.Description" [editable]="editable" labelText="Description" viewModeText="{{address.controls.Description.value}}">
+                    <input formControlName="Description" type="text" class="form-control" maxlength="128" />
+                  </phx-form-control>
+
+                  <phx-form-control [control]="address.controls.AddressLine1" [editable]="editable" labelText="Address Line 1" viewModeText="{{address.controls.AddressLine1.value}}">
+                    <input formControlName="AddressLine1" type="text" class="form-control" maxlength="50" />
+                  </phx-form-control>
+
+                  <phx-form-control [control]="address.controls.AddressLine2" [editable]="editable" labelText="Address Line 2" viewModeText="{{address.controls.AddressLine2.value}}">
+                    <input formControlName="AddressLine2" type="text" class="form-control" maxlength="128" />
+                  </phx-form-control>
+
+                  <phx-form-control [control]="address.controls.CityName" [editable]="editable" labelText="City Name" viewModeText="{{address.controls.CityName.value}}">
+                    <input formControlName="CityName" type="text" class="form-control" maxlength="128" />
+                  </phx-form-control>
+
+                  <phx-form-control [control]="address.controls.CountryId" labelText="Country" [editable]="editable" viewModeText="{{address.controls.CountryId.value | CodeValue:codeValueGroups.Country}}">
+                    <app-phx-select-box-code-value [formControl]="address.controls.CountryId" #addressCountry [groupName]="codeValueGroups.Country"
+                      sortByFieldName="text">
+                    </app-phx-select-box-code-value>
+                  </phx-form-control>
+
+                  <phx-form-control [control]="address.controls.SubdivisionId" labelText="Subdivision" [editable]="editable" viewModeText="{{address.controls.SubdivisionId.value | CodeValue:codeValueGroups.Subdivision}}">
+                    <app-phx-select-box-code-value [formControl]="address.controls.SubdivisionId" [groupName]="codeValueGroups.Subdivision" sortByFieldName="text"
+                      [relatedGroupName]="codeValueGroups.Country" [relatedValue]="addressCountry.value">
+                    </app-phx-select-box-code-value>
+                  </phx-form-control>
+
+                  <phx-form-control [control]="address.controls.PostalCode" [editable]="editable" labelText="Postal Code" viewModeText="{{address.controls.PostalCode.value}}">
+                    <input formControlName="PostalCode" type="text" class="postal-code form-control" />
+                  </phx-form-control>
+
+                  <div class="form-group" *ngIf="editable" style="padding-right: 10px">
+                    <button type="button" class="btn btn-material btn-default pull-right" (click)="removeBranchItem(i, 'BranchAddresses')">
+                      <i class="material-icons">delete</i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group" style="padding: 10px 10px 0 0">
+                <button type="button" class="btn btn-default btn-material pull-right" (click)="addBranchAddress()" *ngIf="editable" [disabled]="!form.get('BranchAddresses').valid">
+                  <i class="material-icons">add</i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="panel-footer">
+        <div class="row">
+          <div class="col-md-offset-6 col-lg-6">
+            <div class="pull-right">
+              <button class="btn btn-default" (click)="discardChanges()" *ngIf="editable">Cancel and Discard</button>
+              <button class="btn btn-primary" (click)="saveBranch()" [disabled]="!form.valid" *ngIf="editable">Submit</button>
+              <button type="button" class="btn btn-primary" (click)="editBranch()" *ngIf="!editable">Edit</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

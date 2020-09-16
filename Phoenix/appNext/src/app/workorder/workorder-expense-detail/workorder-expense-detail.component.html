@@ -1,0 +1,149 @@
+<form [formGroup]="inputFormGroup">
+  <div class="content-group ">
+    <div class="content-left">
+      <div class="panel-internal">
+        <div class="form-group">
+          <div class="col-lg-12">
+            <h4>Expense Methodology</h4>
+          </div>
+        </div>
+        <div class="form-group">
+          <phx-form-control labelText="Expense Methodology" [control]="inputFormGroup.controls.ExpenseMethodologyId"
+            [editable]="readOnlyStorage.IsEditable && checkPtFiledAccessibility('WorkOrderVersion','ExpenseMethodologyId')"
+            viewModeText="{{inputFormGroup.controls.ExpenseMethodologyId.value | CodeValue:codeValueGroups.ExpenseMethodology }}">
+            <app-phx-select-box [items]="html.codeValueLists.listExpenseMethodologies" textField="text" valueField="id"
+              placeholder="-- select one --" [formControl]="inputFormGroup.controls.ExpenseMethodologyId"
+              (valueChanged)="onChangeExpenseMethodology($event)">
+            </app-phx-select-box>
+          </phx-form-control>
+        </div>
+      </div>
+    </div>
+    <div class="content-right" *ngIf="html.expenseCard.expenseApproval">
+      <div class="panel-internal">
+        <div class="form-group">
+          <div class="col-lg-12">
+            <h4>Expense Approver</h4>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-lg-4 control-label label-to-right">Expense Approver Definition</label>
+          <div class="col-lg-8">
+          </div>
+        </div>
+        <div class="form-group">
+          <div *ngFor="let item of inputFormGroup.controls['ExpenseApprovers'].controls['SupplierApprover'].controls">
+            <div [formGroup]="item">
+              <phx-form-control labelText="Supplier Approver" [control]="item.controls.UserProfileId" [editable]="readOnlyStorage.IsEditable && checkPtFiledAccessibility('WorkOrderVersion.ExpenseApprovers','UserProfileId')"
+                viewModeText="{{item.controls.UserProfileId.value | lookupNoCache: html.commonLists.listProfilesForSupplierApproval:'Id':'DisplayValue'}}">
+                <app-phx-select-box [items]="html.commonLists.listProfilesForSupplierApproval" textField="DisplayValue"
+                  valueField="Id" [formControl]="item.controls.UserProfileId" placeholder="Approver Name Search">
+                </app-phx-select-box>
+              </phx-form-control>
+            </div>
+          </div>
+          <div *ngFor="let item of inputFormGroup.controls['ExpenseApprovers'].controls['InternalApprover'].controls">
+            <div [formGroup]="item">
+              <phx-form-control labelText="Internal Approver" [control]="item.controls.UserProfileId" [editable]="readOnlyStorage.IsEditable && checkPtFiledAccessibility('WorkOrderVersion.ExpenseApprovers','UserProfileId')"
+                viewModeText="{{item.controls.UserProfileId.value | lookupNoCache: html.commonLists.listProfilesForInternalApproval:'Id':'DisplayValue'}}">
+                <app-phx-select-box [items]="html.commonLists.listProfilesForInternalApproval" textField="DisplayValue"
+                  valueField="Id" [formControl]="item.controls.UserProfileId" placeholder="Approver Name Search">
+                </app-phx-select-box>
+              </phx-form-control>
+            </div>
+          </div>
+          <div *ngFor="let item of inputFormGroup.controls['ExpenseApprovers'].controls['ClientApprover'].controls; let clientIndex=index; let lastClient = last">
+            <div [formGroup]="item">
+              <phx-form-control labelText="Client Approver" [control]="item.controls.UserProfileId" [editable]="readOnlyStorage.IsEditable  && checkPtFiledAccessibility('WorkOrderVersion.ExpenseApprovers','UserProfileId')"
+                viewModeText="{{item.controls.UserProfileId.value | lookupNoCache: html.commonLists.listProfilesForClientApproval:'Id':'DisplayValue'}}">
+                <div [ngClass]="{'col-md-10 padding-0': (clientIndex != 0)}">
+                  <app-phx-select-box [items]="html.commonLists.listProfilesForClientApproval 
+                  | filterSelectChoicesByUsage: inputFormGroup.controls['ExpenseApprovers'].controls['ClientApprover'].value
+                  : item.value: 'UserProfileId': 'Id': 'Contact.FullName': 'Contact.Id'"
+                    textField="DisplayValue" valueField="Id" [formControl]="item.controls.UserProfileId" placeholder="Approver Name Search">
+                  </app-phx-select-box>
+                </div>
+                <div class="col-xs-1 pull-right padding-0" *ngIf="clientIndex != 0">
+                  <button type="button" class="btn btn-default btn-material pull-right" (click)="onClickRemoveExpenseApproverDefinition(clientIndex)">
+                    <!-- data-ng-if="actionButton.show.workOrderAddRemoveSubEntities"-->
+                    <i class="material-icons">delete</i>
+                  </button>
+                </div>
+              </phx-form-control>
+            </div>
+            <div class="col-lg-2 pull-right" *ngIf="lastClient && readOnlyStorage.IsEditable">
+              <!-- data-ng-if="actionButton.show.workOrderAddRemoveSubEntities" -->
+              <button type="button" class="btn btn-default btn-material pull-right add-btn-group" (click)="onClickAddExpenseApproverDefinition()"
+                [disabled]="inputFormGroup.controls['ExpenseApprovers'].controls['ClientApprover'].length >= html.commonLists.listProfilesForClientApproval.length"
+                title="Add a new Expense Approver">
+                <i class=" material-icons">add</i>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="form-group" *ngIf="inputFormGroup.controls['ExpenseApprovers'].controls['ClientApprover'].length > 1">
+          <phx-form-control labelText="Expense Approval Flow Type" [control]="inputFormGroup.controls.ExpenseApprovalFlowId"
+            [editable]="readOnlyStorage.IsEditable && checkPtFiledAccessibility('WorkOrderVersion','ExpenseApprovalFlowId')"
+            viewModeText="{{inputFormGroup.controls.ExpenseApprovalFlowId.value | CodeValue:codeValueGroups.TimeSheetApprovalFlow}}">
+            <app-phx-select-box [items]="html.codeValueLists.listExpenseApprovalFlows" textField="text" valueField="id"
+              [formControl]="inputFormGroup.controls.ExpenseApprovalFlowId" placeholder="-- select one --">
+            </app-phx-select-box>
+          </phx-form-control>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="content-group">
+    <div class="content-left" *ngIf="html.expenseCard.projectsAndCoding">
+      <div class="panel-internal">
+        <div class="form-group">
+          <div class="col-lg-12">
+            <h4>Projects &amp; Coding</h4>
+          </div>
+        </div>
+        <div class="form-group">
+          <phx-form-control labelText="Expense Uses Projects?" [control]="inputFormGroup.controls['IsExpenseUsesProjects']"
+            [editable]="readOnlyStorage.IsEditable && checkPtFiledAccessibility('WorkOrderVersion','IsExpenseUsesProjects')"
+            viewModeText="{{inputFormGroup.controls['IsExpenseUsesProjects'].value ? 'Yes' : 'No'}}">
+            <label class="radio-inline">
+              <input class="form-check-input" type="radio" [value]="true" formControlName="IsExpenseUsesProjects">Yes</label>
+            <label class="radio-inline">
+              <input class="form-check-input" type="radio" [value]="false" formControlName="IsExpenseUsesProjects">No</label>
+          </phx-form-control>
+        </div>
+      </div>
+    </div>
+    <div class="content-right" *ngIf="html.expenseCard.configurationAndDescriptors">
+      <div class="panel-internal">
+        <div class="form-group">
+          <div class="col-lg-12">
+            <h4>Configuration &amp; Descriptors</h4>
+          </div>
+        </div>
+        <div class="form-group" *ngIf="html.expenseCard.thirdPartyWorkerID">
+          <phx-form-control [control]="inputFormGroup.controls.ExpenseThirdPartyWorkerReference" [editable]="readOnlyStorage.IsEditable && checkPtFiledAccessibility('WorkOrderVersion','ExpenseThirdPartyWorkerReference')"
+            labelText="Third Party Worker ID" viewModeText="{{inputFormGroup.controls.ExpenseThirdPartyWorkerReference.value}}">
+            <input formControlName="ExpenseThirdPartyWorkerReference" type="text" class="form-control" />
+          </phx-form-control>
+        </div>
+        <div class="form-group" *ngIf="html.expenseCard.requiresOriginal">
+          <phx-form-control labelText="Requires Original" [control]="inputFormGroup.controls['IsExpenseRequiresOriginal']"
+            [editable]="readOnlyStorage.IsEditable && checkPtFiledAccessibility('WorkOrderVersion','IsExpenseRequiresOriginal')"
+            viewModeText="{{inputFormGroup.controls['IsExpenseRequiresOriginal'].value ? 'Yes' : 'No'}}">
+            <label class="radio-inline">
+              <input class="form-check-input" type="radio" [value]="true" formControlName="IsExpenseRequiresOriginal">Yes</label>
+            <label class="radio-inline">
+              <input class="form-check-input" type="radio" [value]="false" formControlName="IsExpenseRequiresOriginal">No</label>
+          </phx-form-control>
+        </div>
+        <div class="form-group" *ngIf="html.expenseCard.expenseDescription">
+          <phx-form-control [control]="inputFormGroup.controls.ExpenseDescription" labelText="Expense Description"
+            [editable]="readOnlyStorage.IsEditable && checkPtFiledAccessibility('WorkOrderVersion','ExpenseDescription')"
+            viewModeText="{{inputFormGroup.controls.ExpenseDescription.value}}">
+            <input formControlName="ExpenseDescription" type="text" class="form-control" />
+          </phx-form-control>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

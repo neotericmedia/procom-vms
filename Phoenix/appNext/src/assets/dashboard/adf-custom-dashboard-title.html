@@ -1,0 +1,27 @@
+<div class="dashboard-action-bar">
+        <div class="dropdown pull-right" uib-dropdown>
+            <button class="btn btn-default btn-material dropdown-toggle" uib-dropdown-toggle>
+                <i class="material-icons">more_vert</i>
+            </button>
+            <ul class="dropdown-menu">
+                <li ng-if="editMode" ng-click="addWidgetDialog()">
+                    <a href="">{{ 'dashboard.framework.addWidget' | phxTranslate }}</a>
+                </li>
+                <li ng-if="options.editable && !editMode" ng-click="toggleEditMode()">
+                    <a href="">{{ 'dashboard.framework.editWidgets' | phxTranslate }}</a>
+                </li>
+                <li ng-if="editMode" ng-click="editDashboardDialog()">
+                    <a href="">{{ 'dashboard.framework.dashboardSettings' | phxTranslate }}</a>
+                </li>
+                <li ng-click="collapseAll(true)">
+                    <a href="">{{ 'dashboard.framework.collapseAll' | phxTranslate }}</a>
+                </li>
+                <li ng-click="collapseAll(false)">
+                    <a href="">{{ 'dashboard.framework.expandAll' | phxTranslate }}</a>
+                </li>
+            </ul>
+        </div>
+        <button class="btn btn-default btn-material save-button" title="{{ 'dashboard.framework.saveChanges' | phxTranslate }}" ng-if="editMode" ng-click="toggleEditMode()"><i class="material-icons">save</i></button>
+        <button class="btn btn-default btn-material cancel-button" title="{{ 'dashboard.framework.undoChanges' | phxTranslate }}" ng-if="editMode" ng-click="cancelEditMode()"><i class="material-icons">undo</i></button>
+</div>
+<!-- <div ng-if="editMode" class="alert alert-info edit-warning">Currently in edit mode. Save or undo your changes when you are done.</div> -->

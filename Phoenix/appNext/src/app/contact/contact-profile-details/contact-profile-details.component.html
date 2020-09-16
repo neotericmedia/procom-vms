@@ -1,0 +1,45 @@
+<app-phx-panel headerTitle="Profile Details">
+    <form [formGroup]="inputFormGroup" *ngIf="inputFormGroup">
+        <div>
+            <phx-form-control [showValidationMessages]="false" name="PrimaryEmail" [control]="inputFormGroup.controls.PrimaryEmail"
+                labelText="Primary Email" [editable]="readOnlyStorage.IsEditable" viewModeText="{{inputFormGroup?.controls.PrimaryEmail?.value}}">
+                <div class="input-group">
+                    <span class="input-group-addon">
+                        <i class="fontello-icon-email"></i>
+                    </span>
+                    <input type="email" class="form-control" [formControl]="inputFormGroup.controls.PrimaryEmail" />
+                </div>
+            </phx-form-control>
+            <!-- <pre>
+                {{  html.profile.IsDraft | json}}
+                {{ (this.html.profile.Contact.LoginUserId) | json }}
+                {{ html.isAlowedToInvite | json }}
+            </pre> -->
+            <div class="col-sm-2" style="right: 0px;position: absolute;z-index: 1;top: 48px;" *ngIf="html.isAlowedToInvite">
+                <button placement="top" *ngIf="html.profile.ProfileStatusId === phxConstants.ProfileStatus.Active"
+                    class="btn btn-default btn-profile-invite" (click)="invite($event)" [disabled]="(!html.isAlowedToInvite || html.isInvited)">Invite</button>
+                <span id='inviteToolTip' class="btn btn-material" placement="top">
+                    <i class="material-icons md-18">info_outline</i>
+                </span>
+                <app-phx-tool-tip targetId="#inviteToolTip">
+                    <div style="width:150px; white-space: normal;">
+                        {{ html.invitationTooltip }}
+                        <div *ngIf="html.invitationDate">
+                            {{html.invitationDate}}
+                        </div>
+                    </div>
+                </app-phx-tool-tip>
+            </div>
+        </div>
+
+        <phx-form-control name="ProfileType" labelText="{{readOnlyStorage.IsEditable ? 'Profile Type&nbsp;&nbsp;&nbsp;' : 'Profile Type'}}" [editable]="readOnlyStorage.IsEditable">
+            <div class="padding-t-6">
+                <i>{{html.profile?.IsPrimary ? 'Primary' : 'Not Primary'}}</i>
+            </div>
+            <button *ngIf="html.profile.ProfileStatusId === phxConstants.ProfileStatus.Active && !html.profile.IsPrimary"
+                class="btn btn-default btn-profile-primary" (click)="makePrimary($event)">Make Primary
+            </button>
+        </phx-form-control>
+
+    </form>
+</app-phx-panel>

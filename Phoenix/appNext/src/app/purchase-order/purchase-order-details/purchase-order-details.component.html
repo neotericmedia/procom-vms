@@ -1,0 +1,85 @@
+<form [formGroup]="inputFormGroup" *ngIf="readOnlyStorage && inputFormGroup">
+  <div class="content-group form-horizontal po-tab-details">
+    <div class="panel-internal col-lg-6">
+      <!-- <div class="form-group">
+        <label class="col-lg-2 control-label" *ngIf="inputFormGroup.controls.CreatedByProfileId.value>0">Created By</label>
+        <div class="col-lg-4" *ngIf="inputFormGroup.controls.CreatedByProfileId.value>0">
+          <p class="form-control-static" *ngIf="(inputFormGroup.controls.CreatedDatetime.value| date:phxConstants.formatDateSorting).length==10">
+            {{inputFormGroup.controls.CreatedByContactName.value}} - {{inputFormGroup.controls.CreatedDatetime.value | date:phxConstants.formatDate}}</p>
+        </div>
+
+        <label class="col-lg-2 control-label" *ngIf="inputFormGroup.controls.LastModifiedByProfileId.value>0">Modified By</label>
+        <div class="col-lg-4" *ngIf="inputFormGroup.controls.CreatedByProfileId.value>0">
+          <p class="form-control-static" *ngIf="(inputFormGroup.controls.LastModifiedDatetime.value| date:phxConstants.formatDateSorting).length==10">
+            {{inputFormGroup.controls.LastModifiedByContactName.value}} - {{inputFormGroup.controls.LastModifiedDatetime.value | date:phxConstants.formatDate}}</p>
+        </div>
+      </div> -->
+      <div class="form-group" *ngIf="inputFormGroup.controls.OrganizationId.value>0 && inputFormGroup.controls.StatusId.value === phxConstants.PurchaseOrderStatus.Active">
+        <label class="col-lg-4 control-label">Client Company</label>
+        <div class="col-lg-4">
+          <p>
+            <a routerLink="/next/organization/{{inputFormGroup.controls.OrganizationId.value}}/details">
+              {{inputFormGroup.controls.OrganizationId.value |
+              lookupNoCache:html.commonLists.listOrganizationClient:'Id':'DisplayName'}}
+              - {{inputFormGroup.controls.OrganizationId.value }}
+            </a>
+          </p>
+        </div>
+      </div>
+      <div *ngIf="(!activeInEditMode && (inputFormGroup.controls.StatusId.value === phxConstants.PurchaseOrderStatus.New || inputFormGroup.controls.StatusId.value == phxConstants.PurchaseOrderStatus.Draft))">
+        <phx-form-control [control]="inputFormGroup.controls.OrganizationId" labelText="Client Company" viewModeText="">
+          <app-phx-select-box [formControl]="inputFormGroup.controls.OrganizationId" [items]="html.commonLists.listOrganizationClient"
+            textField="DisplayValue" valueField="Id" placeholder=" -- select one --">
+          </app-phx-select-box>
+        </phx-form-control>
+      </div>
+      <phx-form-control [control]="inputFormGroup.controls.PurchaseOrderNumber" [editable]="readOnlyStorage.IsEditable || activeInEditMode"
+        labelText="PO Number" viewModeText="{{inputFormGroup.controls.PurchaseOrderNumber.value}}">
+        <input formControlName="PurchaseOrderNumber" type="text" class="form-control" />
+      </phx-form-control>
+
+      <phx-form-control [control]="inputFormGroup.controls.Description" [editable]="readOnlyStorage.IsEditable || activeInEditMode"
+        labelText="Description" viewModeText="{{inputFormGroup.controls.Description.value}}">
+        <input formControlName="Description" type="text" class="form-control" />
+      </phx-form-control>
+
+      <phx-form-control [control]="inputFormGroup.controls.DepletedActionId" labelText="Depleted Action" [editable]="readOnlyStorage.IsEditable || activeInEditMode"
+        viewModeText="{{inputFormGroup.controls.DepletedActionId.value | CodeValue:codeValueGroups.PurchaseOrderDepletedActions:'text'}}">
+        <app-phx-select-box [formControl]="inputFormGroup.controls.DepletedActionId" [items]="html.codeValueLists.purchaseOrderDepletedActionList"
+          textField="text" valueField="id" placeholder=" -- select one --">
+        </app-phx-select-box>
+      </phx-form-control>
+
+      <div class="form-group">
+        <label class="col-lg-4 control-label">Total Funds</label>
+        <div class="col-lg-4">
+          <p class="form-control-static">{{inputFormGroup.controls.TotalFund.value | pxCurrencyFormatter}}
+            {{(inputFormGroup.controls.CurrencyId.value >
+            0) ? (inputFormGroup.controls.CurrencyId.value | lookup: html.codeValueLists.listCurrency:'id':'code') :
+            ''}}</p>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-lg-4 control-label">Funds Committed</label>
+        <div class="col-lg-4">
+          <p class="form-control-static"> {{inputFormGroup.controls.FundCommitted.value | pxCurrencyFormatter}}
+            {{(inputFormGroup.controls.CurrencyId.value
+            > 0) ? (inputFormGroup.controls.CurrencyId.value | lookup: html.codeValueLists.listCurrency:'id':'code') :
+            ''}}
+          </p>
+        </div>
+      </div>
+      <phx-form-control [control]="inputFormGroup.controls.InvoiceRestrictionId" labelText="Restriction" [editable]="readOnlyStorage.IsEditable || activeInEditMode"
+        viewModeText="{{inputFormGroup.controls.InvoiceRestrictionId.value |  lookup: html.codeValueLists.purchaseOrderInvoiceRestrictionsList:'id':'text'}}">
+        <app-phx-select-box [formControl]="inputFormGroup.controls.InvoiceRestrictionId" [items]="html.codeValueLists.purchaseOrderInvoiceRestrictionsList"
+          textField="text" valueField="id" placeholder=" -- select one --">
+        </app-phx-select-box>
+      </phx-form-control>
+    </div>
+    <!-- here the postion of lines -->
+    <div class="form-group col-lg-12">
+      <app-purchase-order-details-lines [purchaseOrderLines]="inputFormGroup.controls.PurchaseOrderLines.value"
+        (removeLines)="removeLines($event)" (addLines)="onAddLine()" [showAddLine]="showAddLine" [showDeleteLine]="showDeleteLine"></app-purchase-order-details-lines>
+    </div>
+  </div>
+</form>

@@ -1,0 +1,135 @@
+<form #wcbForm="ngForm">
+    <div class="row">
+        <div class="btn-group action-drp" *ngIf="!availableButtons && hasModifyAccess && workflowAvailableActions && workflowAvailableActions.length>0">
+            <button type="button" class="btn btn-clouds dropdown-toggle" data-toggle="dropdown">Actions...
+                <span class="caret ml"></span>
+            </button>
+            <ul class="dropdown-menu bordered">
+                <li style="cursor: pointer;" *ngFor="let action of workflowAvailableActions" (click)="onActionSelect(action)">
+                    <a>{{action.Name}}</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-10 tab-content" *ngIf="selectedVersion">
+            <div class="tabbable panel panel-tabbable">
+                <div class="tab-content wcb-sub">
+                    <div class="tab-pane active headstone" style="margin-right: 10px;">
+                        <div class="panel wcb-sub-header">
+                            <div class="row">
+                                <div class="col-sm-1 form-group">
+                                    <label class="control-label ">Id</label>
+                                    <div class="">{{wcb?.Id}}</div>
+                                </div>
+                                <div class="col-sm-4 form-group">
+                                    <label class="control-label " [ngClass]="{'form-invalid':!SD.valid}">Province / State</label>
+                                    <div class="">
+                                        <app-phx-select-box *ngIf="editMode && provinces && wcb && versionId===0" [items]="selectableProvinces" textField="text"
+                                            valueField="id" (valueChanged)="provinceChanged($event.value)">
+                                        </app-phx-select-box>
+                                        <input type="hidden" #SD="ngModel" id="SD" name="SD" value="" [(ngModel)]="wcb.SubdivisionId" required>
+                                        <span *ngIf="(!editMode && provinces && wcb) || versionId > 0">{{province}}</span>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4 form-group">
+                                    <label class="control-label " [ngClass]="{'form-invalid':!ED.valid}">Effective Date</label>
+                                    <div class="  ">
+                                        <dx-date-box ngControl="effectiveDate" *ngIf="editMode && (isWorkflowSceduleChange || versionId===0)" [(value)]="selectedVersion.EffectiveDate"
+                                            [min]="minDate">
+                                        </dx-date-box>
+                                        <input type="hidden" #ED="ngModel" id="ED" name="ED" value="" [(ngModel)]="selectedVersion.EffectiveDate" required>
+                                        <span *ngIf="!editMode || (editMode  && (!isWorkflowSceduleChange && versionId>0))">{{selectedVersion.EffectiveDate | date:'MMM dd, y'}}</span>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3 form-group">
+                                    <label class="control-label ">Status</label>
+                                    <div class="text-warning ">
+                                        <span>{{selectedVersion.Status}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tabbable wcb-sub-tabs">
+                    <ul class="nav nav-tabs">
+                        <!-- ngRepeat: curTab in scopeOrg.tab.configList -->
+                        <li [ngClass]="{'active': selectedTab == 'details'}" (click)="selectedTab='details'">
+                            <a href="javascript:void(0)">
+                                Details
+                            </a>
+                        </li>
+                        <li *ngIf="!editMode" [ngClass]="{'active': selectedTab == 'history'}" (click)="selectedTab='history'">
+                            <a href="javascript:void(0)">History</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="tab-content clearfix wcb-sub-tab-content" *ngIf="selectedTab == 'details'">
+                    <app-WCBSubdivisionDetailsTab [(wcb)]="wcb" [parentForm]="wcbForm" [(editMode)]="editMode" [(selectedVersion)]="selectedVersion"
+                        [waitCounter]="waitCounter" [validationMessages]="validationMessages" [workerCompensations]="workerCompensations"
+                        [selectableWorkerCompensations]="selectableWorkerCompensations" [versionId]="versionId">
+                    </app-WCBSubdivisionDetailsTab>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <!--<dx-button icon="plus" (onClick)="addDetail()" ></dx-button>-->
+                        <div class="pull-right margin10">
+                            <button type="button" *ngIf="editMode" class="btn btn-material btn-default add-wcb-btn" (click)="addDetail()">
+                                <i class="material-icons add-wcb-icon">add</i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="pull-right margin10 wcb-wf-btn">
+                            <workflow-buttons (callWorkflowCommand)="callWorkflowCommand($event)" [isValid]="wcbForm.valid" [actionButtons]="availableButtons"></workflow-buttons>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-content" *ngIf="selectedTab == 'history' && !editMode">
+                    <div class="content-group form-horizontal">
+                        <div class="panel">
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="form-group">
+                                        <h4>Change History</h4>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <app-changeHistory [entityTypeId]="93" [entityId]="wcb.Id" [blackList]="changeHistoryBlackList"></app-changeHistory>
+                                </div>
+                            </div>
+                            <div class="panel-body hidden-xs hidden-sm ">
+                                <div class="row">
+                                    <div class="form-group">
+                                        <h4>Workflow History</h4>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <app-phx-workflow-event-history [entityTypeId]="93" [entityId]="wcb.Id"></app-phx-workflow-event-history>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-2 nopadding col-xs-6 ">
+            <div class="panel-body nopadding wcb-sub-version" *ngIf="wcb">
+                <div class="form-group version-item clearfix" [ngClass]="{'active': versionId===v.Id }" *ngFor="let v of wcb?.WCBSubdivisionVersion"
+                    (click)="viewVersion(v)">
+                    <div class="col-lg-12">Version {{v.version}}</div>
+                    <div class="col-lg-12">{{v.EffectiveDate | date:'MMM dd, y'}}</div>
+                    <div class="col-lg-12">
+                        <span [ngClass]="{'text-warning': v.Status==='Active' }">
+                            <span class="small-text">Status:&nbsp;</span>{{v.Status}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

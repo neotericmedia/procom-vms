@@ -1,0 +1,152 @@
+﻿<div data-ng-form="formSalesTax" class="sales-tax-details col-lg-12">
+    <div class="col-lg-12 sales-tax-actions-wrapper">
+        <div class="col-lg-3 sales-tax-actions-drp" data-ng-if="tax.currentVersion.WorkflowAvailableActions.length>0">
+            <ui-select data-ng-model="tax.taxActionId" theme="select2" class="form-control" data-ng-change="tax.actionChanged({{$select.selected}}, tax.currentVersion)">
+                <ui-select-match placeholder="Actions">{{$select.selected.Name}}</ui-select-match>
+                <ui-select-choices repeat="item.Id as item in tax.currentVersion.WorkflowAvailableActions | orderBy:'DisplayButtonOrder' | uiSelectChoicesFilter: $select.search: 'Name': 'Id'">
+                    <span data-ng-bind-html="item.Name | highlight: $select.search"></span>
+                </ui-select-choices>
+            </ui-select>
+        </div>
+    </div>
+    <div class=" col-lg-10">
+        <div class="headstone panel-heading">
+            <div class="row"> 
+                <div class="col-lg-1"></div>
+                <div class="col-lg-2">
+                    <label class="control-label col-xs-12 ">Id</label>
+                    <span class="col-xs-12 ">{{tax.taxHeader.Id}}</span>
+                </div>
+                <div class="col-lg-3">
+                    <label class="control-label col-xs-12 ">Country</label>
+                    <span class="col-xs-12 ">{{tax.taxHeader.CountryId  ? (tax.taxHeader.CountryId|lookup:tax.taxCodeValueList.countries) : 'N/A'}}</span>
+                </div>
+                <div class="col-lg-3">
+                    <label class="control-label col-xs-12 ">Tax Type</label>
+                    <span class="col-xs-12 ">{{tax.taxHeader.SalesTaxId ? (tax.taxHeader.SalesTaxId|lookup:tax.taxCodeValueList.taxCodes) : 'N/A'}}</span>
+                </div>
+                <div class="col-lg-3">
+                    <label class="control-label col-xs-12 ">Status</label>
+                    <label class="col-xs-12 " data-ng-if="!tax.isWorkflowRunning && tax.selectedActionId == null" data-ng-class="{'text-warning': tax.currentVersion.TaxVersionStatusId==ApplicationConstants.TaxVersionStatus.Active}">{{tax.currentVersion.TaxVersionStatusId|lookup:tax.taxCodeValueList.taxVersionStatuses}}</label>
+                    <label class="col-xs-12 " data-ng-if="!tax.isWorkflowRunning && tax.selectedActionId !== null">{{tax.selectedActionId|lookup:tax.taxCodeValueList.actionStatuses}}</label>
+                    <label class="col-xs-12 " data-ng-if="tax.isWorkflowRunning">Workflow Is Running</label>
+                </div>
+            </div>
+            <!-- <div class="row sales-tax-header-row"> 
+                <div class="col-lg-3">
+                    <span>{{tax.taxHeader.Id}}</span>
+                </div>
+                <div class="col-lg-3">
+                    <span>{{tax.taxHeader.CountryId  ? (tax.taxHeader.CountryId|lookup:tax.taxCodeValueList.countries) : 'N/A'}}</span>
+                </div>
+                <div class="col-lg-3">
+                    <span>{{tax.taxHeader.SalesTaxId ? (tax.taxHeader.SalesTaxId|lookup:tax.taxCodeValueList.taxCodes) : 'N/A'}}</span>
+                </div>
+                <div class="col-lg-3">
+                    <span data-ng-if="!tax.isWorkflowRunning && tax.selectedActionId == null" data-ng-class="{'text-warning': tax.currentVersion.TaxVersionStatusId==ApplicationConstants.TaxVersionStatus.Active}">{{tax.currentVersion.TaxVersionStatusId|lookup:tax.taxCodeValueList.taxVersionStatuses}}</span>
+                    <span data-ng-if="!tax.isWorkflowRunning && tax.selectedActionId !== null">{{tax.selectedActionId|lookup:tax.taxCodeValueList.actionStatuses}}</span>
+                    <span data-ng-if="tax.isWorkflowRunning">Workflow Is Running</span>
+                </div>
+            </div> -->
+        </div>
+        <div class="panel">
+            <div class="panel-body">
+                <div class="col-lg-12">
+                    <label for-property="CountryId" for="CountryId" data-model-property="tax.taxHeader.CountryId" class="col-lg-2 control-label label-to-right req-lab-right sales-tax-lbl" data-original-title="" title="">Country</label>
+                    <div class="col-lg-3">
+                        <div class="input-group select2-bootstrap-append">
+                            <ui-select name="CountryId" data-ng-model="tax.taxHeader.CountryId" theme="select2" class="form-control" data-pt-field-view="tax.ptFieldViewConfigOnChangeStatusId" data-ng-change="tax.taxCountryChanged({{$select.selected}})" required>
+                                <ui-select-match placeholder="-- Select One --">{{$select.selected.text}}</ui-select-match>
+                                <ui-select-choices repeat="item.id as item in tax.taxCodeValueList.countries | uiSelectChoicesFilter: $select.search: 'text'">
+                                    <span data-ng-bind-html="item.text | highlight: $select.search"></span>
+                                    <span data-ng-bind-html="' - ' + item.code | highlight: $select.search"></span>
+                                </ui-select-choices>
+                            </ui-select>
+                            <span class="input-group-btn">
+                                <button tabindex="-1" data-ng-click="tax.removeCountry()" class="btn btn-default"><i class="material-icons md-18">clear</i></button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <label for-property="SalesTaxId" for="SalesTaxId" data-model-property="tax.taxHeader.SalesTaxId" class="col-lg-2 control-label label-to-right req-lab-right sales-tax-lbl" data-original-title="" title="">Tax Type</label>
+                    <div class="col-lg-3">
+                        <div class="input-group select2-bootstrap-append">
+                            <ui-select name="SalesTaxId" data-ng-model="tax.taxHeader.SalesTaxId" theme="select2" data-pt-field-view="tax.ptFieldViewConfigOnChangeStatusId" class="form-control" required>
+                                <ui-select-match placeholder="-- Select One --">{{$select.selected.text}}</ui-select-match>
+                                <ui-select-choices repeat="item.id as item in tax.taxCodeValueList.taxCodes | uiSelectChoicesFilter: $select.search: 'text'">
+                                    <span data-ng-bind-html="item.text | highlight: $select.search"></span>
+                                </ui-select-choices>
+                            </ui-select>
+                            <span class="input-group-btn">
+                                <button tabindex="-1" data-ng-click="tax.taxHeader.SalesTaxId=undefined" class="btn btn-default"><i class="material-icons md-18">clear</i></button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12 sales-tax-effective-date margin-bottom-10">
+                    <label for-property="EffectiveDate" for="EffectiveDate" data-model-property="tax.currentVersion.EffectiveDate" class="col-lg-2 control-label label-to-right req-lab-right sales-tax-lbl" data-original-title="" title="">Effective Date</label>
+                    <div class="col-lg-3">
+                        <pt-date-picker data-ng-model="tax.currentVersion.EffectiveDate" data-pt-field-view="tax.ptFieldViewConfigOnChangeStatusId" data-ng-required="true" data-required-message="Required" data-func-callback-on-done="header.datePickerCallbackOnDoneEffectiveDate()" />
+                    </div>
+                </div>
+                <div data-ng-if="tax.currentVersion.SalesTaxVersionRates && tax.currentVersion.SalesTaxVersionRates.length>0">
+                    <div class="form-group col-lg-12 sales-tax-provinces">
+                        <div class="row bg-gray-strong sales-tax-provinces-header col-md-12">
+                            <div class="col-xs-5 text-black">Province/State</div>
+                            <div class="col-xs-4 text-black">Is Applied</div>
+                            <div class="col-xs-3 text-black"><span class="sales-tax-provinces-header-last pull-right">Percentage (%)</span></div>
+                        </div>
+                        <div class="row sales-tax-provinces-body col-md-12" data-ng-repeat="rate in tax.currentVersion.SalesTaxVersionRates">
+                            <div class="col-xs-5 text-black sales-tax-province-cell">{{rate.SubdivisionId|lookup:tax.taxSubdivisions}}</div>
+                            <div class="col-xs-7 col-sm-4 sales-tax-radio-cell">
+                                <pt-input-radio name="taxApplied"
+                                                data-ng-click="tax.radioChanged(rate)"
+                                                data-ng-required="false"
+                                                data-template-type="input-radio"
+                                                data-ng-model="rate.IsApplied"
+                                                data-options="[{ key: true, value: 'Yes' },{ key: false, value: 'No' }]"
+                                                data-pt-field-view="tax.ptFieldViewConfigOnChangeStatusId"/>
+                            </div>
+                            <div class="col-sm-3 text-black sales-tax-percent-cell" style="text-align: right;" data-ng-if="rate.IsApplied">
+                                <input style="text-align: right;" type="text" data-pt-field-view="tax.ptFieldViewConfigOnChangeStatusId" data-pt-field-view-custom="{ { rate.RatePercentage | displayPercentageView:4 } }" data-float-between-input="{from:0.00, to:100.00, decimalplaces:4 }" data-ng-model="rate.RatePercentage" name="RatePercentage" class="form-control sales-tax-percent-amount" data-ng-required="{{rate.IsApplied}}">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-12 panel-body" data-pt-validation-messages="tax.validationMessages" data-ng-if="tax.validationMessages"></div>
+            <div class="panel-footer" data-ng-if="tax.currentVersion.TaxVersionStatusId == ApplicationConstants.TaxVersionStatus.New || tax.selectedActionId == tax.taxCodeValueList.actionStatusType.ToCorrect || tax.selectedActionId == tax.taxCodeValueList.actionStatusType.ToScheduleChange">
+                <div class="row">
+                    <div class="col-lg-6"></div>
+                    <div class="col-lg-6" style="min-height:30px;">
+                        <div class="pull-right">
+                            <button type="button" class="btn btn-default" data-ng-click="tax.salesTaxButtonsHandler('CancelNew', tax.currentVersion, tax.taxHeader.CountryId, tax.taxHeader.SalesTaxId)" data-ng-if="tax.currentVersion.TaxVersionStatusId == ApplicationConstants.TaxVersionStatus.New">Cancel and Discard</button>
+                            <button type="button" class="btn btn-default" data-ng-click="tax.salesTaxButtonsHandler('Cancelled', tax.currentVersion, tax.taxHeader.CountryId, tax.taxHeader.SalesTaxId)" data-ng-if="tax.selectedActionId == tax.taxCodeValueList.actionStatusType.ToCorrect || tax.selectedActionId == tax.taxCodeValueList.actionStatusType.ToScheduleChange">Cancel and Discard</button>
+
+                            <button type="button" class="btn btn-primary" data-ng-click="tax.salesTaxButtonsHandler('Created', tax.currentVersion, tax.taxHeader.CountryId, tax.taxHeader.SalesTaxId)" data-ng-if="tax.currentVersion.TaxVersionStatusId == ApplicationConstants.TaxVersionStatus.New" data-ng-disabled="!formSalesTax.$valid">Create</button>
+                            <button type="button" class="btn btn-primary" data-ng-click="tax.salesTaxButtonsHandler('Corrected', tax.currentVersion, tax.taxHeader.CountryId, tax.taxHeader.SalesTaxId)" data-ng-if="tax.selectedActionId == tax.taxCodeValueList.actionStatusType.ToCorrect" data-ng-disabled="!formSalesTax.$valid">Correct</button>
+                            <button type="button" class="btn btn-primary" data-ng-click="tax.salesTaxButtonsHandler('Schedule Changed', tax.currentVersion, tax.taxHeader.CountryId, tax.taxHeader.SalesTaxId)" data-ng-if="tax.selectedActionId == tax.taxCodeValueList.actionStatusType.ToScheduleChange" data-ng-disabled="!formSalesTax.$valid">Schedule Change</button>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-2">
+        <div class="payrolltax-versions">
+            <div class="payrolltax-version-group">
+                <div class="version-version-item"
+                     data-ng-repeat="version in tax.taxHeader.SalesTaxVersions | orderBy:'EffectiveDate':true" data-ng-form=" formrate"
+                     data-ng-click="tax.onVersionClick(version)"
+                     data-ng-class="{ 'active' : (tax.currentVersion.TaxVersionStatusId != ApplicationConstants.TaxVersionStatus.New && tax.selectedActionId != tax.taxCodeValueList.actionStatusType.ToScheduleChange && tax.selectedActionId != tax.taxCodeValueList.actionStatusType.ToCorrect && version.Id==tax.currentVersion.Id)}">
+                    <div>
+                        <div><span class="small-text">Effective Date:&nbsp;</span>{{version.EffectiveDate|date:ApplicationConstants.formatDate}}</div>
+                        <span data-ng-class="version.TaxVersionStatusId==ApplicationConstants.TaxVersionStatus.Active?'text-warning':''"><span class="small-text">Status:&nbsp;</span>{{version.TaxVersionStatusId| lookup:tax.taxCodeValueList.taxVersionStatuses}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

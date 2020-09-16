@@ -1,0 +1,76 @@
+<div class="row">
+  <div class="col-md-2">
+    <table class="app-vms-totals">
+      <tbody>
+        <tr class="bg-success">
+          <td>TOTAL PENDING</td>
+          <td class="text-right">
+            <strong>&nbsp; {{ document.TotalPending }}</strong>
+          </td>
+        </tr>
+        <tr class="bg-warning">
+          <td>TOTAL CONFLICT</td>
+          <td class="text-right">
+            <strong>&nbsp; {{ document.TotalConflict }}</strong>
+          </td>
+        </tr>
+        <tr class="bg-danger">
+          <td>TOTAL DISCARDED</td>
+          <td class="text-right">
+            <strong>&nbsp; {{ document.TotalDiscarded }}</strong>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="col-md-2">
+    <table class="app-vms-totals">
+      <tbody>
+        <tr style="background-color:#d9edf7;">
+          <td>TOTAL COMPLETED</td>
+          <td class="text-right">
+            <strong>&nbsp; {{ document.TotalCompleted }}</strong>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<div class="row">
+  <div class="tab-content col-lg-12">
+    <div class="tab-pane active">
+      <div class="panel">
+        <!-- <div class="btn-group">
+            <button type="button" class="btn btn-clouds dropdown-toggle" data-toggle="dropdown" [disabled]="document.TotalConflict === 0">
+              <span class="payroll-btn-name">Actions...</span> <span class="caret ml payroll-btn-caret"></span>
+            </button>
+            <ul class="dropdown-menu bordered">
+              <li>
+                <a (click)="discardAllConflicts()">Discard All Conflict Records</a>
+              </li>
+
+            </ul>
+          </div> -->
+        <app-phx-state-action-buttons [displayType]="'DROPDOWN'" [stateActions]="StateActions"></app-phx-state-action-buttons>
+
+
+        <app-phx-data-table *ngIf="dataSourceUrl" #phxTable [configuration]="dataTableConfiguration" [dataSourceUrl]="dataSourceUrl"
+          [dataSourceParams]="oDataParams" [columns]="columns" [componentName]="dataGridComponentName" (rowPrepared)="changeColor($event)"
+          (rowClick)="onRowClick($event)">
+          <div *dxTemplate="let d of 'reasonTemplate'">
+            <span style="white-space: pre">{{d.value | replaceHtmlBreakWithNewLine}}</span>
+          </div>
+        </app-phx-data-table>
+        <div class="skippedHeader">
+          <h4>Discarded {{importTypeText}} Records</h4>
+        </div>
+        <app-phx-data-table #phxTableDiscard [configuration]="dataTableDiscartedConfiguration" [dataSource]="skippedRecords"
+          [columns]="columns" (rowPrepared)="changeColor($event)">
+          <div *dxTemplate="let d of 'reasonTemplate'">
+            <span style="white-space: pre">{{d.value | replaceHtmlBreakWithNewLine}}</span>
+          </div>
+        </app-phx-data-table>
+      </div>
+    </div>
+  </div>
+</div>

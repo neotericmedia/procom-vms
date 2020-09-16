@@ -1,0 +1,90 @@
+<div class="domain compliancedocumentrule" *ngIf="documentRule">
+  <div class="col-lg-12">
+
+    <div class="row" style="height: 35px;">
+      <div class="col col-lg-3">
+        <app-phx-workflow-buttons (callWorkflowCommand)="clickOnWorkflowAvailableAction($event, documentRule)" *ngIf="documentRule.ComplianceDocumentRuleStatusId !== html.phxConstants.ComplianceDocumentRuleStatus.Draft"
+          [openDefaultDeclineDialog]="false" [valid]="rootFormGroup?.valid" [workflowAvailableActions]="documentRule.WorkflowAvailableActions"
+          [isButtonBar]="false">
+        </app-phx-workflow-buttons>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-10 margin-10-v-t">
+        <div class="panel col-lg-12">
+          <div class="row">
+            <app-document-rule-header [documentRule]="documentRule" [ruleTypeId]="routerState.Id">
+            </app-document-rule-header>
+          </div>
+          <div class="row" style="padding-left:2px; padding-right:1px;">
+            <br />
+            <app-phx-navigation-bar [navigationBarContent]="html.navigationBarContent" [url]="routerState.url" *ngIf="html.navigationBarContent">
+            </app-phx-navigation-bar>
+          </div>
+          <div class="row">
+            
+            <app-document-rule-details [inputFormGroup]="rootFormGroup?.controls?.DocumentRuleDetails"
+            (outputEvent)="onOutputEvent()"
+            [readOnlyStorage]="readOnlyStorage" *ngIf="routerState.tabId === html.phxConstants.DocumentRuleNavigationName.details" >
+
+            </app-document-rule-details>
+
+            <app-document-rule-tab-rules [inputFormGroup]="rootFormGroup?.controls?.DocumentRules"
+              [currentDocumentRule]="documentRule"
+            (outputEvent)="onOutputEvent()"
+            [readOnlyStorage]="readOnlyStorage" *ngIf="routerState.tabId === html.phxConstants.DocumentRuleNavigationName.rules" >
+
+            </app-document-rule-tab-rules>
+
+            <app-compliance-template-search [showNewButton]="false"
+            *ngIf="routerState.tabId === html.phxConstants.DocumentRuleNavigationName.templates"
+             [documentTypeId]="documentRule.ComplianceDocumentRuleUserDefinedDocumentTypes[0]?.UserDefinedCodeComplianceDocumentTypeId"></app-compliance-template-search>             
+
+
+             <app-document-rule-tab-history [documentRule]="documentRule"
+             *ngIf="routerState.tabId === html.phxConstants.DocumentRuleNavigationName.history" >
+
+             </app-document-rule-tab-history>
+
+          </div>
+          <div class="row">
+            <div class="panel-footer" >
+                <app-phx-workflow-buttons (callWorkflowCommand)="clickOnWorkflowAvailableAction($event, documentRule)"
+                [openDefaultDeclineDialog]="false" [valid]="rootFormGroup?.valid" [getActionButtonCssClass]='buttonClass'
+                #footerbar
+                 [workflowAvailableActions]="documentRule.WorkflowAvailableActions" [buttonSortDirection]="html.buttonSortDirections.RightToLeft"
+                [isButtonBar]="true">
+              </app-phx-workflow-buttons>
+            </div>
+          </div>
+          <div *ngIf="html.validationMessages && html.validationMessages.length > 0" class="alert alert-danger alert-dismissable error-box">
+            <div *ngFor="let message of html.validationMessages">
+              <div>
+                {{ message?.Message }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-2">
+        <div class="complianceDocumentRule-versions">
+          <div class="complianceDocumentRule-version-group">
+            <div *ngFor="let version of documentRule.Versions | orderBy: 'Id'" (click)="onVersionClick(version)"
+              [class]="(version.Id === routerState.Id)?'version-version-item active':'version-version-item'">
+              <div>{{version.IsOriginal?'Current Document Rule':'Proposed Change'}}</div>
+              <div>
+                <span [class]="version.ComplianceDocumentRuleStatusId === html.phxConstants.ComplianceDocumentRuleStatus.Active?'text-warning':''"><span
+                    class="small-text">Status:&nbsp;</span>{{version.ComplianceDocumentRuleStatusId | CodeValue:
+                  html.codeValueGroups?.ComplianceDocumentRuleStatus}}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-phx-dialog [config]="phxDialogComponentConfigModel"></app-phx-dialog>
+<!-- <pre>Valid===={{rootFormGroup?.value.DocumentRules.ComplianceDocumentRuleRestrictions | json}}</pre> -->

@@ -1,0 +1,35 @@
+<form [formGroup]="inputFormGroup">
+    <div class="panel-internal">
+        <div class="form-group">
+            <div class="col-lg-10">
+                <h4>Payment Parties</h4>
+            </div>
+        </div>
+        <div *ngFor="let paymentInfo of inputFormGroup.controls['PaymentPartiesRateDetails'].controls; let i = index;let last = last; trackBy: trackByFn">
+            <div>
+                <app-workorder-payment-party [inputFormGroup]="paymentInfo" [paymentInfoIndex]="i" [readOnlyStorage]="readOnlyStorage"
+                    (outputEvent)="onOutputEvent($event,i)"></app-workorder-payment-party>
+            </div>
+            <div class="form-group" *ngIf="i > 0 && workOrderDetails.readOnlyStorage.IsEditable">
+                <div class="col-lg-10"></div>
+                <div class="col-lg-2">
+                    <button type="button" class="btn btn-default btn-material pull-right" style="margin-top: -33px;"
+                        (click)="removePaymentInfo(i)">
+                        <i class="material-icons">delete</i>
+                    </button>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-lg-10"></div>
+                <div class="col-lg-2">
+                    <div class="btn-toolbar" *ngIf="workOrderDetails">
+                        <button type="button" class="btn btn-default btn-material pull-right" *ngIf="last && workOrderDetails.readOnlyStorage.IsEditable &&(inputFormGroup.controls.PaymentPartiesRateDetails.at(0).controls.OrganizationIdSupplier.value>0 || inputFormGroup.controls.PaymentPartiesRateDetails.at(0).controls.OrganizationIdSupplier.value==null)"
+                            (click)="addPaymentInfo()">
+                            <i class="material-icons">add</i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

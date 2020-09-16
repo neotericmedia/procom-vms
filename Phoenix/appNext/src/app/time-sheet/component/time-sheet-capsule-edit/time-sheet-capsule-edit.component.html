@@ -1,0 +1,192 @@
+<div class="responsiveModal" *ngIf="timeSheet?.ActiveCapsule?.detail && lineManagement">
+    <div bsModal [config]="{ show: timeSheet.ActiveCapsule.openModal, backdrop: 'static' }" #capsuleModal="bs-modal" class="modal"
+        tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" (onShown)="onShown($event)" >
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content" *ngIf="activeProjectManagementState === ProjectManagementState.list">
+                <app-project-select-detail [availableProjectList]="timeSheet?.AvailableProjectList" (projectManagementState)="projectListStateChange($event)"
+                    (selectedProject)="setSelectedProject($event)"></app-project-select-detail>
+            </div>
+            <div class="modal-content" *ngIf="activeProjectManagementState === ProjectManagementState.edit || activeProjectManagementState === ProjectManagementState.add">
+                <app-project-edit [assignmentId]="timeSheet.AssignmentId" (projectManagementState)="projectEditStateChange($event)"></app-project-edit>
+            </div>
+            <div class="modal-content" *ngIf="activeProjectManagementState === ProjectManagementState.disabled">
+                <div class="modal-header">
+                    <div class="col-xs-6 text-left">
+                        <h4>
+                            <span [class.holiday]="timeSheetDay.IsHoliday" [class.weekend]="timeSheetDay.Date.getDay() % 6 === 0">{{ uiService.formatCalendarDate(timeSheetDay.Date, 'ddd') }}</span>
+                            <span>{{ uiService.formatCalendarDate(timeSheetDay.Date, 'MMM D') }}</span>
+                        </h4>
+                    </div>
+                    <div class="col-xs-6 text-right">
+                        <h4>
+                            {{ getTotalPrimaryUnits() | number: '1.2-2'}} {{ timeSheet.PrimaryRateUnitId | CodeValue:commonService.CodeValueGroups.RateUnit:'text' | slice:0:1
+                            }}
+                        </h4>
+                    </div>
+                </div>
+                <div id="detailEditForm" class="modal-body form-horizontal" [formGroup]="detailEditForm" *ngIf="detailEditForm" novalidate>
+
+                        <div class="col-xs-12">
+                            <div *ngIf="timeSheet.IsEditable && timeSheet.ActiveCapsule.isSubmitted && !detailEditForm.valid" class="alert alert-danger alert-dismissable">
+                                <a class="close" data-dismiss="alert" aria-label="close"><i class="material-icons">clear</i></a>
+                                <strong><i class="material-icons" style="vertical-align: middle; padding-bottom:3px">warning</i></strong> 
+                                {{'timesheet.messages.reviewValidationErrors' | phxTranslate}}
+                            </div>
+                        </div>
+
+                    <div class="form-group">
+                        <div class="col-xs-10 col-xs-push-1 ">
+                            <div class="" *ngIf="!timeSheet.ActiveCapsule.detail.styleId">
+                                <div class="col-xs-12 text-center capsule-summary empty">{{'timesheet.capsuleEdit.newEntry' | phxTranslate}}</div>
+                            </div>
+                            <div class="capsule-summary row" *ngIf="timeSheet.ActiveCapsule.detail.styleId" [ngStyle]="uiService.getCapsuleStyleById(timeSheet.ActiveCapsule.detail.styleId, lineManagement.capsuleStyleList)">
+                                <div class="col-xs-7 no-padding-h-r">
+                                    <div class="project" *ngIf="timeSheet.ActiveCapsule.detail.ProjectId" title="{{getactiveProjectName()}}" >{{getactiveProjectName()}}</div>
+                                    <div>{{ timeSheet.ActiveCapsule.detail.RateTypeId | CodeValue:commonService.CodeValueGroups.RateType
+                                        }}</div>
+                                </div>
+                                <div class="col-xs-5 text-right">
+                                    <div>
+                                        <strong>{{ timeSheet.ActiveCapsule.detail.UnitAmount | number : '1.2-2'}}</strong>
+                                        <span>{{timeSheet.ActiveCapsule.detail.RateUnitId | CodeValue:commonService.CodeValueGroups.RateUnit:'text'}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="unit-row" class="text-center" *ngIf="timeSheet.IsEditable">
+                        <div class="col-xs-2 col-xs-push-2">
+                            <button (click)="subtractByIncrement()" [disabled]="!timeSheet.IsEditable" class="btn btn-link btn-material text-center">
+                                <i class="material-icons">remove_circle</i>
+                            </button>
+                        </div>
+                        <div class="col-xs-4 col-xs-push-2">
+                            <phx-form-control #unitFormControl
+                                [control]="detailEditForm.controls['unitAmount']" 
+                                [showValidationMessages]="false"
+                                [layoutType]="PhxFormControlLayoutType.InputOnly"                                                               
+                                >
+                                <button class="btnFocusUnitFormInput" #btnHiddenButton (click)="focusUnitFormInput($event)" >-</button>
+                                <input [ngClass]="{ 'show-error' : timeSheet.ActiveCapsule.isSubmitted && detailEditForm.controls['unitAmount'].errors }"
+                                    formControlName="unitAmount" 
+                                    [control]="detailEditForm.controls['unitAmount']"
+                                    timeSheetUnit
+                                    type="number" 
+                                    [step]="unitInputProperties.step" [min]="unitInputProperties.min" [max]="unitInputProperties.max"
+                                    class="form-control text-right" (change)="setActiveCapsuleDetailProperty('UnitAmount',$event.target.value)"
+                                    #txtUnitFormControl
+                                />
+                            </phx-form-control>
+
+                            <label>
+                            <span *ngIf="timeSheet.ActiveCapsule.detail.RateUnitId; else rateUnitElse" >{{timeSheet.ActiveCapsule.detail.RateUnitId | CodeValue:commonService.CodeValueGroups.RateUnit:'text'}}</span>
+                            <ng-template #rateUnitElse>{{'timesheet.capsuleEdit.unitAmountLabel' | phxTranslate}}</ng-template>
+                            <div *ngIf="timeSheet.ActiveCapsule.detail.RateTypeId === commonService.ApplicationConstants.RateType.Primary" >
+                                <button class="btn btn-link btn-badge" (click)="quickFill()" [disabled]="!timeSheet.IsEditable"><span class="badge">{{'common.generic.prefill' | phxTranslate}}</span></button>
+                            </div>
+                        </label>
+                        </div>
+                        <div class="col-xs-2 col-xs-push-2">
+                            <button (click)="addByIncrement()" [disabled]="!timeSheet.IsEditable" class="btn btn-link btn-material text-center">
+                                <i class="material-icons">add_circle</i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <div class="col-xs-12">
+                            <phx-form-control-validation [control]="detailEditForm.controls['unitAmount']" *ngIf="(!detailEditForm.controls['unitAmount'].pristine || timeSheet.ActiveCapsule.isSubmitted  ) && detailEditForm.controls['unitAmount'].errors" ></phx-form-control-validation>                        
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <hr />
+                        </div>
+                    </div>
+                    <div class="col-xs-12" *ngIf="timeSheet.IsTimeSheetUsesProjects">
+                        <label>{{'timesheet.capsuleEdit.projectLabel' | phxTranslate}}</label>
+                        <div>
+                            <div class="btn-group">
+
+                                <button class="btn btn-default chevron-action clearfix" [disabled]="!timeSheet.IsEditable" (click)="openProjectSelect()">
+                                    <i class="material-icons pull-right">chevron_right</i>
+                                    <div class="action-label pull-left text-left project-name">
+                                        <span *ngIf="timeSheet.ActiveCapsule.detail.ProjectId" >{{ getactiveProjectName() }}</span>
+                                        <span *ngIf="!timeSheet.ActiveCapsule.detail.ProjectId" >{{'timesheet.capsuleEdit.projectPlaceholder' | phxTranslate}}</span>   
+                                    </div>                    
+                                </button>
+                                <button class="btn btn-default clear" [disabled]="!timeSheet.IsEditable" (click)="clearSelectedProject()">
+                                        <i class="material-icons">clear</i>    
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <phx-form-control 
+                        [control]="detailEditForm.controls['rateTypeId']" 
+                        [forceValidation]="timeSheet.ActiveCapsule.isSubmitted"                                
+                        [labelText]="'timesheet.capsuleEdit.rateTypeLabel' | phxTranslate"
+                        [layoutType]="PhxFormControlLayoutType.Stacked"
+                        >     
+                        <select 
+                            class="form-control"
+                            [ngClass]="{ 'show-error' : isSubmitted && detailEditForm.controls['rateTypeId'].errors }" 
+                            formControlName="rateTypeId" 
+                            (change)="setRate($event.target.value)" >
+                            <option [ngValue]="null">{{'common.generic.select' | phxTranslate}}</option>                                    
+                            <option *ngFor="let rate of timeSheet.Rates"
+                                [selected]="rate.RateTypeId === timeSheet.ActiveCapsule.detail.RateTypeId"
+                                value="{{rate.RateTypeId}}">
+                        {{ rate.Display  }}
+                            </option>
+                        </select>                            
+                    </phx-form-control>       
+
+                    <span *ngFor="let value of timeSheet.ActiveCapsule?.detail?.CustomFieldValues; trackBy: identifyCustomFieldValue;">                                 
+                        <div class="col-xs-12" [hidden]="!parentHasValue(value)">
+                            <app-phx-custom-field-value
+                                [customFieldValue]="value" 
+                                [filterId]="getParentValue(value)"
+                                (valueUpdated)="updateCustomFieldValue($event)" 
+                                [control]="detailEditForm.controls[getName(value.CustomFieldConfigurationId)]"
+                                [forceValidation]="timeSheet.ActiveCapsule.isSubmitted"
+                            ></app-phx-custom-field-value>      
+                        </div>                  
+                    </span>      
+
+                    <phx-form-control 
+                        [control]="detailEditForm.controls['note']"
+                        [forceValidation]="timeSheet.ActiveCapsule.isSubmitted"
+                        [labelText]="'timesheet.capsuleEdit.notesLabel' | phxTranslate"
+                        [layoutType]="PhxFormControlLayoutType.Stacked"
+                        >
+                        <textarea class="form-control" 
+                            rows="5" 
+                            maxlength="140" 
+                            [placeholder]="'timesheet.capsuleEdit.notesPlaceholder' | phxTranslate" 
+                            formControlName="note" 
+                            (change)="setActiveCapsuleDetailProperty('Note',$event.target.value)">
+                        </textarea>
+                    </phx-form-control>
+                </div>
+                <div class="confirm-fab clearfix" *ngIf="timeSheet.IsEditable">
+                    <button type="button" class="btn btn-link" [disabled]="!timeSheet.IsEditable" (click)="save();">
+                        <i class="material-icons">check_circle</i>
+                    </button>
+                </div>
+                <div class="modal-footer">
+                    <div class="row btn-row ">
+                        <div class="col-xs-12 text-center">
+                            <button type="button" class="pull-left btn btn-link btn-default" (click)="cancel();">
+                                {{'common.generic.cancel' | phxTranslate}}
+                            </button>
+                            <button type="button" class="pull-right btn btn-link btn-default" 
+                                *ngIf="timeSheet.IsEditable"
+                                [disabled]="!timeSheet.IsEditable" (click)="saveAndNew();">
+                                {{'common.generic.saveAndNew' | phxTranslate}}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

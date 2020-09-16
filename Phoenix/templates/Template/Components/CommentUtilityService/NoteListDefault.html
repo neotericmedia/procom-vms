@@ -1,0 +1,17 @@
+﻿<div class="note-list">
+    <div id="noteList" style="width:90%;margin:0 5%;text-align:left;overflow-y:auto;height:auto;word-break:break-all">
+        <div data-ng-repeat="note in notes" style="padding:5px 0;text-align:left;border-bottom:2px solid #eee;">
+            <div>
+                <div>
+                    <label class="label-summary" style="padding-left:0;font-weight:400">{{note.time | date:ApplicationConstants.formatDateTimeHM}}<br />by {{note.CommentOwnerName}}</label>
+                </div>
+                <div>
+                    <span style="padding-left:10px;font-weight:600">{{note.Comment}}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div style="text-align: center">
+        <a href="javascript:void(0)" type="button" data-toggle="collapse" data-target="#comment-panel" data-ng-click="scrollDown()" style="cursor:pointer;">More...</a>
+    </div>
+</div>

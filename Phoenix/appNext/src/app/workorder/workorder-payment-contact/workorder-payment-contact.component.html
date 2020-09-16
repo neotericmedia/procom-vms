@@ -1,0 +1,17 @@
+<div class="form-group">
+  <phx-form-control labelText="General Contact" [control]="inputFormGroup.controls.UserProfileId"
+    [editable]="readOnlyStorage.IsEditable && checkPtFiledAccessibility('WorkOrderVersion.PaymentInfoes.PaymentContacts','UserProfileId')"
+    viewModeText="{{inputFormGroup.controls.UserProfileId.value | lookupNoCache: html.commonLists.listProfilesForPaymentOrganization:'Id':'Contact.FullName' }} - {{inputFormGroup.controls.UserProfileId.value}}">
+    <div class="col-md-10 padding-0">
+      <app-phx-select-box [items]="html.commonLists.listProfilesForPaymentOrganization | filterSelectChoicesByUsage: getContacts(paymentInfo.value.Id).value: inputFormGroup.value: 'UserProfileId': 'Id': 'Contact.FullName': 'Contact.Id'"
+        textField="DisplayValue" valueField="Id" [formControl]="inputFormGroup.controls.UserProfileId"
+        placeholder="-- select one --">
+      </app-phx-select-box>
+    </div>
+    <div class="col-xs-1 pull-right padding-0">
+      <button type="button" class="btn btn-default btn-material pull-right" (click)="removePaymentContact(contactIndex)">
+        <i class="material-icons">delete</i>
+      </button>
+    </div>
+  </phx-form-control>
+</div>

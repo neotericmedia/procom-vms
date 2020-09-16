@@ -1,0 +1,15 @@
+export const FeedbackResourceKeys = {
+    feedbackLabel: 'account.feedback.feedbackLabel',
+    feedbackDescription: 'account.feedback.feedbackDescription',
+    ideaLabel: 'account.feedback.ideaLabel',
+    ideaDescription: 'account.feedback.ideaDescription',
+    problemLabel: 'account.feedback.problemLabel',
+    problemDescription: 'account.feedback.problemDescription',
+    questionLabel: 'account.feedback.questionLabel',
+    questionDescription: 'account.feedback.questionDescription',
+    praiseLabel: 'account.feedback.praiseLabel',
+    praiseDescription: 'account.feedback.praiseDescription',
+    feedbackLengthMessage: 'account.feedback.feedbackLengthMessage',
+    feedbackPlaceholder: 'account.feedback.feedbackPlaceholder',
+    feedbackSuccessMessage: 'account.feedback.feedbackSuccessMessage',
+};

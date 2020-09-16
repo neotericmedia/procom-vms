@@ -1,0 +1,222 @@
+﻿<div class="garnishee-new">
+	<div class="content-group form-horizontal" data-ng-form="formOrganizationGarnisheesDetails" style="height:100%;">
+		<!--Garnishee Info-->
+		<div class="col-lg-12 garnishee-info" data-ng-init="scopeGarnisheeDetails.init(scopeGarnishee, edit.currentProfile)">
+			<!--Garnishee Details-->
+			<div class="col-lg-12 garnishee-details">
+                <div class="panel-heading garnishee-view-header">
+                    <div class="row">
+                        <h3 class="panel-title">Garnishee Details</h3>
+                    </div>
+                </div>
+                <div class="panel-body garnishee-view-body">
+                    <div class="row">
+                        <div class="form-horizontal" role="form">
+                            <div class="form-group">
+                                <label class="col-lg-4 control-label req-lab-right" watch-property="scopeGarnisheeDetails.GarnisheeHeader.GarnisheeStatusId" for-property="GarnisheeStatusId" for="GarnisheeStatusId" data-model-property="scopeGarnisheeDetails.GarnisheeHeader.GarnisheeStatusId" data-original-title="" title="">Status:</label>
+                                <div class="col-lg-5">
+                                    <div class="input-group select2-bootstrap-append">
+                                        <ui-select name="GarnisheeStatusId" data-ng-model="scopeGarnisheeDetails.GarnisheeHeader.GarnisheeStatusId" theme="select2" class="form-control" data-ng-required="true">
+                                            <ui-select-match placeholder="-- Select One --">{{$select.selected.text}}</ui-select-match>
+                                            <ui-select-choices repeat="item.id as item in scopeGarnisheeDetails.statuses | uiSelectChoicesFilter: $select.search: 'text'">
+                                                <span data-ng-bind-html="item.text | highlight: $select.search"></span>
+                                            </ui-select-choices>
+                                        </ui-select>
+                                        <span class="input-group-btn">
+                                            <button tabindex="-1" data-ng-click="scopeGarnisheeDetails.GarnisheeHeader.GarnisheeStatusId=undefined;" class="btn btn-default btn-garnishee-drp"><i class="material-icons md-18">clear</i></button>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3"></div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-lg-4 control-label">Internal Company:</label>
+                                <div class="col-lg-5">
+                                    <div class="garnishee-detail-input">{{scopeGarnisheeDetails.GarnisheeHeader.OrganizationInternalLegalName}}</div>
+                                </div>
+                                <div class="col-lg-3"></div>
+                            </div>
+                            <div class="form-group garnishee-issue-date">
+                                <label class="col-lg-4 control-label">Issue Date:</label>
+                                <div class="col-lg-5">
+                                    <div class="garnishee-detail-input">{{scopeGarnisheeDetails.GarnisheeHeader.IssueDate | date:ApplicationConstants.formatDateComma}}</div>
+                                </div>
+                                <div class="col-lg-3"></div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-lg-4 control-label" data-original-title="" title="">Garnish Maximum:</label>
+                                <div class="col-lg-5">
+                                    <div class="garnishee-detail-input">{{scopeGarnisheeDetails.GarnisheeHeader.PayAmountIsMaximum ? (scopeGarnisheeDetails.GarnisheeHeader.PayAmountMaximum | currency: ' $'):'Unlimited'}}</div>
+                                </div>
+                                <div class="col-lg-3"></div>
+                            </div>
+                            <div class="form-group" data-ng-if="scopeGarnisheeDetails.GarnisheeHeader.PayTypeIsAmount">
+                                <label class="col-lg-4 control-label">Garnish Amount:</label>
+                                <div class="col-lg-5">
+                                    <div class="input-group">
+                                        <div class="garnishee-detail-input">{{scopeGarnisheeDetails.GarnisheeHeader.CurrencyId | lookup: scopeGarnisheeDetails.currencies:'id':'code'}}{{scopeGarnisheeDetails.GarnisheeHeader.PayAmount | currency: ' $'}}</div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3"></div>
+                            </div>
+                            <div class="form-group" data-ng-if="!scopeGarnisheeDetails.GarnisheeHeader.PayTypeIsAmount">
+                                <label class="col-lg-4 control-label">Garnish Percentage:</label>
+                                <div class="col-lg-5">
+                                    <div class="input-group">
+                                        <div class="garnishee-detail-input">{{(scopeGarnisheeDetails.GarnisheeHeader.PayPercentage | number : 4) + " %"}}</div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3"></div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-lg-4 control-label">Amount Remaining:</label>
+                                <div class="col-lg-5">
+                                    <div class="input-group">
+                                        <div class="garnishee-detail-input">{{scopeGarnisheeDetails.GarnisheeHeader.PayAmountIsMaximum ?(scopeGarnisheeDetails.GarnisheeHeader.CurrencyId | lookup: scopeGarnisheeDetails.currencies:'id':'code'):''}}{{scopeGarnisheeDetails.GarnisheeHeader.PayAmountIsMaximum ? (scopeGarnisheeDetails.GarnisheeHeader.PaybackRemainder | currency: ' $'):'N/A'}}</div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3"></div>
+                            </div>
+                            <div class="form-group garnishee-detail-text">
+                                <label class="col-lg-4 control-label req-lab-right" for-property="Description" for="Description" data-model-property="scopeGarnisheeDetails.GarnisheeHeader.Description" data-original-title="" title="">Description:</label>
+                                <div class="col-lg-5">
+                                    <input type="text" class="form-control" name="Description" placeholder="Description" ng-model="scopeGarnisheeDetails.GarnisheeHeader.Description" data-ng-minlength="3" data-ng-maxlength="64" data-ng-required="true">
+
+                                </div>
+                                <div class="col-lg-3"></div>
+                            </div>
+                            <div class="form-group garnishee-detail-text">
+                                <label class="col-lg-4 control-label req-lab-right" for-property="ReferenceNumber" for="ReferenceNumber" data-model-property="scopeGarnisheeDetails.GarnisheeHeader.ReferenceNumber" data-original-title="" title="">Garnish Reference:</label>
+                                <div class="col-lg-5">
+                                    <input type="text" class="form-control" name="ReferenceNumber" placeholder="ReferenceNumber" ng-model="scopeGarnisheeDetails.GarnisheeHeader.ReferenceNumber" data-ng-minlength="3" data-ng-maxlength="64" data-ng-required="true">
+
+                                </div>
+                                <div class="col-lg-3"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+			</div>
+			<!---->
+			<!--Payee Details-->
+			<div class="col-lg-12 garnishee-payee-view-details">
+                <div class="panel-heading panel-info-title">
+                    <div class="row">
+                        <h3 class="col-lg-10 panel-title">Payee Details</h3>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div class="form-horizontal" role="form">
+                        <div class="row">
+                            <div class="form-group">
+                                <label class="col-lg-4 control-label">Garnishee Type:</label>
+                                <div class="col-lg-5">
+                                    <div class="garnishee-detail-input">{{scopeGarnisheeDetails.GarnisheeHeader.PayToType}}</div>
+                                </div>
+                                <div class="col-lg-3"></div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-lg-4 control-label">Payee Name:</label>
+                                <div class="col-lg-5">
+                                    <div class="garnishee-detail-input">{{scopeGarnisheeDetails.GarnisheeHeader.PayToName}}</div>
+                                </div>
+                                <div class="col-lg-3"></div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-lg-4 control-label">Address 1:</label>
+                                <div class="col-lg-5">
+                                    <div class="garnishee-detail-input">{{scopeGarnisheeDetails.GarnisheeHeader.AddressLine1}}</div>
+                                </div>
+                                <div class="col-lg-3"></div>
+                            </div>
+                            <div class="form-group" data-ng-if="scopeGarnisheeDetails.GarnisheeHeader.AddressLine2 && scopeGarnisheeDetails.GarnisheeHeader.AddressLine2.length>0">
+                                <label class="col-lg-4 control-label">Address 2:</label>
+                                <div class="col-lg-8">
+                                    <div class="garnishee-detail-input">{{scopeGarnisheeDetails.GarnisheeHeader.AddressLine2}}</div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-lg-4 control-label">City:</label>
+                                <div class="col-lg-5">
+                                    <div class="garnishee-detail-input">{{scopeGarnisheeDetails.GarnisheeHeader.CityName}}</div>
+                                </div>
+                                <div class="col-lg-3"></div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-lg-4 control-label">Country:</label>
+                                <div class="col-lg-5">
+                                    <div class="garnishee-detail-input">{{scopeGarnisheeDetails.GarnisheeHeader.CountryId| lookup: scopeGarnisheeDetails.countries}}</div>
+                                </div>
+                                <div class="col-lg-3"></div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-lg-4 control-label">Province/State:</label>
+                                <div class="col-lg-5">
+                                    <div class="garnishee-detail-input">{{scopeGarnisheeDetails.GarnisheeHeader.SubdivisionId | lookup: scopeGarnisheeDetails.subdivisions}}</div>
+                                </div>
+                                <div class="col-lg-3"></div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-lg-4 control-label">Postal/Zip:</label>
+                                <div class="col-lg-5">
+                                    <div class="garnishee-detail-input">{{scopeGarnisheeDetails.GarnisheeHeader.PostalCode}}</div>
+                                </div>
+                                <div class="col-lg-3"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+			</div>
+			<!---->
+			<!---->
+			<!--Re-Payment Transactions-->
+            <div class="col-lg-12 garnishee-transaction-details" style="background-color:#fafafa;">
+                <div class="panel-heading garnishee-view-header">
+                    <div class="row">
+                        <h3 class="panel-title">Re-Payment Transactions</h3>
+                    </div>
+                </div>
+                <div class="panel-body garnishee-view-body">
+                    <div class="">
+                        <div class="form-horizontal" role="form">
+                            <div class="form-group garnishee-trn" data-ng-if="scopeGarnisheeDetails.GarnisheeHeader.GarnisheeRepaymentTransactions.length>0">
+                                <div class="bg-gray-strong garnishee-trn-header col-lg-12">
+                                    <div class="col-lg-3 text-black">Payment Transaction</div>
+                                    <div class="col-lg-2 text-black">Amount</div>
+                                    <div class="col-lg-2 text-black">Release Date</div>
+                                    <div class="col-lg-2 text-black">Payment Method</div>
+                                    <div class="col-lg-3 text-black">Payment Reference</div>
+                                </div>
+                                <div class="row garnishee-trn-body col-lg-12" data-ng-repeat="pta in scopeGarnisheeDetails.GarnisheeHeader.GarnisheeRepaymentTransactions">
+                                    <div class="col-lg-3 text-black garnishee-trn-cell">{{pta.PaymentTransactionNumber}}</div>
+                                    <div class="col-lg-2 text-black garnishee-trn-cell">{{scopeGarnisheeDetails.GarnisheeHeader.CurrencyId | lookup: scopeGarnisheeDetails.currencies:'id':'code'}}{{pta.Amount | currency : ' $'}}</div>
+                                    <div class="col-lg-2 text-black garnishee-trn-cell-ext">{{pta.ReleaseDate ? (pta.ReleaseDate | date:ApplicationConstants.formatDateComma) : 'N/A'}}</div>
+                                    <div class="col-lg-2 text-black garnishee-trn-cell-ext">{{pta.PaymentMethodId ? (pta.PaymentMethodId | lookup: scopeGarnisheeDetails.paymentMethods) : 'N/A'}}</div>
+                                    <div class="col-lg-3 text-black garnishee-trn-cell-ext">{{pta.PaymentNumber ? pta.PaymentNumber : 'N/A'}}</div>
+                                </div>
+                            </div>
+                            <div class="form-group garnishee-trn col-lg-12" data-ng-if="scopeGarnisheeDetails.GarnisheeHeader.GarnisheeRepaymentTransactions.length==0">
+                                <div class="col-lg-12 text-black garnishee-trn-no-repayments">There are no repayments yet.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+			<!---->
+			<!--Garnishee Buttons-->
+			<div class="col-lg-12 garnishee-footer-wrapper">
+				<div class="row panel-footer garnishee-detail-footer">
+					<div class="col-lg-6"></div>
+					<div class="col-lg-6">
+						<div class="pull-right">
+							<button type="button" class="btn btn-primary" data-ng-if="scopeGarnisheeDetails.allowToSubmitGarnishee" data-ng-click="scopeGarnisheeDetails.garnisheeSubmit(scopeGarnishee, edit.refreshActiveAdvancesAndActiveGarnisheesCount)" data-ng-disabled="!formOrganizationGarnisheesDetails.$valid">Submit</button>
+							<button type="button" class="btn btn-default" data-ng-click="scopeGarnisheeDetails.close()">Cancel</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!---->
+		</div>
+		<!---->
+	</div>
+</div>

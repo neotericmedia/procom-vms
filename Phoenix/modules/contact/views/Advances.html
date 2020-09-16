@@ -1,0 +1,78 @@
+﻿<div class="btn-group btn-advance-search-nav" data-ng-if="!edit.currentProfile.ActiveAdvancesCount">
+    <div class="advance-btn-wrapper">
+        <button type="button" class="btn btn-clouds dropdown-toggle" data-toggle="dropdown">
+            <span class="advance-btn-name">Actions</span> <span class="caret ml advance-btn-caret"></span>
+        </button>
+        <ul class="dropdown-menu bordered">
+            <li data-ng-if="$state.includes('EditWorkerTempProfile')"><a data-ui-sref="EditWorkerTempProfile.NewAdvance()">Add Advance</a></li>
+            <li data-ng-if="$state.includes('EditWorkerCanadianSPProfile')"><a data-ui-sref="EditWorkerCanadianSPProfile.NewAdvance()">Add Advance</a></li>
+        </ul>
+    </div>
+</div>
+<div class="smart-table-wrapper advance-search-table">
+    <div class="row" data-cg-busy="loadItemsPromise">
+        <table class="table table-striped table-content table-hover" data-st-table="scopeAdvance.items" data-st-pagination-scroll="scopeAdvance.pageSize" data-st-pipe="scopeAdvance.callServer" data-st-fixed-header="" data-st-column-widths="[10, 35, 15, 15, 15, 10]">
+            <thead>
+                <tr>
+                    <th data-st-sort="Id" data-st-sort-default="">ID</th>
+                    <th data-st-sort="Description">Description</th>
+                    <th data-st-sort="AmountInitial">Advance Amount</th>
+                    <th data-st-sort="PaidAmount">Amount Paid</th>
+                    <th data-st-sort="PaybackRemainder">Amount Remaining</th>
+                    <th data-st-sort="AdvanceStatusId">Status</th>
+                </tr>
+                <tr>
+                    <th>
+                        <input data-st-advanced-search="{property: 'Id', ignoreQuotes: true}" placeholder="" class="input-sm form-control numberType" data-safe-restrict-input="[^0123456789.]" />
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="'Description'" placeholder=""
+                               class="input-sm form-control" />
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="{property: 'AmountInitial', ignoreQuotes: true, valueSuffix: 'M'}" placeholder=""
+                               class="input-sm form-control" type="search" data-safe-restrict-input="[^0123456789.]" />
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="{property: 'PaidAmount', ignoreQuotes: true, valueSuffix: 'M'}" placeholder=""
+                               class="input-sm form-control" type="search" data-safe-restrict-input="[^0123456789.]" />
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="{property: 'PaybackRemainder', ignoreQuotes: true, valueSuffix: 'M'}" placeholder=""
+                               class="input-sm form-control" type="search" data-safe-restrict-input="[^0123456789.]" />
+                    </th>
+                    <th>
+                        <select data-st-advanced-search="{property: 'AdvanceStatusId', ignoreQuotes: false}" class="input-sm form-control">
+                            <option value="1">Active</option>
+                            <option value="2">Complete</option>
+                            <option value="3">Cancelled</option>
+                        </select>
+                    </th>
+                </tr>
+            </thead>
+            <tbody class="ignore-set-height advance-collapsible-body">
+                <tr data-ng-repeat="item in scopeAdvance.items" data-ui-sref-tr="{{scopeAdvance.advanceDetailsState}}({ advanceId: item.Id })" style="cursor:pointer">
+                    <td title="{{item.Id}}"><span class="advance-search-item">{{item.Id}}</span></td>
+                    <td title="{{item.Description}}"><span class="advance-search-item advance-description">{{item.Description}}</span></td>
+                    <td title="{{item.CurrencyId | lookup: scopeAdvance.currencies:'id':'code'}}{{item.AmountInitial | currency: ' $'}}"><span class="advance-search-item">{{item.CurrencyId | lookup: scopeAdvance.currencies:'id':'code'}}{{item.AmountInitial | currency: " $"}}</span></td>
+                    <td title="{{item.CurrencyId | lookup: scopeAdvance.currencies:'id':'code'}}{{item.PaidAmount | currency: ' $'}}"><span class="advance-search-item">{{item.CurrencyId | lookup: scopeAdvance.currencies:'id':'code'}}{{item.PaidAmount | currency: " $"}}</span></td>
+                    <td title="{{item.CurrencyId | lookup: scopeAdvance.currencies:'id':'code'}}{{item.PaybackRemainder | currency: ' $'}}"><span class="advance-search-item">{{item.CurrencyId | lookup: scopeAdvance.currencies:'id':'code'}}{{item.PaybackRemainder | currency: " $"}}</span></td>
+                    <td title="{{item.AdvanceStatusId | lookup: scopeAdvance.statuses}}"><span class="advance-search-item">{{item.AdvanceStatusId | lookup: scopeAdvance.statuses}}</span></td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="9">
+                        <span>Total Count: {{scopeAdvance.totalItemCount || 0}}; Items Loaded: {{ scopeAdvance.items ? scopeAdvance.items.length : 0}}</span>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>
+<div class="slider-view-advance" data-ng-class="{ out: !$state.is('EditWorkerTempProfile.NewAdvance') && !$state.is('EditWorkerCanadianSPProfile.NewAdvance'), in: $state.is('EditWorkerTempProfile.NewAdvance') || $state.is('EditWorkerCanadianSPProfile.NewAdvance')}">
+    <div ui-view="newAdvanceView" style="height:100%;"></div>
+</div>
+<div class="slider-view-advance" data-ng-class="{ out: !$state.is('EditWorkerTempProfile.AdvanceDetails') && !$state.is('EditWorkerCanadianSPProfile.AdvanceDetails'), in: $state.is('EditWorkerTempProfile.AdvanceDetails') || $state.is('EditWorkerCanadianSPProfile.AdvanceDetails')}">
+    <div ui-view="advanceDetailsView" style="height:100%;"></div>
+</div>

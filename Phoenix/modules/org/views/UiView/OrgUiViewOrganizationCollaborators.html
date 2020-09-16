@@ -1,0 +1,23 @@
+﻿<div class="form-group">
+    <div class="col-lg-12">
+        <h4>Collaborators</h4>
+    </div>
+</div>
+
+<div class="form-group">
+    <label data-for-property="CreatedByUserProfileId" for="CreatedByUserProfileId" data-model-property="scopeOrg.entity.CreatedByUserProfileId" 
+        class="col-lg-4 control-label label-to-right lab-right" data-original-title="" title="">
+        Created By
+    </label>
+    <div class="col-lg-8">
+        <p class="form-control-static">{{scopeOrg.entity.CreatedByName}}</p>
+    </div>
+</div>
+
+<div class="form-group">
+    <label class="control-label col-lg-4" ng-if="!scopeOrg.entity.SourceId"> Last Edited By </label>
+    <label class="control-label col-lg-4" ng-if="scopeOrg.entity.SourceId"> Editor </label>
+    <div class="col-lg-8">
+        <p class="form-control-static">{{scopeOrg.entity.EditorUserProfileName}}</p>
+    </div>
+</div>

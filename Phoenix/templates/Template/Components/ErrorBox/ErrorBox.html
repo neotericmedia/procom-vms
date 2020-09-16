@@ -1,0 +1,7 @@
+﻿<div class="alert alert-danger alert-dismissable error-box" data-ng-show="_errorBox.visible">
+    <div  data-ng-repeat="item in _errorBox.items">
+        <ul class="list-unstyled">
+            <li data-ng-repeat="errorText in item.errors">{{errorText}}</li>
+        </ul>        
+    </div>
+</div>

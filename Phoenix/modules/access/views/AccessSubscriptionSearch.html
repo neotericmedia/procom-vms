@@ -1,0 +1,103 @@
+﻿<style>
+    div.smart-table-wrapper tbody.my-main-table-body td {
+        padding-left: 20px !important;
+        padding-right: 20px !important;
+    }
+</style>
+
+<div>
+    <button ng-click="search.accessSubscriptionNew()" class="btn">New</button>
+</div>
+
+<div class="smart-table-wrapper">
+    <div class="row" data-cg-busy="loadItemsPromise">
+        <table data-st-table-struct='[{"stTableValue" : "items"}, {"stPipeValue" : "callServer"}, {"widthValues" : "[4, 12, 12, 12, 12, 12, 12, 12, 8, 4]"}, {"stPaginationValue" : "pageSize"}]'>
+            <thead data-st-head="1800px">
+                <tr>
+                    <th data-st-sort="Id" title="Id" data-st-sort-default="reverse">ID</th>
+                    <th data-st-sort="UserProfileSubscriber">Subscriber</th>
+                    <th data-st-sort="AccessSubscriptionTypeId">Subscription type</th>
+                    <th data-st-sort="SubscribedTo">Subscribed to</th>
+                    <th data-st-sort="HasRestrictions">Restrictions</th>
+                    <th data-st-sort="StartDate">Start Date</th>
+                    <th data-st-sort="EndDate">End Date</th>
+                    <th data-st-sort="Status">Status</th>
+                    <th data-st-pen-name="Action">Action</th>
+                </tr>
+                <tr>
+                    <th>
+                        <input data-st-advanced-search="{property: 'Id', ignoreQuotes: true}" class="input-sm form-control numberType" data-safe-restrict-input="[^0123456789]" />
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="'UserProfileSubscriber'" class="input-sm form-control" type="search" />
+                    </th>
+                    <th>
+                        <select data-st-advanced-search="{property: 'AccessSubscriptionTypeId', ignoreQuotes: false}" class="input-sm form-control"
+                                data-st-as-options-override="list.types"></select>
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="'SubscribedTo'" class="input-sm form-control" type="search" />
+                    </th>
+                    <th>
+                        <select data-st-advanced-search="{property: 'HasRestrictions', ignoreQuotes: true}" class="input-sm form-control numberType">
+                            <option value="false">No</option>
+                            <option value="true">Yes</option>
+                        </select>
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="'StartDate'"
+                               data-st-as-operator-override="'ge'"
+                               close-on-date-selection="false" show-button-bar="false" show-weeks="false" class="input-sm form-control"
+                               data-st-as-lazy-attributes="{'uib-datepicker' : ApplicationConstants.formatDate}"
+                               data-st-as-height-override="400"
+                               data-st-as-width-override="315" />
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="'EndDate'"
+                               data-st-as-operator-override="'le'"
+                               close-on-date-selection="false" show-button-bar="false" show-weeks="false" class="input-sm form-control"
+                               data-st-as-lazy-attributes="{'uib-datepicker' : ApplicationConstants.formatDate}"
+                               data-st-as-height-override="400"
+                               data-st-as-width-override="315" />
+                    </th>
+                    <th>
+                        <select data-st-advanced-search="{property: 'AccessSubscriptionStatusId', ignoreQuotes: true}" class="input-sm form-control">
+                            <!--<option value="1">New</option>-->
+                            <option value="'4'">Active</option>
+                            <option value="'2'">Draft</option>
+                            <option value="'3'">Pending Review</option>
+                            <option value="'5'">Pending Change</option>
+                            <!--<option value="6">Discard</option>
+                            <option value="7">Duplicate Active</option>-->
+                        </select>
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody class="my-main-table-body">
+                <tr data-ng-repeat="item in items" data-ui-sref-tr="access.subscription.edit({ accessSubscriptionId: item.ChildId ? item.ChildId : item.Id })" style="cursor:pointer">
+                    <td ng-bind="::item.Id"></td>
+                    <td ng-bind="::item.UserProfileSubscriber"></td>
+                    <td ng-bind="::item.AccessSubscriptionTypeId | lookup:list.types"></td>
+                    <td ng-bind="::item.SubscribedTo"></td>
+                    <td ng-bind="::item.HasRestrictions ? 'Yes' : 'No'"></td>
+                    <td ng-bind="::item.StartDate| date: ApplicationConstants.formatDate"></td>
+                    <td ng-bind="::item.EndDate| date: ApplicationConstants.formatDate"></td>
+                    <td ng-bind="::item.AccessSubscriptionStatusId | lookup:list.statuses"></td>
+                    <td>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-xs btn-clouds" title="View"><i class="fontello-icon-eye-1"></i>&nbsp;</button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="10">
+                        <span>Total Count: {{totalItemCount || 0}}; Items Loaded: {{ items ? items.length : 0}}</span>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>

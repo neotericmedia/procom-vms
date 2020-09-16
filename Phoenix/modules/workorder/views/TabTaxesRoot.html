@@ -1,0 +1,160 @@
+﻿<div class="content-group form-horizontal" data-ng-form="formWorkOrderTaxes">
+    <div class="content-left">
+        <div class="panel-internal" data-ng-form="billingInfosForm">
+            <div class="form-group">
+                <div class="col-lg-12">
+                    <h4>Billing Taxes</h4>
+                </div>
+            </div>
+            <div data-ng-repeat="billingInfo in CurrentWorkOrderVersion.BillingInfoes" data-ng-form="billingInfoeForm">
+                <div role="form" data-ng-if="billingInfo.OrganizationIdClient>0">
+                    <div class="form-group">
+                        <div class="col-lg-12">
+                            <p class="form-control-static">
+                                <a data-ui-sref="org.edit.details({organizationId: billingInfo.OrganizationIdClient })">{{billingInfo.OrganizationClientDisplayName}} - {{billingInfo.OrganizationIdClient}}</a>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-lg-12">
+                            <h4>Sales Tax</h4>
+                        </div>
+                    </div>
+                    <div data-ng-form="billingTaxesForm">
+                        <div class="form-group">
+                            <label for-property="SubdivisionIdSalesTax" for="SubdivisionIdSalesTax" data-model-property="billingInfo.SubdivisionIdSalesTax" class="col-lg-4 control-label req-lab-right" data-original-title="" title="">Tax Province/State</label>
+                            <div class="col-lg-8">
+                                <div class="input-group select2-bootstrap-append">
+                                    <ui-select name="SubdivisionIdSalesTax" data-ng-model="billingInfo.SubdivisionIdSalesTax" theme="select2" class="form-control" data-pt-field-view="model.ptFieldViewConfigOnChangeStatusId" ng-required="CurrentWorkOrderVersion.ValidateComplianceDraft"
+                                               data-ng-change="getBillingSalesTaxes(billingInfo)">
+                                        <ui-select-match placeholder=" -- select one --">{{$select.selected.text}}</ui-select-match>
+                                        <ui-select-choices repeat="item.id as item in lists.workOrderSalesTaxTerritories | uiSelectChoicesFilter: $select.search: 'text'"><span data-ng-bind-html="item.text | highlight: $select.search"></span></ui-select-choices>
+                                    </ui-select>
+                                    <span class="input-group-btn">
+                                        <button tabindex="-1" data-ng-click="billingInfo.SubdivisionIdSalesTax=undefined;getBillingSalesTaxes(billingInfo)" class="btn btn-default"><i class="material-icons md-18">clear</i></button>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div data-ng-form="billingTaxForm">
+                            <div class="form-group" data-ng-if="billingInfo.BillingSalesTaxes.length>0">
+                                <div class="col-lg-12">
+                                    <table class="table table-striped" style="background-color: white; margin-top:10px">
+                                        <thead>
+                                            <tr>
+                                                <th style="font-size: 12px;">Tax Type</th>
+                                                <th style="font-size: 12px;">Percentage</th>
+                                                <th style="font-size: 12px;">Has Number</th>
+                                                <th style="font-size: 12px;">Is Applied</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr data-ng-repeat="billingSalesTax in billingInfo.BillingSalesTaxes">
+                                                <td>{{billingSalesTax.SalesTaxId | lookup:lists.salesTaxes}}</td>
+                                                <td>{{billingSalesTax.ratePercentage}}<span data-ng-show="billingSalesTax.ratePercentage"> %</span></td>
+                                                <td>{{billingSalesTax.hasNumber}}</td>
+                                                <td class="billing-info-apply">
+                                                    <ui-select data-ng-model="billingSalesTax.IsApplied" theme="select2" class="form-control" data-pt-field-view="model.ptFieldViewConfigOnChangeStatusId" ng-required="CurrentWorkOrderVersion.ValidateComplianceDraft">
+                                                        <ui-select-match placeholder=" -- select one --">{{$select.selected.text}}</ui-select-match>
+                                                        <ui-select-choices repeat="item.id as item in lists.billingTaxIsApplied | filter : filterBillingTaxIsApplied(billingSalesTax, item) | uiSelectChoicesFilter: $select.search: 'text'"><span data-ng-bind-html="item.text | highlight: $select.search"></span></ui-select-choices>
+                                                    </ui-select>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group" data-pt-error-box="billingInfo.BrokenRules"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="content-right">
+        <div class="panel-internal" data-ng-form="paymentInfosForm">
+            <div class="form-group">
+                <div class="col-lg-12">
+                    <h4>Payment Taxes</h4>
+                </div>
+            </div>
+            <div data-ng-repeat="paymentInfo in CurrentWorkOrderVersion.PaymentInfoes" data-ng-form="paymentInfoForm">
+                <div role="form">
+                    <div class="form-group">
+                        <div class="col-lg-12">
+                            <p class="form-control-static">
+                                <a data-ng-if="paymentInfo.OrganizationIdSupplier>0" data-ui-sref="org.edit.details({organizationId: paymentInfo.OrganizationIdSupplier })">{{paymentInfo.OrganizationSupplierDisplayName}} - {{paymentInfo.OrganizationIdSupplier}}</a>
+                                <a data-ng-if="model.entity.workerProfileTypeId==ApplicationConstants.UserProfileType.WorkerTemp" data-ui-sref="EditWorkerTempProfile({ contactId:model.entity.workerContactId, profileId: model.entity.UserProfileIdWorker })">{{paymentInfo.OrganizationSupplierDisplayName}}</a>
+                                <a data-ng-if="model.entity.workerProfileTypeId==ApplicationConstants.UserProfileType.WorkerCanadianSp" data-ui-sref="EditWorkerCanadianSPProfile({ contactId:model.entity.workerContactId, profileId: model.entity.UserProfileIdWorker })">{{paymentInfo.OrganizationSupplierDisplayName}}</a>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="form-group" data-ng-if="(paymentInfo.OrganizationIdSupplier>0 
+                            && (model.entity.workerProfileTypeId == ApplicationConstants.UserProfileType.WorkerSubVendor 
+                                || model.entity.workerProfileTypeId == ApplicationConstants.UserProfileType.WorkerCanadianInc))
+                            ||model.entity.workerProfileTypeId == ApplicationConstants.UserProfileType.WorkerCanadianSp">
+                        <div class="col-lg-9">
+                            <h4>Sales Tax</h4>
+                        </div>
+                        <div class="form-group">
+                            <label for-property="paymentInfo.ApplySalesTax" for="paymentInfo.ApplySalesTax" data-model-property="paymentInfo.ApplySalesTax"
+                                   class="col-lg-4 control-label req-lab-right" data-original-title="" title="">Charge Sales Tax</label>
+                            <div class="col-lg-4">
+                                <pt-input-radio name="paymentInfo.ApplySalesTax" ng-required="CurrentWorkOrderVersion.ValidateComplianceDraft" data-template-type="input-radio" data-ng-model="paymentInfo.ApplySalesTax"
+                                                data-options="[{ key: true, value: 'Yes' },{ key: false, value: 'No' }]" data-pt-field-view="model.ptFieldViewConfigOnChangeStatusId" />
+                            </div>
+                        </div>
+                    </div>
+                    <div data-ng-if="(paymentInfo.OrganizationIdSupplier>0||model.entity.workerProfileTypeId == ApplicationConstants.UserProfileType.WorkerCanadianSp) && paymentInfo.ApplySalesTax && CurrentWorkOrderVersion.ValidateComplianceDraft">
+                        <div data-ng-form="paymentTaxesForm">
+                            <div class="form-group">
+                                <label for-property="{{paymentInfo.Id}}_{{$index}}_SubdivisionIdSalesTax" for="{{paymentInfo.Id}}_{{$index}}_SubdivisionIdSalesTax" data-model-property="paymentInfo.SubdivisionIdSalesTax" class="col-lg-4 control-label req-lab-right" data-original-title="" title="">Tax Province/State</label>
+                                <div class="col-lg-8">
+                                    <div class="input-group select2-bootstrap-append">
+                                        <ui-select name="{{paymentInfo.Id}}_{{$index}}_SubdivisionIdSalesTax" data-ng-model="paymentInfo.SubdivisionIdSalesTax" theme="select2" class="form-control" data-pt-field-view="model.ptFieldViewConfigOnChangeStatusId" ng-required="CurrentWorkOrderVersion.ValidateComplianceDraft"
+                                                   data-ng-change="getPaymentSalesTaxes(paymentInfo)">
+                                            <ui-select-match placeholder=" -- select one --">{{$select.selected.text}}</ui-select-match>
+                                            <ui-select-choices repeat="item.id as item in lists.workOrderSalesTaxTerritories | uiSelectChoicesFilter: $select.search: 'text'"><span data-ng-bind-html="item.text | highlight: $select.search"></span></ui-select-choices>
+                                        </ui-select>
+                                        <span class="input-group-btn">
+                                            <button tabindex="-1" data-ng-click="paymentInfo.SubdivisionIdSalesTax=undefined;getPaymentSalesTaxes(paymentInfo)" class="btn btn-default"><i class="material-icons md-18">clear</i></button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group" data-ng-if="paymentInfo.PaymentSalesTaxes.length>0">
+                                <div class="col-lg-12">
+                                    <table class="table table-striped" style="background-color: white;margin-top:10px">
+                                        <thead>
+                                            <tr>
+                                                <th style="font-size: 12px;">Tax Type</th>
+                                                <th style="font-size: 12px;">Percentage</th>
+                                                <th style="font-size: 12px;">Has Number</th>
+                                                <th style="font-size: 12px;">Is Applied</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr data-ng-repeat="paymentSalesTax in paymentInfo.PaymentSalesTaxes">
+                                                <td>{{paymentSalesTax.SalesTaxId | lookup:lists.salesTaxes}}</td>
+                                                <td>{{paymentSalesTax.ratePercentage}}<span data-ng-show="paymentSalesTax.ratePercentage"> %</span></td>
+                                                <td>{{paymentSalesTax.hasNumber}}</td>
+                                                <td class="billing-info-apply">
+                                                    <ui-select data-ng-model="paymentSalesTax.IsApplied" theme="select2" class="form-control" data-pt-field-view="model.ptFieldViewConfigOnChangeStatusId" ng-required="CurrentWorkOrderVersion.ValidateComplianceDraft">
+                                                        <ui-select-match placeholder=" -- select one --">{{$select.selected.text}}</ui-select-match>
+                                                        <ui-select-choices repeat="item.id as item in lists.billingTaxIsApplied | uiSelectChoicesFilter: $select.search: 'text'"><span data-ng-bind-html="item.text | highlight: $select.search"></span></ui-select-choices>
+                                                    </ui-select>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group" data-pt-error-box="paymentInfo.BrokenRules"></div>
+            </div>
+        </div>
+    </div>
+</div>

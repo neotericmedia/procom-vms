@@ -1,0 +1,16 @@
+<app-phx-data-table (editorPreparing)="onEditorPreparing($event)" (editorPrepared)="onEditorPrepared($event)" [configuration]="dataTableConfiguration"
+  [dataSource]="data.items" [columns]="columns" [componentName]="componentName">
+  <div *dxTemplate="let item of 'detail'">
+    <div class="col col-xs-12">
+      <app-phx-data-table #gridDetail [configuration]="detailDataTableConfiguration" [dataSource]="item.data.PaymentTransactionLines"
+        [columns]="detailColumns">
+        <div *dxTemplate="let d of 'currencyTemplate'">
+          <span>{{d.value | number:'1.2-2'}} {{ d.value ? (d.data.CurrencyId | CodeValue:codeValueGroups.Currency:'code'): '' }}</span>
+        </div>
+      </app-phx-data-table>
+    </div>
+  </div>
+  <div *dxTemplate="let d of 'currencyTemplate'">
+    <span>{{d.value | number:'1.2-2'}} {{ d.value ? (d.data.CurrencyId | CodeValue:codeValueGroups.Currency:'code'): '' }}</span>
+  </div>
+</app-phx-data-table>

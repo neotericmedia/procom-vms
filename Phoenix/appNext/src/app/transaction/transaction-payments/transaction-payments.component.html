@@ -1,0 +1,20 @@
+<div class="col-lg-12">
+  <app-phx-data-table [columns]="columns" [configuration]="dataTableConfiguration" [dataSourceUrl]="dataSourceUrl" [dataSourceParams]="odataParams"
+    componentName="TransactionPayments" (rowClick)="onRowClick($event)">
+    <div *dxTemplate="let item of 'detail'">
+      <div class="col col-xs-12" *ngIf="item.data.PayeeTypeId !== commonService.ApplicationConstants.PayeeType.GarnisheePayTo">
+        <app-payment-transaction (rowClick)="onPaymentTransactionRowClick($event)" [paymentId]="item.data.Id"> </app-payment-transaction>
+      </div>
+      <div class="col col-xs-12" *ngIf="item.data.PayeeTypeId === commonService.ApplicationConstants.PayeeType.GarnisheePayTo">
+        <app-payment-transaction-garnishee [paymentId]="item.data.Id"> </app-payment-transaction-garnishee>
+      </div>
+    </div>
+    <div *dxTemplate="let d of 'viewFormattedPaymentAmount'">
+      $ {{d.data.PaymentAmount | pxCurrency}} {{displayCurrency(d.data.CurrencyId)}}
+    </div>
+  </app-phx-data-table>
+</div>
+<app-phx-slider [showSlider]="showSlider">
+  <app-payment-document [paymentTransactionId]="paymentTransactionId"  (onClose)="showSlider = false">
+  </app-payment-document>
+</app-phx-slider>

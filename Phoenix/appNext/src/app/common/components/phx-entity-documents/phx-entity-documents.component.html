@@ -1,0 +1,17 @@
+<div class="row">
+  <div class="col-xs-12">
+    <app-phx-data-table [columns]="columns" [configuration]="dataTableConfiguration" [dataSourceUrl]="dataSourceUrl" [dataSourceParams]="oDataParams"
+      [componentName]="componentName">
+      <div *dxTemplate="let row of 'NameTemplate'">
+        <a class="doc-anchor" title="{{row?.data?.Name}}" [href]="createPdfDocumentLink(row?.data?.PublicId)" target="_blank">{{row?.data?.Name}}</a>
+      </div>
+      <div *dxTemplate="let d of 'dateCellTemplate'">
+        <span>{{d.value | date:dateColumnFormat}}</span>
+      </div>
+      <div *dxTemplate="let d of 'StatusTemplate'">
+          <span>{{d.value === activePublicId ? 'Active' : 'Inactive' }}</span>
+        </div>
+        
+    </app-phx-data-table>
+  </div>
+</div>

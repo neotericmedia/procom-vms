@@ -1,0 +1,284 @@
+<div class="row commission-adjustment-edit" [formGroup]="inputFormGroup" *ngIf="inputFormGroup">
+  <div class="adjustment-edit-wrapper col-lg-12">
+    <div class="panel">
+      <div class="panel-heading headstone">
+        <div *ngIf="!isCreateMode" class="row adjustment-edit-header">
+          <div class="col-lg-4">
+            <div class="text-gray">Adjustment Id</div>
+            <span>{{inputFormGroup.controls.Id.value}}</span>
+          </div>
+          <div class="col-lg-4">
+            <div class="text-gray">Create Date</div>
+            <span>{{inputFormGroup.controls.CreatedDatetime.value | date:phxConstants.DateFormat.mediumDate}}</span>
+          </div>
+          <div class="col-lg-4">
+            <div class="text-gray">Created By</div>
+            <span>{{inputFormGroup.controls.CreatedByProfileFullName.value}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="panel-body adjustment-body col-lg-12" style="padding: 0">
+      <div class="form-group col-lg-12">
+        <phx-form-control labelText="Adjustment Type" [editable]="isEditable" [control]="inputFormGroup.controls.CommissionAdjustmentHeaderTypeId"
+          viewModeText="{{inputFormGroup.controls.CommissionAdjustmentHeaderTypeId.value | CodeValue:codeValueGroups.CommissionAdjustmentHeaderType}}">
+          <app-phx-select-box [items]="commissionAdjustmentHeaderTypes" textField="text" valueField="id" [formControl]="inputFormGroup.controls.CommissionAdjustmentHeaderTypeId"
+            placeholder="-- select one --" (valueChanged)="onAdjustmentTypeChange()">
+          </app-phx-select-box>
+        </phx-form-control>
+      </div>
+      <div class="form-group col-lg-12">
+        <phx-form-control labelText="Internal Company" [editable]="isEditable" [control]="inputFormGroup.controls.OrganizationIdInternal"
+          viewModeText="{{inputFormGroup.controls.OrganizationIdInternal.value | lookupNoCache: internalOrganizations:'Id':'DisplayName'}}">
+          <app-phx-select-box [items]="internalOrganizations" textField="DisplayValue" valueField="Id" [formControl]="inputFormGroup.controls.OrganizationIdInternal"
+            placeholder="-- select one --">
+          </app-phx-select-box>
+        </phx-form-control>
+      </div>
+      <div class="form-group col-lg-12" *ngIf="inputFormGroup.controls.CommissionAdjustmentHeaderTypeId.value == phxConstants.CommissionAdjustmentHeaderType.ManualAdjustment">
+        <phx-form-control labelText="Person to Adjust" [editable]="isEditable" [control]="getCommissionUserProfileFormGroup().controls.CommissionUserProfileId"
+          viewModeText="{{getCommissionUserProfileFormGroup().controls.CommissionUserProfileId.value | lookupNoCache: internalUsers:'CommissionUserProfileId':'CommissionUserProfileFullName'}}">
+          <app-phx-select-box [items]="internalUsers" textField="CommissionUserProfileFullName" valueField="CommissionUserProfileId"
+            [formControl]="getCommissionUserProfileFormGroup().controls.CommissionUserProfileId" placeholder="-- select one --">
+          </app-phx-select-box>
+        </phx-form-control>
+      </div>
+      <div class="form-group col-lg-12">
+        <phx-form-control labelText="Client Organization" [editable]="isEditable" [control]="inputFormGroup.controls.ClientOrganizationId"
+          viewModeText="{{inputFormGroup.controls.ClientOrganizationId.value ? (inputFormGroup.controls.ClientOrganizationId.value | lookupNoCache: clientOrganizations:'Id':'DisplayName') : 'N/A'}}">
+          <app-phx-select-box [items]="clientOrganizations" textField="DisplayName" valueField="Id" [formControl]="inputFormGroup.controls.ClientOrganizationId"
+            placeholder="-- select one --">
+          </app-phx-select-box>
+        </phx-form-control>
+      </div>
+      <div class="form-group col-lg-12" *ngIf="inputFormGroup.controls.CommissionAdjustmentHeaderTypeId.value == phxConstants.CommissionAdjustmentHeaderType.ManualAdjustment">
+        <phx-form-control labelText="{{!isCreateMode ? 'Commission Recurrency' : ''}}" [control]="inputFormGroup.controls['CommissionRecurrency']"
+          [editable]="isEditable" viewModeText="{{inputFormGroup.controls['CommissionRecurrency'].value ? 'Recurring Adjustment' : 'One Time Adjustment'}}">
+          <label class="radio-inline">
+            <input class="form-check-input" type="radio" name="CommissionRecurrency" [value]="false" [formControl]="inputFormGroup.controls.CommissionRecurrency"> One Time Adjustment
+          </label>
+          <label class="radio-inline">
+            <input class="form-check-input" type="radio" name="CommissionRecurrency" [value]="true" [formControl]="inputFormGroup.controls.CommissionRecurrency"> Recurring Adjustment
+          </label>
+        </phx-form-control>
+      </div>
+      <div class="form-group col-lg-12">
+        <phx-form-control [control]="inputFormGroup.controls.Description" [editable]="isEditable" labelText="Description" viewModeText="{{inputFormGroup.controls.Description.value}}">
+          <input formControlName="Description" type="text" class="form-control" placeholder="Description" />
+        </phx-form-control>
+      </div>
+      <div class="form-group col-lg-12 adjustment-radio adjustment-amount-type">
+        <phx-form-control labelText="Adjustment Amount Type" [control]="inputFormGroup.controls['isAdjustmentAmountAdd']" [editable]="isEditable"
+          viewModeText="{{inputFormGroup.controls['isAdjustmentAmountAdd'].value ? 'Add Amount' : 'Deduct Amount'}}">
+          <label class="radio-inline">
+            <input class="form-check-input" type="radio" name="AdjustmentAmountType" [value]="true" [formControl]="inputFormGroup.controls.isAdjustmentAmountAdd">Add Amount
+          </label>
+          <label class="radio-inline">
+            <input class="form-check-input" type="radio" name="AdjustmentAmountType" [value]="false" [formControl]="inputFormGroup.controls.isAdjustmentAmountAdd">Deduct Amount
+          </label>
+        </phx-form-control>
+      </div>
+      <div class="form-group col-lg-12">
+        <phx-form-control [control]="inputFormGroup.controls.AdjustmentAmountNet" [editable]="isEditable" labelText="Adjustment Amount"
+          viewModeText="{{inputFormGroup.controls.AdjustmentAmountNet.value | pxCurrencyFormatter}}">
+          <div class="col-md-6 padding-0">
+            <div class="input-group">
+              <input formControlName="AdjustmentAmountNet" type="text" class="form-control" placeholder="Adjustment Amount" phxFloatBetweenInput='{"from":0, "to":9999999999999.99, "decimalplaces":2}'
+                (change)="onAdjustmentAmountChange()" />
+              <span class="input-group-addon">
+                <b>$</b>
+              </span>
+            </div>
+          </div>
+        </phx-form-control>
+      </div>
+      <div class="form-group col-lg-12">
+        <phx-form-control labelText="Adjustment Date" [editable]="isEditable" [control]="inputFormGroup.controls.AdjustmentDate"
+          viewModeText="{{inputFormGroup.controls.AdjustmentDate.value | date:phxConstants.DateFormat.mediumDate}}">
+          <div class="col-md-6 padding-0">
+            <app-phx-date-box type="date" [formControl]="inputFormGroup.controls.AdjustmentDate" [displayFormat]="phxConstants.DateFormat.MMM_dd_yyyy"
+              placeholder="Adjustment Date">
+            </app-phx-date-box>
+          </div>
+        </phx-form-control>
+      </div>
+      <div class="form-group col-lg-12 row" *ngIf="!isCreateMode">
+        <div class="worker-profile-docs-header">
+          <label class="col-lg-4 control-label label-to-right">Source File(s)</label>
+          <div *ngIf="commissionDocuments && commissionDocuments.length > 0" class="form-group col-lg-8 worker-profile-docs-wrapper doc-margin">
+            <div class="col-lg-12" *ngFor="let document of commissionDocuments" style="padding-right: 0;">
+              <a class="worker-link-view " type="button" *ngIf="document.PdfDocumentPublicId" target="_blank" title="View" (click)="getPdfStreamByPublicId(document.PdfDocumentPublicId)"></a>
+              <div class="col-xs-12 col-md-5" style="padding-bottom: 5px">
+                <a class="commission-link-view" [ngClass]="{'view-mode-link' : !isCreateMode && !document.Description}" type="button" *ngIf="document.PdfDocumentPublicId"
+                  title="View" target="_blank" [href]="getPdfStreamByPublicId(document.PdfDocumentPublicId)">{{document.Name}}</a>
+              </div>
+              <div class="col-xs-12 col-md-6" style="padding-bottom: 5px">
+                <span class="commission-link-text" *ngIf="document.Description && document.Description.length>0">{{document.Description}}</span>
+              </div>
+              <div class="col-xs-12 col-md-1 pull-right" style="padding-bottom: 5px; padding-right:0;">
+                <a class="btn btn-default btn-material pull-right" href="javascript:void(0);" (click)="documentDelete(document)" title="Delete">
+                  <i class="material-icons">delete</i>
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-8 pull-right">
+            <button class="btn btn-default btn-material pull-right" title="Add a Document" (click)="importCommissionAdjustmentFiles()">
+              <i class="material-icons">add</i>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div id="uploadDocument" *ngIf="showUploader">
+        <div class="form-group">
+          <div class="col-lg-12">
+            <div>
+              <app-phx-document-file-upload #fileUpload [showAddButton]="false" [(configuration)]="html.DocumentFileUploadConfiguration"
+                [editable]="true" [fileUploaderOptions]="html.fileUploaderOptions_DocumentMain" [docTypeList]="documentTypeList"
+                (onCompleteAll)="documentUploadCallbackOnDone($event)" (onSuccessItem)="onDocumentUploadDone($event)">
+              </app-phx-document-file-upload>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="adjustment-edit-background-check" *ngIf="inputFormGroup.controls.CommissionAdjustmentHeaderTypeId.value == phxConstants.CommissionAdjustmentHeaderType.BackgroundCheck 
+        && inputFormGroup.controls.OrganizationIdInternal.value && inputFormGroup.controls.OrganizationIdInternal.value > 0">
+        <div class="adjustment-edit-workorder col-lg-6">
+          <div class="form-group col-lg-12">
+            <span class="col-lg-6 alloc-header">Work Order Allocation</span>
+            <button class="btn btn-default fontello-icon-plus btn-adj-alloc-add btn-alloc-wo" *ngIf="isCreateMode" (click)="addWorkOrder()"
+              title="Add a Work Order"></button>
+          </div>
+          <div class="form-group col-lg-12" *ngIf="getFormArrayBasedOnDetailType(inputFormGroup.controls.CommissionAdjustmentDetails.controls, phxConstants.CommissionAdjustmentDetailType.WorkorderAllocation) 
+            && getFormArrayBasedOnDetailType(inputFormGroup.controls.CommissionAdjustmentDetails.controls, phxConstants.CommissionAdjustmentDetailType.WorkorderAllocation).length > 0">
+            <h5 class="col-lg-5">
+              <span class="adj-amount-h">Allocated Amount</span>
+            </h5>
+            <div class="col-lg-5">
+              <span>{{getAllocatedAmount() ? (getAllocatedAmount() | pxCurrencyFormatter) : 'N/A'}}</span>
+            </div>
+          </div>
+          <div class="form-group col-lg-12" *ngFor="let wo of getFormArrayBasedOnDetailType(inputFormGroup.controls.CommissionAdjustmentDetails.controls, phxConstants.CommissionAdjustmentDetailType.WorkorderAllocation); let i=index;">
+            <div class="col-lg-5">
+              <label class="control-label adj-wo-lbl">{{wo.controls.WorkOrderFullNumber.value}} - {{wo.controls.WorkerName.value}}
+              </label>
+            </div>
+            <div class="col-lg-6 adj-input-amount">
+              <phx-form-control [control]="wo.controls.AdjustmentAmount" [editable]="isEditable" labelText="" [layoutType]="layoutType.InputOnly"
+                viewModeText="{{wo.controls.AdjustmentAmount.value | pxCurrencyFormatter}}">
+                <input [formControl]="wo.controls.AdjustmentAmount" type="text" class="form-control" placeholder="Amount" />
+              </phx-form-control>
+            </div>
+            <div class="col-lg-1">
+              <div *ngIf="isCreateMode">
+                <div>
+                  <button type="button" class="btn btn-clouds fontello-icon-trash btn-adj-del" (click)="removeWorkorder(wo)"></button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="getFormArrayBasedOnDetailType(inputFormGroup.controls.CommissionAdjustmentDetails.controls, phxConstants.CommissionAdjustmentDetailType.WorkorderAllocation).length===0 
+            && !isCreateMode">
+            <span class="adj-no-alloc">* There are no allocations on work orders.</span>
+          </div>
+        </div>
+        <div class="adjustment-edit-jobowner col-lg-6">
+          <div class="form-group col-lg-12">
+            <span class="col-lg-6 alloc-header">Job Owner Allocation</span>
+            <button class="btn btn-default fontello-icon-plus btn-adj-alloc-add btn-alloc-jo" *ngIf="isCreateMode" (click)="addJobOwner()"
+              title="Add a Job Owner" [disabled]="getFormArrayBasedOnDetailType(inputFormGroup.controls.CommissionAdjustmentDetails.controls, phxConstants.CommissionAdjustmentDetailType.JobOwnerAllocation).length===commissionUsersAll.length">
+            </button>
+          </div>
+          <div class="form-group col-lg-12" *ngIf="getFormArrayBasedOnDetailType(inputFormGroup.controls.CommissionAdjustmentDetails.controls, phxConstants.CommissionAdjustmentDetailType.JobOwnerAllocation).length > 0">
+            <h5 class="col-lg-5">
+              <span class="adj-amount-h">Unallocated Amount</span>
+            </h5>
+            <div class="col-lg-5">
+              <span>{{getUnallocatedAmount() ? (getUnallocatedAmount() | pxCurrencyFormatter) : 'N/A'}}</span>
+            </div>
+          </div>
+          <div class="col-lg-12 job-owner-details" *ngFor="let jo of getFormArrayBasedOnDetailType(inputFormGroup.controls.CommissionAdjustmentDetails.controls, phxConstants.CommissionAdjustmentDetailType.JobOwnerAllocation)">
+            <div class="form-horizontal" role="form">
+              <div class="row">
+                <div class="form-group">
+                  <div class="col-lg-11">
+                    <phx-form-control labelText="Job Owner" [editable]="isEditable" [control]="jo.controls.CommissionUserProfileId" viewModeText="{{jo.controls.CommissionUserProfileId.value | lookupNoCache: commissionUsersAll:'CommissionUserProfileId':'Name'}}">
+                      <app-phx-select-box [items]="commissionUsersAll | filterSelectChoicesByUsage
+                        : inputFormGroup.controls.CommissionAdjustmentDetails.value: jo.value : 'CommissionUserProfileId': 'CommissionUserProfileId': 'Name'"
+                        textField="Name" valueField="CommissionUserProfileId" [formControl]="jo.controls.CommissionUserProfileId"
+                        placeholder="-- select one --">
+                      </app-phx-select-box>
+                    </phx-form-control>
+                  </div>
+                  <div class="col-lg-1">
+                    <div *ngIf="isCreateMode">
+                      <div>
+                        <button type="button" class="btn btn-clouds fontello-icon-trash btn-adj-del" (click)="removeJobOwner(jo)"></button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group col-lg-11">
+                  <phx-form-control labelText="Commission Type" [editable]="isEditable" [control]="jo.controls.CommissionRateHeaderId" viewModeText="{{jo.controls.CommissionRateHeaderId.value | lookupNoCache: getCommissionType(jo.controls.CommissionUserProfileId.value):'Id':'Description'}}">
+                    <app-phx-select-box [items]="getCommissionType(jo.controls.CommissionUserProfileId.value)" textField="Description" valueField="Id"
+                      [formControl]="jo.controls.CommissionRateHeaderId" placeholder="-- select one --">
+                    </app-phx-select-box>
+                  </phx-form-control>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="getFormArrayBasedOnDetailType(inputFormGroup.controls.CommissionAdjustmentDetails.controls, phxConstants.CommissionAdjustmentDetailType.JobOwnerAllocation).length===0 
+            && !isCreateMode">
+            <span class="adj-no-alloc">* There are no allocations on job owners.</span>
+          </div>
+        </div>
+      </div>      
+    </div>
+    <div *ngIf="validationMessages.length > 0" class="alert alert-danger alert-dismissable error-box col-lg-12">
+      <div *ngFor="let msg of validationMessages">          
+          {{msg}}          
+      </div>
+    </div> 
+    <div class="panel-footer col-md-12">
+      <div class="row">
+        <div class="col-lg-6"></div>
+        <div class="col-lg-6">
+          <div class="pull-right">
+            <button class="btn btn-default" *ngIf="isCreateMode" (click)="onDiscard()">
+              Cancel and Discard</button>
+            <button class="btn btn-primary" *ngIf="isCreateMode" (click)="onSave()" [disabled]="!inputFormGroup.valid">
+              Create
+            </button>
+            <button class="btn btn-default" *ngIf="!isCreateMode 
+              && inputFormGroup.controls.CommissionAdjustmentHeaderTypeId.value == phxConstants.CommissionAdjustmentHeaderType.ManualAdjustment 
+              && inputFormGroup.controls.CommissionRecurrency.value 
+              && inputFormGroup.controls.CommissionAdjustmentHeaderStatusId.value == phxConstants.CommissionAdjustmentHeaderStatus.Active"
+              (click)="onDeactivateRecurring()">
+              Deactivate Recurring Adjustment
+            </button>
+            <button class="btn btn-default" *ngIf="!isCreateMode 
+              && inputFormGroup.controls.CommissionAdjustmentHeaderTypeId.value == phxConstants.CommissionAdjustmentHeaderType.ManualAdjustment 
+              && inputFormGroup.controls.CommissionRecurrency.value 
+              && inputFormGroup.controls.CommissionAdjustmentHeaderStatusId.value == phxConstants.CommissionAdjustmentHeaderStatus.InActive"
+              (click)="onActivateRecurring()">
+              Activate Recurring Adjustment
+            </button>
+            <button class="btn btn-primary" *ngIf="!isCreateMode" (click)="onClickBack()">Back</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>  
+  <app-phx-modal [buttons]="modalFabButtons" title="Add Work Order" #modalWorkOrderAdd (closeModal)="closeModalWorkOrderAdd($event)">
+    <ng-container *ngIf="inputFormGroup.controls.OrganizationIdInternal.value && canShow">
+      <app-commission-add-work-order-dialog [organizationIdInternal]="inputFormGroup.controls.OrganizationIdInternal.value" [clientOrganizationId]="inputFormGroup.controls.ClientOrganizationId.value"
+        [selectedWorkorders]="(getFormArrayBasedOnDetailType(inputFormGroup.controls.CommissionAdjustmentDetails.controls, phxConstants.CommissionAdjustmentDetailType.WorkorderAllocation))"
+        (workOrderSelectionChange)="onChangeWorkOrderSelection($event)" (cancelWorkOrderDialog)="onCancelClick()">
+      </app-commission-add-work-order-dialog>
+    </ng-container>
+  </app-phx-modal>
+</div>
+
+<app-phx-dialog (onCallBack)="dialogAction_CallBackObButtonClick($event)" [config]="phxDialogComponentConfigModel">
+</app-phx-dialog>

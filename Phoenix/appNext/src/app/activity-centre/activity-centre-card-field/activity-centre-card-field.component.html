@@ -1,0 +1,19 @@
+<span *ngIf="cardField">
+  <span [ngSwitch]="cardField.fieldType">
+    <span *ngSwitchCase="ActivityCardFieldType.string">
+      {{ cardField.displayData }}
+    </span>
+    <span *ngSwitchCase="ActivityCardFieldType.date">
+      {{ cardField.displayData | date:dateFormat }}
+    </span>
+    <span *ngSwitchCase="ActivityCardFieldType.integer">
+      <b>{{ cardField.displayData | number:'1.0' }}</b>
+    </span>
+    <span *ngSwitchCase="ActivityCardFieldType.decimal">
+      <b>{{ cardField.displayData | number:'1.2' }}</b>
+    </span>
+    <span *ngSwitchCase="ActivityCardFieldType.currency">
+      $ {{ cardField.displayData | number:'1.2' }}
+    </span>
+  </span>
+</span>

@@ -1,0 +1,20 @@
+<div class="panel-heading" *ngIf="cardInfo">
+    <!-- <i class="material-icons checkbox" [ngClass]="{'selected' : cardInfo?.selected}" (click)="selectCard($event)"
+        aria-hidden="true">{{ cardInfo?.selected ? 'check_box' : 'check_box_outline_blank' }}</i> -->
+    <div class="profile-pic-holder">
+        <div class="action-btn pull-left" [ngClass]="{'img-border' : showProfilePicture}">
+            <!--Add the click event and function to the span below after next release : (click)="selectCard($event)"-->
+            <span class="entityAbbreviation">{{cardInfo.entityAbbreviation}}</span>
+        </div>
+        <!-- <span (click)="selectCard($event)" *ngIf="cardInfo.selected" class="profile-icon-selected">
+            <i class="material-icons" aria-hidden="true">check</i>
+        </span> -->
+    </div>
+    <div (tap)="navigate($event)" (press)="onPress($event)" class="title-container">
+        <h3 class="panel-title ellipsis"><strong [ngClass]="{'text-muted': !cardInfo.title }" phxEllipsisTip="300">
+                {{cardTitle }}</strong></h3>
+        <span phxEllipsisTip="250" class="text-muted">
+            {{cardInfo.subTitle}}
+        </span>
+    </div>
+</div>

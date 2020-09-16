@@ -1,0 +1,4 @@
+<button href="javascript:;" type="button" class="btn btn-default" (click)="createSubscription()">New</button>
+<app-phx-data-table [columns]="columns" [configuration]="dataTableConfiguration" [dataSourceUrl]="dataSourceUrl" [dataSourceParams]='oDataParams'
+    [componentName]="dataGridComponentName" exportFileName="ContactSubscriptions" (rowClick)="onRowClick($event)" (contextMenuOpenTab)="onContextMenuOpenTab($event)">
+</app-phx-data-table>

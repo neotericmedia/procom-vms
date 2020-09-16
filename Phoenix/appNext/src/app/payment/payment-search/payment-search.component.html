@@ -1,0 +1,43 @@
+<div class="payment-search">
+    <div class="row">
+        <div class="col-md-3 col-xs-12 form-group">
+            <div class="btn-group" role="group" aria-label="button group">
+                <a class="btn btn-tab btn-default" (click)="changeGridViewMode('payment')" [ngClass]="{'active': gridViewMode === 'payment'}"
+                    role="button">Paid</a>
+                <a class="btn btn-tab btn-default" (click)="changeGridViewMode('transaction')" [ngClass]="{'active': gridViewMode === 'transaction'}"
+                    role="button">Not Paid</a>
+            </div>
+        </div>
+    </div>
+    <app-phx-data-table #masterTable [configuration]="dataTableConfiguration" [dataSourceUrl]="'payment/getPayments'" [dataSourceParams]='odataParams'
+        [columns]="columns" [exportFileName]="'payment'" [componentName]="'PaymentSearch'" (masterRowExpanding)="onRowExpanding($event)"
+        *ngIf="gridViewMode === 'payment'" (rowClick)="toggleRowExpansion($event)">
+        <div *dxTemplate="let item of 'detail'">
+            <div class="col col-xs-12" *ngIf="item.data.PayeeTypeId !== commonService.ApplicationConstants.PayeeType.GarnisheePayTo">
+                <app-payment-transaction (rowClick)="onPaymentTransactionRowClick($event)" [paymentId]="item.data.Id" [isShowFirstTransactionDocument]="isShowFirstPaymentTransactionDocument">
+                </app-payment-transaction>
+            </div>
+            <div class="col col-xs-12" *ngIf="item.data.PayeeTypeId === commonService.ApplicationConstants.PayeeType.GarnisheePayTo">
+                <app-payment-transaction-garnishee [paymentId]="item.data.Id"> </app-payment-transaction-garnishee>
+            </div>
+        </div>
+        <div *dxTemplate="let d of 'dateCellTemplate'">
+            <span>{{d.value | date:formatDate}}</span>
+        </div>
+        <div *dxTemplate="let d of 'currencyTemplate'">
+            <span>{{d.value | number:'1.2-2'}} {{d.data.CurrencyId | CodeValue:codeValueGroups.Currency:'code'}}</span>
+        </div>
+    </app-phx-data-table>
+    <app-phx-data-table #gridTransaction *ngIf="gridViewMode === 'transaction'" [configuration]="dataTableConfigurationTransaction"
+        [dataSourceUrl]="'payment/allpendingpaymenttransactions'" [columns]="columnsTransaction" [componentName]="'PaymentSearchTransaction'"
+        (rowClick)="onPaymentTransactionRowClick($event)" >
+        <div *dxTemplate="let d of 'currencyTemplate'">
+            <span>{{d.value | number:'1.2-2'}} {{d.data.CurrencyId | CodeValue: commonService.CodeValueGroups.Currency:'code'}}</span>
+        </div>
+    </app-phx-data-table>
+</div>
+
+<app-phx-slider [showSlider]="showSlider">
+    <app-payment-document #paymentDocument [paymentTransactionId]="paymentTransactionId" (onClose)="showSlider = false">
+    </app-payment-document>
+</app-phx-slider>

@@ -1,0 +1,17 @@
+<div class="btn-group">
+  <button type="button" [disabled]="disabledNewClaim" class="btn btn-clouds" (click)="createNewClaim()">{{expenseModuleResourceKeys.search.newButton | phxTranslate}}</button>
+</div>
+<div class="alert alert-warning" *ngIf="disabledNewClaim && isCurrentUserWorker" role="alert">
+  <span>
+    {{expenseModuleResourceKeys.search.noActiveWorkOrderMessage| phxTranslate}}
+  </span>
+</div>
+<app-phx-data-table [configuration]="dataTableConfiguration" [dataSourceUrl]="'expenseclaim/expenseclaims'" [dataSourceParams]='odataParams'
+  [columns]="columns" [exportFileName]="'expense claims'" [componentName]="'expenseClaims'" (selectionChanged)="onRowSelected($event)"
+  (masterRowExpanding)="onRowExpanding($event)" (contextMenuPreparing)="onContextMenuPreparing($event)">
+  <div *dxTemplate="let item of 'detail'">
+    <div class="col col-xs-12">
+      <app-expense-item-list [expenseClaim]="expenseClaimService.getExpenseClaimFromState(item.data.Id) | async" [editable]="false"></app-expense-item-list>
+    </div>
+  </div>
+</app-phx-data-table>

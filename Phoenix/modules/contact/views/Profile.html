@@ -1,0 +1,1327 @@
+<div data-ng-form="profile.profileForm">
+    <!--worker company-->
+    <div class="col-lg-12">
+        <div class="panel panel-internal contact-panel" data-ng-if="profile.workerCompany">
+            <div class="panel-body">
+                <div class="" data-ng-if="profile.currentProfile.Organization && !edit.currentProfile.IsDraftStatus">
+                    <div class="form-group">
+                        <div class="profile-worker-block">
+                            <label class="col-lg-3 control-label label-to-right" title="">Organization</label>
+                            <p class="form-control-static col-lg-7 profile-worker-org-url">
+                                <a data-ui-sref="org.edit.details({organizationId: profile.currentProfile.OrganizationId })">{{profile.currentProfile.Organization.Title}}</a>
+                            </p>
+                        </div>
+                        <div class="profile-worker-block" style="clear:left;" data-ng-if="(profile.currentProfile.Organization && !edit.currentProfile.IsDraftStatus) && profile.currentProfile.ProfileTypeId ==ApplicationConstants.UserProfileType.WorkerSubVendor">
+                            <label class="col-lg-3 control-label label-to-right" title="">Organization Rep</label>
+                            <p class="form-control-static col-lg-7 ">
+                                {{profile.currentProfile.UserProfileOrgRep}}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="" data-ng-if="profile.currentProfile.Organization == null || profile.currentProfile.IsDraftStatus ">
+                    <div class=" form-group">
+                        <div class="profile-worker-block">
+                            <label for="OrganizationId" for-property="OrganizationId" data-model-property="profile.currentProfile.OrganizationId" class="col-lg-3 control-label label-to-right req-lab-right" data-original-title="" title="">Organization</label>
+                            <div class="col-lg-7">
+                                <div class="input-group select2-bootstrap-append profile-worker-org-drp">
+                                    <ui-select name="OrganizationId" data-ng-model="profile.currentProfile.OrganizationId"
+                                               theme="select2"
+                                               class="form-control" required data-pt-field-view="edit.ptFieldViewStatus"
+                                               data-ng-change="profile.getOrgRepsOnChange(profile.currentProfile.OrganizationId)"
+                                               data-ng-init="profile.getOrgReps(profile.currentProfile.OrganizationId, true)">
+                                        <ui-select-match placeholder="-- Select One --">{{$select.selected.DisplayName}} - {{$select.selected.Id}}</ui-select-match>
+                                        <ui-select-choices repeat="item.Id as item in  profile.smallBusinesses  | uiSelectChoicesFilter: $select.search: 'DisplayName': 'Id'">
+                                            <span data-ng-bind-html="item.DisplayName | highlight: $select.search"></span>
+                                            <span data-ng-bind-html="' - ' + item.Id | highlight: $select.search"></span>
+                                        </ui-select-choices>
+                                    </ui-select>
+                                    <span class="input-group-btn">
+                                        <button tabindex="-1" data-ng-click="profile.currentProfile.OrganizationId = undefined;profile.orgUserProfiles = [];$select.selected=undefined ;profile.currentProfile.UserProfileIdOrgRep=null" class="btn btn-default btn-contact-drp"><i class="material-icons md-18">clear</i></button>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="" data-ng-if="(profile.currentProfile.Organization == null || profile.currentProfile.IsDraftStatus) && profile.currentProfile.ProfileTypeId ==ApplicationConstants.UserProfileType.WorkerSubVendor">
+                    <div class=" form-group">
+                        <div class="profile-worker-block">
+                            <label for="OrganizationId" for-property="UserProfileIdOrgRep" data-model-property="profile.currentProfile.UserProfileIdOrgRep" class="col-lg-3 label-to-right control-label label-to-right" data-original-title="" title="">Organization Rep</label>
+                            <div class="col-lg-7">
+                                <div class="input-group select2-bootstrap-append profile-worker-org-drp">
+
+                                    <ui-select name="OrganizationId" data-ng-model="profile.currentProfile.UserProfileIdOrgRep" theme="select2" class="form-control" data-pt-field-view="edit.ptFieldViewStatus">
+                                        <ui-select-match placeholder="-- Select One --">{{$select.selected.FullName}} - {{$select.selected.Id}}</ui-select-match>
+                                        <ui-select-choices repeat="item.Id as item in  profile.orgUserProfiles  | uiSelectChoicesFilter: $select.search: 'FullName': 'Id'">
+                                            <span data-ng-bind-html="item.FullName | highlight: $select.search"></span>
+                                            <span data-ng-bind-html="' - ' + item.Id | highlight: $select.search"></span>
+                                        </ui-select-choices>
+                                    </ui-select>
+                                    <span class="input-group-btn">
+                                        <button tabindex="-1" data-ng-click="profile.currentProfile.UserProfileIdOrgRep = undefined" class="btn btn-default btn-contact-drp"><i class="material-icons md-18">clear</i></button>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!---->
+    <!--personal info-->
+    <div class="profile-personal-info-wrapper" data-ng-if="profile.personalInfoPanel">
+        <div class="col-lg-12 profile-personal-info">
+            <div class="panel panel-internal profile-personal-info-details" data-ng-if="profile.personalInfoPanel">
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="form-horizontal" role="form">
+                            <div class="personal-info-form-content panel-collapse" id="personalInfoFormContent">
+                                <div class="form-group">
+                                    <div class="col-lg-12">
+                                        <h4 ng-init="profile.isCollapsed=false;">Personal Info</h4>
+                                    </div>
+                                </div>
+                                <div class="form-group" data-ng-if="profile.companyName">
+                                    <label for-property="CorporationName" for="CorporationName" data-model-property="profile.currentProfile.CorporationName" class="col-lg-3 control-label" data-original-title="" title="">Company Name</label>
+                                    <div class="col-lg-7">
+                                        <input type="text" ng-model="profile.currentProfile.CorporationName" name="CorporationName" class="form-control" data-pt-field-view="edit.ptFieldViewStatus" ng-maxlength="250" maxlength="250">
+                                    </div>
+                                </div>
+                                <div class="form-group" data-ng-if="profile.currentProfile.ProfileTypeId===ApplicationConstants.UserProfileType.WorkerCanadianSp">
+                                    <label for-property="BusinessNumber" for="BusinessNumber" data-model-property="profile.currentProfile.BusinessNumber" class="col-lg-3 control-label" data-original-title="" title="">Business Number</label>
+                                    <div class="col-lg-7">
+                                        <input type="text" ng-model="profile.currentProfile.BusinessNumber" name="BusinessNumber" class="form-control" data-pt-field-view="edit.ptFieldViewStatus" ng-maxlength="32" maxlength="32">
+                                    </div>
+                                </div>
+                                <div class="form-group" data-ng-if="profile.currentProfile.ProfileTypeId!==ApplicationConstants.UserProfileType.WorkerUnitedStatesW2">
+                                    <label for-property="SIN" for="SIN" data-model-property="profile.currentProfile.SIN" class="req-lab-right col-lg-3 control-label" data-original-title="" title="">Social Insurance Number</label>
+                                    <div class="col-lg-7">
+                                        <input type="text" data-restrict-input="[^0123456789]" data-ng-minlength="9" maxlength="9" ng-model="profile.currentProfile.SIN" name="SIN" data-required-message="Required" data-ng-required="true" class="form-control" required="required" data-pt-field-view="edit.ptFieldViewStatus">
+                                    </div>
+                                </div>
+                                <div class="form-group" data-ng-if="profile.currentProfile.ProfileTypeId===ApplicationConstants.UserProfileType.WorkerUnitedStatesW2">
+                                    <label for-property="SSN" for="SSN" data-model-property="profile.currentProfile.SSN" class="req-lab-right col-lg-3 control-label" data-original-title="" title="">Social Security Number</label>
+                                    <div class="col-lg-7">
+                                        <input type="text" data-restrict-input="[^0123456789]" data-ng-minlength="9" maxlength="9" ng-model="profile.currentProfile.SSN" name="SSN" data-required-message="Required" data-ng-required="true" class="form-control" required="required" data-pt-field-view="edit.ptFieldViewStatus">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for-property="DateOfBirth" for="DateOfBirth" data-model-property="profile.currentProfile.DateOfBirth" class="col-lg-3 control-label req-lab-right" data-original-title="" title="">Date Of Birth</label>
+                                    <div class="col-lg-7">
+                                        <pt-date-picker data-ng-model="profile.currentProfile.DateOfBirth" name="DateOfBirth" data-ng-required="true" data-ng-blur="profile.datePickerCallback()" data-pt-field-view="edit.ptFieldViewStatus" />
+                                    </div>
+                                </div>
+                                <div class="form-group" data-ng-if="profile.salesTax && profile.currentprofile.profiletypeid!==ApplicationConstants.UserProfileType.WorkerUnitedStatesW2">
+                                    <label for-property="UserProfileWorkerSPTaxNumbers" for="UserProfileWorkerSPTaxNumbers" data-model-property="profile.currentProfile.UserProfileWorkerSPTaxNumbers" class="col-lg-4 control-label" data-original-title="" title=""></label>
+                                    <div class="panel-sales-tax">
+                                        <div class="panel panel-internal mln mrn" data-ng-form="profile.formTaxNumbers">
+                                            <div class="form-group">
+                                                <h4 class="col-lg-10">Sales Tax Number</h4>
+                                                <div class="col-lg-2">
+                                                    <div class="btn-toolbar pull-right" data-ng-if="edit.currentProfile.IsDraftStatus">
+                                                        <button type="button" class="btn btn-material btn-default"
+                                                                data-ng-show="profile.currentProfile.UserProfileWorkerSPTaxNumbers.length==0"
+                                                                data-ng-disabled="!profile.formTaxNumbers.$valid || edit.hideActions"
+                                                                data-ng-click="profile.addSalesTax()">
+                                                            <i class="material-icons email-add-button-icon">add</i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="panel-sales-tax-body" data-ng-if="profile.currentProfile.UserProfileWorkerSPTaxNumbers.length>0">
+                                                <div data-ng-repeat="taxNumber in profile.currentProfile.UserProfileWorkerSPTaxNumbers" class="panel-row" data-ng-form="profile.taxNumberForm">
+                                                    <div class="form-group">
+                                                        <label for-property="SalesTaxId" for="SalesTaxId" data-model-property="taxNumber.SalesTaxId" class="col-lg-3 control-label req-lab-right" data-original-title="" title="">Type</label>
+                                                        <div class="col-lg-7">
+                                                            <div class="input-group select2-bootstrap-append">
+                                                                <ui-select name="SalesTaxId" data-ng-model="taxNumber.SalesTaxId" theme="select2" class="form-control" required data-pt-field-view="edit.ptFieldViewStatus">
+                                                                    <ui-select-match placeholder="-- Select One --">{{$select.selected.text}}</ui-select-match>
+                                                                    <ui-select-choices repeat="item.id as item in profile.taxNumbers | uiSelectChoicesFilteredByUsage : $select.search : profile.currentProfile.UserProfileWorkerSPTaxNumbers : taxNumber : 'SalesTaxId' : 'id' : 'text'">
+                                                                        <span data-ng-bind-html="item.text | highlight: $select.search"></span>
+                                                                    </ui-select-choices>
+                                                                </ui-select>
+                                                                <span class="input-group-btn">
+                                                                    <button tabindex="-1" data-ng-click="taxNumber.SalesTaxId=undefined" class="btn btn-default btn-contact-drp"><i class="material-icons md-18">clear</i></button>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for-property="SalesTaxNumber" for="SalesTaxNumber" data-model-property="taxNumber.SalesTaxNumber" class="col-lg-3 control-label req-lab-right" data-original-title="" title="">Number</label>
+                                                        <div class="col-lg-7">
+                                                            <input type="text" ng-model="taxNumber.SalesTaxNumber" name="SalesTaxNumber" data-required-message="Required" data-ng-required="true" data-ng-minlength="1" data-ng-maxlength="64" maxlength="64" data-length-message="LengthRange" class="form-control ng-valid-maxlength ng-valid-minlength" required="required" data-pt-field-view="edit.ptFieldViewStatus">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group padding-10-v-t">
+                                                        <div class="col-lg-10">
+                                                            <div class="" data-ng-if="edit.currentProfile.IsDraftStatus">
+                                                                <button type="button" class="btn btn-material btn-default pull-right" data-ng-click="profile.removeSalesTax(taxNumber)">
+                                                                    <i class="material-icons">delete</i>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-10 padding-10-v-t" data-ng-if="edit.currentProfile.IsDraftStatus && profile.currentProfile.UserProfileWorkerSPTaxNumbers.length!==profile.taxNumbers.length">
+                                                    <div class="btn-toolbar pull-right">
+                                                        <button type="button" class="btn btn-material btn-default"
+                                                                data-ng-hide="profile.currentProfile.UserProfileWorkerSPTaxNumbers.length==0"
+                                                                data-ng-disabled="!profile.formTaxNumbers.$valid || edit.hideActions"
+                                                                data-ng-click="profile.addSalesTax()">
+                                                            <i class="material-icons email-add-button-icon">add</i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!--Payment Method-->
+                                <div class="panel-heading" style="margin-bottom:10px; margin-left: 10px;">
+                                    <div class="col-lg-12">
+                                        <h4 class="profile-personal-info-title">Payment Method</h4>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for-property="PayeeName" for="PayeeName" data-model-property="profile.currentProfile.PayeeName" class="req-lab-right col-lg-3 control-label" data-original-title="" title="">Payee Name</label>
+                                    <div class="col-lg-7">
+                                        <input type="text" ng-model="profile.currentProfile.PayeeName" name="PayeeName" data-required-message="Required" data-ng-required="profile.currentProfile.ValidateComplianceDraft && profile.currentProfile.isProfileW2OrTempOrSP" class="form-control" required="required" maxlength="64" data-pt-field-view="edit.ptFieldViewStatus">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-lg-3 control-label label-to-right"
+                                           data-ng-class="profile.hasMethod ? 'req-lab-right-valid' : 'req-lab-right'">Payment method</label>
+                                    <div class="col-lg-9">
+                                        <div data-ng-repeat="method in profile.currentProfile.UserProfilePaymentMethods" class="pull-left" style="padding-top: 7px; width: 20%;">
+                                            <input type="checkbox" name="UserPaymentMethod" data-ng-model="method.IsSelected" data-ng-change="profile.changePaymentMethod(method)" data-ng-required="!profile.hasMethod && profile.currentProfile.ValidateComplianceDraft && profile.currentProfile.isProfileW2OrTempOrSP" ng-disabled="!profile.canChangePaymentMethods" data-pt-field-view="edit.ptFieldViewStatus" />
+                                            <span>&nbsp;{{method.PaymentMethodTypeId|lookupnocache:profile.paymentMethods:'id':'text'}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group org-payment-chk">
+                                    <label class="col-lg-3  control-label label-to-right" 
+                                           data-ng-class="profile.hasPreference ? 'req-lab-right-valid' : 'req-lab-right'">Payment preference</label>
+                                    <div class="col-lg-9">
+                                        <div data-ng-repeat="method in profile.currentProfile.UserProfilePaymentMethods" class="pull-left" style="width: 20%;">
+                                            <input type="radio" name="UserPaymentPreference" data-ng-value="true" data-ng-model="method.IsPreferred" data-ng-change="profile.changePaymentPreference(method)"
+                                                data-ng-required="!profile.hasPreference && profile.currentProfile.ValidateComplianceDraft && profile.currentProfile.isProfileW2OrTempOrSP"
+                                                ng-disabled="!profile.canChangePaymentMethods" data-pt-field-view="edit.ptFieldViewStatus"
+                                                data-pt-field-view-custom="{{ method == null ? '' : method.IsPreferred ? 'Yes' : 'No' }}" 
+                                                style="margin-top: 11px" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="profile-payment-txts" data-ng-repeat="method in profile.currentProfile.UserProfilePaymentMethods">
+                                    <div data-ng-if="method.PaymentMethodTypeId == ApplicationConstants.PaymentMethodType.DirectDeposit && method.IsSelected" class="row">
+                                        <div class="form-group">
+                                            <div class="col-lg-12">
+                                                <h4>Direct Deposit</h4>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for-property="BankCode" for="BankCode" data-model-property="method.BankCode" class="col-lg-3 control-label req-lab-right">Bank Code</label>
+                                            <div class="col-lg-7 dd-input">
+                                                <input type="text" ng-model="method.BankCode" ng-minlength="3" name="BankCode" class="form-control" maxlength="30" data-ng-required="profile.currentProfile.ValidateComplianceDraft && profile.currentProfile.isProfileW2OrTempOrSP" data-pt-field-view="edit.ptFieldViewStatus">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for-property="BankBranchCode" for="BankBranchCode" data-model-property="method.BankBranchCode" class="col-lg-3 control-label req-lab-right">Bank Branch Code</label>
+                                            <div class="col-lg-7 dd-input">
+                                                <input type="text" ng-model="method.BankBranchCode" ng-minlength="3" name="BankBranchCode" class="form-control" maxlength="30" data-ng-required="profile.currentProfile.ValidateComplianceDraft && profile.currentProfile.isProfileW2OrTempOrSP" data-pt-field-view="edit.ptFieldViewStatus">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for-property="BankAccountNumber" for="BankAccountNumber" data-model-property="method.BankAccountNumber" class="col-lg-3 control-label req-lab-right">Bank Account</label>
+                                            <div class="col-lg-7 dd-input">
+                                                <input type="text" ng-model="method.BankAccountNumber" ng-minlength="3" name="BankAccountNumber" class="form-control" maxlength="30" data-ng-required="profile.currentProfile.ValidateComplianceDraft && profile.currentProfile.isProfileW2OrTempOrSP" data-pt-field-view="edit.ptFieldViewStatus">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div data-ng-if="method.PaymentMethodTypeId == ApplicationConstants.PaymentMethodType.WireTransfer && method.IsSelected" class="row">
+                                        <div class="form-group">
+                                            <div class="col-lg-12">
+                                                <h4>Wire Transfer</h4>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-group wt-title">
+                                                <h4 class="col-lg-12 panel-title">Beneficiary Information</h4>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for-property="ProfileNameBeneficiary" for="ProfileNameBeneficiary" data-model-property="method.ProfileNameBeneficiary" class="col-lg-4 control-label req-lab-right">Profile Name</label>
+                                                <div class="col-lg-8">
+                                                    <input type="text" ng-model="method.ProfileNameBeneficiary" class="form-control" name="ProfileNameBeneficiary" id="ProfileNameBeneficiary" ng-maxlength="250" maxlength="250" data-ng-required="profile.currentProfile.ValidateComplianceDraft && profile.currentProfile.isProfileW2OrTempOrSP" data-pt-field-view="edit.ptFieldViewStatus" />
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="NameBeneficiary" for-property="NameBeneficiary" data-model-property="method.NameBeneficiary" class="col-lg-4 control-label req-lab-right">Name</label>
+                                                <div class="col-lg-8">
+                                                    <input type="text" ng-model="method.NameBeneficiary" class="form-control" name="NameBeneficiary" id="NameBeneficiary" ng-maxlength="250" maxlength="250" data-ng-required="profile.currentProfile.ValidateComplianceDraft && profile.currentProfile.isProfileW2OrTempOrSP" data-pt-field-view="edit.ptFieldViewStatus" />
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="AccountNumberBeneficiary" for-property="AccountNumberBeneficiary" data-model-property="method.AccountNumberBeneficiary" class="col-lg-4 control-label req-lab-right">Account Number</label>
+                                                <div class="col-lg-8">
+                                                    <input type="text" ng-model="method.AccountNumberBeneficiary" class="form-control" name="AccountNumberBeneficiary" id="AccountNumberBeneficiary" ng-maxlength="250" maxlength="250" data-ng-required="profile.currentProfile.ValidateComplianceDraft && profile.currentProfile.isProfileW2OrTempOrSP" data-pt-field-view="edit.ptFieldViewStatus" />
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="Address1Beneficiary" for-property="Address1Beneficiary" data-model-property="method.Address1Beneficiary" class="col-lg-4 control-label req-lab-right">Address</label>
+                                                <div class="col-lg-8">
+                                                    <input type="text" ng-model="method.Address1Beneficiary" class="form-control" name="Address1Beneficiary" id="Address1Beneficiary" ng-maxlength="250" maxlength="250" data-ng-required="profile.currentProfile.ValidateComplianceDraft && profile.currentProfile.isProfileW2OrTempOrSP" data-pt-field-view="edit.ptFieldViewStatus" />
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="Address2Beneficiary" for-property="Address2Beneficiary" data-model-property="method.Address2Beneficiary" class="col-lg-4 control-label"></label>
+                                                <div class="col-lg-8">
+                                                    <input type="text" ng-model="method.Address2Beneficiary" class="form-control" name="Address2Beneficiary" id="Address2Beneficiary" ng-maxlength="250" maxlength="250" data-pt-field-view="edit.ptFieldViewStatus" />
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="CityBeneficiary" for-property="CityBeneficiary" data-model-property="method.CityBeneficiary" class="col-lg-4 control-label">City</label>
+                                                <div class="col-lg-8">
+                                                    <input type="text" ng-model="method.CityBeneficiary" class="form-control" name="CityBeneficiary" id="CityBeneficiary" ng-maxlength="250" maxlength="250" data-pt-field-view="edit.ptFieldViewStatus" />
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="ProvinceOrStateBeneficiary" for-property="ProvinceOrStateBeneficiary" data-model-property="method.ProvinceOrStateBeneficiary" class="col-lg-4 control-label">Province/State</label>
+                                                <div class="col-lg-8">
+                                                    <input type="text" ng-model="method.ProvinceOrStateBeneficiary" class="form-control" name="ProvinceOrStateBeneficiary" ng-maxlength="250" maxlength="250" id="ProvinceOrStateBeneficiary" data-pt-field-view="edit.ptFieldViewStatus" />
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="CountryCodeBeneficiary" for-property="CountryCodeBeneficiary" data-model-property="method.CountryCodeBeneficiary" class="col-lg-4 control-label req-lab-right">Country Code</label>
+                                                <div class="col-lg-8">
+                                                    <div class="input-group select2-bootstrap-append">
+                                                        <ui-select name="CountryCodeBeneficiary" data-ng-model="method.CountryCodeBeneficiary" theme="select2" class="form-control" data-ng-required="profile.currentProfile.ValidateComplianceDraft && profile.currentProfile.isProfileW2OrTempOrSP" data-pt-field-view="edit.ptFieldViewStatus">
+                                                            <ui-select-match placeholder="-- Select One --">{{$select.selected.text}}</ui-select-match>
+                                                            <ui-select-choices repeat="item.id as item in profile.countries | uiSelectChoicesFilter: $select.search: 'text'">
+                                                                <span data-ng-bind-html="item.text | highlight: $select.search"></span>
+                                                            </ui-select-choices>
+                                                        </ui-select>
+                                                        <span class="input-group-btn">
+                                                            <button tabindex="-1" data-ng-click="method.CountryCodeBeneficiary = undefined" class="btn btn-default btn-contact-drp"><i class="material-icons md-18">clear</i></button>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="PostalorZipBeneficiary" for-property="PostalorZipBeneficiary" data-model-property="method.PostalorZipBeneficiary" class="col-lg-4 control-label">Postal/Zip</label>
+                                                <div class="col-lg-8">
+                                                    <!--<input type="text" ng-model="method.PostalorZipBeneficiary" class="form-control" name="PostalorZipBeneficiary" id="PostalorZipBeneficiary" ng-maxlength="16" maxlength="16" data-pt-field-view="edit.ptFieldViewStatus" />-->
+                                                    <input type="text" name="PostalorZipBeneficiary" class="form-control ng-pristine ng-invalid" maxlength="16"
+                                                           postal-zip-code-valid="{countryId: method.CountryCodeBeneficiary, isRequired: false}"
+                                                           postal-zip-code-mask="method.CountryCodeBeneficiary"
+                                                           data-ng-model="method.PostalorZipBeneficiary"
+                                                           data-pt-field-view="edit.ptFieldViewStatus">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="PayCurrencyBeneficiary" for-property="PayCurrencyBeneficiary" data-model-property="method.PayCurrencyBeneficiary" class="col-lg-4 control-label req-lab-right">Pay Currency</label>
+                                                <div class="col-lg-8">
+                                                    <div class="input-group select2-bootstrap-append">
+                                                        <ui-select name="PayCurrencyBeneficiary" data-ng-model="method.PayCurrencyBeneficiary" theme="select2" class="form-control" data-ng-required="profile.currentProfile.ValidateComplianceDraft && profile.currentProfile.isProfileW2OrTempOrSP" data-pt-field-view="edit.ptFieldViewStatus">
+                                                            <ui-select-match placeholder="-- Select One --">{{$select.selected.text}}</ui-select-match>
+                                                            <ui-select-choices repeat="item.id as item in profile.currencies | uiSelectChoicesFilter: $select.search: 'text'">
+                                                                <span data-ng-bind-html="item.text | highlight: $select.search"></span>
+                                                            </ui-select-choices>
+                                                        </ui-select>
+                                                        <span class="input-group-btn">
+                                                            <button tabindex="-1" data-ng-click="method.PayCurrencyBeneficiary = undefined" class="btn btn-default btn-contact-drp"><i class="material-icons md-18">clear</i></button>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="WireTransferBankTypeIdBeneficiary" for-property="WireTransferBankTypeIdBeneficiary" data-model-property="method.WireTransferBankTypeIdBeneficiary" class="col-lg-4 control-label req-lab-right">Bank ID Type</label>
+                                                <div class="col-lg-8">
+                                                    <div class="input-group select2-bootstrap-append">
+                                                        <ui-select name="WireTransferBankTypeIdBeneficiary" data-ng-model="method.WireTransferBankTypeIdBeneficiary" theme="select2" class="form-control" data-ng-required="profile.currentProfile.ValidateComplianceDraft && profile.currentProfile.isProfileW2OrTempOrSP" data-pt-field-view="edit.ptFieldViewStatus">
+                                                            <ui-select-match placeholder="-- Select One --">{{$select.selected.text}}</ui-select-match>
+                                                            <ui-select-choices repeat="item.id as item in profile.wiretransferBankTypes | uiSelectChoicesFilter: $select.search: 'text'">
+                                                                <span data-ng-bind-html="item.text | highlight: $select.search"></span>
+                                                            </ui-select-choices>
+                                                        </ui-select>
+                                                        <span class="input-group-btn">
+                                                            <button tabindex="-1" data-ng-click="method.WireTransferBankTypeIdBeneficiary = undefined" class="btn btn-default btn-contact-drp"><i class="material-icons md-18">clear</i></button>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="BankIDBeneficiary" for-property="BankIDBeneficiary" data-model-property="method.BankIDBeneficiary" class="col-lg-4 control-label req-lab-right">Bank ID </label>
+                                                <div class="col-lg-8">
+                                                    <input type="text" ng-model="method.BankIDBeneficiary" class="form-control" name="BankIDBeneficiary" id="BankIDBeneficiary" ng-maxlength="250" maxlength="250" data-ng-required="profile.currentProfile.ValidateComplianceDraft && profile.currentProfile.isProfileW2OrTempOrSP" data-pt-field-view="edit.ptFieldViewStatus" />
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="ABANoBeneficiary" for-property="ABANoBeneficiary" data-model-property="method.ABANoBeneficiary" class="col-lg-4 control-label">ABA #</label>
+                                                <div class="col-lg-8">
+                                                    <input type="text" ng-model="method.ABANoBeneficiary" class="form-control" name="ABANoBeneficiary" id="ABANoBeneficiary" ng-maxlength="250" maxlength="250" data-pt-field-view="edit.ptFieldViewStatus" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-group wt-title">
+                                                <h4 class="col-lg-12 panel-title">Intermediary Information</h4>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="BankIdTypeIntemediary" for-property="BankIdTypeIntemediary" data-model-property="method.BankIdTypeIntemediary" class="col-lg-4 control-label">Bank ID Type</label>
+                                                <div class="col-lg-8">
+                                                    <div class="input-group select2-bootstrap-append">
+                                                        <ui-select name="WireTransferBankTypeIdIntemediary" data-ng-model="method.WireTransferBankTypeIdIntemediary" theme="select2" class="form-control" data-pt-field-view="edit.ptFieldViewStatus">
+                                                            <ui-select-match placeholder="-- Select One --">{{$select.selected.text}}</ui-select-match>
+                                                            <ui-select-choices repeat="item.id as item in profile.wiretransferBankTypes | uiSelectChoicesFilter: $select.search: 'text'">
+                                                                <span data-ng-bind-html="item.text | highlight: $select.search"></span>
+                                                            </ui-select-choices>
+                                                        </ui-select>
+                                                        <span class="input-group-btn">
+                                                            <button tabindex="-1" data-ng-click="method.WireTransferBankTypeIdIntemediary = undefined" class="btn btn-default btn-contact-drp"><i class="material-icons md-18">clear</i></button>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="BankNameIntemediary" for-property="BankNameIntemediary" data-model-property="method.BankNameIntemediary" class="col-lg-4 control-label">Bank Name</label>
+                                                <div class="col-lg-8">
+                                                    <input type="text" ng-model="method.BankNameIntemediary" class="form-control" name="BankNameIntemediary" id="BankNameIntemediary" ng-maxlength="250" maxlength="250" data-pt-field-view="edit.ptFieldViewStatus" />
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="BankIdIntemediary" for-property="BankIdIntemediary" data-model-property="method.BankIdIntemediary" class="col-lg-4 control-label">Bank ID</label>
+                                                <div class="col-lg-8">
+                                                    <input type="text" ng-model="method.BankIdIntemediary" class="form-control" name="BankIdIntemediary" id="BankIdIntemediary" ng-maxlength="250" maxlength="250" data-pt-field-view="edit.ptFieldViewStatus" />
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="Address1Intemediary" for-property="Address1Intemediary" data-model-property="method.Address1Intemediary" class="col-lg-4 control-label">Address</label>
+                                                <div class="col-lg-8">
+                                                    <input type="text" ng-model="method.Address1Intemediary" class="form-control" name="Address1Intemediary" id="Address1Intemediary" ng-maxlength="250" maxlength="250" data-pt-field-view="edit.ptFieldViewStatus" />
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="Address2Intemediary" for-property="Address2Intemediary" data-model-property="method.Address2Intemediary" class="col-lg-4 control-label"></label>
+                                                <div class="col-lg-8">
+                                                    <input type="text" ng-model="method.Address2Intemediary" class="form-control" name="Address2Intemediary" id="Address2Intemediary" ng-maxlength="250" maxlength="250" data-pt-field-view="edit.ptFieldViewStatus" />
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="CityIntemediary" for-property="CityIntemediary" data-model-property="method.CityIntemediary" class="col-lg-4 control-label">City</label>
+                                                <div class="col-lg-8">
+                                                    <input type="text" ng-model="method.CityIntemediary" class="form-control" name="CityIntemediary" id="CityIntemediary" ng-maxlength="250" maxlength="250" data-pt-field-view="edit.ptFieldViewStatus" />
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="ProvinceOrStateIntemediary" for-property="ProvinceOrStateIntemediary" data-model-property="method.ProvinceOrStateIntemediary" class="col-lg-4 control-label">Province/State</label>
+                                                <div class="col-lg-8">
+                                                    <input type="text" ng-model="method.ProvinceOrStateIntemediary" class="form-control" name="ProvinceOrStateIntemediary" id="ProvinceOrStateIntemediary" ng-maxlength="250" maxlength="250" data-pt-field-view="edit.ptFieldViewStatus" />
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="CountryCodeIntemediary" for-property="CountryCodeIntemediary" data-model-property="method.CountryCodeIntemediary" class="col-lg-4 control-label">Country Code</label>
+                                                <div class="col-lg-8">
+                                                    <div class="input-group select2-bootstrap-append">
+                                                        <ui-select name="CountryCodeIntemediary" data-ng-model="method.CountryCodeIntemediary" theme="select2" class="form-control" data-pt-field-view="edit.ptFieldViewStatus">
+                                                            <ui-select-match placeholder="-- Select One --">{{$select.selected.text}}</ui-select-match>
+                                                            <ui-select-choices repeat="item.id as item in profile.countries | uiSelectChoicesFilter: $select.search: 'text'">
+                                                                <span data-ng-bind-html="item.text | highlight: $select.search"></span>
+                                                            </ui-select-choices>
+                                                        </ui-select>
+                                                        <span class="input-group-btn">
+                                                            <button tabindex="-1" data-ng-click="method.CountryCodeIntemediary = undefined" class="btn btn-default btn-contact-drp"><i class="material-icons md-18">clear</i></button>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="PostalOrZipIntemediary" for-property="PostalOrZipIntemediary" data-model-property="method.PostalOrZipIntemediary" class="col-lg-4 control-label">Postal/Zip</label>
+                                                <div class="col-lg-8">
+                                                    <!--<input type="text" ng-model="method.PostalOrZipIntemediary" class="form-control" name="PostalOrZipIntemediary" id="PostalOrZipIntemediary" ng-maxlength="16" maxlength="16" data-pt-field-view="edit.ptFieldViewStatus" />-->
+                                                    <input type="text" name="PostalOrZipIntemediary" class="form-control ng-pristine ng-invalid" maxlength="16"
+                                                           postal-zip-code-valid="{countryId: method.CountryCodeIntemediary, isRequired: false}"
+                                                           postal-zip-code-mask="method.CountryCodeIntemediary"
+                                                           data-ng-model="method.PostalOrZipIntemediary"
+                                                           data-pt-field-view="edit.ptFieldViewStatus">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12"></div>
+                                        <div class="col-lg-6">
+                                            <div class="form-group wt-title">
+                                                <h4 class="col-lg-12 panel-title">Receivers Correspondent Information</h4>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="BankIdTypeReceivers" for-property="BankIdTypeReceivers" data-model-property="method.BankIdTypeReceivers" class="col-lg-4 control-label">Bank ID Type</label>
+                                                <div class="col-lg-8">
+                                                    <div class="input-group select2-bootstrap-append">
+                                                        <ui-select name="WireTransferBankTypeIdReceivers" data-ng-model="method.WireTransferBankTypeIdReceivers" theme="select2" class="form-control" data-pt-field-view="edit.ptFieldViewStatus">
+                                                            <ui-select-match placeholder="-- Select One --">{{$select.selected.text}}</ui-select-match>
+                                                            <ui-select-choices repeat="item.id as item in profile.wiretransferBankTypes | uiSelectChoicesFilter: $select.search: 'text'">
+                                                                <span data-ng-bind-html="item.text | highlight: $select.search"></span>
+                                                            </ui-select-choices>
+                                                        </ui-select>
+                                                        <span class="input-group-btn">
+                                                            <button tabindex="-1" data-ng-click="method.WireTransferBankTypeIdReceivers = undefined" class="btn btn-default btn-contact-drp"><i class="material-icons md-18">clear</i></button>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="BankNameReceivers" for-property="BankIdTypeReceivers" data-model-property="method.BankIdTypeReceivers" class="col-lg-4 control-label">Bank Name</label>
+                                                <div class="col-lg-8">
+                                                    <input type="text" ng-model="method.BankNameReceivers" class="form-control" name="BankNameReceivers" id="BankNameReceivers" ng-maxlength="250" maxlength="250" data-pt-field-view="edit.ptFieldViewStatus" />
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="BankIdReceivers" for-property="BankIdReceivers" data-model-property="method.BankIdReceivers" class="col-lg-4 control-label">Bank ID</label>
+                                                <div class="col-lg-8">
+                                                    <input type="text" ng-model="method.BankIdReceivers" class="form-control" name="BankIdReceivers" id="BankIdReceivers" ng-maxlength="250" maxlength="250" data-pt-field-view="edit.ptFieldViewStatus" />
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="Address1Receivers" for-property="Address1Receivers" data-model-property="method.Address1Receivers" class="col-lg-4 control-label">Address</label>
+                                                <div class="col-lg-8">
+                                                    <input type="text" ng-model="method.Address1Receivers" class="form-control" name="Address1Receivers" id="Address1Receivers" ng-maxlength="250" maxlength="250" data-pt-field-view="edit.ptFieldViewStatus" />
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="Address2Receivers" for-property="Address2Receivers" data-model-property="method.Address2Receivers" class="col-lg-4 control-label"></label>
+                                                <div class="col-lg-8">
+                                                    <input type="text" ng-model="method.Address2Receivers" class="form-control" name="Address2Receivers" id="Address2Receivers" ng-maxlength="250" maxlength="250" data-pt-field-view="edit.ptFieldViewStatus" />
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="CityReceivers" for-property="CityReceivers" data-model-property="method.CityReceivers" class="col-lg-4 control-label">City</label>
+                                                <div class="col-lg-8">
+                                                    <input type="text" ng-model="method.CityReceivers" class="form-control" name="CityReceivers" id="CityReceivers" ng-maxlength="250" maxlength="250" data-pt-field-view="edit.ptFieldViewStatus" />
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="ProvinceOrStateReceivers" for-property="ProvinceOrStateReceivers" data-model-property="method.ProvinceOrStateReceivers" class="col-lg-4 control-label">Province/State</label>
+                                                <div class="col-lg-8">
+                                                    <input type="text" ng-model="method.ProvinceOrStateReceivers" class="form-control" name="ProvinceOrStateReceivers" id="ProvinceOrStateReceivers" ng-maxlength="250" maxlength="250" data-pt-field-view="edit.ptFieldViewStatus" />
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="CountryCodeReceivers" for-property="CountryCodeReceivers" data-model-property="method.CountryCodeReceivers" class="col-lg-4 control-label">Country Code</label>
+                                                <div class="col-lg-8">
+                                                    <div class="input-group select2-bootstrap-append">
+                                                        <ui-select name="CountryCodeReceivers" data-ng-model="method.CountryCodeReceivers" theme="select2" class="form-control" data-pt-field-view="edit.ptFieldViewStatus">
+                                                            <ui-select-match placeholder="-- Select One --">{{$select.selected.text}}</ui-select-match>
+                                                            <ui-select-choices repeat="item.id as item in profile.countries | uiSelectChoicesFilter: $select.search: 'text'">
+                                                                <span data-ng-bind-html="item.text | highlight: $select.search"></span>
+                                                            </ui-select-choices>
+                                                        </ui-select>
+                                                        <span class="input-group-btn">
+                                                            <button tabindex="-1" data-ng-click="method.CountryCodeReceivers = undefined" class="btn btn-default btn-contact-drp"><i class="material-icons md-18">clear</i></button>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="PostalOrZipReceivers" for-property="PostalOrZipReceivers" data-model-property="method.PostalOrZipReceivers" class="col-lg-4 control-label">Postal/Zip</label>
+                                                <div class="col-lg-8">
+                                                    <!--<input type="text" ng-model="method.PostalOrZipReceivers" class="form-control" name="PostalOrZipReceivers" id="PostalOrZipReceivers" ng-maxlength="16" maxlength="16" data-pt-field-view="edit.ptFieldViewStatus" />-->
+                                                    <input type="text" name="PostalOrZipReceivers" class="form-control ng-pristine ng-invalid" maxlength="16"
+                                                           postal-zip-code-valid="{countryId: method.CountryCodeReceivers, isRequired: false}"
+                                                           postal-zip-code-mask="method.CountryCodeReceivers"
+                                                           data-ng-model="method.PostalOrZipReceivers"
+                                                           data-pt-field-view="edit.ptFieldViewStatus">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-group wt-title">
+                                                <h4 class="col-lg-12 panel-title">Payment Detail Notes</h4>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="col-lg-12">
+                                                    <textarea ng-model="method.PaymentDetailNotes" class="form-control" id="PaymentDetailNotes" name="PaymentDetailNotes" rows="6" style="resize: none" ng-maxlength="2000" maxlength="2000" ng-if="profile.currentProfile.IsDraftStatus"></textarea>
+                                                    <div ng-if="!profile.currentProfile.IsDraftStatus" style="word-break:break-word;">{{method.PaymentDetailNotes}}</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div data-ng-if="method.PaymentMethodTypeId == ApplicationConstants.PaymentMethodType.ADP && method.IsSelected" class="row">
+                                        <div class="form-group">
+                                            <div class="col-lg-12">
+                                                <h4>ADP</h4>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for-property="EmployeeId" for="EmployeeId" data-model-property="method.EmployeeId" class="col-lg-3 control-label req-lab-right">Employee Id</label>
+                                            <div class="col-lg-7 dd-input">
+                                                <input type="text" ng-model="method.EmployeeId" name="EmployeeId" class="form-control" maxlength="30" data-ng-required="profile.currentProfile.ValidateComplianceDraft && profile.currentProfile.isProfileW2OrTempOrSP" data-pt-field-view="edit.ptFieldViewStatus">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--END Payment Method-->
+                                <!--Payroll Setup-->
+                                <div data-ng-if="profile.currentProfile.ProfileTypeId!==ApplicationConstants.UserProfileType.WorkerUnitedStatesW2">
+                                    <div class="form-group">
+                                        <div class="col-lg-12">
+                                            <h4>Payroll Setup</h4>
+                                        </div>
+                                    </div>
+                                    <!--Is Basic Setup-->
+                                    <div class="" style="margin-bottom:10px;">
+                                        <div class="form-group panel-profile-radio" data-ng-if="profile.taxExempt && profile.fullTaxExempt">
+                                            <label class="req-lab-right col-lg-3 control-label" for-property="IsBasicSetup" for="IsBasicSetup" data-model-property="profile.currentProfile.IsBasicSetup" data-original-title="" title="">Is Basic Setup</label>
+                                            <div class="col-lg-7">
+                                                <pt-input-radio name="IsBasicSetup"
+                                                                data-ng-required="true"
+                                                                data-template-type="input-radio"
+                                                                data-ng-model="profile.currentProfile.IsBasicSetup"
+                                                                data-ng-click="profile.restoreIsBasicSetup()"
+                                                                data-options="[{ key: true, value: 'Yes' },{ key: false, value: 'No' }]" data-pt-field-view="edit.ptFieldViewStatus" />
+                                            </div>
+                                        </div>
+                                        <div name="AdvancedSetup" data-ng-if="profile.taxExempt && profile.fullTaxExempt && !profile.currentProfile.IsBasicSetup && profile.currentProfile.IsBasicSetup != null">
+                                            <div class="form-group" data-ng-if="profile.fullTaxExempt">
+                                                <label for-property="FederalTD1" for="FederalTD1" data-model-property="profile.currentProfile.FederalTD1" class="col-lg-4 control-label" data-original-title="" title="">TD1 Federal</label>
+                                                <div class="col-lg-4 padd-r">
+                                                    <div class="input-group">
+                                                        <input type="text" data-float-between-input="{from:0, to:9999999999999.99, decimalplaces:2, doesemptytozero:'false'}" ng-model="profile.currentProfile.FederalTD1" name="FederalTD1" class="form-control" data-pt-field-view="edit.ptFieldViewStatus">
+                                                        <span class="input-group-addon" data-ng-if="edit.currentProfile.IsDraftStatus">$</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group" data-ng-if="profile.fullTaxExempt">
+                                                <label for-property="ProvincialTD1" for="ProvincialTD1" data-model-property="profile.currentProfile.ProvincialTD1" class="col-lg-4 control-label" data-original-title="" title="">TD1 Provincial</label>
+                                                <div class="col-lg-4 padd-r">
+                                                    <div class="input-group">
+                                                        <input type="text" data-float-between-input="{from:0, to:9999999999999.99, decimalplaces:2, doesemptytozero:'false'}" ng-model="profile.currentProfile.ProvincialTD1" name="ProvincialTD1" class="form-control ng-pristine ng-valid" data-pt-field-view="edit.ptFieldViewStatus">
+                                                        <span class="input-group-addon" data-ng-if="edit.currentProfile.IsDraftStatus">$</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group" data-ng-if="profile.fullTaxExempt">
+                                                <label for-property="TD1XTotalRemuneration" for="TD1XTotalRemuneration" data-model-property="profile.currentProfile.TD1XTotalRemuneration" class="col-lg-4 control-label" data-original-title="" title="">TD1X Total Remuneration</label>
+                                                <div class="col-lg-4 padd-r">
+                                                    <div class="input-group">
+                                                        <input type="text" data-ng-blur="profile.validateTD1X()" data-float-between-input="{from:0, to:9999999999999.99, decimalplaces:2, doesemptytozero:'false'}" ng-model="profile.currentProfile.TD1XTotalRemuneration" name="TD1XTotalRemuneration" class="form-control" data-pt-field-view="edit.ptFieldViewStatus">
+                                                        <span class="input-group-addon" data-ng-if="edit.currentProfile.IsDraftStatus">$</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group" data-ng-if="profile.fullTaxExempt">
+                                                <label for-property="TD1XCommissionExpenses" for="TD1XCommissionExpenses" data-model-property="profile.currentProfile.TD1XCommissionExpenses" class="col-lg-4 control-label" data-original-title="" title="">TD1X Commission Expenses</label>
+                                                <div class="col-lg-4 padd-r">
+                                                    <div class="input-group">
+                                                        <input type="text" data-ng-blur="profile.validateTD1X()" data-float-between-input="{from:0, to:9999999999999.99, decimalplaces:2, doesemptytozero:'false'}" ng-model="profile.currentProfile.TD1XCommissionExpenses" name="TD1XCommissionExpenses" class="form-control" data-pt-field-view="edit.ptFieldViewStatus">
+                                                        <span class="input-group-addon" data-ng-if="edit.currentProfile.IsDraftStatus">$</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--END Is Basic Setup-->
+                                    <div class="">
+                                        <div class="form-group">
+                                            <label for-property="TaxSubdivisionId" for="TaxSubdivisionId" data-model-property="profile.currentProfile.TaxSubdivisionId" class="req-lab-right col-lg-3 control-label" data-original-title="" title="">Tax Province/State</label>
+                                            <div class="col-lg-7">
+                                                <div class="input-group select2-bootstrap-append">
+                                                    <ui-select name="TaxSubdivisionId" data-ng-model="profile.currentProfile.TaxSubdivisionId" data-ng-change="profile.taxSubdivisionChanged()" theme="select2" class="form-control" data-ng-required="edit.currentProfile.IsDraft && profile.currentProfile.isProfileTempOrSP" data-pt-field-view="edit.ptFieldViewStatus">
+                                                        <ui-select-match placeholder="-- Select One --">{{$select.selected.text}}</ui-select-match>
+                                                        <ui-select-choices repeat="item.id as item in profile.subdivisions | uiSelectChoicesFilter: $select.search: 'text'">
+                                                            <span data-ng-bind-html="item.text | highlight: $select.search"></span>
+                                                        </ui-select-choices>
+                                                    </ui-select>
+                                                    <span class="input-group-btn">
+                                                        <button tabindex="-1" data-ng-click="profile.currentProfile.TaxSubdivisionId = undefined" class="btn btn-default btn-contact-drp"><i class="material-icons md-18">clear</i></button>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div ng-if="profile.currentProfile.ProfileTypeId === ApplicationConstants.UserProfileType.WorkerCanadianSp" class="col-xs-12">
+                                            <h4>Non-T4A Work Orders</h4>
+                                        </div>
+                                        <div class="form-group panel-profile-radio" data-ng-if="profile.taxExempt">
+                                            <label class="col-lg-3 control-label" data-original-title="" title="">Apply&nbsp;{{profile.currentProfile.UserProfileWorkerSourceDeductions[0].SourceDeductionTypeId | lookup:profile.sourceDeductionTypeList:'id':'text'}}</label>
+                                            <div class="col-lg-7">
+                                                <pt-input-radio name="CPPExempt"
+                                                                data-ng-required="false"
+                                                                data-template-type="input-radio"
+                                                                data-ng-model="profile.currentProfile.UserProfileWorkerSourceDeductions[0].IsApplied"
+                                                                data-options="[{ key: true, value: 'Yes' },{ key: false, value: 'No' }]" data-pt-field-view="edit.ptFieldViewStatus" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group panel-profile-radio" data-ng-if="profile.taxExempt">
+                                            <label class="col-lg-3 control-label" data-original-title="" title="">Apply&nbsp;{{profile.currentProfile.UserProfileWorkerSourceDeductions[3].SourceDeductionTypeId | lookup:profile.sourceDeductionTypeList:'id':'text'}}</label>
+                                            <div class="col-lg-7">
+                                                <pt-input-radio name="QPPExempt"
+                                                                data-ng-required="false"
+                                                                data-template-type="input-radio"
+                                                                data-ng-model="profile.currentProfile.UserProfileWorkerSourceDeductions[3].IsApplied"
+                                                                data-options="[{ key: true, value: 'Yes' },{ key: false, value: 'No' }]" data-pt-field-view="edit.ptFieldViewStatus" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group panel-profile-radio" data-ng-if="profile.taxExempt">
+                                            <label class="col-lg-3 control-label" data-original-title="" title="">Apply&nbsp;{{profile.currentProfile.UserProfileWorkerSourceDeductions[1].SourceDeductionTypeId | lookup:profile.sourceDeductionTypeList:'id':'text'}}</label>
+                                            <div class="col-lg-7">
+                                                <pt-input-radio name="EIExempt"
+                                                                data-ng-required="false"
+                                                                data-template-type="input-radio"
+                                                                data-ng-model="profile.currentProfile.UserProfileWorkerSourceDeductions[1].IsApplied"
+                                                                data-options="[{ key: true, value: 'Yes' },{ key: false, value: 'No' }]" data-pt-field-view="edit.ptFieldViewStatus" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group panel-profile-radio" data-ng-if="profile.taxExempt">
+                                            <label class="col-lg-3 control-label" data-original-title="" title="">Apply&nbsp;{{profile.currentProfile.UserProfileWorkerSourceDeductions[2].SourceDeductionTypeId | lookup:profile.sourceDeductionTypeList:'id':'text'}}</label>
+                                            <div class="col-lg-7">
+                                                <pt-input-radio name="PIPExempt"
+                                                                data-ng-required="false"
+                                                                data-template-type="input-radio"
+                                                                data-ng-model="profile.currentProfile.UserProfileWorkerSourceDeductions[2].IsApplied"
+                                                                data-options="[{ key: true, value: 'Yes' },{ key: false, value: 'No' }]" data-pt-field-view="edit.ptFieldViewStatus" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group panel-profile-radio" data-ng-if="profile.taxExempt && profile.fullTaxExempt">
+                                            <label class="col-lg-3 control-label" data-original-title="" title="">Apply&nbsp;{{profile.currentProfile.UserProfileWorkerSourceDeductions[7].SourceDeductionTypeId | lookup:profile.sourceDeductionTypeList:'id':'text'}}</label>
+                                            <div class="col-lg-7">
+                                                <pt-input-radio name="QuebecTrainingFee"
+                                                                data-ng-required="false"
+                                                                data-template-type="input-radio"
+                                                                data-ng-model="profile.currentProfile.UserProfileWorkerSourceDeductions[7].IsApplied"
+                                                                data-options="[{ key: true, value: 'Yes' },{ key: false, value: 'No' }]" data-pt-field-view="edit.ptFieldViewStatus" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group panel-profile-radio" data-ng-if="profile.taxExempt && profile.fullTaxExempt">
+                                            <label class="col-lg-3 control-label" data-original-title="" title="">Apply&nbsp;{{profile.currentProfile.UserProfileWorkerSourceDeductions[4].SourceDeductionTypeId | lookup:profile.sourceDeductionTypeList:'id':'text'}}</label>
+                                            <div class="col-lg-7">
+                                                <pt-input-radio name="FederalExempt"
+                                                                data-ng-required="false"
+                                                                data-template-type="input-radio"
+                                                                data-ng-model="profile.currentProfile.UserProfileWorkerSourceDeductions[4].IsApplied"
+                                                                data-options="[{ key: true, value: 'Yes' },{ key: false, value: 'No' }]" data-pt-field-view="edit.ptFieldViewStatus" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group panel-profile-radio" data-ng-if="profile.taxExempt && profile.fullTaxExempt">
+                                            <label class="col-lg-3 control-label" data-original-title="" title="">Apply&nbsp;{{profile.currentProfile.UserProfileWorkerSourceDeductions[5].SourceDeductionTypeId | lookup:profile.sourceDeductionTypeList:'id':'text'}}</label>
+                                            <div class="col-lg-7">
+                                                <pt-input-radio name="ProvincialExempt"
+                                                                data-ng-required="false"
+                                                                data-template-type="input-radio"
+                                                                data-ng-model="profile.currentProfile.UserProfileWorkerSourceDeductions[5].IsApplied"
+                                                                data-options="[{ key: true, value: 'Yes' },{ key: false, value: 'No' }]" data-pt-field-view="edit.ptFieldViewStatus" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group panel-profile-radio" data-ng-if="profile.taxExempt && profile.fullTaxExempt">
+                                            <label class="col-lg-3 control-label" for-property="AdditionalTaxAmount" for="AdditionalTax" data-original-title="" title="">{{profile.currentProfile.UserProfileWorkerSourceDeductions[6].SourceDeductionTypeId | lookup:profile.sourceDeductionTypeList:'id':'text'}}</label>
+                                            <div class="col-lg-3">
+                                                <pt-input-radio name="AdditionalTax"
+                                                                data-ng-required="true"
+                                                                data-template-type="input-radio"
+                                                                data-ng-model="profile.currentProfile.UserProfileWorkerSourceDeductions[6].IsApplied"
+                                                                data-ng-click="profile.restoreAdditionalTaxAmount(profile.currentProfile.UserProfileWorkerSourceDeductions[6])"
+                                                                data-options="[{ key: true, value: 'Yes' },{ key: false, value: 'No' }]" data-pt-field-view="edit.ptFieldViewStatus" />
+                                            </div>
+                                            <div class="col-lg-4">
+                                                <div class="input-group" data-ng-if="profile.currentProfile.UserProfileWorkerSourceDeductions[6].IsApplied">
+                                                    <input type="text"
+                                                           data-ng-pattern="ApplicationConstants.Regex.CurrencyGreaterThanZero"
+                                                           required data-float-between-input="{from:0, to:9999999999999.99, decimalplaces:2, doesemptytozero:'false'}"
+                                                           ng-model="profile.currentProfile.UserProfileWorkerSourceDeductions[6].RateAmount"
+                                                           name="AdditionalTaxAmount" class="form-control" data-pt-field-view="edit.ptFieldViewStatus">
+                                                    <span class="input-group-addon" data-ng-if="edit.currentProfile.IsDraftStatus">$</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group panel-profile-radio" data-ng-repeat="userProfileWorkerOtherEarning in  profile.currentProfile.UserProfileWorkerOtherEarnings">
+                                            <div class="form-group panel-profile-radio" data-ng-if="profile.taxExempt && profile.fullTaxExempt">
+                                                <label for-property="userProfileWorkerOtherEarning" for="userProfileWorkerOtherEarning" data-model-property="userProfileWorkerOtherEarning.RatePercentage" class="col-lg-3 control-label " data-original-title="" title="">
+                                                    Apply&nbsp;{{userProfileWorkerOtherEarning.PaymentOtherEarningTypeId | lookup:profile.paymentOtherEarningTypeList:'id':'text'}}
+                                                </label>
+                                                <div class="col-lg-3">
+                                                    <pt-input-radio name="IsApplied"
+                                                                    data-ng-required=" false"
+                                                                    data-template-type="input-radio"
+                                                                    data-ng-model="userProfileWorkerOtherEarning.IsApplied"
+                                                                    data-ng-click="profile.restoreUserProfileWorkerOtherEarning(userProfileWorkerOtherEarning);"
+                                                                    data-options="[{ key: true, value: 'Yes' },{ key: false, value: 'No' }]" data-pt-field-view="edit.ptFieldViewStatus" />
+                                                </div>
+                                                <div class="col-lg-4">
+                                                    <div class="input-group" data-ng-if="userProfileWorkerOtherEarning.IsApplied">
+                                                        <input type="text" required data-float-between-input="{from:0.00, to:100.00, decimalplaces:4 }" data-ng-model="userProfileWorkerOtherEarning.RatePercentage" name="RatePercentage" class="form-control" data-pt-field-view="edit.ptFieldViewStatus">
+                                                        <span class="input-group-addon">%</span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-4">
+                                                    <div data-ng-if="false">
+                                                        <div class="input-group select2-bootstrap-append" data-ng-if="userProfileWorkerOtherEarning.IsApplied">
+                                                            <ui-select name="PaymentOtherEarningTypeId" data-ng-model="userProfileWorkerOtherEarning.PaymentOtherEarningTypeId" theme="select2" class="form-control" required data-pt-field-view="edit.ptFieldViewStatus">
+                                                                <ui-select-match placeholder="-- Select One --">{{$select.selected.text}}</ui-select-match>
+                                                                <ui-select-choices repeat="item.id as item in profile.paymentOtherEarningTypeList | uiSelectChoicesFilter: $select.search: 'text'">
+                                                                    <span data-ng-bind-html="item.text | highlight: $select.search"></span>
+                                                                </ui-select-choices>
+                                                            </ui-select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- Is Accrued for vacation Pay-->
+                                            <div class="form-group panel-profile-radio" data-ng-if="userProfileWorkerOtherEarning.PaymentOtherEarningTypeId==ApplicationConstants.PaymentOtherEarningType.VacationPay && userProfileWorkerOtherEarning.IsApplied">
+                                                <label for-property="userProfileWorkerOtherEarning" for="userProfileWorkerOtherEarning" class="col-lg-3 control-label" data-original-title="" title="">
+                                                    Accrue&nbsp;{{userProfileWorkerOtherEarning.PaymentOtherEarningTypeId | lookup:profile.paymentOtherEarningTypeList:'id':'text'}}
+                                                </label>
+                                                <div class="col-lg-7">
+                                                    <pt-input-radio name="IsAccrued"
+                                                                    data-ng-required=" false"
+                                                                    data-template-type="input-radio"
+                                                                    data-ng-model="userProfileWorkerOtherEarning.IsAccrued"
+                                                                    data-options="[{ key: true, value: 'Yes' },{ key: false, value: 'No' }]" data-pt-field-view="edit.ptFieldViewStatus" />
+                                                </div>
+                                            </div>
+                                            <!----END IS ACCRUED-->
+                                        </div>
+                                    </div>
+                                    <div ng-if="profile.currentProfile.ProfileTypeId === ApplicationConstants.UserProfileType.WorkerCanadianSp">
+                                        <div class="col-xs-12">
+                                            <h4>T4A Form Eligibility</h4>
+                                        </div>
+
+                                        <div class="form-group panel-profile-radio">
+                                            <label for-property="profile.currentProfile.IsApplyWorkerSPGovernmentRuling" for="profile.currentProfile.IsApplyWorkerSPGovernmentRuling" class="col-lg-3 control-label">
+                                                Worker has SP Government Ruling
+                                            </label>
+                                            <div class="col-lg-7">
+                                                <pt-input-radio name="IsApplyWorkerSPGovernmentRuling"
+                                                                data-ng-required="profile.currentProfile.ValidateComplianceDraft"
+                                                                data-template-type="input-radio"
+                                                                data-ng-model="profile.currentProfile.IsApplyWorkerSPGovernmentRuling"
+                                                                data-ng-click="profile.onIsAppyWorkerSPGovernmentRulingChange($event)"
+                                                                data-options="[{ key: true, value: 'Yes' },{ key: false, value: 'No' }]" data-pt-field-view="edit.ptFieldViewStatus" />
+                                                <span ng-if="profile.currentProfile.IsApplyWorkerSPGovernmentRuling" class="form-control-static pull-right">Note: No deductions will be applied</span>
+                                            </div>
+                                        </div>
+                                        
+                                        <div ng-if="profile.currentProfile.IsApplyWorkerSPGovernmentRuling">
+                                            <div class="panel-row" ng-repeat="governmentRuling in profile.currentProfile.UserProfileWorkerSPGovernmentRulings">
+                                                <div class="form-group">
+                                                    <label for-property="OrganizationIdClient" for="OrganizationIdClient" data-model-property="governmentRuling.OrganizationIdClient" class="col-lg-3 col-xl-{{labelwidth}} control-label req-lab-right">
+                                                        Client Name
+                                                    </label>
+                                                    <div class="col-lg-7 col-xl-{{inputwidth}}">
+                                                        <div class="input-group select2-bootstrap-append">
+                                                            <ui-select name="OrganizationIdClient" data-ng-model="governmentRuling.OrganizationIdClient" theme="select2" class="form-control" ng-required="profile.currentProfile.ValidateComplianceDraft" data-pt-field-view="edit.ptFieldViewStatus"
+                                                                data-pt-field-view-custom="{{governmentRuling.OrganizationIdClient | lookupnocache:profile.workerClientOrganizations:'Id':'DisplayName':'Id'}}">
+                                                                <ui-select-match placeholder="-- Select One --">{{$select.selected.DisplayName}} - {{$select.selected.Id}}</ui-select-match>
+                                                                <ui-select-choices repeat="item.Id as item in profile.workerClientOrganizations  | uiSelectChoicesFilteredByUsage : $select.search: profile.currentProfile.UserProfileWorkerSPGovernmentRulings : governmentRuling: 'OrganizationIdClient': 'Id' : 'DisplayName': 'Id'">
+                                                                    <span data-ng-bind-html="item.DisplayName | highlight: $select.search"></span>
+                                                                    <span data-ng-bind-html="' - ' + item.Id | highlight: $select.search"></span>
+                                                                </ui-select-choices>
+                                                            </ui-select>
+                                                            <span class="input-group-btn">
+                                                                <button tabindex="-1" data-ng-click="governmentRuling.OrganizationIdClient = null" class="btn btn-default btn-contact-drp"><i class="material-icons md-18">clear</i></button>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label for-property="RulingNumber" for="RulingNumber" data-model-property="governmentRuling.RulingNumber" class="col-lg-3 col-xl-{{labelwidth}} control-label">
+                                                        Ruling Number
+                                                    </label>
+
+                                                    <div class="col-lg-7 col-xl-{{inputwidth}}">
+                                                        <input type="text" ng-model="governmentRuling.RulingNumber" class="form-control" data-pt-field-view="edit.ptFieldViewStatus" maxlength="250"/>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label for-property="EffectiveYear" for="EffectiveYear" data-model-property="governmentRuling.EffectiveYear" class="col-lg-3 col-xl-{{labelwidth}} control-label req-lab-right">
+                                                        Effective Year
+                                                    </label>
+
+                                                    <div class="col-lg-7 col-xl-{{inputwidth}}">
+                                                        <pt-date-picker name="EffectiveYear" data-ng-model="governmentRuling.EffectiveDate" ng-blur="profile.onGovernmentRulingEffectiveYearChange(governmentRuling, $event)" ng-required="profile.currentProfile.ValidateComplianceDraft" data-pt-field-view="edit.ptFieldViewStatus" data-picker-id="{{governmentRuling.Id}}_{{$index}}_EffectiveYear" data-datepicker-options="{ datepickerMode: 'year', minMode: 'year' }" />
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group padding-10-v-t">
+                                                    <div class="col-lg-10" data-ng-show="profile.currentProfile.UserProfileWorkerSPGovernmentRulings.length > 0">
+                                                        <button type="button" class="btn btn-material btn-default pull-right" data-ng-click="profile.removeWorkerSPGovernmentRuling(governmentRuling)" data-ng-if="edit.currentProfile.AreComplianceFieldsEditable">
+                                                            <i class="material-icons">delete</i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-10 padding-10-v-t ng-scope">
+                                                <div class="btn-toolbar pull-right" data-ng-if="edit.currentProfile.AreComplianceFieldsEditable">
+                                                    <button type="button" class="btn btn-material btn-default"
+                                                            data-ng-click="profile.addWorkerSPGovernmentRuling()" 
+                                                            data-ng-disabled="profile.currentProfile.UserProfileWorkerSPGovernmentRulings.length >= profile.workerClientOrganizations.length"
+                                                            title="Used {{profile.currentProfile.UserProfileWorkerSPGovernmentRulings.length}} from {{profile.workerClientOrganizations.length}} available client(s)">
+                                                        <i class="material-icons">add</i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group panel-profile-radio" data-ng-if="profile.currentProfile.ProfileTypeId===ApplicationConstants.UserProfileType.WorkerUnitedStatesW2 || profile.currentProfile.ProfileTypeId===ApplicationConstants.UserProfileType.WorkerTemp">
+                                    <div class="form-group">
+                                        <div class="col-lg-12">
+                                            <h4>Benefit Setup</h4>
+                                        </div>
+                                    </div>
+                                    <div class="" style="margin-bottom:10px;">
+                                        <div class="form-group panel-profile-radio">
+                                            <label class="req-lab-right col-lg-3 control-label" for-property="IsApplyBenefit" for="IsApplyBenefit" data-model-property="profile.currentProfile.IsBenefitApplied" data-original-title="" title="">Apply Benefit</label>
+                                            <div class="col-lg-7">
+                                                <pt-input-radio name="IsApplyBenefit"
+                                                                data-ng-required="profile.currentProfile.ValidateComplianceDraft && profile.currentProfile.isProfileW2OrTemp"
+                                                                data-template-type="input-radio"
+                                                                data-ng-model="profile.currentProfile.IsApplyBenefit"
+                                                                data-ng-click="profile.benefitSetupClicked($event)"
+                                                                data-options="[{ key: true, value: 'Yes' },{ key: false, value: 'No' }]" data-pt-field-view="edit.ptFieldViewStatus" />
+                                            </div>
+                                        </div>
+
+
+                                        <div class="panel panel-internal panel-contact" data-ng-show="profile.currentProfile.IsApplyBenefit">
+                                            <label class="col-lg-3 control-label" data-original-title="" title="">Benefits</label>
+                                            <div class="col-lg-9 no-padding-h-r">
+
+                                                <table class="table" ng-if="profile.currentProfile.UserProfileWorkerBenefits.length > 0">
+                                                    <thead class="my-thead">
+                                                        <tr>
+                                                            <th>Description</th>
+                                                            <th>Operating Company</th>
+                                                            <th class="text-right">Employee Amount</th>
+                                                            <th class="text-right">Employer Amount</th>
+                                                            <th class="text-right">Total Amount</th>
+                                                            <th>Effective Date</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr style="cursor:pointer"
+                                                            ng-repeat="benefit in profile.currentProfile.UserProfileWorkerBenefits"
+                                                            ng-click="edit.currentProfile.IsDraftStatus && self.currentProfile.ProfileTypeId != ApplicationConstants.UserProfileType.WorkerUnitedStatesW2 && self.currentProfile.ProfileTypeId != ApplicationConstants.UserProfileType.WorkerTemp ? profile.addBenefits(benefit) : ''"
+                                                            data-ng-class="benefit.IsActive?'':'bg-danger'">
+                                                            <td>{{benefit.BenefitTypeId|lookupnocache:profile.benefits:'id':'text'}}</td>
+                                                            <td>{{benefit.OrganizationIdInternal|lookupnocache:profile.internalOrganizations:'Id':'DisplayName'}}</td>
+                                                            <td class="text-right">{{benefit.EmployeeAmount}}</td>
+                                                            <td class="text-right">{{benefit.EmployerAmount}}</td>
+                                                            <td class="text-right">{{benefit.TotalAmount | number : 2}}</td>
+                                                            <td>{{benefit.EffectiveDate | date:ApplicationConstants.formatDateComma}}</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                                <div>
+                                                    <!--<div class="btn-toolbar" data-ng-class="profile.currentProfile.UserProfileWorkerBenefits.length > 0 ? 'pull-right': ''" data-ng-show="profile.showAddBenefitsButton()">-->
+                                                    <div class="btn-toolbar pull-right" data-ng-if="edit.currentProfile.IsDraftStatus && edit.currentProfile.ProfileTypeId != ApplicationConstants.UserProfileType.WorkerUnitedStatesW2 && edit.currentProfile.ProfileTypeId != ApplicationConstants.UserProfileType.WorkerTemp">
+                                                        <button type="button" class="btn btn-material btn-default"
+                                                                data-ng-click="profile.addBenefits()">
+                                                            <i class="material-icons">add</i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div data-ng-if="profile.currentProfile.IsBenefitApplied">
+
+                                        </div>
+
+                                    </div>
+
+
+
+                                </div>
+                                <!--END Payroll Setup-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!---->
+    <!--Worker Eligibility-->
+    <div class="profile-personal-info-wrapper" data-ng-if="profile.workerEligibilityPanel">
+        <div class="panel-body profile-personal-info">
+            <div class="panel panel-internal profile-personal-info-details ng-scope">
+                <div class="form-group">
+                    <div class="col-lg-12" style="padding: 0">
+                        <h4>Worker Eligibility</h4>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="form-horizontal" role="form">
+                            <div class="form-group">
+                                <label for-property="WorkerEligibilityId" for="WorkerEligibilityId" data-model-property="profile.currentProfile.WorkerEligibilityId" class="req-lab-right col-lg-3 control-label" data-original-title="" title="">Worker Eligibility</label>
+                                <div class="col-lg-7">
+                                    <div class="input-group select2-bootstrap-append">
+                                        <ui-select name="WorkerEligibilityId" data-ng-model="profile.currentProfile.WorkerEligibilityId" data-ng-change="profile.workerEligibilityChanged()" theme="select2" class="form-control" data-ng-required="true" data-pt-field-view="edit.ptFieldViewStatus">
+                                            <ui-select-match placeholder="-- Select One --">{{$select.selected.text}}</ui-select-match>
+                                            <ui-select-choices repeat="item.id as item in profile.workerEligibilityTypes | uiSelectChoicesFilter: $select.search: 'text'">
+                                                <span data-ng-bind-html="item.text | highlight: $select.search"></span>
+                                            </ui-select-choices>
+                                        </ui-select>
+                                        <span class="input-group-btn">
+                                            <button tabindex="-1" data-ng-click="profile.currentProfile.WorkerEligibilityId = undefined" class="btn btn-default btn-contact-drp"><i class="material-icons md-18">clear</i></button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--Worker Permit Details-->
+
+                            <div data-ng-if="profile.currentProfile.WorkerEligibilityId === ApplicationConstants.WorkerEligibility.ForeignWorker">
+                                <div class="form-group">
+                                    <div class="col-lg-12">
+                                        <h4>Work Permit Details</h4>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for-property="TemporaryForeignPermitTypeId" for="TemporaryForeignPermitTypeId"
+                                           data-model-property="profile.currentProfile.TemporaryForeignPermitTypeId"
+                                           data-watch-property="profile.currentProfile.WorkerEligibilityId"
+                                           data-required-condition="(profile.currentProfile.WorkerEligibilityId === ApplicationConstants.WorkerEligibility.ForeignWorker)"
+                                           class="req-lab-right col-lg-3 control-label" data-original-title="" title="">Temporary Foreign Permit Type</label>
+                                    <div class="col-lg-7">
+                                        <div class="input-group select2-bootstrap-append">
+                                            <ui-select name="TemporaryForeignPermitTypeId" data-ng-model="profile.currentProfile.TemporaryForeignPermitTypeId" data-ng-change="profile.temporaryForeignPermitTypeChanged()" theme="select2" class="form-control" data-ng-required="profile.currentProfile.WorkerEligibilityId === ApplicationConstants.WorkerEligibility.ForeignWorker" data-pt-field-view="edit.ptFieldViewStatus">
+                                                <ui-select-match placeholder="-- Select One --">{{$select.selected.text}}</ui-select-match>
+                                                <ui-select-choices repeat="item.id as item in profile.temporaryForeignPermitTypes | uiSelectChoicesFilter: $select.search: 'text'">
+                                                    <span data-ng-bind-html="item.text | highlight: $select.search"></span>
+                                                </ui-select-choices>
+                                            </ui-select>
+                                            <span class="input-group-btn">
+                                                <button tabindex="-1" data-ng-click="profile.currentProfile.TemporaryForeignPermitTypeId = undefined" class="btn btn-default btn-contact-drp"><i class="material-icons md-18">clear</i></button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div data-ng-if="profile.currentProfile.TemporaryForeignPermitTypeId">
+                                    <div class="form-group panel-profile-radio">
+                                        <label class="req-lab-right col-lg-3 control-label"
+                                               for-property="IsWorkerOnImpliedStatus"
+                                               for="IsWorkerOnImpliedStatus"
+                                               data-model-property="profile.currentProfile.IsWorkerOnImpliedStatus"
+                                               data-watch-property="profile.currentProfile.TemporaryForeignPermitTypeId"
+                                               data-original-title=" " title=" ">Is worker on Implied Status?</label>
+                                        <div class="col-lg-7">
+                                            <pt-input-radio name="IsWorkerOnImpliedStatus"
+                                                            data-ng-required="profile.currentProfile.TemporaryForeignPermitTypeId === ApplicationConstants.TemporaryForeignPermitType.ForeignWorkerTWA ||
+                                                                    profile.currentProfile.TemporaryForeignPermitTypeId === ApplicationConstants.TemporaryForeignPermitType.StudentIEC ||
+                                                                    profile.currentProfile.TemporaryForeignPermitTypeId === ApplicationConstants.TemporaryForeignPermitType.NAFTA"
+                                                            data-template-type="input-radio"
+                                                            data-watch-property="profile.currentProfile.TemporaryForeignPermitTypeId"
+                                                            data-ng-model="profile.currentProfile.IsWorkerOnImpliedStatus"
+                                                            data-ng-click="profile.isWorkerOnImpliedStatusChanged()"
+                                                            data-options="[{ key: true, value: 'Yes' },{ key: false, value: 'No' }]" data-pt-field-view="edit.ptFieldViewStatus" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group" data-ng-if="profile.currentProfile.IsWorkerOnImpliedStatus">
+                                        <label for-property="ImpliedStatusEffectiveDate" for="ImpliedStatusEffectiveDate"
+                                               data-model-property="profile.currentProfile.ImpliedStatusEffectiveDate"
+                                               data-watch-property="profile.currentProfile.IsWorkerOnImpliedStatus"
+                                               class="req-lab-right col-lg-3 control-label"
+                                               data-original-title="" title="">Implied Status Effective Date</label>
+                                        <div class="col-lg-7">
+                                            <pt-date-picker data-ng-model="profile.currentProfile.ImpliedStatusEffectiveDate"
+                                                            name="ImpliedStatusEffectiveDate"
+                                                            data-ng-required="profile.currentProfile.IsWorkerOnImpliedStatus"
+                                                            data-watch-property="profile.currentProfile.IsWorkerOnImpliedStatus"
+                                                            data-ng-blur="profile.datePickerCallback()"
+                                                            data-pt-field-view="edit.ptFieldViewStatus" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group" data-ng-if="profile.currentProfile.TemporaryForeignPermitTypeId === ApplicationConstants.TemporaryForeignPermitType.StudentIEC">
+                                        <label for-property="IECCategoryStudentTypeId"
+                                               for="IECCategoryStudentTypeId"
+                                               data-model-property="profile.currentProfile.IECCategoryStudentTypeId"
+                                               data-required-condition="(profile.currentProfile.TemporaryForeignPermitTypeId === ApplicationConstants.TemporaryForeignPermitType.StudentIEC)"
+                                               data-watch-property="profile.currentProfile.TemporaryForeignPermitTypeId"
+                                               class="req-lab-right col-lg-3 control-label"
+                                               data-original-title="" title="">Student Type (IEC Category)</label>
+                                        <div class="col-lg-7">
+                                            <div class="input-group select2-bootstrap-append">
+                                                <ui-select name="IECCategoryStudentTypeId" data-ng-model="profile.currentProfile.IECCategoryStudentTypeId" theme="select2" class="form-control"
+                                                           data-ng-required="profile.currentProfile.TemporaryForeignPermitTypeId === ApplicationConstants.TemporaryForeignPermitType.StudentIEC" data-pt-field-view="edit.ptFieldViewStatus">
+                                                    <ui-select-match placeholder="-- Select One --">{{$select.selected.text}}</ui-select-match>
+                                                    <ui-select-choices repeat="item.id as item in profile.IECCategoryStudentTypes | uiSelectChoicesFilter: $select.search: 'text'">
+                                                        <span data-ng-bind-html="item.text | highlight: $select.search"></span>
+                                                    </ui-select-choices>
+                                                </ui-select>
+                                                <span class="input-group-btn">
+                                                    <button tabindex="-1" data-ng-click="profile.currentProfile.IECCategoryStudentTypeId = undefined" class="btn btn-default btn-contact-drp"><i class="material-icons md-18">clear</i></button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for-property="EligibilityForWorkPermitId" for="EligibilityForWorkPermitId" data-model-property="profile.currentProfile.EligibilityForWorkPermitId" class="req-lab-right col-lg-3 control-label" data-original-title="" title="">Eligibility for Work Permit</label>
+                                        <div class="col-lg-7">
+                                            <div class="input-group select2-bootstrap-append">
+                                                <ui-select name="EligibilityForWorkPermitId" data-ng-model="profile.currentProfile.EligibilityForWorkPermitId" theme="select2" class="form-control" data-ng-required="profile.currentProfile.WorkerEligibilityId === ApplicationConstants.WorkerEligibility.ForeignWorker" data-pt-field-view="edit.ptFieldViewStatus">
+                                                    <ui-select-match placeholder="-- Select One --">{{$select.selected.text}}</ui-select-match>
+                                                    <ui-select-choices repeat="item.id as item in profile.eligibilityForWorkPermitTypes | uiSelectChoicesFilter: $select.search: 'text'">
+                                                        <span data-ng-bind-html="item.text | highlight: $select.search"></span>
+                                                    </ui-select-choices>
+                                                </ui-select>
+                                                <span class="input-group-btn">
+                                                    <button tabindex="-1" data-ng-click="profile.currentProfile.EligibilityForWorkPermitId = undefined" class="btn btn-default btn-contact-drp"><i class="material-icons md-18">clear</i></button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for-property="WorkPermitNumber"
+                                               for="WorkPermitNumber"
+                                               data-model-property="profile.currentProfile.WorkPermitNumber"
+                                               class="req-lab-right col-lg-3 control-label" data-original-title="" title="">Work Permit Number</label>
+                                        <div class="col-lg-7">
+                                            <input type="text" ng-model="profile.currentProfile.WorkPermitNumber"
+                                                   name="WorkPermitNumber"
+                                                   data-required-message="Required"
+                                                   data-ng-required="profile.currentProfile.WorkerEligibilityId === ApplicationConstants.WorkerEligibility.ForeignWorker" class="form-control" required="required" maxlength="32" data-pt-field-view="edit.ptFieldViewStatus">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for-property="WorkPermitTypeId" for="WorkPermitTypeId" data-model-property="profile.currentProfile.WorkPermitTypeId" class="req-lab-right col-lg-3 control-label" data-original-title="" title="">Work Permit Type</label>
+                                        <div class="col-lg-7">
+                                            <div class="input-group select2-bootstrap-append">
+                                                <ui-select name="WorkPermitTypeId" data-ng-model="profile.currentProfile.WorkPermitTypeId" data-ng-change="profile.workPermitTypeChanged()" theme="select2" class="form-control" data-ng-required="profile.currentProfile.WorkerEligibilityId === ApplicationConstants.WorkerEligibility.ForeignWorker" data-pt-field-view="edit.ptFieldViewStatus">
+                                                    <ui-select-match placeholder="-- Select One --">{{$select.selected.text}}</ui-select-match>
+                                                    <ui-select-choices repeat="item.id as item in profile.workPermitTypes | uiSelectChoicesFilter: $select.search: 'text'">
+                                                        <span data-ng-bind-html="item.text | highlight: $select.search"></span>
+                                                    </ui-select-choices>
+                                                </ui-select>
+                                                <span class="input-group-btn">
+                                                    <button tabindex="-1" data-ng-click="profile.currentProfile.WorkPermitTypeId = undefined" class="btn btn-default btn-contact-drp"><i class="material-icons md-18">clear</i></button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group" data-ng-if="profile.currentProfile.WorkPermitTypeId === ApplicationConstants.WorkPermitType.Closed ||
+                                                                                profile.currentProfile.WorkPermitTypeId === ApplicationConstants.WorkPermitType.Other">
+                                        <label for-property="ClosedWorkPermitCompany"
+                                               for="ClosedWorkPermitCompany"
+                                               data-model-property="profile.currentProfile.ClosedWorkPermitCompany"
+                                               class="req-lab-right col-lg-3 control-label" data-original-title="" title="">Closed Work Permit Company</label>
+                                        <div class="col-lg-7">
+                                            <input type="text" ng-model="profile.currentProfile.ClosedWorkPermitCompany" name="ClosedWorkPermitCompany"
+                                                   data-required-message="Required"
+                                                   data-ng-required="profile.currentProfile.WorkPermitTypeId === ApplicationConstants.WorkPermitType.Closed ||
+                                                                             profile.currentProfile.WorkPermitTypeId === ApplicationConstants.WorkPermitType.Other"
+                                                   class="form-control" required="required" maxlength="128" data-pt-field-view="edit.ptFieldViewStatus">
+                                        </div>
+                                    </div>
+
+
+                                    <div class="form-group">
+                                        <label for-property="WorkPermitRestrictions" for="WorkPermitRestrictions" data-model-property="profile.currentProfile.ClosedWorkPermitCompany" class="col-lg-3 control-label" data-original-title="" title="">Work Permit Restrictions</label>
+                                        <div class="col-lg-7">
+                                            <textarea ng-model="profile.currentProfile.WorkPermitRestrictions" class="form-control" id="WorkPermitRestrictions" ng-if="profile.currentProfile.IsDraftStatus"
+                                                      name="WorkPermitRestrictions" data-pt-field-view="edit.ptFieldViewStatus" rows="6" style="resize: none" ng-maxlength="4096" maxlength="4096"></textarea>
+                                            <div ng-if="!profile.currentProfile.IsDraftStatus">{{profile.currentProfile.WorkPermitRestrictions}}</div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for-property="WorkPermitExpiryDate" for="WorkPermitExpiryDate" data-model-property="profile.currentProfile.WorkPermitExpiryDate" class="col-lg-3 control-label req-lab-right" data-original-title="" title="">Work Permit Expiry Date</label>
+                                        <div class="col-lg-7">
+                                            <pt-date-picker data-ng-model="profile.currentProfile.WorkPermitExpiryDate" name="WorkPermitExpiryDate"
+                                                            data-ng-required="profile.currentProfile.WorkerEligibilityId === ApplicationConstants.WorkerEligibility.ForeignWorker" data-ng-blur="profile.datePickerCallback()" data-pt-field-view="edit.ptFieldViewStatus" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <!--End Worker Eligibility-->
+    <!--phone numbers-->
+    <div class="content-group form-horizontal" style="margin: 0 13px; clear: both;">
+        <div class="content-left">
+            <div class="panel-internal" data-ng-form="profile.phonesForm" data-ng-if="profile.phoneNumbersPanel">
+                <div class="form-group">
+                    <h4 class="col-lg-8">Phone Numbers</h4>
+                    <div class="col-lg-4 padding-10-v-t">
+                        <div class="btn-toolbar pull-right" data-ng-if="edit.currentProfile.IsDraftStatus">
+                            <button type="button" class="btn btn-material btn-default"
+                                    data-ng-disabled="!profile.phonesForm.$valid || edit.hideActions"
+                                    data-ng-show="profile.currentProfile.UserProfilePhones.length==0"
+                                    data-ng-click="profile.addPhone()">
+                                <i class="material-icons email-add-button-icon">add</i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div data-ng-repeat="phone in profile.currentProfile.UserProfilePhones" class="" data-ng-form="profile.phoneForm">
+                        <div class="form-group">
+                            <label data-for-property="Phone" for="Phone" data-model-property="phone.ProfilePhoneTypeId" class="col-lg-4 control-label req-lab-right" data-original-title="" title="">Type</label>
+                            <div class="col-lg-8">
+                                <div class="input-group select2-bootstrap-append">
+                                    <ui-select name="Phone" data-ng-model="phone.ProfilePhoneTypeId" theme="select2" class="form-control" data-placeholder="type" data-ng-required="{{profile.isPhoneDetailRequired}}" data-pt-field-view="edit.ptFieldViewStatus">
+                                        <ui-select-match placeholder="-- Select One --">{{$select.selected.text}}</ui-select-match>
+                                        <ui-select-choices repeat="item.id as item in profile.phoneTypes | uiSelectChoicesFilter: $select.search: 'text'">
+                                            <span data-ng-bind-html="item.text | highlight: $select.search"></span>
+                                        </ui-select-choices>
+                                    </ui-select>
+                                    <span class="input-group-btn">
+                                        <button tabindex="-1" data-ng-click="phone.ProfilePhoneTypeId=undefined" class="btn btn-default btn-contact-drp"><i class="material-icons md-18">clear</i></button>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for-property="Phone" for="Phone" data-model-property="phone.Phone" class="col-lg-4 control-label req-lab-right" data-original-title="" title="" required-condition="{{profile.isPhoneDetailRequired}}">Phone</label>
+                            <div class="col-lg-8">
+                                <div class="col-xs-8 no-padding-h">
+                                    <input type="text" class="form-control" data-restrict-input="[^0123456789.]" minlength="7" maxlength="15" ng-model="phone.Phone" name="Phone" data-required-message="Required" data-ng-required="{{profile.isPhoneDetailRequired}}" data-pt-field-view="edit.ptFieldViewStatus">
+                                </div>
+                                <div class="col-xs-4 no-padding-h-r">
+                                    <span class="profile-phone-ext-span" data-ng-if="!edit.isSubmitted && edit.ptFieldViewStatus.funcToCheckViewStatus() === 'view' && phone.Extension">Ext.&nbsp;</span>
+                                    <input type="text" class="form-control" data-ng-if="!edit.isSubmitted" data-restrict-input="[^0123456789.]" maxlength="10" ng-model="phone.Extension" name="Extension" data-pt-field-view="edit.ptFieldViewStatus">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-lg-12" data-ng-show="profile.currentProfile.UserProfilePhones.length > 0  || profile.profileType == 'CanadianInc'">
+                                <button type="button" class="btn btn-material btn-default pull-right" data-ng-click="profile.removePhone(phone)" data-ng-if="edit.currentProfile.IsDraftStatus">
+                                    <i class="material-icons">delete</i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 pull-right"
+                         data-ng-if="edit.currentProfile.IsDraftStatus">
+                        <button class="btn btn-material btn-default pull-right"
+                                data-ng-hide="profile.currentProfile.UserProfilePhones.length==0"
+                                data-ng-disabled="!profile.phonesForm.$valid || edit.hideActions"
+                                data-ng-click="profile.addPhone()">
+                            <i class="material-icons email-add-button-icon">add</i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!---->
+        <!--addressses-->
+        <div class="content-right">
+            <div class="panel panel-internal" data-ng-form="profile.addressesForm" data-ng-if="profile.addressesPanel">
+                <div class="form-group">
+                    <h4 class="col-lg-8">Addresses</h4>
+                    <div class="col-lg-4 padding-10-v-t">
+                        <div class="btn-toolbar pull-right" data-ng-if="edit.currentProfile.IsDraftStatus">
+                            <button type="button" class="btn btn-material btn-default"
+                                    data-ng-disabled="!profile.addressesForm.$valid || edit.hideActions"
+                                    data-ng-show="profile.currentProfile.UserProfileAddresses==0"
+                                    data-ng-click="profile.addAddress()">
+                                <i class="material-icons email-add-button-icon">add</i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div data-ng-repeat="address in profile.currentProfile.UserProfileAddresses" class="panel-info-address" data-ng-form="profile.addressForm">
+                        <div class="form-group">
+                            <label for-property="ProfileAddressTypeId" for="ProfileAddressTypeId" data-model-property="address.ProfileAddressTypeId" class="col-lg-4 control-label" data-original-title="" title="" required-condition="{{profile.isAddressDetailRequired}}">Type</label>
+                            <div class="col-lg-8">
+                                <div class="input-group select2-bootstrap-append">
+                                    <ui-select name="ProfileAddressTypeId" data-ng-model="address.ProfileAddressTypeId" theme="select2" class="form-control" data-ng-change="profile.addressTypeChanged(address)" data-ng-required="{{profile.isAddressDetailRequired}}" data-pt-field-view="edit.ptFieldViewStatus">
+                                        <ui-select-match placeholder="-- Select One --">{{$select.selected.text}}</ui-select-match>
+                                        <ui-select-choices repeat="item.id as item in profile.addressTypes | uiSelectChoicesFilter: $select.search: 'text'">
+                                            <span data-ng-bind-html="item.text | highlight: $select.search"></span>
+                                        </ui-select-choices>
+                                    </ui-select>
+                                    <span class="input-group-btn">
+                                        <button tabindex="-1" data-ng-click="address.ProfileAddressTypeId = undefined" class="btn btn-default btn-contact-drp"><i class="material-icons md-18">clear</i></button>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for-property="AddressLine1" for="AddressLine1" data-model-property="address.AddressLine1" class="req-lab-right col-lg-4 control-label" data-original-title="" title="">Address 1</label>
+                            <div class="col-lg-8">
+                                <input type="text" ng-model="address.AddressLine1" name="AddressLine1" data-required-message="Required" data-ng-required="{{profile.isAddressDetailRequired}}" data-ng-minlength="3" data-ng-maxlength="64" maxlength="64" data-length-message="LengthRange" class="form-control" data-pt-field-view="edit.ptFieldViewStatus">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for-property="AddressLine2" for="AddressLine2" data-model-property="address.AddressLine2" class="col-lg-4 control-label" data-original-title="" title="">Address 2</label>
+                            <div class="col-lg-8">
+                                <input type="text" ng-model="address.AddressLine2" name="AddressLine2" class="form-control" maxlength="64" data-pt-field-view="edit.ptFieldViewStatus">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for-property="CityName" for="CityName" data-model-property="address.CityName" class="req-lab-right col-lg-4 control-label" data-original-title="" title="">City</label>
+                            <div class="col-lg-8">
+                                <input type="text" ng-model="address.CityName" name="CityName" data-required-message="Required" data-ng-required="{{profile.isAddressDetailRequired}}" data-ng-minlength="3" data-ng-maxlength="64" maxlength="64" data-length-message="LengthRange" class="form-control" data-pt-field-view="edit.ptFieldViewStatus">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for-property="CountryId" for="CountryId" data-model-property="address.CountryId" class="col-lg-4 control-label" data-original-title="" title="" required-condition="{{profile.isAddressDetailRequired}}">Country</label>
+                            <div class="col-lg-8">
+                                <div class="input-group select2-bootstrap-append">
+                                    <ui-select name="CountryId" data-ng-model="address.CountryId" theme="select2" class="form-control" data-ng-change="profile.addressCountryChanged(address)" data-ng-required="{{profile.isAddressDetailRequired}}" data-pt-field-view="edit.ptFieldViewStatus">
+                                        <ui-select-match placeholder="-- Select One --">{{$select.selected.text}}</ui-select-match>
+                                        <ui-select-choices repeat="item.id as item in profile.countries | uiSelectChoicesFilter: $select.search: 'text'">
+                                            <span data-ng-bind-html="item.text | highlight: $select.search"></span>
+                                        </ui-select-choices>
+                                    </ui-select>
+                                    <span class="input-group-btn">
+                                        <button tabindex="-1" data-ng-click="address.CountryId = undefined; address.SubdivisionId = undefined;" class="btn btn-default btn-contact-drp"><i class="material-icons md-18">clear</i></button>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label watch-property="SubdivisionId" for-property="SubdivisionId" for="SubdivisionId" data-model-property="address.SubdivisionId" required-condition="{{profile.isAddressDetailRequired}}" class="req-lab-right col-lg-4 control-label" data-original-title="" title="">Province/State</label>
+                            <div class="col-lg-8">
+                                <div class="input-group select2-bootstrap-append">
+                                    <ui-select name="SubdivisionId" data-ng-model="address.SubdivisionId" theme="select2" class="form-control" data-ng-change="profile.addressSubdivisionChanged(address)" data-ng-required="{{profile.isAddressDetailRequired}}" data-pt-field-view="edit.ptFieldViewStatus">
+                                        <ui-select-match placeholder="-- Select One --">{{$select.selected.text}}</ui-select-match>
+                                        <ui-select-choices repeat="item.id as item in address.subdivisions | uiSelectChoicesFilter: $select.search: 'text'">
+                                            <span data-ng-bind-html="item.text | highlight: $select.search"></span>
+                                        </ui-select-choices>
+                                    </ui-select>
+                                    <span class="input-group-btn">
+                                        <button tabindex="-1" data-ng-click="address.SubdivisionId = undefined" class="btn btn-default btn-contact-drp"><i class="material-icons md-18">clear</i></button>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for-property="PostalCode" for="PostalCode" data-model-property="address.PostalCode" class="req-lab-right col-lg-4 control-label" data-original-title="" title="">Postal/Zip</label>
+                            <div class="col-lg-8">
+                                <input type="text"
+                                       postal-zip-code-valid="{countryId: address.CountryId, isRequired: false}" data-ng-required="{{profile.isAddressDetailRequired}}"
+                                       postal-zip-code-mask="address.CountryId"
+                                       ng-model="address.PostalCode" name="PostalCode" class="form-control ng-pristine ng-invalid" maxlength="16" data-pt-field-view="edit.ptFieldViewStatus">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-lg-12">
+                                <button type="button" class="btn btn-material btn-default pull-right" data-ng-if="edit.currentProfile.IsDraftStatus" data-ng-click="profile.removeAddress(address)">
+                                    <i class="material-icons">delete</i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 pull-right" data-ng-if="edit.currentProfile.IsDraftStatus">
+                        <button type="button" class="btn btn-material btn-default pull-right"
+                                data-ng-hide="profile.currentProfile.UserProfileAddresses==0"
+                                data-ng-disabled="!profile.addressesForm.$valid || edit.hideActions"
+                                data-ng-click="profile.addAddress()">
+                            <i class="material-icons email-add-button-icon">add</i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!---->
+</div>

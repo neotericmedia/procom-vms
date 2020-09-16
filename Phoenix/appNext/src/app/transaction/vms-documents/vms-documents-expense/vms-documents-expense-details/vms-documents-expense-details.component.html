@@ -1,0 +1,79 @@
+<div class="row">
+    <div class="col-md-2">
+      <table class="app-vms-totals">
+        <tbody>
+          <tr class="bg-success">
+            <td>TOTAL PENDING</td>
+            <td class="text-right">
+              <strong>&nbsp; {{ document.TotalPending }}</strong>
+            </td>
+          </tr>
+          <tr class="bg-warning">
+            <td>TOTAL CONFLICT</td>
+            <td class="text-right">
+              <strong>&nbsp; {{ document.TotalConflict }}</strong>
+            </td>
+          </tr>
+          <tr class="bg-danger">
+            <td>TOTAL DISCARDED</td>
+            <td class="text-right">
+              <strong>&nbsp; {{ document.TotalDiscarded }}</strong>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="col-md-2">
+      <table class="app-vms-totals">
+        <tbody>
+          <tr style="background-color:#d9edf7;">
+            <td>TOTAL COMPLETED</td>
+            <td class="text-right">
+              <strong>&nbsp; {{ document.TotalCompleted }}</strong>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="row">
+    <div class="tab-content col-lg-12">
+      <div class="tab-pane active">
+        <div class="panel">
+          <div class="btn-group">
+            <button type="button" class="btn btn-clouds dropdown-toggle" data-toggle="dropdown" [disabled]="document.TotalConflict === 0">
+              <span class="payroll-btn-name">Actions...</span> <span class="caret ml payroll-btn-caret"></span>
+            </button>
+            <ul class="dropdown-menu bordered">
+              <li>
+                <!--<a data-ui-sref="commission.ratesetup({ commissionUserProfileId:ratesScope.CommissionUserProfileId })">Create New Commission</a>-->
+                <a (click)="discardAllConflicts()">Discard All Conflict Records</a>
+              </li>
+
+            </ul>
+          </div>
+          <!-- <div class="col-lg-2 row" style="margin:-18px 0 0 -5px; z-index:10;">
+            <div class="btn-group">
+              <div class="btn-group">
+                <button type="button" class="btn btn-clouds dropdown-toggle" data-toggle="dropdown" [disabled]="document.TotalConflict === 0 || actionList.length === 0">Actions...<span class="caret ml"></span></button>
+                <ul class="dropdown-menu bordered">
+                  <li (click)="discardAllConflicts()"><a>Discard All Conflict Records</a></li>
+                </ul>
+              </div>
+            </div>
+          </div> -->
+
+          <app-phx-data-table *ngIf="dataSourceUrl" #phxTable [configuration]="dataTableConfiguration" [dataSourceUrl]="dataSourceUrl"
+            [dataSourceParams]="oDataParams" [columns]="columns" [componentName]="dataGridComponentName"
+            (selectionChanged)="onSelectionChanged($event)" (rowPrepared)="changeColor($event)">
+          </app-phx-data-table>
+          <div class="skippedHeader">
+            <h4>Discarded Expense Records</h4>
+          </div>
+          <app-phx-data-table #phxTableDiscard [configuration]="dataTableDiscartedConfiguration" [dataSource]="skippedRecords"
+            [columns]="columns" (selectionChanged)="onSelectionChanged($event)" (rowPrepared)="changeColor($event)">
+          </app-phx-data-table>
+        </div>
+      </div>
+    </div>
+  </div>

@@ -1,0 +1,9 @@
+<div (tap)="navigate($event)" (press)="onPress($event)" *ngIf="cardInfo" class="panel-footer">
+  <div class="content-left">
+    <i class="material-icons text-muted">person</i>
+    <small phxEllipsisTip="100" class="text-muted">{{  cardInfo.TaskOwner }}</small></div>
+  <span class="content-right">
+    <small phxEllipsisTip="100" class="text-muted text-right">{{ cardInfo.StatusId | CodeValue: entityTypeStatus }}&nbsp;&nbsp;{{ cardInfo.TimeInState
+      | timeWithUnit }}</small>
+  </span>
+</div>

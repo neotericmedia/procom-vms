@@ -1,0 +1,45 @@
+﻿<div class="modal-content" data-ng-form="formSalesTaxEdit">
+    <div class="modal-header">
+        <span class="modal-title">Sales Taxes</span>
+        <div class="btn pull-right" data-ng-click="close()" style="left:20px;"><i class="fontello-icon-cancel-circle"></i></div>
+    </div>
+    <div class="modal-body form-horizontal" role="form" style="overflow:visible;">
+        <div class="panel panel-internal mln mrn">
+            <div class="panel-body">
+
+                <div class="form-group">
+                    <label data-for-property="TaxTerritoryId" for="TaxTerritoryId" data-model-property="model.role.OrganizationRoleStatusId" class="col-lg-3 control-label label-to-right req-lab-right" data-original-title="" title="">Tax Territory</label>
+                    <div class="col-lg-8">
+                        <ui-select name="TaxTerritoryId" data-ng-model="model.selected" theme="select2" class="form-control" required="required" ng-disabled="model.lineItem.transactionLine.RateTypeId !== ApplicationConstants.RateType.Other">
+                            <ui-select-match placeholder="-- Select One --">{{$select.selected.SubdivisionName}}</ui-select-match>
+                            <ui-select-choices repeat="item in model.taxList | uiSelectChoicesFilter: $select.search: 'SubdivisionName'"><span data-ng-bind-html="item.SubdivisionName | highlight: $select.search"></span></ui-select-choices>
+                        </ui-select>
+
+                    </div>
+                </div>
+
+                <div class="form-group" data-ng-repeat="tax in model.selected.values">
+
+                    <label data-for-property="TaxValue" for="TaxValue" data-model-property="model.selected" class="col-lg-3 control-label" data-original-title="" title="">{{tax.ShortName}}</label>
+                    <div class="col-lg-8">
+                        <input type="text" placeholder="Tax Amount" data-ng-model="tax.Amount" name="TaxValue" class="form-control ng-scope" data-float-between-input="{from:0, to:999999.99, decimalplaces:2, doesemptytozero:'false'}" ng-disabled="isLocked(tax)">
+                        <div ng-show="!tax.HasNumberAssigned">Cannot add this sales tax as {{model.lineItem.OrganizationInternalLegalName || model.lineItem.OrganizationClientDisplayName}} does not have a valid sales tax number</div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <div class="row">
+            <div class="pull-right" data-ng-show="model.lineItem.transactionLine.RateTypeId !== ApplicationConstants.RateType.Other">
+                <button type="button" class="btn btn-primary" data-ng-click="close()">Close</button>
+            </div>
+            <div class="pull-right" data-ng-show="model.lineItem.transactionLine.RateTypeId === ApplicationConstants.RateType.Other">
+                <button type="button" class="btn btn-primary" data-ng-click="okTaxes()">Ok</button>
+                <button type="button" class="btn btn-default" data-ng-click="close()">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>

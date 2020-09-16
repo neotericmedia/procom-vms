@@ -1,0 +1,390 @@
+<div class="content-group" *ngIf="transaction">
+  <div class="col-xxxl-8">
+    <div class="panel-internal" style="margin: 0 -5px" *ngFor="let billingTransaction of transaction.BillingTransactions; let i= index;">
+      <div class="panel-body">
+        <div class="col-lg-12">
+          <div class="form-group">
+            <label class="col-lg-4 control-label">Client Organization</label>
+            <div class="col-lg-8 form-control-static">
+              {{billingTransaction.OrganizationClientDisplayName}} -
+              {{billingTransaction.OrganizationIdClient}}
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-lg-4 control-label">Billing Transaction Number</label>
+            <div class="col-lg-8 form-control-static">
+              {{billingTransaction.BillingTransactionNumber}}
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-lg-4 control-label">Billing Transaction Date</label>
+            <div class="col-lg-8 form-control-static">
+              {{billingTransaction.BillingDate | date: html.phxConstants.DateFormat.mediumDate}}
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-lg-4 control-label">Billing Transaction Is Internal</label>
+            <div class="col-lg-8 form-control-static">
+              {{billingTransaction.IsInternalTransaction ? "Yes" : "No"}}
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-lg-4 control-label">Billing Transaction Payment Status</label>
+            <div class="col-lg-8 form-control-static">
+              {{billingTransaction.BillingTransactionPaymentStatus | lookupNoCache: html.lists.ARStatuses: 'id':
+              'text'}}
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-lg-4 control-label" title="">Billing Transaction Payment Balance</label>
+            <div class="col-lg-8 form-control-static">
+              {{billingTransaction.TotalAmount - billingTransaction.BillingTransactionARPaymentAmount |
+              currency:billingTransaction.CurrencyCode + " $"}}
+              <div style="display: inline-block; margin-left: 12px;">
+                <a style="cursor: pointer;" *ngIf="!billingTransaction.showARPayment" (click)="billingTransaction.showARPayment = true">Show
+                  Detail</a>
+                <a style="cursor: pointer;" *ngIf="billingTransaction.showARPayment" (click)="billingTransaction.showARPayment = false">Hide
+                  Detail</a>
+              </div>
+              <div *ngIf="billingTransaction.showARPayment">
+                <table class="table table-striped table-hover payment-balance-detail-table">
+                  <tbody>
+                    <tr>
+                      <td>Opening Balance</td>
+                      <td class="currency">{{billingTransaction.TotalAmount | currency:billingTransaction.CurrencyCode
+                        + " $"}}</td>
+                    </tr>
+                    <tr *ngFor="let ARPayment of billingTransaction.BillingTransactionARPayment">
+                      <td>Less Payment Received <span class="payment-date">{{ARPayment.ClientLastPaymentDate}}</span> -
+                        <span class="payment-number">{{ARPayment.PaymentNumber}}</span></td>
+                      <td class="currency">{{ARPayment.PaymentAmount | currency:billingTransaction.CurrencyCode + "
+                        $"}}</td>
+                    </tr>
+                    <tr class="summary-row">
+                      <td>Remaining Balance</td>
+                      <td class="currency">{{billingTransaction.TotalAmount -
+                        billingTransaction.BillingTransactionARPaymentAmount | currency:billingTransaction.CurrencyCode
+                        + " $"}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="form-group" *ngIf="billingTransaction.InvoiceNote1">
+              <label class="col-lg-6 control-label">Invoice Note 1</label>
+              <div class="col-lg-6 text-overflow-ellipsis form-control-static">
+                {{billingTransaction.InvoiceNote1}}
+              </div>
+            </div>
+            <div class="form-group" *ngIf="billingTransaction.InvoiceNote2">
+              <label class="col-lg-6 control-label">Invoice Note 2</label>
+              <div class="col-lg-6 text-overflow-ellipsis form-control-static">
+                {{billingTransaction.InvoiceNote2}}
+              </div>
+            </div>
+            <div class="form-group" *ngIf="billingTransaction.InvoiceNote3">
+              <label class="col-lg-6 control-label">Invoice Note 3</label>
+              <div class="col-lg-6 text-overflow-ellipsis form-control-static">
+                {{billingTransaction.InvoiceNote3}}
+              </div>
+            </div>
+            <div class="form-group" *ngIf="billingTransaction.InvoiceNote4">
+              <label class="col-lg-6 control-label">Invoice Note 4</label>
+              <div class="col-lg-6 text-overflow-ellipsis form-control-static">
+                {{billingTransaction.InvoiceNote4}}
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-12 table-responsive">
+            <table class="table table-striped table-hover" style="border: none">
+              <thead>
+                <tr>
+                  <th scope="col">Number</th>
+                  <th scope="col">Type</th>
+                  <th scope="col">Description</th>
+                  <th scope="col" class="text-right">Units</th>
+                  <th scope="col">Currency</th>
+                  <th scope="col" class="text-right">Rate</th>
+                  <th scope="col" class="text-right">Pre-Tax</th>
+                  <th scope="col" class="text-right">Sales Tax</th>
+                  <th scope="col" class="text-right">Total</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let transactionLine of billingTransaction.BillingTransactionLines; let j=index">
+                  <td>{{transactionLine.BillingTransactionLineNumber}}</td>
+                  <td>Bill</td>
+                  <td>
+                    <a *ngIf="!billingTransaction.ReversedBillingTransactionId && !vmsProcessedRecordId && !billingTransaction.VmsDiscountProcessedRecordId &&
+                                                transaction.VmsExpenseProcessedRecord"
+                      style="cursor: pointer;" routerLink="/next/vms/batch/expense/processed/{{transaction.VmsExpenseProcessedRecord.Id}}/details">
+                      {{transactionLine.Description}}
+                    </a>
+
+                    <a *ngIf="!billingTransaction.ReversedBillingTransactionId && !billingTransaction.VmsDiscountProcessedRecordId && !vmsExpenseProcessedRecordId &&
+                                                transaction.VmsProcessedRecord"
+                      style="cursor: pointer;" routerLink="/next/vms/batch/timesheet/processed/{{transaction.VmsProcessedRecord.Id}}/details">
+                      {{transactionLine.Description}}
+                    </a>
+
+                    <a *ngIf="!billingTransaction.ReversedBillingTransactionId && billingTransaction.VmsDiscountProcessedRecordId"
+                      style="cursor: pointer;" routerLink="/next/vms/batch/discount/processed/{{billingTransaction.VmsDiscountProcessedRecordId}}/details">
+                      {{transactionLine.Description}}
+                    </a>
+
+                    <a *ngIf="!billingTransaction.ReversedBillingTransactionId && !billingTransaction.VmsDiscountProcessedRecordId &&
+                                            transaction.VmsCommissionProcessedRecord"
+                      style="cursor: pointer;" routerLink="/next/vms/batch/commission/processed/{{transaction.VmsCommissionProcessedRecord.Id}}/details">
+                      {{transactionLine.Description}}
+                    </a>
+
+                    <span *ngIf="billingTransaction.ReversedBillingTransactionId || (!billingTransaction.VmsDiscountProcessedRecordId &&
+                                            !transaction.VmsExpenseProcessedRecord && !transaction.VmsProcessedRecord && !transaction.VmsCommissionProcessedRecord)">
+                      {{transactionLine.Description}}
+                    </span>
+                  </td>
+
+                  <td class="text-right">{{transactionLine.Units|currency:" "}}
+                    {{transactionLine.RateUnitId | lookupNoCache: html.lists.RateUnits:'id':'text' }}</td>
+                  <td>{{billingTransaction.CurrencyCode}}</td>
+                  <td>
+                    <span class="pull-right">{{transactionLine.Rate|currency}}</span>
+                  </td>
+                  <td>
+                    <span class="pull-right">{{transactionLine.PreTaxTotal|currency}}</span>
+                  </td>
+                  <td class="text-right">
+                    <app-phx-tool-tip targetId="#salesTaxBT_{{transactionLine.Id}}">
+                      <table class="popup">
+                        <tbody>
+                          <tr *ngFor="let tlst of transactionLine.BillingTransactionLineSalesTaxes">
+                            <td>{{tlst.SalesTaxName}}</td>
+                            <td>{{tlst.Rate}}<span *ngIf="tlst.Rate">%</span></td>
+                            <td style="text-align: right;">{{tlst.Amount|currency}}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </app-phx-tool-tip>
+                    <a *ngIf="transactionLine.BillingTransactionLineSalesTaxes.length" id="salesTaxBT_{{transactionLine.Id}}">
+                      {{transactionLine.SalesTaxTotal|currency}}
+                    </a>
+                    <span *ngIf="!transactionLine.BillingTransactionLineSalesTaxes.length">{{transactionLine.SalesTaxTotal|currency}}</span>
+                  </td>
+                  <td>
+                    <span class="pull-right">{{transactionLine.Total|currency}}</span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="panel-internal" style="margin: 10px -5px" *ngFor="let paymentTransaction of transaction.PaymentTransactions; let k=index">
+      <div class="panel-body">
+        <div class="col-lg-6">
+          <div class="form-group">
+            <label class="col-lg-7 control-label">Supplier Organization</label>
+            <div class="col-lg-5 form-control-static">
+              {{paymentTransaction.PayeeName}}{{paymentTransaction.PayeeOrganizationIdSupplier ? ' - ' +
+              paymentTransaction.PayeeOrganizationIdSupplier:''}}
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-lg-7 control-label">Payment Transaction
+              Number</label>
+            <div class="col-lg-5 form-control-static">
+              {{paymentTransaction.PaymentTransactionNumber}}
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-lg-7 control-label">Payment Transaction Date</label>
+            <div class="col-lg-5 form-control-static">
+              {{paymentTransaction.CreatedDatetime | date: html.phxConstants.DateFormat.mediumDate}}
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="form-group">
+            <label class="col-lg-6 control-label" title="">Planned Release Date</label>
+            <div class="col-lg-6 form-control-static">
+              {{paymentTransaction.PlannedReleaseDate| date: html.phxConstants.DateFormat.mediumDate}}
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-lg-6 control-label" title="">Payment Release Date</label>
+            <div class="col-lg-6 form-control-static">
+              {{paymentTransaction.PaymentDate | date: html.phxConstants.DateFormat.mediumDate}}
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-12 table-responsive" style="position:static">
+          <table class="table table-striped table-hover" style="border: none">
+            <thead>
+              <tr>
+                <th scope="col">Number</th>
+                <th scope="col">Type</th>
+                <th scope="col">Description</th>
+                <th scope="col" class="text-right">Units</th>
+                <th scope="col">Currency</th>
+                <th scope="col">
+                  <span class="pull-right">Rate</span>
+                </th>
+                <th scope="col">
+                  <span class="pull-right">Pre-Tax</span>
+                </th>
+                <th scope="col">
+                  <span class="pull-right">Sales Tax</span>
+                </th>
+                <th scope="col">
+                  <span class="pull-right">Total</span>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let transactionLine of paymentTransaction.PaymentTransactionLines; let l=index">
+                <td>{{transactionLine.PaymentTransactionLineNumber}}</td>
+                <td>Pay</td>
+                <td>
+                  <span>{{transactionLine.Description}}</span>
+                  <span *ngIf="transactionLine.RateTypeId === html.phxConstants.RateType.Stat &&
+                                      transactionLine.PaymentTransactionLineStatHolidayDetails.length"
+                    id="toolTip_{{transactionLine.Id}}">
+                    <i class="material-icons" style="color:#333333; font-size: 15px;">info</i>
+                  </span>
+                  <app-phx-tool-tip targetId="#toolTip_{{transactionLine.Id}}">
+                    <!--div style="text-align:left; width:200px; white-space: normal;"-->
+                    <div style="width:275px;">
+                      <div *ngFor="let statHolidayDetail of transactionLine.PaymentTransactionLineStatHolidayDetails">
+                        <p>
+                          <span>{{statHolidayDetail.HolidayName}}, </span>
+                          <span>{{statHolidayDetail.HolidayDate | date:html.phxConstants.DateFormat.mediumDate}}</span>
+                        </p>
+                        <table class="popup">
+                          <tbody>
+                            <tr *ngIf="statHolidayDetail.IsManualOverride !== null">
+                              <td>Overridden</td>
+                              <td>{{statHolidayDetail.IsManualOverride ? "Yes" : "No"}}</td>
+                            </tr>
+                            <tr *ngIf="statHolidayDetail.IsSubdivisionHolidayPreviouslyPaid !== null">
+                              <td>Previously Paid</td>
+                              <td>{{statHolidayDetail.IsSubdivisionHolidayPreviouslyPaid ? "Yes" : "No"}}</td>
+                            </tr>
+                            <tr *ngIf="statHolidayDetail.IsFlatStatPayApplied !== null">
+                              <td>Flat Pay</td>
+                              <td>{{statHolidayDetail.IsFlatStatPayApplied ? "Yes" : "No"}}</td>
+                            </tr>
+                            <tr *ngIf="statHolidayDetail.RangeStartDate !== null">
+                              <td>Range Start</td>
+                              <td>{{statHolidayDetail.RangeStartDate | date:html.phxConstants.DateFormat.mediumDate}}</td>
+                            </tr>
+                            <tr *ngIf="statHolidayDetail.RangeEndDate !== null">
+                              <td>Range End</td>
+                              <td>{{statHolidayDetail.RangeEndDate | date:html.phxConstants.DateFormat.mediumDate}}</td>
+                            </tr>
+                            <tr *ngIf="statHolidayDetail.TransactionMinDate !== null">
+                              <td>Transaction Min Date</td>
+                              <td>{{statHolidayDetail.TransactionMinDate |
+                                date:html.phxConstants.DateFormat.mediumDate}}</td>
+                            </tr>
+                            <tr *ngIf="statHolidayDetail.TransactionMaxDate !== null">
+                              <td>Transaction Max Date</td>
+                              <td>{{statHolidayDetail.TransactionMaxDate |
+                                date:html.phxConstants.DateFormat.mediumDate}}</td>
+                            </tr>
+                            <tr *ngIf="statHolidayDetail.TransactionCount !== null">
+                              <td>Transaction Count</td>
+                              <td>{{statHolidayDetail.TransactionCount}}</td>
+                            </tr>
+                            <tr *ngIf="statHolidayDetail.WorkDayCountActual !== null">
+                              <td>Workday Count Actual</td>
+                              <td>{{statHolidayDetail.WorkDayCountActual}}</td>
+                            </tr>
+                            <tr *ngIf="statHolidayDetail.WorkDayCountAdjusted !== null">
+                              <td>Workday Count Adjusted</td>
+                              <td>{{statHolidayDetail.WorkDayCountAdjusted}}</td>
+                            </tr>
+                            <tr *ngIf="statHolidayDetail.SumUnits !== null">
+                              <td>Sum Units</td>
+                              <td>{{statHolidayDetail.SumUnits}}</td>
+                            </tr>
+                            <tr *ngIf="statHolidayDetail.AverageUnits !== null">
+                              <td>Average Units</td>
+                              <td>{{statHolidayDetail.AverageUnits}}</td>
+                            </tr>
+                            <tr *ngIf="statHolidayDetail.CalculatedUnits !== null">
+                              <td>Calculated Units</td>
+                              <td>{{statHolidayDetail.CalculatedUnits}}</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </app-phx-tool-tip>
+                </td>
+                <td class="text-right">{{transactionLine.Units | currency:" "}}
+                  {{transactionLine.RateUnitId | lookupNoCache: html.lists.RateUnits:'id':'text'}}</td>
+                <td>{{paymentTransaction.CurrencyCode}}</td>
+                <td>
+                  <span class="pull-right">{{transactionLine.Rate | currency}}</span>
+                </td>
+                <td>
+                  <span class="pull-right">{{transactionLine.PreTaxTotal| currency}}</span>
+                </td>
+
+                <td class="text-right">
+                  <app-phx-tool-tip targetId="#salesTaxPT_{{transactionLine.Id}}">
+                    <table class="popup">
+                      <tbody>
+                        <tr *ngFor="let tlst of transactionLine.PaymentTransactionLineSalesTaxes">
+                          <td>{{tlst.SalesTaxName}}</td>
+                          <td>{{tlst.Rate}}<span *ngIf="tlst.Rate">%</span></td>
+                          <td style="text-align: right;">{{tlst.Amount|currency}}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </app-phx-tool-tip>
+                  <a *ngIf="transactionLine.PaymentTransactionLineSalesTaxes?.length" id="salesTaxPT_{{transactionLine.Id}}">
+                    {{transactionLine.SalesTaxTotal|currency}}
+                  </a>
+                  <span *ngIf="!transactionLine.PaymentTransactionLineSalesTaxes?.length">{{transactionLine.SalesTaxTotal|currency}}</span>
+                </td>
+                <td>
+                  <span class="pull-right">{{transactionLine.Total|currency}}</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-xxxl-4">
+    <div class="panel-internal detail-summary" style="margin: 0 -5px 10px -5px;min-height: 105px" *ngIf="transaction.BillingTransactions.length && transaction.BillingTransactions[0].PurchaseOrderLineId != null && transaction.BillingTransactions[0].PurchaseOrderLineId > 0">
+      <div class="col-lg-12">
+        <p class="h4 center">Purchase Order</p>
+      </div>
+      <div class="panel-body center">
+        <a style="cursor: pointer;" routerLink="/next/purchase-order/{{transaction.BillingTransactions[0].PurchaseOrderLine.PurchaseOrderId}}/details">
+          {{transaction.BillingTransactions[0].PurchaseOrderLine.PurchaseOrderNumber}}Line{{transaction.BillingTransactions[0].PurchaseOrderLine.PurchaseOrderLineNumber}}</a>
+      </div>
+    </div>
+    <div class="panel-internal transaction-amount-summary-detail-summary" style="margin: 0 -5px">
+      <div class="panel-body">
+        <div class="col-lg-12">
+          <p class="h4 center" style="text-align: center;">Amount Summary</p>
+        </div>
+        <app-transaction-details-amount-summary (outputEvent)="onOutputEvent()"></app-transaction-details-amount-summary>
+      </div>
+    </div>
+    <div class="panel-internal transaction-amount-summary-detail-summary" style="margin: 10px -5px">
+      <div class="panel-body">
+        <div class="col-lg-12">
+          <p class="h4 center" style="text-align: center;">Gross Profit</p>
+        </div>
+        <app-transaction-details-gross-profit (outputEvent)="onOutputEvent()"></app-transaction-details-gross-profit>
+      </div>
+    </div>
+  </div>

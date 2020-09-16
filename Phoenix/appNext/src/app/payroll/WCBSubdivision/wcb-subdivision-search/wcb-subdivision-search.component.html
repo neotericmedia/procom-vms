@@ -1,0 +1,8 @@
+<button class="btn btn-default" (click)="newWCBSubdivision()">New</button>
+
+<app-phx-data-table [configuration]="dataTableConfiguration" [dataSourceUrl]="'Payroll/getWCBSubdivisionHeaders'" [dataSourceParams]='odataParams'
+    [columns]="columns" [exportFileName]="'WCBSubdivisionDetails'" [componentName]="'WCBSubdivisionSearch'" (selectionChanged)="onRowSelected($event)"
+    (contextMenuOpenTab)="onContextMenuOpenTab($event)">
+</app-phx-data-table>
+
+<div class="wcb-subdivision-report" [ngClass]="{ out: !Id, in: Id}"></div>

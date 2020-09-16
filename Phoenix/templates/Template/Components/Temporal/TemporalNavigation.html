@@ -1,0 +1,18 @@
+﻿    <div class="btn-group pull-right">
+        <button type="button" class="btn btn-default" data-ng-disabled="(_container.older.length == 0) || !_container.available" data-ng-click="_container.olderDate()">
+            <i class="fontello-icon-left-fat"></i> Older ({{_container.older.length}})
+        </button>
+        <div class="btn-group">                          
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" data-ng-disabled="!_container.available">
+                {{_container.current.EffectiveDate | date:ApplicationConstants.formatDate}} &nbsp; <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu bordered" role="menu" data-ng-hide="!_container.available">
+                <li data-ng-repeat="item in _container.items" data-ng-class="_container.itemClass(item)">
+                    <a href="javascript:void(0);" data-ng-click="_container.selectDate(item)">{{item.EffectiveDate|date:ApplicationConstants.formatDate}}</a>
+                </li>
+            </ul>
+        </div>
+        <button type="button" class="btn btn-default" data-ng-disabled="(_container.newer.length == 0) || !_container.available" data-ng-click="_container.newerDate()">
+            Newer ({{_container.newer.length}}) <i class="fontello-icon-right-fat"></i>
+        </button>
+    </div>

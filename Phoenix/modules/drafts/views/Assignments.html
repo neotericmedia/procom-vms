@@ -1,0 +1,93 @@
+﻿<h3>Work Order Drafts</h3>
+<div class="smart-table-wrapper">
+    <div class="row" data-cg-busy="loadItemsPromise">
+        <table data-st-table-struct='[{"stTableValue" : "items"}, {"stPipeValue" : "callServer"}, {"widthValues" : "[7, 18, 15, 15, 18, 10, 10, 13, 15, 10, 8]"}, {"stPaginationValue" : "pageSize"}]'>
+            <thead data-st-head="2300px">
+                <tr>
+                    <th data-st-pen-name="WorkOrderFullNumber" data-st-sort="AssignmentId" data-st-sort-default="reverse">Number</th>
+                    <th data-st-sort="InternalCompanyDisplayName">Internal Company</th>
+                    <th data-st-sort="WorkerName">Worker Name</th>
+                    <th data-st-sort="WorkerProfileTypeId">Profile Type</th>
+                    <th data-st-sort="ClientName">Client Name</th>
+                    <th data-st-sort="StartDate">Start Date</th>
+                    <th data-st-sort="EndDate">End Date</th>
+                    <th data-st-sort="BillingPrimaryRateSumPerRateUnit">Bill Rate</th>
+                    <th data-st-sort="PaymentPrimaryRateSumPerRateUnit">Pay Rate</th>
+                    <th data-st-sort="ModifiedBy">Modified By</th>
+                    <th data-st-pen-name="Action">Action</th>
+                </tr>
+                <tr>
+                    <th>
+                        <input data-st-advanced-search="'WorkOrderFullNumber'" data-safe-restrict-input="[^0123456789.]" placeholder="" class="input-sm form-control" />
+                    </th>
+                    <th>
+                        <select data-st-advanced-search="{property:'OrganizationIdInternal', ignoreQuotes: true}" class="input-sm form-control"
+                                data-st-as-options-override="list.listOrganizationInternal"></select>
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="'WorkerName'" placeholder="" type="search" class="input-sm form-control" />
+                    </th>
+                    <th>
+                        <select data-st-advanced-search="{property: 'WorkerProfileTypeId', ignoreQuotes: true}" class="input-sm form-control"
+                                data-st-as-options-override="list.profileType"></select>
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="'ClientName'" placeholder="" type="search" class="input-sm form-control" />
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="'StartDate'"
+                               data-st-as-operator-override="'ge'"
+                               close-on-date-selection="false" show-button-bar="false" show-weeks="false" class="input-sm form-control"
+                               data-st-as-lazy-attributes="{'uib-datepicker' : ApplicationConstants.formatDate}"
+                               data-st-as-height-override="400"
+                               data-st-as-width-override="315" />
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="'EndDate'"
+                               data-st-as-operator-override="'le'"
+                               close-on-date-selection="false" show-button-bar="false" show-weeks="false" class="input-sm form-control"
+                               data-st-as-lazy-attributes="{'uib-datepicker' : ApplicationConstants.formatDate}"
+                               data-st-as-height-override="400"
+                               data-st-as-width-override="315" />
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="'BillingPrimaryRateSumPerRateUnit'" placeholder="" class="input-sm form-control numberType disableAdvancedSearch" data-safe-restrict-input="[^0123456789.]" />
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="'PaymentPrimaryRateSumPerRateUnit'" placeholder="" class="input-sm form-control numberType disableAdvancedSearch" data-safe-restrict-input="[^0123456789.]" />
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="'ModifiedBy'" placeholder="" type="search" class="input-sm form-control" />
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr data-ng-repeat="item in items track by item.WorkOrderFullNumber" data-ui-sref-tr="workorder.edit.core({ assignmentId: item.AssignmentId, workOrderId: item.WorkOrderId, workOrderVersionId: item.WorkOrderVersionId })" style="cursor:pointer">
+                    <td ng-bind="::item.WorkOrderFullNumber"></td>
+                    <td ng-bind="::item.InternalCompanyDisplayName"></td>
+                    <td ng-bind="::item.WorkerName"></td>
+                    <td ng-bind="::item.WorkerProfileType"></td>
+                    <td ng-bind="::item.ClientName"></td>
+                    <td ng-bind="::item.StartDate | date:ApplicationConstants.formatDate"></td>
+                    <td ng-bind="::item.EndDate | date:ApplicationConstants.formatDate"></td>
+                    <td ng-bind="::item.BillingPrimaryRateSumPerRateUnit"></td>
+                    <td ng-bind="::item.PaymentPrimaryRateSumPerRateUnit"></td>
+                    <td ng-bind="::item.ModifiedBy"></td>
+                    <td>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-xs btn-clouds btn-row-action no-padding-bottom-right" data-action="view" title="View"><i class="fontello-icon-eye-1"></i>&nbsp;</button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="9">
+                        <span>Total Count: {{totalItemCount || 0}}; Items Loaded: {{ items ? items.length : 0}}</span>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>

@@ -1,0 +1,31 @@
+<div class="row restriction-header" *ngIf="selectedRestrictionList?.length">
+  <div [ngClass]="cssGridClassLabel" class="text-right">
+    <label>Type</label>
+  </div>
+  <div [ngClass]="cssGridClassValue">
+    <label>Parameters</label>
+  </div>
+</div>
+<div class="row">
+  <div class="row restriction-type" *ngFor="let item of selectedRestrictionList">
+    <div class="row">
+      <div [ngClass]="cssGridClassLabel" class="text-right">
+        <label class="restriction-type-label">
+          <a *ngIf="showLabelAsHyperlink" (click)="clickRestrictionType(item)">{{item.RestrictionTypeName}}</a>
+          <span *ngIf="!showLabelAsHyperlink">{{item.RestrictionTypeName}}</span>
+        </label>
+      </div>
+      <div [ngClass]="cssGridClassValue">
+        <ng-container [ngSwitch]="item.IsInclusive">
+          <strong *ngSwitchCase="true">Includes: </strong>
+          <strong *ngSwitchCase="false">Excludes: </strong>
+          <strong *ngSwitchDefault>Includes: </strong>
+        </ng-container>
+
+        <span *ngFor="let restriction of item.SelectedRestrictions; let last = last">
+          {{restriction.Name}}{{ !last ? ', ' : '' }}
+        </span>
+      </div>
+    </div>
+  </div>
+</div>

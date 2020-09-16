@@ -1,0 +1,98 @@
+<app-phx-panel headerTitle="Demo Detail" *ngIf="demo">
+  <div class="form-horizontal">
+    <form [formGroup]="form">
+
+      <phx-form-control name="workorder" labelText="Work Order" [editable]="false" viewModeText="{{demo?.WorkOrderNumber}}">
+      </phx-form-control>
+
+      <phx-form-control name="worker" labelText="Worker" [editable]="false" viewModeText="{{demo?.WorkerName}}">
+      </phx-form-control>
+
+      <phx-form-control [showValidationMessages]="true" [control]="form.controls['StringField']" labelText="String Field" [editable]="editable"
+        viewModeText="{{demo?.StringField}}">
+        <input type="text" class="form-control" formControlName="StringField" />
+      </phx-form-control>
+
+      <phx-form-control [control]="form.controls['CurrencyCodeValueField']" labelText="Currency CodeValue Field" [editable]="editable"
+        viewModeText="{{demo?.CurrencyCodeValueField | CodeValue:codeValueGroups.Currency:'code'}} - {{demo?.CurrencyCodeValueField | CodeValue:codeValueGroups.Currency:'text'}}">
+        <app-phx-select-box [items]="currencyList" textField="text" valueField="value" formControlName="CurrencyCodeValueField">
+          <!-- In case you need to customize item templates 
+        <div *dxTemplate="let x of 'item-template'">
+          <span>{{x | json}}</span>
+        </div>
+        <div *dxTemplate="let x of 'field-template'">
+          dx-text-box is mandatory to be in field-template
+          <dx-text-box [value]="x | json"></dx-text-box>
+        </div>
+        -->
+        </app-phx-select-box>
+      </phx-form-control>
+
+      <phx-form-control [control]="form.controls['ProfileStatusIds']" labelText="Choose status" [editable]="editable" viewModeText="">
+        <app-phx-tag-box [dataSource]="profileStatusList" valueExpr="value" displayExpr="text" showSelectionControls="true" formControlName="ProfileStatusIds"
+          (valueChanged)="profileListChanged($event)"></app-phx-tag-box>
+      </phx-form-control>
+
+      <phx-form-control [control]="form.controls['CountryId']" labelText="Country" [editable]="editable" viewModeText="{{demo?.CountryId | CodeValue:codeValueGroups.Subdivision}}">
+        <app-phx-select-box-code-value #country [groupName]="codeValueGroups.Country" sortByFieldName="text" formControlName="CountryId">
+        </app-phx-select-box-code-value>
+      </phx-form-control>
+
+      <phx-form-control [control]="form.controls['SubdivisionId']" labelText="Subdivision" [editable]="editable" viewModeText="{{demo?.SubdivisionId | CodeValue:codeValueGroups.Subdivision}}">
+        <app-phx-select-box-code-value [groupName]="codeValueGroups.Subdivision" sortByFieldName="text" [relatedGroupName]="codeValueGroups.Country"
+          [relatedValue]="country.value" formControlName="SubdivisionId">
+        </app-phx-select-box-code-value>
+      </phx-form-control>
+
+      <phx-form-control [control]="form.controls['DateField']" labelText="Date Field" [editable]="editable" viewModeText="{{demo?.DateField | date:commonService.ApplicationConstants.DateFormat.mediumDate}}">
+        <app-phx-date-box formControlName="DateField" type="date"></app-phx-date-box>
+      </phx-form-control>
+
+      <phx-form-control [showValidationMessages]="true" [control]="form.controls['IntegerField']" labelText="Integer Field" [editable]="editable"
+        viewModeText="{{demo?.IntegerField}}">
+        <input type="number" class="form-control" formControlName="IntegerField" />
+      </phx-form-control>
+
+      <phx-form-control [control]="form.controls['RadioButton']" labelText="Radio Button" [editable]="editable" viewModeText="{{demo?.RadioButton}}">
+        <label class="radio-inline">
+          <input class="form-check-input" type="radio" formControlName="RadioButton" value="Option1" required>Option 1</label>
+        <label class="radio-inline">
+          <input class="form-check-input" type="radio" formControlName="RadioButton" value="Option2" required>Option 2</label>
+      </phx-form-control>
+
+      <phx-form-control [control]="form.controls['CheckBox']" labelText="Checkbox" [editable]="editable" viewModeText="{{demo?.CheckBox}}">
+        <label class="checkbox-inline">
+          <input type="checkbox" class="custom-control-input" formControlName="CheckBox" value="Check1"> Check this checkbox
+        </label>
+      </phx-form-control>
+
+      <phx-form-control [showValidationMessages]="true" [control]="form.controls['DecimalField']" labelText="Decimal Field" [editable]="editable"
+        viewModeText="{{demo?.DecimalField}}">
+        <input type="number" class="form-control" formControlName="DecimalField" />
+      </phx-form-control>
+
+      <phx-form-control [control]="form.controls['MultilineStringField']" labelText="Multiline String Field" [editable]="editable"
+        viewModeText="{{demo?.MultilineStringField}}">
+        <textarea [rows]="5" class="form-control" formControlName="MultilineStringField"></textarea>
+      </phx-form-control>
+
+      <div formGroupName="Parent">
+        <phx-form-control [control]="form.controls['Parent'].controls['StringField']" labelText="Parent String Field" [editable]="editable"
+          viewModeText="{{demo?.Parent?.StringField}}">
+          <input type="text" class="form-control" formControlName="StringField" />
+        </phx-form-control>
+      </div>
+
+    </form>
+  </div>
+  <div class="row ">
+    <br/>
+  </div>
+  <div class="row">
+    <div class="col-xs-12">
+      <app-demo-items [items]="demo.Items" [editable]="editable"></app-demo-items>
+    </div>
+  </div>
+</app-phx-panel>
+
+<!-- {{demo | json}} -->

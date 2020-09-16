@@ -1,0 +1,94 @@
+﻿<div class="modal-content" data-ng-form="formBenefitAddDialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <span class="modal-title">{{data.title}}</span>
+            <div class="btn pull-right" data-ng-click="cancel()"><i class="fontello-icon-cancel-circle"></i></div>
+        </div>
+        <div class="modal-body">
+            <div class="content-group form-horizontal">
+
+                <div class="form-group" style="margin-top:24px;">
+                    <label for="BenefitTypeId" for-property="BenefitTypeId" data-model-property="data.benefit.BenefitTypeId" class="col-lg-4 control-label req-lab-right">Description</label>
+                    <div class="col-lg-6">
+                        <div class="input-group select2-bootstrap-append">
+                            <ui-select data-ng-required="true" name="BenefitTypeId" data-ng-model="data.benefit.BenefitTypeId" theme="select2" class="form-control" data-pt-field-view="ptFieldViewStatus">
+                                <ui-select-match placeholder="-- Select One --">{{$select.selected.text}}</ui-select-match>
+                                <ui-select-choices repeat="item.id as item in data.benefits | uiSelectChoicesFilter: $select.search: 'text'">
+                                    <span data-ng-bind-html="item.text | highlight: $select.search"></span>
+                                </ui-select-choices>
+                            </ui-select>
+                            <span class="input-group-btn">
+                                <button tabindex="-1" data-ng-click="data.benefit.BenefitTypeId = undefined" class="btn btn-default"><i class="material-icons md-18">clear</i></button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="OrganizationIdInternal" for-property="OrganizationIdInternal" data-model-property="data.benefit.OrganizationIdInternal" class="col-lg-4 control-label req-lab-right">Internal Organization</label>
+                    <div class="col-lg-6">
+                        <div class="input-group select2-bootstrap-append">
+                            <ui-select data-ng-required="true" name="OrganizationIdInternal" data-ng-model="data.benefit.OrganizationIdInternal" theme="select2" class="form-control" data-pt-field-view="ptFieldViewStatus">
+                                <ui-select-match placeholder="-- Select One --">{{$select.selected.DisplayName}}</ui-select-match>
+                                <ui-select-choices repeat="item.Id as item in data.internalOrganizations | uiSelectChoicesFilter: $select.search: 'DisplayName'">
+                                    <span data-ng-bind-html="item.DisplayName | highlight: $select.search"></span>
+                                </ui-select-choices>
+                            </ui-select>
+                            <span class="input-group-btn">
+                                <button tabindex="-1" data-ng-click="data.benefit.OrganizationIdInternal = undefined" class="btn btn-default"><i class="material-icons md-18">clear</i></button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for-property="EmployerAmount" for="EmployerAmount" data-model-property="data.benefit.EmployerAmount" class="req-lab-right col-lg-4 control-label" data-original-title="" title="">Monthly Employer Benefit Amount</label>
+                    <div class="col-lg-6">
+                        <input type="text"
+                               data-ng-pattern="getPattern()"
+                               required data-float-between-input="{from:0, to:9999999999999.99, decimalplaces:2, doesemptytozero:'false'}"
+                               ng-model="data.benefit.EmployerAmount"
+                               name="EmployerAmount" class="form-control" data-pt-field-view="ptFieldViewStatus">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for-property="EmployeeAmount" for="EmployeeAmount" data-model-property="data.benefit.EmployeeAmount" class="req-lab-right col-lg-4 control-label" data-original-title="" title="">Monthly Employee Benefit Amount</label>
+                    <div class="col-lg-6">
+                        <input type="text"
+                               data-ng-pattern="getPattern()"
+                               required data-float-between-input="{from:0, to:9999999999999.99, decimalplaces:2, doesemptytozero:'false'}"
+                               ng-model="data.benefit.EmployeeAmount"
+                               name="EmployeeAmount" class="form-control" data-pt-field-view="ptFieldViewStatus">
+                    </div>
+                </div>
+                <div class="form-group panel-profile-radio">
+                    <label class="req-lab-right col-lg-4 control-label" for-property="IsActive" for="IsActive" data-model-property="data.benefit.IsActive" data-original-title="" title="">Status</label>
+                    <div class="col-lg-6">
+                        <pt-input-radio name="IsActive"
+                                        data-ng-required="true"
+                                        data-template-type="input-radio"
+                                        data-ng-model="data.benefit.IsActive"
+                                        data-options="[{ key: true, value: 'Active' },{ key: false, value: 'Inactive' }]" data-pt-field-view="ptFieldViewStatus" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for-property="EffectiveDate" for="EffectiveDate" data-model-property="data.benefit.EffectiveDate" class="col-lg-4 control-label req-lab-right" data-original-title="" title="">Effective date</label>
+                    <div class="col-lg-6">
+                        <pt-date-picker data-ng-change="datePickerChange()"  data-ng-model="data.benefit.EffectiveDate" name="EffectiveDate" data-ng-required="true" data-pt-field-view="ptFieldViewStatus" />
+                    </div>
+                </div>
+
+                <div class="emptyBankList col-lg-12" data-ng-show="data.errors.length > 0">
+                    <div class="row" ng-repeat="error in data.errors">
+                        <span class="col-lg-4"></span>
+                        <span class="col-lg-8">{{error.message}}</span>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" ng-click="cancel()">Cancel</button>
+            <button type="button" class="btn btn-primary" ng-click="submit()" data-ng-disabled="!formBenefitAddDialog.$valid || !canSubmit">Submit</button>
+
+        </div>
+    </div>
+</div>

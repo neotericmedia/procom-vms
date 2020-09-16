@@ -1,0 +1,4 @@
+<app-phx-data-table *ngIf="columns?.length" [configuration]="dataTableConfiguration" [dataSourceUrl]="dataSourceUrl" [dataSourceParams]='oDataParams'
+    [columns]="columns" [exportFileName]="'workorder'" [componentName]="dataGridComponentName" (rowClick)="onRowClick($event)"
+    (contextMenuPreparing)="onContextMenuPreparing($event)">
+</app-phx-data-table>

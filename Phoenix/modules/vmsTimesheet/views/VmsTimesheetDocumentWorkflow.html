@@ -1,0 +1,11 @@
+﻿<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-internal panel-contact" data-ng-init="workflow.initialize(document)">
+            <div class="contact-name">                
+                <app-phx-workflow-event-history [entity-type-id]="ApplicationConstants.EntityType.VmsDocument" [entity-id]="document.timesheetDocument.VmsDocumentId">
+                </app-phx-workflow-event-history >
+            </div>
+        </div>
+    </div>
+</div>
+

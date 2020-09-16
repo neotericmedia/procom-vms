@@ -1,0 +1,29 @@
+<div class="row">
+    <ng-container *ngFor="let report of reportList ; let i = index">
+        <div class="report col-lg-4 col-md-6 col-sm-6 col-xs-12">
+            <div class="report-name">
+                {{report.Name}}
+            </div>
+            <ng-container *ngFor="let view of report.UserViewStates">
+                <div *ngIf="view.StateName" class="report-view container-fluid"
+                    (click)="viewReport(report.Id,view)">
+                    <div class="row">
+                        <div class="report-view-header col-xs-8">
+                            {{view.StateName}}
+                        </div>
+                        <div class="report-view-link col-xs-4">
+                            <a>View report</a>
+                        </div>
+                    </div>
+                    <div *ngIf="view.StateDescription" class="report-view-description row">
+                        <div class="description col-xs-12">
+                            {{view.StateDescription}}
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
+        </div>
+        <div *ngIf="(i+1) % 3 === 0" class="clearfix visible-lg-block"></div>
+        <div *ngIf="(i+1) % 2 === 0" class="clearfix visible-md-block visible-sm-block"></div>
+    </ng-container>
+</div>

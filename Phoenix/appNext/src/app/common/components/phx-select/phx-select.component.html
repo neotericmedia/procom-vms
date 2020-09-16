@@ -1,0 +1,15 @@
+<ng-select
+    #mySelect
+    [items]="items"
+    [active]="active"
+    [allowClear]="allowclear"
+    [placeholder]="placeholder"
+    [disabled]="disabled"
+    [multiple]="multiple"
+    (selected)="selectedActivity($event)"
+    (data)="dataActivity($event)"
+    (removed)="removedActivity($event)"
+    (typed)="typedActivity($event)"
+    [class.disabled-search]="disabledSearch">
+</ng-select>
+<div *ngIf="disabledSearch" class="disabled-input" ></div>

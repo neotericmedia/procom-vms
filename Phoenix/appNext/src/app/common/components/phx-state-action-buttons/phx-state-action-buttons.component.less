@@ -1,0 +1,44 @@
+.action-link {
+  cursor: pointer;
+  &.disabled {
+    cursor: default;
+    opacity: 0.65;
+  }
+}
+
+.btn-toolbar {
+  .link-bar {
+    text-align: left;
+  }
+}
+
+.btn-toolbar.button-bar {
+  text-align: right;
+}
+
+.btn-group {
+  margin: 10px 0 10px 5px;
+  .btn.action-button {
+    margin-left: 5px;
+  }
+}
+
+@media only screen and (max-width: 550px) {
+  .btn-group {
+    margin: 10px auto 0;
+    .btn.action-button {
+      display: block;
+      width: 200px;
+      margin: auto;
+      float: none;
+      margin-bottom: 10px;
+    }
+  }
+}
+
+.elipsis {
+  margin: 0 0 0 5px !important;
+  .dropdown-toggle {
+    padding: 3px 8px 0 !important;
+  }
+}

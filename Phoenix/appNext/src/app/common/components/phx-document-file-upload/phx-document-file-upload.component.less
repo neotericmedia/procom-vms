@@ -1,0 +1,74 @@
+.modal-dialog {
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    padding-bottom: 0;
+    margin: 0;
+}
+
+.modal-content {
+    -webkit-border-radius: 0px !important;
+    -moz-border-radius: 0px !important;
+    border-radius: 0px !important;
+    height: auto;
+    min-height: 100%;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.modal-header {
+    padding-left: 30px;
+    background-color: #f7f7f7;
+    font-size: 1.4em;
+    font-weight: normal;
+}
+
+.message-header {
+    padding-bottom: 20px;
+    font-size: 28px;
+    font-family: "Open Sans", sans-serif;
+    font-weight: 500;
+    color: #777777;
+}
+
+.message-accepted-file-types {
+    padding-top: 20px;
+    font-size: 14px;
+    font-family: "Open Sans", sans-serif;
+    font-weight: 500;
+    color: #777777;
+}
+
+.btn-file {
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-file input[type=file] {
+    position: absolute;
+    top: 0;
+    right: 0;
+    min-width: 100%;
+    min-height: 100%;
+    font-size: 100px;
+    text-align: right;
+    filter: alpha(opacity=0);
+    opacity: 0;
+    outline: none;
+    background: white;
+    cursor: inherit;
+    display: block;
+}
+
+.file-over {
+    border: dashed 1px #777777;
+}
+
+.file-name {
+    display: inline-block;
+    vertical-align: top;
+}
+
+.file-upload-modal {
+    z-index: 1060;
+}

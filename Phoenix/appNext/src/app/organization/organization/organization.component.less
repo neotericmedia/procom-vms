@@ -1,0 +1,110 @@
+.page-content:has(.modal-open) {
+    overflow-y: hidden;
+    height: 10px;
+}
+
+.organization-wrap {
+    min-height: 100%;
+    height: auto !important;
+    height: 100%;
+    margin: 0 auto -60px;
+    padding: 0 0 60px;
+}
+
+.organization-footer {
+    height: 60px;
+    color: #fff;
+    display: table;
+}
+
+.organization-bottom-nav-wrapper {
+    display: table;
+    height: 60px;
+}
+
+.organization-bottom-nav {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.bottomTab.active {
+    color: #d35400;
+}
+
+.footerbackground {
+    background-color:#F5F5F5;
+}
+.organization-workflow-buttons-row-spacer{ 
+    min-height: 55px;
+}
+
+.organization-versions-list {
+    margin-bottom: 20px;
+    padding-left: 0;
+
+    .organization-versions-list-header {
+        display: block;
+        padding: 5px;
+        height: 35px;
+        text-transform: uppercase;
+    }
+
+    .organization-version-group {
+        position: relative;
+        display: block;
+        padding: 5px;
+        margin-bottom: -1px;
+        background-color: #ffffff;
+        margin-bottom: 10px;
+
+        .version-item {
+            border-bottom: 2px solid #F89406;
+            padding-bottom: 10px;
+
+            .version-id {
+                font-size: 16px;
+            }
+        }
+
+        div.version-version-item {
+            cursor: pointer;
+            padding: 5px;
+
+
+            &:hover {
+            }
+
+            .small-text {
+                color: #333333;
+                font-size: 11px;
+            }
+
+            &.active {
+                background-color: #ebebeb;
+            }
+        }
+    }
+
+    .organization-version-group.active,
+    .organization-version-group.active:hover,
+    .organization-version-group.active:focus {
+        z-index: 2;
+        background-color: #fafafa;
+    }
+
+    .organization-version-group.active .organization-version-group-heading,
+    .organization-version-group.active:hover .organization-version-group-heading,
+    .organization-version-group.active:focus .organization-version-group-heading {
+        color: inherit;
+    }
+
+    .organization-version-group.active .organization-version-group-text,
+    .organization-version-group.active:hover .organization-version-group-text,
+    .organization-version-group.active:focus .organization-version-group-text {
+        color: #e1edf7;
+    }
+
+    .table{
+        padding-right: 3%;
+    }
+}

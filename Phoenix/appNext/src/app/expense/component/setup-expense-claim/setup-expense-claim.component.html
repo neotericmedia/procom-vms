@@ -1,0 +1,11 @@
+<app-phx-data-table [configuration]="dataTableConfiguration" [dataSource]="(workOrders$ | async)" [columns]="columns" [componentName]="'createExpenseClaim'">
+  <div *dxTemplate="let d of 'dateCellTemplate'">
+    <span>{{d.value | date:formatDate}}</span>
+  </div>
+  <div *dxTemplate="let a of 'actionCellTemplate'">
+      <button type="button" class="btn btn-material" (click)="create(a.value)"><i class="material-icons">add_circle_outline</i></button>
+  </div>
+</app-phx-data-table>
+<div class="row">
+  <app-phx-validation-messages [messages]="validationMessages"></app-phx-validation-messages>
+</div>

@@ -1,0 +1,13 @@
+<div class="row">
+  <div class="col-xs-12 col-xl-6" *ngIf="invoice">
+    <app-invoice-detail-info [invoice]="invoice" [editable]="editable" [isCurrentUserHasClientRelatedRoles]="isCurrentUserHasClientRelatedRoles" [availableBillingTerms]="availableBillingTerms" [availableBillingTemplates]="availableBillingTemplates"></app-invoice-detail-info>
+  </div>
+  <div class="col-xs-12 col-xl-6" *ngIf="isCurrentUserHasClientRelatedRoles === false && invoice">
+    <app-invoice-detail-notes [invoice]="invoice" [editable]="editable"></app-invoice-detail-notes>
+  </div>
+</div>
+<div class="row">
+  <div *ngIf="isCurrentUserHasClientRelatedRoles === false && invoice">
+    <app-invoice-detail-recipients [invoice]="invoice" [editable]="editable"></app-invoice-detail-recipients>
+  </div>
+</div>

@@ -1,0 +1,96 @@
+<div class="vms-batch-discount-main">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="">
+                <div class="tab-content">
+                    <div class="tab-pane active">
+                        <div class="">
+                            <div class="panel-heading headstone">
+                                <div class="row">
+                                    <div class="col-lg-1"></div>
+                                    <div class="col-lg-2">
+                                        <label class="text-gray col-xs-12">File Name</label>
+										<span class=" col-xs-12">{{document.timesheetDocument.FileName}}</span>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <label class="text-gray col-xs-12">Client</label>
+										<span class=" col-xs-12">{{document.timesheetDocument.ClientOrganizationName}}</span>
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <label class="text-gray col-xs-12">No. Outstanding Records</label>
+										<span class=" col-xs-12">{{document.timesheetDocument.TotalOutstandingRecords}}</span>
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <label class="text-gray col-xs-12">Import Date</label>
+										<span class=" col-xs-12">{{document.timesheetDocument.ImportDate | date:ApplicationConstants.formatDateComma}}</span>
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <label class="text-gray col-xs-12">Document Status</label>
+										<span class=" col-xs-12">{{document.timesheetDocument.VmsDocumentStatus | lookup : document.docStatuses}}</span>
+                                    </div>
+                                </div>                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="tabbable col-lg-12 ">
+            <ul class="nav nav-tabs">
+                <li data-ng-class="{ active : $state.includes('vms.timesheet.document.details') }">
+                    <a data-ui-sref=".details" ng-if="document.isTabLoaded">Details</a>
+                    <a href="javascript:;" ng-if="!document.isTabLoaded">Details</a>
+                </li>
+                <li data-ng-class="{ active : $state.includes('vms.timesheet.document.files') }">
+                    <a data-ui-sref=".files" ng-if="document.isTabLoaded">Files</a>
+                    <a href="javascript:;" ng-if="!document.isTabLoaded">Files</a>
+                </li>
+                <li data-ng-class="{ active : $state.includes('vms.timesheet.document.workflow') }">
+                    <a data-ui-sref=".workflow" ng-if="document.isTabLoaded">Workflow</a>
+                    <a href="javascript:;" ng-if="!document.isTabLoaded">Workflow</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="row" ng-if="$state.includes('vms.timesheet.document.details')">
+        <div class="col-md-2">
+            <table class="app-vms-totals">
+                <tbody>
+                    <tr class="bg-success">
+                        <td>Total Pending</td>
+                        <td class="text-right"><strong>&nbsp; {{document.timesheetDocument.TotalPending}}</strong></td>
+                    </tr>
+                    <tr class="bg-warning">
+                        <td>Total Conflict</td>
+                        <td class="text-right"><strong>&nbsp; {{document.timesheetDocument.TotalConflict}}</strong></td>
+                    </tr>
+                    <tr class="bg-danger">
+                        <td>Total Discarded</td>
+                        <td class="text-right"><strong>&nbsp; {{document.timesheetDocument.TotalDiscarded}}</strong></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-2">
+            <table class="app-vms-totals">
+                <tbody>
+                    <tr style="background-color:#d9edf7;">
+                        <td>Total Completed</td>
+                        <td class="text-right"><strong>&nbsp; {{document.timesheetDocument.TotalCompleted}}</strong></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="tab-content col-lg-12">
+            <div class="tab-pane active">
+                <div class="panel">
+                    <div class="panel-body" data-ui-view="timesheetDocTab" data-autoscroll="false"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

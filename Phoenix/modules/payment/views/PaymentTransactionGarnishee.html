@@ -1,0 +1,73 @@
+﻿<div class="smart-table-wrapper">
+    <div class="row" data-pt-validation-messages="model.ValidationMessages"></div>
+    <div class="row" data-cg-busy="loadItemsPromise">
+        <table data-st-table-struct='[{"stTableValue" : "items"}, {"stPipeValue" : "callServer"}, {"widthValues" : "[5, 10, 25, 25, 20, 20]"}]'>
+            <thead data-st-head="1200px">
+                <tr>
+                    <th data-st-pen-name="CheckBoxes" title="Selection"><input class="small-check-box-invoice-release" data-ng-show="items.length > 0" ng-checked="masterSelecter"
+                            data-ng-click="selectAllRows()" type="checkbox"></th>
+                    <th data-st-sort="GarnisheeId" data-st-sort-default="reverse">Garnishee Id</th>
+                    <th data-st-sort="GarnisheePayeeName">Garnishee From</th>
+                    <th data-st-sort="GarnisheePayToName">Pay To</th>
+                    <th class="align-right" data-st-sort="Amount">Amount</th>
+                    <th data-st-sort="PaymentTransactionNumber">Transaction Number</th>
+                </tr>
+                <tr>
+                    <th style="padding-left: 3px;"></th>
+                    <th>
+                        <input data-st-advanced-search="{property: 'GarnisheeId', ignoreQuotes: true}" placeholder="" class="input-sm form-control numberType"
+                            data-safe-restrict-input="[^0123456789]" />
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="'GarnisheePayeeName'" placeholder="" class="input-sm form-control" type="search" />
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="'GarnisheePayToName'" placeholder="" class="input-sm form-control" type="search" />
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="{property: 'Amount', ignoreQuotes: true, valueSuffix: 'M'}" placeholder="" class="input-sm form-control numberType"
+                            data-safe-restrict-input="[^0123456789.]" />
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="'PaymentTransactionNumber'" placeholder="" class="input-sm form-control" type="search" />
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr id="{{item.PaymentTransactionGarnisheId}}" data-ng-repeat="item in items track by $index" data-ng-click="selectPayment(item); selectedRowCurrent()"
+                    class="paymentBatchRow documentReleaseRow" data-st-select-row-in-array="item in items track by item.PaymentTransactionGarnisheId"
+                    data-st-select-all-retrieval="selectAllVirtual" data-st-select-mode="multiple" data-st-selection-obj="selectionObj"
+                    data-action="view">
+                    <td title="checkbox" style="pointer-events: all;">
+                        <input class="small-check-box-invoice-release" type="checkbox" ng-checked="item.isSelected">
+                    </td>
+                    <td title="{{item.GarnisheeId}}">{{item.GarnisheeId}}</td>
+                    <td title="{{item.GarnisheePayeeName}}">{{item.GarnisheePayeeName}}</td>
+                    <td title="{{item.GarnisheePayToName}}">{{item.GarnisheePayToName}}</td>
+                    <td class="align-right" title="{{item.Amount | currency: model.currencyCode + ' $'}}">{{item.Amount | currency: model.currencyCode + ' $'}}</td>
+                    <td title="{{item.PaymentTransactionNumber}}">{{item.PaymentTransactionNumber}}</td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="9">
+                        <div class="record-count">
+                            <span><span class="record-count-value">{{ items ? items.length : 0}}</span> records out of a
+                            total of
+                            <span class="record-count-value">{{totalItemCount || 0}}</span> are loaded</span>
+                            <br/>
+                            <span><span class="record-count-value">{{batchArray.length}}</span> of <span class="record-count-value">{{items.length}}</span>                            selected;</span>
+                        </div>
+                        
+                        <button type="button" data-ng-show="false" data-ng-disabled="batchArray.length == 0"
+                            class="btn btn-primary btnDirectDeposit" data-ng-click="workflowBatchOperationOnTasks.paymentTransactionGarnisheeCreateBatch()"
+                            title="Create Payment Batch">Create Batch
+                        </button>
+                        <!--VP: removed temporarily button availability while create batch does batching but nowhere visible-->
+                        <!--data-ng-show="model.isReadyToRelease==1 && items.length>0"-->
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>

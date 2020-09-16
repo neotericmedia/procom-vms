@@ -1,0 +1,42 @@
+@import "../../../../../../Content/less/variables.less";
+@table-negative-warning : @table-test-warning;
+@table-negative-warning-interact : @table-test-warning-interact;
+.payment-batch-nav {
+    margin-top: 20px;
+}
+
+.payment-batch-body-detail-tabs.btn-group {
+    display: table;
+    table-layout: fixed;
+    width: 200px;
+    .btn {
+        float: none;
+        display: table-cell;
+    }
+}
+.payment-batch-body-history {
+    clear: both;
+}
+.error-inline {
+    color: #d50000;
+    font-size: 13px;
+    display: block;
+}
+
+:host ::ng-deep dx-data-grid{
+    .dx-datagrid .dx-datagrid-rowsview .dx-datagrid-table tr.dx-row.dx-data-row.negativeRowClass>td,
+    .dx-datagrid .dx-datagrid-rowsview .dx-datagrid-table tr.dx-row-alt.dx-data-row.negativeRowClass>td {
+        background-color: @table-negative-warning !important;
+    }
+    
+    .dx-datagrid .dx-datagrid-rowsview .dx-datagrid-table tr.dx-row.dx-data-row.negativeRowClass:hover>td,
+    .dx-datagrid .dx-datagrid-rowsview .dx-datagrid-table tr.dx-row-alt.dx-data-row.negativeRowClass:hover>td,
+    .dx-row-alt.dx-data-row.negativeRowClass.dx-state-hover:not(.dx-selection):not(.dx-row-inserted):not(.dx-row-removed):not(.dx-edit-row)>td:not(.dx-focused),
+    .dx-row.dx-data-row.negativeRowClass.dx-state-hover:not(.dx-selection):not(.dx-row-inserted):not(.dx-row-removed):not(.dx-edit-row)>td:not(.dx-focused),
+    .dx-datagrid .dx-datagrid-rowsview .dx-datagrid-table tr.dx-row.dx-data-row.negativeRowClass.dx-selection>td,
+    .dx-datagrid .dx-datagrid-rowsview .dx-datagrid-table tr.dx-row-alt.dx-data-row.negativeRowClass.dx-selection>td{
+        background-color: @table-negative-warning-interact !important;
+        border-color: @table-negative-warning-interact !important;
+    }
+
+}

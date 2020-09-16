@@ -1,0 +1,19 @@
+﻿@model Procom.Phoenix.Web.Models.LoginModel
+
+@{
+    ViewBag.Title = "Login";
+    ViewBag.AppName = "PhoenixLanding";
+    ViewBag.AppController = "HomeController";
+    ViewBag.LoginController = "LandingAccountController";
+    Layout = "~/Views/Shared/_LayoutBase.cshtml";
+    ViewBag.Current = "Login";
+}
+
+@section stylesheets{
+
+}
+<div class="account-container stacked">
+    <div class="content clearfix">
+        @Html.Partial("LoginPartial")
+    </div>
+</div>

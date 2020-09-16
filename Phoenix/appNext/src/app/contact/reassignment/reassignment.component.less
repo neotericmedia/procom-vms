@@ -1,0 +1,102 @@
+.outer-container {
+    border: 1px solid #ddd;
+    padding: 8px 50px 50px 30px;
+    .hdr-field-value {
+        border-bottom: 2px solid #ddd;
+        font-style: italic;
+        margin-top: 14px;
+    }
+    .access-removal-controls {
+        min-height: 35px;
+        float: left;
+        display: flex;
+        align-items: center;
+        .date-box-container {
+            display: inline-block;
+            vertical-align: middle;
+            padding-left: 10px;
+        }
+    }
+    .custom-radio {
+        i {
+            display: inline-block;
+            cursor: pointer;
+            text-align: center;
+            vertical-align: middle;
+            font-size: 15px;
+            color: #33b2ff;
+        }
+        input[type="radio"] {
+            display: none;
+        }
+    }
+    .reassign-all-row {
+        display: flex;
+        align-items: center;
+        margin-top: 10px;
+    }
+    .horizontal-line {
+        border-bottom: 1px solid #ccc;
+        padding-top: 10px;
+    }
+    .grp-hdr {
+        padding-top: 25px;
+    }
+    .grp-hdr-lbl,
+    .grp-hdr-val {
+        font-weight: bold;
+        font-size: 12px;
+    }
+    .grp-hdr-sum-lbl {
+        border-bottom: 1px solid #ccc;
+        font-style: italic;
+        font-size: 12px;
+    }
+    .grp-sum-row {
+        display: flex;
+        align-items: flex-end;
+    }
+    .accordian-arrow {
+        right: 0;
+        position: absolute;
+        top: 0;
+        color: #999;
+        cursor: pointer;
+    }
+    .grp-detl-row {
+        display: flex;
+        align-items: flex-end;
+        transition: height 0.3s ease-out;
+    }
+    .grp-detl-lbl {
+        border-bottom: 1px solid #ccc;
+        margin-left: 25px;
+        font-size: 12px;
+        font-style: italic;
+    }
+    .expand-list {
+        visibility: visible;
+        padding-top: 15px;
+        height: 40px;
+    }
+    .collapse-list {
+        visibility: hidden;
+        padding-top: 0;
+        height: 0;
+    }
+    .no-item-to-reassign {
+        border: 1px solid #ccc;
+        padding: 25px 0;
+        margin-top: 5px;
+        display: flex;
+        justify-content: center;
+    }
+}
+
+.btn-row {
+    padding: 25px 10px 100px 0;
+    .btn {
+        float: right;
+        margin-left: 5px;
+    }
+}

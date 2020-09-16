@@ -1,0 +1,88 @@
+<div class="form-group">
+  <div class="col-lg-9">
+    <p class="form-control-static" *ngIf="paymentInfo.controls.OrganizationIdSupplier.value > 0">
+      <a routerLink="/next/organization/{{paymentInfo.controls.OrganizationIdSupplier.value}}/details">
+        {{paymentInfo.controls.OrganizationSupplierDisplayName.value}} -
+        {{paymentInfo.controls.OrganizationIdSupplier.value}}
+      </a>
+    </p>
+    <p class="form-control-static" *ngIf="!paymentInfo.controls.OrganizationIdSupplier.value &&
+      (workerProfileTypeId == phxConstants.ProfileType.WorkerTemp || workerProfileTypeId == phxConstants.ProfileType.WorkerCanadianSP)">
+      <a *ngIf="workerProfileTypeId==phxConstants.ProfileType.WorkerTemp" routerLink="/next/contact/{{workerContactId}}/profile/workertemp/{{userProfileWorkerId}}">
+        {{paymentInfo.controls.OrganizationSupplierDisplayName.value}}
+      </a>
+      <a *ngIf="workerProfileTypeId==phxConstants.ProfileType.WorkerCanadianSP" routerLink="/next/contact/{{workerContactId}}/profile/workercanadiansp/{{userProfileWorkerId}}">
+        {{paymentInfo.controls.OrganizationSupplierDisplayName.value}}
+      </a>
+    </p>
+  </div>
+</div>
+<div class="form-group">
+  <phx-form-control labelText="Payment Terms" [control]="inputFormGroup.controls.PaymentInvoiceTermsId"
+    [editable]="readOnlyStorage.IsEditable && checkPtFiledAccessibility('WorkOrderVersion.PaymentInfoes.PaymentInvoices','PaymentInvoiceTermsId')"
+    viewModeText="{{inputFormGroup.controls.PaymentInvoiceTermsId.value | CodeValue:codeValueGroups.PaymentInvoiceTerms }}">
+    <app-phx-select-box [items]="html.codeValueLists.listPaymentInvoiceTerms" textField="text" valueField="id"
+      [formControl]="inputFormGroup.controls.PaymentInvoiceTermsId" placeholder="-- select one --">
+    </app-phx-select-box>
+  </phx-form-control>
+</div>
+<div class="form-group" *ngIf="(inputFormGroup.controls.InvoiceTypeId.value == html.phxConstants.InvoiceType.Expense && isExpenseThirdPartyImport)">
+  <phx-form-control labelText="Add Pay Taxes for Expenses on Import" [control]="inputFormGroup.controls['IsSalesTaxAppliedOnVmsImport']"
+    [editable]="readOnlyStorage.IsEditable" viewModeText="{{inputFormGroup.controls['IsSalesTaxAppliedOnVmsImport'].value ? 'Yes' : 'No'}}">
+    <label class="radio-inline">
+      <input class="form-check-input" type="radio" [value]="true" [formControl]="inputFormGroup.controls['IsSalesTaxAppliedOnVmsImport']">Yes</label>
+    <label class="radio-inline">
+      <input class="form-check-input" type="radio" [value]="false" [formControl]="inputFormGroup.controls['IsSalesTaxAppliedOnVmsImport']">No</label>
+  </phx-form-control>
+</div>
+<div class="form-group" *ngIf="inputFormGroup.controls.PaymentInvoiceTermsId.value == phxConstants.PaymentInvoiceTerms.ScheduledTerms">
+  <phx-form-control labelText="Payment Schedule" [control]="inputFormGroup.controls.PaymentReleaseScheduleId"
+    [editable]="readOnlyStorage.IsEditable && checkPtFiledAccessibility('WorkOrderVersion.PaymentInfoes.PaymentInvoices','PaymentReleaseScheduleId')"
+    viewModeText="{{inputFormGroup.controls.PaymentReleaseScheduleId.value | CodeValue:codeValueGroups.PaymentReleaseSchedule }}">
+    <div class="col-lg-10 padding-0">
+      <app-phx-select-box [items]="html.codeValueLists.listPaymentReleaseSchedules" textField="text" valueField="id"
+        [formControl]="inputFormGroup.controls.PaymentReleaseScheduleId" placeholder="-- select one --">
+      </app-phx-select-box>
+    </div>
+    <div class="col-lg-2 pull-right" *ngIf="inputFormGroup.controls.PaymentReleaseScheduleId.value">
+      <p class="form-control-static">
+        <a (click)="onClickViewPaymentReleaseSchedule(inputFormGroup.controls.PaymentReleaseScheduleId.value)" style="cursor: pointer;">View</a>
+      </p>
+    </div>
+  </phx-form-control>
+</div>
+<div class="form-group" *ngIf="inputFormGroup.controls.PaymentInvoiceTermsId.value == phxConstants.PaymentInvoiceTerms.Term">
+  <phx-form-control [control]="inputFormGroup.controls.PaymentFrequency" labelText="Payment Frequency" viewModeText="{{inputFormGroup.controls.PaymentFrequency.value}}"
+    [editable]="readOnlyStorage.IsEditable && checkPtFiledAccessibility('WorkOrderVersion.PaymentInfoes.PaymentInvoices','PaymentFrequency')">
+    <div class="col-lg-3 padding-0">
+      <input [formControl]="inputFormGroup.controls.PaymentFrequency" type="text" class="form-control"
+        phxFloatBetweenInput='{"from":0, "to":32766, "decimalplaces":0}' />
+    </div>
+    <div class="col-lg-9">
+      Calendar Days after timesheet processed
+    </div>
+  </phx-form-control>
+</div>
+<div class="form-group">
+  <phx-form-control labelText="Invoice Template" [control]="inputFormGroup.controls.PaymentInvoiceTemplateId"
+    [editable]="readOnlyStorage.IsEditable && checkPtFiledAccessibility('WorkOrderVersion.PaymentInfoes.PaymentInvoices','PaymentInvoiceTemplateId')"
+    viewModeText="{{inputFormGroup.controls.PaymentInvoiceTemplateId.value | CodeValue:codeValueGroups.PaymentInvoiceTemplate }}">
+    <app-phx-select-box [items]="html.codeValueLists.listPaymentInvoiceTemplates" textField="text" valueField="id"
+      [formControl]="inputFormGroup.controls.PaymentInvoiceTemplateId" placeholder="-- select one --">
+    </app-phx-select-box>
+  </phx-form-control>
+</div>
+<div class="form-group">
+  <phx-form-control labelText="Payment Method" [control]="inputFormGroup.controls.PaymentMethodId"
+    [editable]="readOnlyStorage.IsEditable && checkPtFiledAccessibility('WorkOrderVersion.PaymentInfoes.PaymentInvoices','PaymentMethodId')"
+    viewModeText="{{inputFormGroup.controls.PaymentMethodId.value | CodeValue:codeValueGroups.PaymentMethodType }}">
+    <app-phx-select-box [items]="html.codeValueLists.listPaymentMethods" textField="text" valueField="id" [formControl]="inputFormGroup.controls.PaymentMethodId"
+      placeholder="-- select one --">
+    </app-phx-select-box>
+  </phx-form-control>
+</div>
+
+<app-phx-modal [buttons]="modalFabButtons" title="Payment Release Schedule" #paymentReleaseSchedule>
+  <app-workorder-payment-release-schedule [id]="paymentReleaseScheduleId">
+  </app-workorder-payment-release-schedule>
+</app-phx-modal>

@@ -1,0 +1,176 @@
+<div class="row commission-report">
+  <div class="col-lg-10 col-lg-offset-1" style="padding: 0">
+    <label for-property="OrganizationIdInternal" for="CommissionUserProfileId" class="col-lg-3 control-label label-to-right"
+      data-original-title="" title="">Internal Company:</label>
+    <div class="col-lg-3" style="margin-bottom: 5px;">
+      <div class="input-group select2-bootstrap-append">
+        <app-phx-select-box [items]="internalOrgs" [(ngModel)]="OrganizationIdInternal" (valueChanged)="onChangeInternalComp($event.value)" valueField="Id" textField="DisplayName" placeholder="--- Select One ---">
+        </app-phx-select-box>
+      </div>
+    </div>
+  </div>
+  <div class="form-group col-lg-10 col-lg-offset-1" style="padding: 0">
+    <label for-property="CommissionUserProfileId" for="CommissionUserProfileId" class="col-lg-3 control-label label-to-right"
+      data-original-title="" title="">Commission report for:</label>
+    <div class="col-lg-3" style="margin-bottom: 5px;">
+      <div class="input-group select2-bootstrap-append" *ngIf="HasAdministratorView">
+        <app-phx-select-box [items]="commissionUserProfiles" [(ngModel)]="CommissionUserProfileId" (valueChanged)="onChangeName($event.value)" valueField="CommissionUserProfileId"
+          textField="displayName" placeholder="--- Select One ---">
+        </app-phx-select-box>
+      </div>
+      <div *ngIf="!HasAdministratorView" class="form-control-static">
+        {{DisplayOwnName}}
+      </div>
+    </div>
+    <div class="col-lg-3" style="margin-bottom: 5px;">
+      <app-phx-date-box [value]="reportDate" displayFormat="monthAndYear" maxZoomLevel="year" minZoomLevel="century" [(ngModel)]="reportDate"></app-phx-date-box>
+    </div>
+    <div class="col-lg-3 col-xl-3 margin-top-md-10">
+      <div class="tn-group pull-right">
+        <button class="btn btn-primary" (click)="getReport()" [disabled]="!(reportDate)">Get Report</button>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2 report" *ngIf="reportData">
+    <h3>Commission report for {{reportData.CommissionUserName}} - {{reportData.CommissionReportDate}}</h3>
+    <table class="table table-striped">
+      <tr *ngIf="reportData.InternalCompanyDisplayName">
+        <td colspan="2">
+          <span class="bold">Internal Company:</span> {{reportData.InternalCompanyDisplayName}}</td>
+      </tr>
+      <tr *ngIf="reportData.Status">
+        <td colspan="2">
+          <span class="bold">Status:</span> {{reportData.Status}}</td>
+      </tr>
+      <tr>
+        <td colspan="2"></td>
+      </tr>
+      <tr>
+        <td>Opening balance / Payments previously on hold</td>
+        <td class="bold text-right">{{reportData.AmountOpeningBalance|number:'1.2-2'}}</td>
+      </tr>
+      <tr>
+        <td colspan="2"></td>
+      </tr>
+      <tr>
+        <td>Gross margin for invoices issued and reversed in month</td>
+        <td class="text-right">{{reportData.AmountGrossMarginInvoicesIssuedAndReversed|number:'1.2-2'}}</td>
+      </tr>
+      <tr>
+        <td colspan="2" class="bold underline">Earnings</td>
+      </tr>
+      <tr>
+        <td>Commission for invoices issued in month</td>
+        <td class="text-right">
+          <a (click)="modalInvoicesIssued()" style="cursor: pointer;">{{reportData.AmountInvoicesIssued|number:'1.2-2'}}</a>
+        </td>
+      </tr>
+      <tr>
+        <td>Amount for invoices reversed in month</td>
+        <td class="text-right">
+          <a (click)="modalInvoicesReversed()" style="cursor: pointer;">{{reportData.AmountInvoicesReversed|number:'1.2-2'}}</a>
+        </td>
+      </tr>
+      <tr>
+        <td>Total commission earned in month</td>
+        <td class="bold text-right">{{reportData.AmountTotalCommissionEarned|number:'1.2-2'}}</td>
+      </tr>
+      <tr>
+        <td colspan="2" class="bold underline">Adjustments</td>
+      </tr>
+      <tr>
+        <td>Interest</td>
+        <td class="text-right">
+          <a (click)="modalInterest()" style="cursor: pointer;">{{reportData.AmountInterest|number:'1.2-2'}}</a>
+        </td>
+      </tr>
+      <tr>
+        <td>Direct charges</td>
+        <td class="text-right">
+          <a (click)="modalDirectCharges()" style="cursor: pointer;">{{reportData.AmountDirectCharges|number:'1.2-2'}}</a>
+        </td>
+      </tr>
+      <tr>
+        <td>Recurring charges</td>
+        <td class="text-right">
+          <a (click)="modalRecurringCharges()" style="cursor: pointer;">{{reportData.AmountRecurringCharges|number:'1.2-2'}}</a>
+        </td>
+      </tr>
+      <tr>
+        <td>Corrections / reversals</td>
+        <td class="text-right">
+          <a (click)="modalCorrections()" style="cursor: pointer;">{{reportData.AmountCorrections|number:'1.2-2'}}</a>
+        </td>
+      </tr>
+      <tr>
+        <td>Rebooked transactions</td>
+        <td class="text-right">
+          <a (click)="modalRebooked()" style="cursor: pointer;">{{reportData.AmountRebooked|number:'1.2-2'}}</a>
+        </td>
+      </tr>
+      <tr>
+        <td>Total adjustments</td>
+        <td class="bold text-right">{{reportData.AmountTotalAdjustments|number:'1.2-2'}}</td>
+      </tr>
+      <tr>
+        <td colspan="2" class="bold underline">Payment</td>
+      </tr>
+      <tr>
+        <td>Commission calculation for month</td>
+        <td class="bold text-right">{{reportData.AmountCurrentMonthCommissions|number:'1.2-2'}}</td>
+      </tr>
+      <tr>
+        <td>LESS Payments scheduled for future months</td>
+        <td class="text-right">
+          <a (click)="modalScheduledFutureMonth()" style="cursor: pointer;">{{reportData.AmountScheduledFutureMonth|number:'1.2-2'}}</a>
+        </td>
+      </tr>
+      <tr>
+        <td>PLUS Previous payment carry forward</td>
+        <td class="text-right">{{reportData.AmountPriorPaymentCarryForward|number:'1.2-2'}}</td>
+      </tr>
+      <tr>
+        <td>Ready to release for month</td>
+        <td class="bold text-right">{{reportData.AmountReadyToRelease|number:'1.2-2'}}</td>
+      </tr>
+      <tr>
+        <td>PLUS Ready to release transactions from prior periods</td>
+        <td class="text-right">
+          <a (click)="modalReadyToReleasePriorMonthTransactions()" style="cursor: pointer;">{{reportData.AmountReadyToReleasePriorMonthTransactions|number:'1.2-2'}}</a>
+        </td>
+      </tr>
+      <tr>
+        <td>PLUS Ready to release adjustments from prior periods</td>
+        <td class="text-right">
+          <a (click)="modalReadyToReleasePriorMonthAdjustments()" style="cursor: pointer;">{{reportData.AmountReadyToReleasePriorMonthAdjustments|number:'1.2-2'}}</a>
+        </td>
+      </tr>
+      <tr>
+        <td>LESS Balance owing from prior periods</td>
+        <td class="text-right">{{reportData.AmountPreviousBalanceOwing|number:'1.2-2'}}</td>
+      </tr>
+      <tr>
+        <td>Total expected payment</td>
+        <td class="bold text-right">{{reportData.AmountPaymentTotal|number:'1.2-2'}}</td>
+      </tr>
+      <tr>
+        <td colspan="2"></td>
+      </tr>
+      <tr>
+        <td>Balance owing on future payment(s)</td>
+        <td class="bold text-right">{{reportData.AmountBalanceOwing|number:'1.2-2'}}</td>
+      </tr>
+      <tr>
+        <td>Closing balance / Payments on hold</td>
+        <td class="bold text-right">{{reportData.AmountClosingBalance|number:'1.2-2'}}</td>
+      </tr>
+    </table>
+    <ng-container *ngIf="hasFinalizeAccess">
+      <button id="FinalizeButton" class="btn btn-primary pull-right" *ngIf="reportData?.CanFinalize" (click)="finalize()">Finalize</button>
+    </ng-container>
+  </div>
+</div>
+
+<app-phx-modal #reportDetailsModel [buttons]="reportDetailsModelButtons"  [fullScreen]="true">
+  <app-commission-report-drilldown *ngIf="reportDetailsModel.isVisible" [data]="modelData"></app-commission-report-drilldown>
+</app-phx-modal>

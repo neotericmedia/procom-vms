@@ -1,0 +1,5 @@
+<div class="row">
+  <app-phx-data-table [configuration]="dataTableConfiguration" [dataSourceUrl]="'demo/demos'" [dataSourceParams]='odataParams'
+    [columns]="columns" [exportFileName]="'demos'" [componentName]="'demos'" (rowClick)="onRowClick($event)">
+  </app-phx-data-table>
+</div>

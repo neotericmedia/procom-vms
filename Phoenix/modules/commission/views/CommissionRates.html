@@ -1,0 +1,93 @@
+<div class="row">
+    <div class="btn-group">
+        <button type="button" class="btn btn-clouds dropdown-toggle" data-toggle="dropdown">
+            <span class="payroll-btn-name">Actions...</span> <span class="caret ml payroll-btn-caret"></span>
+        </button>
+        <ul class="dropdown-menu bordered">
+            <li><a data-ui-sref="commission.ratesetup({ commissionUserProfileId:ratesScope.CommissionUserProfileId })">Create New Commission</a></li>
+        </ul>
+    </div>
+    <div class="panel-heading headstone">
+        <div class="row">
+            <div class="col-lg-2">
+                <label class="control-label col-xs-12 ">Id</label>
+                <span class="col-xs-12">{{ratesScope.CommissionUserProfileId}}</span>
+            </div>
+            <div class="col-lg-6">
+                <label class="control-label col-xs-12 ">Name</label>
+                <span class="col-xs-12">{{ratesScope.CommissionUserProfileFirstName}} {{ratesScope.CommissionUserProfileLastName}}</span>
+            </div>
+            <div class="col-lg-4">
+                <label class="control-label col-xs-12 ">Status</label>
+                <span class="col-xs-12">{{ratesScope.CommissionUserProfileStatusName}}</span>
+            </div>
+        </div>
+    </div>
+</div>
+<br/>
+<div class="tab-content">
+    <div class="smart-table-wrapper">
+        <div class="row" data-cg-busy="loadItemsPromise">
+            <table data-st-table-struct='[{"stTableValue" : "ratesScope.items"}, {"stPipeValue" : "ratesScope.callServer"}, {"widthValues" : "[8, 13, 5, 14, 14, 14, 14, 14]"}, {"stPaginationValue" : "ratesScope.pageSize"}]'>
+                <thead data-st-head="1000px">
+                    <tr>
+                        <th data-st-sort="CommissionRateHeaderId" data-st-sort-default="reverse">Id</th>
+                        <th data-st-sort="CommissionRoleId">Role</th>
+                        <th data-st-sort="CommissionRateVersionPercentage">Rate</th>
+                        <th data-st-sort="CommissionRateRestrictionsForInternalOrganization">Internal Org</th>
+                        <th data-st-sort="CommissionRateRestrictionsForClientOrganization">Client Org</th>
+                        <th data-st-sort="CommissionRateRestrictionsForLineOfBusiness">Line Of Business</th>
+                        <th data-st-sort="CommissionRateRestrictionsForBranch">Branch</th>
+                        <th data-st-sort="CommissionRateHeaderStatusId">Status</th>
+                    </tr>
+                    <tr>
+                        <th><input placeholder="" class="input-sm form-control numberType" data-st-advanced-search="{property: 'CommissionRateHeaderId', ignoreQuotes: true}"
+                                data-safe-restrict-input="[^0123456789]" /></th>
+                        <th><select data-st-advanced-search="{property: 'CommissionRoleId', ignoreQuotes: true}" class="input-sm form-control"
+                                data-st-as-options-override="ratesScope.lists.listCommissionRole"></select></th>
+                        <th><input data-st-advanced-search="{property: 'CommissionRateVersionPercentage', ignoreQuotes: true, valueSuffix: 'M'}"
+                                placeholder="" class="input-sm form-control numberType" type="search" data-safe-restrict-input="[^0123456789.]"
+                            /></th>
+                        <th><input placeholder="" class="input-sm form-control" data-st-advanced-search="'CommissionRateRestrictionsForInternalOrganization'"
+                            /></th>
+                        <th><input placeholder="" class="input-sm form-control" data-st-advanced-search="'CommissionRateRestrictionsForClientOrganization'"
+                            /></th>
+                        <th><input placeholder="" class="input-sm form-control" data-st-advanced-search="'CommissionRateRestrictionsForLineOfBusiness'"
+                            /></th>
+                        <th><input placeholder="" class="input-sm form-control" data-st-advanced-search="'CommissionRateRestrictionsForBranch'"
+                            /></th>
+                        <th><select data-st-advanced-search="{property: 'CommissionRateHeaderStatusId', ignoreQuotes: true}"
+                                class="input-sm form-control" data-st-as-options-override="ratesScope.lists.listCommissionRateHeaderStatus"></select></th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr data-ng-repeat="item in ratesScope.items" data-ui-sref="commission.rate.details({ commissionRateHeaderId: item.CommissionRateHeaderId, commissionRateVersionId: item.CommissionRateVersionId})"
+                        style="cursor: pointer">
+                        <td title="{{item.CommissionRateHeaderId}}"><span class="payroll-search-item">{{item.CommissionRateHeaderId}}</span></td>
+                        <td title="{{item.CommissionRoleId|lookup:ratesScope.lists.listCommissionRateHeaderStatus}}"><span class="payroll-search-item">{{item.CommissionRoleId|lookup:ratesScope.lists.listCommissionRole}}</span></td>
+                        <td title="{{item.CommissionRateVersionPercentage}}"><span class="payroll-search-item">{{item.CommissionRateVersionPercentage}}%</span></td>
+                        <td title="{{item.CommissionRateRestrictionsForInternalOrganization}}"><span class="payroll-search-item">{{item.CommissionRateRestrictionsForInternalOrganization}}</span></td>
+                        <td title="{{item.CommissionRateRestrictionsForClientOrganization}}"><span class="payroll-search-item">{{item.CommissionRateRestrictionsForClientOrganization}}</span></td>
+                        <td title="{{item.CommissionRateRestrictionsForLineOfBusiness}}"><span class="payroll-search-item">{{item.CommissionRateRestrictionsForLineOfBusiness}}</span></td>
+                        <td title="{{item.CommissionRateRestrictionsForBranch}}">
+                            <span class=" payroll-search-item ">{{item.CommissionRateRestrictionsForBranch}}</span>
+                        </td>
+                        <td title="{{item.CommissionRateHeaderStatusId}} "><span class="payroll-search-item ">{{item.CommissionRateHeaderStatusId|lookup:ratesScope.lists.listCommissionRateHeaderStatus}}</span></td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="9">
+                            <div class="record-count">
+                                <span><span class="record-count-value">{{ ratesScope.items ? ratesScope.items.length : 0}}</span> records out of a total of
+                                <span class="record-count-value">{{ratesScope.totalItemCount || 0}}</span> are loaded</span>
+                            </div>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+
+        </div>
+    </div>
+</div>

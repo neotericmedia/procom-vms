@@ -1,0 +1,231 @@
+﻿<div data-ng-if="!selfScope.common.loadItemsPromise" data-ng-form="formTransactionHeaderAdjustmentEdit">
+    <div class="col-md-12">
+        <div class="row " data-ng-form="entityForm">
+            <div class="tab-content">
+                <div class="tabbable panel panel-tabbable">
+                    <div class="tab-content">
+                        <div class="tab-pane active">
+                            <div class="panel-heading">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="">
+                                            <div class="row form-group ">
+                                                <div class="col-md-12">
+                                                    <h4>Transaction Info</h4>
+                                                </div>
+                                            </div>
+                                            <div class="row form-group col-md-12">
+                                                <label class="col-md-4 control-label" data-original-title="" title="">Employee Amount Total:</label>
+                                                <div class="col-md-8">
+                                                    {{selfScope.model.EmployeeAmountTotal() | currency: ' $'}}
+                                                </div>
+                                            </div>
+                                            <div class="row form-group col-md-12">
+                                                <label class="col-md-4 control-label" data-original-title="" title="">Employer Amount Total:</label>
+                                                <div class="col-md-8">
+                                                    {{selfScope.model.EmployerAmountTotal() | currency: ' $'}}
+                                                </div>
+                                            </div>
+                                            <div class="row form-group col-md-12">
+                                                <label class="col-md-4 control-label" data-original-title="" title="">Client Amount Total:</label>
+                                                <div class="col-md-8">
+                                                    {{selfScope.model.ClientAmountTotal() | currency: ' $'}}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="">
+
+                                            <div class="row form-group">
+                                                <div class="col-md-12">
+                                                    <h4>Work Order Info</h4>
+                                                </div>
+                                            </div>
+
+                                            <div class="row form-group col-md-12">
+                                                <label for-property="WorkOrderVersionId" for="WorkOrderVersionId" data-model-property="selfScope.model.WorkOrderVersionId"
+                                                    class="col-md-4 control-label label-to-same-padding req-lab-right" data-original-title=""
+                                                    title="">Work Order:</label>
+                                                <div class="col-md-8">
+                                                    <div class="input-group select2-bootstrap-append">
+                                                        <ui-select name="WorkOrderVersionId" data-ng-model="selfScope.model.WorkOrderVersionId" theme="select2" class="form-control"
+                                                            required data-on-select="selfScope.common.workOrderChanged($item)">
+                                                            <ui-select-match placeholder="-- Select One --">{{$select.selected.WorkOrderFullNumber}}</ui-select-match>
+                                                            <ui-select-choices repeat="item.WorkOrderVersionId as item in selfScope.common.listsWorkOrder | uiSelectChoicesFilter: $select.search: 'WorkOrderFullNumber'"><span data-ng-bind-html="item.WorkOrderFullNumber | highlight: $select.search"></span></ui-select-choices>
+                                                        </ui-select>
+                                                        <span class="input-group-btn">
+                                                            <button tabindex="-1" data-ng-click="selfScope.model.WorkOrderVersionId=undefined;selfScope.common.workOrderChanged(null);" class="btn btn-default"><i class="material-icons md-18">clear</i></button>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row form-group col-md-12">
+                                                <label class="col-md-4 control-label" data-original-title="" title="">Worker:</label>
+                                                <div class="col-md-8">
+                                                    <a data-ng-if="selfScope.common.userProfile.ProfileTypeId==ApplicationConstants.UserProfileType.Organizational" data-ui-sref="EditOrganizationalProfile({ contactId:selfScope.common.userProfile.ContactId, profileId: selfScope.common.userProfile.Id})">{{selfScope.common.userProfile.Contact.FullName}} - {{selfScope.common.userProfile.ContactId}} (Organizational - {{selfScope.common.userProfile.Id}})</a>
+                                                    <a data-ng-if="selfScope.common.userProfile.ProfileTypeId==ApplicationConstants.UserProfileType.Internal" data-ui-sref="EditInternalProfile({ contactId:selfScope.common.userProfile.ContactId, profileId: selfScope.common.userProfile.Id })">{{selfScope.common.userProfile.Contact.FullName}} - {{selfScope.common.userProfile.ContactId}} (Internal - {{selfScope.common.userProfile.Id}})</a>
+                                                    <a data-ng-if="selfScope.common.userProfile.ProfileTypeId==ApplicationConstants.UserProfileType.WorkerTemp" data-ui-sref="EditWorkerTempProfile({ contactId:selfScope.common.userProfile.ContactId, profileId: selfScope.common.userProfile.Id })">{{selfScope.common.userProfile.Contact.FullName}} - {{selfScope.common.userProfile.ContactId}} (Worker Temp - {{selfScope.common.userProfile.Id}})</a>
+                                                    <a data-ng-if="selfScope.common.userProfile.ProfileTypeId==ApplicationConstants.UserProfileType.WorkerCanadianSp" data-ui-sref="EditWorkerCanadianSPProfile({ contactId:selfScope.common.userProfile.ContactId, profileId: selfScope.common.userProfile.Id })">{{selfScope.common.userProfile.Contact.FullName}} - {{selfScope.common.userProfile.ContactId}} (Worker Canadian SP - {{selfScope.common.userProfile.Id}})</a>
+                                                    <a data-ng-if="selfScope.common.userProfile.ProfileTypeId==ApplicationConstants.UserProfileType.WorkerCanadianInc" data-ui-sref="EditWorkerCanadianIncProfile({ contactId:selfScope.common.userProfile.ContactId, profileId: selfScope.common.userProfile.Id })">{{selfScope.common.userProfile.Contact.FullName}} - {{selfScope.common.userProfile.ContactId}} (Worker Canadian Inc - {{selfScope.common.userProfile.Id}})</a>
+                                                    <a data-ng-if="selfScope.common.userProfile.ProfileTypeId==ApplicationConstants.UserProfileType.WorkerUnitedStatesW2" data-ui-sref="EditWorkerUnitedStatesW2Profile({ contactId:selfScope.common.userProfile.ContactId, profileId: selfScope.common.userProfile.Id })">{{selfScope.common.userProfile.Contact.FullName}} - {{selfScope.common.userProfile.ContactId}} (Worker W2 - {{selfScope.common.userProfile.Id}})</a>
+                                                    <a data-ng-if="selfScope.common.userProfile.ProfileTypeId==ApplicationConstants.UserProfileType.WorkerUnitedStatesLLC" data-ui-sref="EditWorkerUnitedStatesLLCProfile({ contactId:selfScope.common.userProfile.ContactId, profileId: selfScope.common.userProfile.Id })">{{selfScope.common.userProfile.Contact.FullName}} - {{selfScope.common.userProfile.ContactId}} (Worker LLC - {{selfScope.common.userProfile.Id}})</a>
+                                                </div>
+                                            </div>
+                                            <div class="row form-group col-md-12">
+                                                <label class="col-md-4 control-label" data-original-title="" title="">Internal Company:</label>
+                                                <div class="col-md-8">
+                                                    <a ng-if="selfScope.model.OrganizationIdInternal" data-ui-sref="org.edit.details({organizationId: selfScope.model.OrganizationIdInternal })">{{selfScope.model.OrganizationInternalDisplayName}} - {{selfScope.model.OrganizationIdInternal}} ({{selfScope.model.OrganizationInternalCode}})</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="">
+                                <div class="panel-internal content-group form-horizontal">
+                                    <div class="content-group form-horizontal">
+                                        <div class="row">
+                                            <div class="form-group col-md-6">
+                                                <label for-property="Description" for="Description" data-model-property="selfScope.model.Description" class="col-md-3 control-label label-to-right req-lab-right"
+                                                       data-original-title="" title="">Description</label>
+                                                <div class="col-md-6">
+                                                    <input type="text" name="Description" class="form-control form-control ng-scope" data-ng-model="selfScope.model.Description"
+                                                           data-ng-minlength="3" data-ng-maxlength="64" data-input-text-limit-to-max-length="64"
+                                                           data-required-message="Required" data-ng-required="true" required="required">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="form-group col-md-6">
+                                                <label for-property="SuppressPayment" for="SuppressPayment" data-model-property="selfScope.model.SuppressPayment" class="col-md-3 control-label label-to-right req-lab-right"
+                                                       data-original-title="" title="">Release Type</label>
+                                                <div class="col-md-6">
+                                                    <pt-input-radio name="SuppressPayment" id="SuppressPayment" data-ng-required="true" data-required-message="Required" data-template-type="input-radio"
+                                                        data-ng-model="selfScope.model.SuppressPayment" data-options="[{ key: false, value: 'Payment/Invoice Release' },{ key: true, value: 'Record-keeping only (Suppress Payment/Invoice)' }]" 
+                                                    />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="form-group col-md-6" data-ng-if="(selfScope.model.AdjustmentApplicables | filter:{isApplied: false}).length>0">
+                                                <label for-property="addedAdjustment" for="addedAdjustment" data-model-property="selfScope.common.addedAdjustment" class="col-md-3 control-label label-to-right"
+                                                       data-original-title="" title="">Add Adjustment</label>
+                                                <div class="col-md-6">
+                                                    <div class="input-group select2-bootstrap-append">
+                                                        <ui-select name="addedAdjustment" theme="select2" class="form-control" data-ng-model="selfScope.common.addedAdjustment" data-on-select="selfScope.common.addAdjustment($item)"
+                                                                   data-reset-search-input="true" data-reset-search-model="true">
+                                                            <ui-select-match placeholder="-- Select an item to add --"></ui-select-match>
+                                                            <ui-select-choices repeat="item as item in selfScope.model.AdjustmentApplicables | filter:{isApplied: false}| uiSelectChoicesFilter: $select.search: 'Name'">
+                                                                <span data-ng-bind-html="item.EntityName | highlight: $select.search"></span>                                                                -
+                                                                <span data-ng-bind-html="item.Name | highlight: $select.search"></span>
+                                                            </ui-select-choices>
+                                                        </ui-select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <br />
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <table class="table table-striped table-content table-hover" data-ng-if="(selfScope.model.AdjustmentApplicables | filter:{isApplied: true}).length>0">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Deduction Type</th>
+                                                            <th><span class="pull-right">YTD Worker Deduction</span></th>
+                                                            <th><span class="pull-right">Worker Amount</span></th>
+                                                            <th><span class="pull-right">New YTD Worker Deduction</span></th>
+                                                            <th><span class="pull-right">YTD Employer Deduction</span></th>
+                                                            <th><span class="pull-right">Employer Amount</span></th>
+                                                            <th><span class="pull-right">New YTD Employer Deduction</span></th>
+                                                            <th><span class="pull-right">Client Amount</span></th>
+                                                            <th><span class="pull-right">Action</span></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody class="sales-patt-table-body">
+                                                        <tr data-ng-repeat="item in selfScope.model.AdjustmentApplicables|filter:{isApplied: true}" style="cursor:pointer">
+                                                            <td title="{{item.EntityName}} - {{item.Name}}"><span class="adj-item-in">{{item.Name}}</span></td>
+                                                            <td><span class="adj-item-in pull-right">{{item.EmployeeYtdDeduction | currency: ' $'}}</span></td>
+                                                            <td>
+                                                                <div class="input-group pull-right" data-ng-if="item.IsApplicableToEmployee" style="width:130px">
+                                                                    <input type="text" class="input-align-right form-control form-control ng-scope" name="EmployeeAmount" data-ng-model="item.EmployeeAmount"
+                                                                           data-input-by-float-range="{from:-999999.99, to:999999.99, decimalplaces:2, doesemptytozero:'true'}"
+                                                                           data-ng-blur="item.EmployeeAmount=selfScope.common.floatApplyTwoDecimalPlaces(item.EmployeeAmount)"
+                                                                           data-ng-change="selfScope.common.employeeOnChange(item)"
+                                                                           data-required-message="Required" data-ng-required="true"
+                                                                           required="required">
+                                                                </div>
+                                                            </td>
+                                                            <td><span class="adj-item-in pull-right">{{item.newEmployeeYtdDeduction | currency: ' $'}}</span></td>
+                                                            <td><span class="adj-item-in pull-right">{{item.EmployerYtdDeduction | currency: ' $'}}</span></td>
+                                                            <td>
+                                                                <div class="input-group pull-right" data-ng-if="item.IsApplicableToEmployer" style="width:130px">
+                                                                    <input type="text" class="input-align-right form-control form-control ng-scope" name="EmployerAmount" data-ng-model="item.EmployerAmount"
+                                                                           data-input-by-float-range="{from:-999999.99, to:999999.99, decimalplaces:2, doesemptytozero:'true'}"
+                                                                           data-ng-blur="item.EmployerAmount=selfScope.common.floatApplyTwoDecimalPlaces(item.EmployerAmount)"
+                                                                           data-ng-change="selfScope.common.employerOnChange(item)"
+                                                                           data-required-message="Required" data-ng-required="true"
+                                                                           required="required">
+                                                                </div>
+                                                            </td>
+                                                            <td><span class="adj-item-in pull-right">{{item.newEmployerYtdDeduction | currency: ' $'}}</span></td>
+                                                            <td>
+                                                                <div class="input-group pull-right" data-ng-if="item.IsApplicableToClient" style="width:130px">
+                                                                    <input type="text" class="input-align-right form-control form-control ng-scope" name="ClientAmount" data-ng-model="item.ClientAmount"
+                                                                           data-input-by-float-range="{from:-999999.99, to:999999.99, decimalplaces:2, doesemptytozero:'true'}"
+                                                                           data-ng-blur="item.ClientAmount=selfScope.common.floatApplyTwoDecimalPlaces(item.ClientAmount)"
+                                                                           data-ng-change="selfScope.common.employerOnChange(item)"
+                                                                           data-required-message="Required" data-ng-required="true"
+                                                                           required="required">
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <div class="pull-right">
+                                                                    <button type="button" class="btn btn-default btn-material pull-right" data-ng-click="selfScope.common.removeAdjustment(item)"><i class="material-icons">delete</i></button>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                    <tfoot>
+                                                        <tr>
+                                                            <td></td>
+                                                            <td></td>
+                                                            <td><span class="pull-right">{{selfScope.model.EmployeeAmountTotal() | currency: ' $'}}</span></td>
+                                                            <td></td>
+                                                            <td></td>
+                                                            <td><span class="pull-right">{{selfScope.model.EmployerAmountTotal() | currency: ' $'}}</span></td>
+                                                            <td></td>
+                                                            <td><span class="pull-right">{{selfScope.model.ClientAmountTotal() | currency: ' $'}}</span></td>
+                                                            <td></td>
+                                                        </tr>
+                                                    </tfoot>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane active">
+                                    <div class="panel">
+                                        <div class="panel-body" data-pt-validation-messages="selfScope.common.validationMessages"></div>
+                                    </div>
+                                </div>
+                                <div class="panel-footer">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="pull-right">
+                                                <button type="button" class="btn btn-default" data-ng-click="selfScope.common.onClickCancel()">Cancel</button>
+                                                <button type="button" class="btn btn-primary" data-ng-click="selfScope.common.onClickSubmit()" data-ng-disabled="!formTransactionHeaderAdjustmentEdit.$valid">Create</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

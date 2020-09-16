@@ -1,0 +1,155 @@
+﻿<div data-ng-form="formInternalTeam" class="internal-team-details col-lg-12">
+    <div class="internal-team-entity-wrapper col-lg-12">
+        <div class="internal-team-header">
+            <div class="row">
+                <div class="col-lg-1"></div>
+                <div class="col-lg-1">
+                    <span class="text-gray">ID</span>
+                </div>
+                <div class="col-lg-2">
+                    <span class="text-gray">Team Owner</span>
+                </div>
+                <div class="col-lg-3">
+                    <span class="text-gray">Team Name</span>
+                </div>
+                <div class="col-lg-1">
+                    <span class="text-gray">Status</span>
+                </div>
+                <div class="col-lg-3"></div>
+            </div>
+            <div class="row internal-team-header-row">
+                <div class="col-lg-1"></div>
+                <div class="col-lg-1" title="{{edit.internalTeam.InternalTeamId }}">
+                    <span>{{edit.internalTeam.InternalTeamId }}</span>
+                </div>
+                <div class="col-lg-2" title="{{edit.internalTeam.JobOwner ? edit.internalTeam.JobOwner : '-'}}">
+                    <span>{{edit.internalTeam.JobOwner ? edit.internalTeam.JobOwner : '-'}}</span>
+                </div>
+                <div class="col-lg-3" title="{{edit.internalTeam.TeamName ? edit.internalTeam.TeamName : '-'}}">
+                    <span class="internal-team-name">{{edit.internalTeam.TeamName ? edit.internalTeam.TeamName : '-'}}</span>
+                </div>
+                <div class="col-lg-1" title="{{edit.internalTeam.InternalTeamId > 0 ? 'Active' : 'Draft'}}">
+                    <span data-ng-class="{'text-warning': edit.internalTeam.Id > 0 }">{{edit.internalTeam.InternalTeamId > 0 ? 'Active' : 'Draft'}}</span>
+                </div>
+                <div class="col-lg-3"></div>              
+            </div>
+        </div>
+        <div class="panel-body internal-team-body">
+            <div class="row">
+                <div class="form-horizontal" role="form">
+                    <div class="form-group internal-team-row">
+                        <label class="control-label req-lab-right col-xl-2 col-lg-4 col-md-2 col-xs-2 text-right" for-property="TeamName" for="TeamName" data-model-property="edit.internalTeam.TeamName" data-original-title="" title="">Team Name</label>
+                        <div class="col-lg-8 col-xl-10 col-md-10 col-xs-10">
+                            <div class="input-group">
+                                <input type="text" class="form-control" name="TeamName" placeholder="Team Name" ng-model="edit.internalTeam.TeamName" data-ng-minlength="3" data-ng-maxlength="64" maxlength="64" data-ng-required="true" data-pt-field-view="edit.ptFieldViewStatus">
+                                <span class="input-group-addon" data-ng-if="edit.isEditMode"><b>T</b></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group internal-team-row">
+                        <label class="control-label req-lab-right col-xl-2 col-lg-4 col-md-2 col-xs-2 text-right" for-property="Description" for="Description" data-model-property="edit.internalTeam.Description" data-original-title="" title="">Description</label>
+                        <div class="col-lg-8 col-xl-10 col-md-10 col-xs-10">
+                            <div class="input-group">
+                                <input type="text" class="form-control" name="Description" placeholder="Description" ng-model="edit.internalTeam.Description" data-ng-minlength="3" data-ng-maxlength="256" maxlength="256" data-ng-required="true" data-pt-field-view="edit.ptFieldViewStatus">
+                                <span class="input-group-addon" data-ng-if="edit.isEditMode"><b>T</b></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group internal-team-row" data-ng-if="edit.internalTeamId>0">
+                        <label class="control-label req-lab-right-valid col-xl-2 col-lg-4 col-md-2 col-xs-2 text-right">Team Owner</label>
+                        <div class="col-lg-8 col-xl-10 col-md-10 col-xs-10  internal-team-job-owner">
+                            {{edit.internalTeam.JobOwner}}
+                        </div>
+                    </div>
+                    <div data-ng-repeat="member in edit.internalTeam.InternalTeamMembers" data-ng-if="edit.internalTeam.InternalTeamMembers">
+                        <div class="form-group internal-team-row">
+                            <label class="control-label req-lab-right col-xl-2 col-lg-4 col-md-2 col-xs-2 text-right" for-property="MemberUserProfileId" for="MemberUserProfileId" data-model-property="member.InternalTeamMemberUserProfileId" data-original-title="" title="" data-ng-if="$first && !edit.internalTeamId">Team Owner</label>
+                            <label class="control-label req-lab-right col-xl-2 col-lg-4 col-md-2 col-xs-2 text-right" for-property="MemberUserProfileId" for="MemberUserProfileId" data-model-property="member.InternalTeamMemberUserProfileId" data-original-title="" title="" data-ng-if="!$first">Team Member</label>
+                            <div class="col-xl-10 col-lg-8 col-md-10 col-xs-10" data-ng-show="(!$first && edit.internalTeamId>0) || !edit.internalTeamId">
+                                <div class="pull-right" data-ng-show="(!$first && edit.internalTeamId>0) || !edit.internalTeamId">
+                                    <button type="button" class="btn btn-default btn-material" data-ng-if="edit.isEditMode"
+                                        data-ng-click="edit.removeMember($index)" data-ng-disabled="edit.internalTeam.InternalTeamMembers.length===2">
+                                        <i class="material-icons">delete</i>
+                                    </button>
+                                </div>
+                                <div>
+                                    <div class="input-group select2-bootstrap-append">
+                                        <ui-select name="MemberUserProfileId" data-ng-model="member.InternalTeamMemberUserProfileId" theme="select2" class="form-control" data-ng-required="true" data-pt-field-view="edit.ptFieldViewStatus"
+                                                   data-pt-field-view-custom="{{member.InternalTeamMemberUserProfileId | lookupnocache: edit.internalUsers:'Id':'Contact.FullName'}}">
+                                            <ui-select-match placeholder="-- Select One --">{{$select.selected.Contact.FullName}}</ui-select-match>
+                                            <ui-select-choices repeat="item.Id as item in edit.internalUsers | uiSelectChoicesFilteredByUsage: $select.search: edit.internalTeam.InternalTeamMembers: member: 'InternalTeamMemberUserProfileId': 'Id': 'Contact.FullName'">
+                                                <span data-ng-bind-html="item.Contact.FullName | highlight: $select.search"></span>
+                                            </ui-select-choices>
+                                        </ui-select>
+                                        <span class="input-group-btn">
+                                            <button tabindex="-1" data-ng-click="member.InternalTeamMemberUserProfileId=undefined;" class="btn btn-default btn-sales-pattern-drp"><i class="material-icons md-18">clear</i></button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12">
+                        <button type="button" class="pull-right btn btn-default btn-material" data-ng-disabled="edit.internalTeam.InternalTeamMembers.length ===edit.internalUsers.length-1"
+                            data-ng-if="edit.isEditMode && edit.internalTeam.InternalTeamMembers.length > 1" data-ng-click="edit.addMember()">
+                            <i class="material-icons">add</i>
+                        </button>
+                    </div>
+                    <!-- <div class="form-group internal-team-row" data-ng-if="edit.isEditMode">
+                        <label class="col-lg-2 control-label label-to-right">Restrictions</label>
+                        <div class="col-lg-4">
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-clouds dropdown-toggle" data-toggle="dropdown">
+                                    <span class="internal-team-crt">Add/Edit Restriction</span> <span class="caret ml payroll-btn-caret"></span>
+                                </button>
+                                <ul class="dropdown-menu bordered">
+                                    <li class="internal-team-restr"><a data-ng-click="edit.addRestriction(ApplicationConstants.InternalTeamRestrictionType.InternalOrganization)">Internal Company</a></li>
+                                    <li class="internal-team-restr"><a data-ng-click="edit.addRestriction(ApplicationConstants.InternalTeamRestrictionType.ClientOrganization)">Client Company</a></li>
+                                    <li class="internal-team-restr"><a data-ng-click="edit.addRestriction(ApplicationConstants.InternalTeamRestrictionType.LineOfBusiness)">Line Of Business</a></li>
+                                    <li class="internal-team-restr"><a data-ng-click="edit.addRestriction(ApplicationConstants.InternalTeamRestrictionType.InternalOrganizationDefinition1)">Branch</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-lg-6"></div>
+                    </div> -->
+                    <!-- <div class="col-lg-9 internal-team-restrictions" data-ng-if="edit.internalTeam.InternalTeamRestrictions.length>0">
+                        <div class="row panel-heading">
+                            <div class="col-lg-1"></div>
+                            <div class="col-lg-2"><label>Type</label></div>
+                            <div class="col-lg-9"><label>Restrictions</label></div>
+                        </div>
+                        <div class="panel-body">
+                            <div class="row panel-row" data-ng-repeat="restrictionGroup in edit.internalTeamRestrictionsGrouped()|filter:edit.filterGroupByInternalTeamRestrictionTypeId">
+                                <div class="col-lg-1"></div>
+                                <div class="col-lg-2" data-ng-if="edit.isEditMode" style="cursor:pointer;" data-ng-click="edit.addRestriction(restrictionGroup.CommissionRateRestrictionTypeId)">
+                                    {{restrictionGroup.InternalTeamRestrictionTypeId| lookup: edit.internalTeamRestrictionTypes }}
+                                </div>
+                                <div class="col-lg-2" data-ng-if="!edit.isEditMode">
+                                    {{restrictionGroup.InternalTeamRestrictionTypeId| lookup: edit.internalTeamRestrictionTypes }}
+                                </div>
+                                <div class="col-lg-9">
+                                    <span data-ng-repeat="restriction in edit.internalTeam.InternalTeamRestrictions | filter:{ InternalTeamRestrictionTypeId: restrictionGroup.InternalTeamRestrictionTypeId }"><span data-ng-if="$index>0">, </span>{{restriction.Name}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div> -->
+                </div>
+            </div>
+        </div>
+        <div class="panel-body" data-pt-validation-messages="edit.ValidationMessages" data-ng-if="edit.ValidationMessages.length>0"></div>
+        <div class="panel-footer internal-team-footer col-lg-12">
+            <div class="row">                
+                <div class="col-lg-12" style="min-height:30px;">
+                    <div class="pull-right">                        
+                        <button type="button" class="btn btn-default" data-ng-click="edit.discard()" data-ng-if="edit.internalTeam.InternalTeamStatusId===ApplicationConstants.InternalTeamStatus.New">Cancel</button>
+                        <button type="button" class="btn btn-primary" data-ng-click="edit.create(edit.internalTeam)" data-ng-disabled="!formInternalTeam.$valid || edit.isSubmitted" data-ng-if="edit.internalTeam.InternalTeamStatusId===ApplicationConstants.InternalTeamStatus.New && edit.allowCreate">Create</button>
+                        <button type="button" class="btn btn-default" data-ng-click="edit.cancel()" data-ng-if="edit.internalTeam.InternalTeamStatusId===ApplicationConstants.InternalTeamStatus.Active && edit.isEditMode && edit.allowCreate">Cancel</button>                        
+                        <button type="button" class="btn btn-primary" data-ng-click="edit.correct()" data-ng-if="edit.internalTeam.InternalTeamStatusId===ApplicationConstants.InternalTeamStatus.Active && !edit.isEditMode && edit.allowCreate">Edit</button>
+                        <button type="button" class="btn btn-primary" data-ng-click="edit.submit(edit.internalTeam)" data-ng-disabled="!formInternalTeam.$valid || edit.isSubmitted" data-ng-if="edit.internalTeam.InternalTeamStatusId===ApplicationConstants.InternalTeamStatus.Active && edit.isEditMode && edit.allowCreate">Submit</button>
+                    </div>
+                </div>
+                <!-- <div class="col-lg-1"></div> -->
+           </div>
+        </div>        
+    </div>
+</div>

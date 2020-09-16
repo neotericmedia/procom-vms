@@ -1,0 +1,26 @@
+<div class="row">
+    <div class="col col-xs-12">
+        <div class="pull-right expense-toolbar">
+            <button type="button" class="btn btn-material btn-default" (click)="printExpenseClaim()">
+                <i class="material-icons">print</i>
+            </button>
+        </div>
+    </div>
+    <div class="col col-xs-12">
+        <app-expense-claim-detail [expenseClaim]="expenseClaim" [editable]="editable"></app-expense-claim-detail>
+    </div>
+    <div class="col col-xs-12">
+        <app-expense-item-list [expenseClaim]="expenseClaim" [editable]="editable" (itemSelected)="itemSelected($event)" (onAddItem)="addItem()"></app-expense-item-list>
+    </div>
+</div>
+<app-phx-modal #itemModal cssClass="expense-item-modal" [buttons]="itemButtons" title="{{expenseModuleResourceKeys.itemAdd.header | phxTranslate}}"
+    (closeModal)="closeItem()">
+    <app-expense-item #expenseItem [item]="currentItem" [editable]="editable" (onAddItemAttachment)="openItemUploadDialog($event)"
+        (onPreviewAttachment)="previewAttachment($event)"></app-expense-item>
+</app-phx-modal>
+<app-phx-document-file-upload #itemFileUpload [showAddButton]="false" (onSuccessItem)="itemUploadCompleteNotification($event)"></app-phx-document-file-upload>
+<app-phx-modal #previewModal [fullScreen]="true" title="{{currentAttachment?.Name}}" (closeModal)="closePreview()">
+    <div class="attachment-container" *ngIf="currentAttachment">
+        <img id="attachment" [src]="currentAttachmentUrl" *ngIf="currentAttachmentUrl" />
+    </div>
+</app-phx-modal>

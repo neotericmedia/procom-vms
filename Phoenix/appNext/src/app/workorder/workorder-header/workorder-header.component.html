@@ -1,0 +1,81 @@
+<div class="tab-content">
+  <div class="tab-pane active">
+    <div class="panel">
+      <div class="panel-heading headstone">
+        <div class="row">
+          <div class="col-xs-12 col-lg-1">
+            <label class="col-xs-3 col-md-12 control-label no-padding-h-l">ID</label>
+            <div class="ng-binding">
+              {{workOrder.AssignmentId}}.{{workOrder.WorkOrderVersion.WorkOrderNumber}}.{{workOrder.WorkOrderVersion.VersionNumber}}
+            </div>
+          </div>
+          <div class="col-xs-12 col-lg-3">
+            <label class="col-xs-3 col-md-12 control-label no-padding-h-l">Client</label>
+            <div class="ng-binding">
+              {{workOrder.WorkOrderVersion.BillingInfoes[0].OrganizationIdClient | lookupNoCache:
+              html.lists.listOrganizationClient:'Id':'DisplayName'}}
+              - {{workOrder.WorkOrderVersion.BillingInfoes[0].OrganizationIdClient}}
+            </div>
+          </div>
+          <div class="col-xs-12 col-lg-3">
+            <label class="col-xs-3 col-md-12 control-label no-padding-h-l">Worker</label>
+            <div class="ng-binding">
+              <a *ngIf="(workOrder.UserProfileIdWorker|lookupNoCache:html.lists.listUserProfileWorker:'Id':'ProfileTypeId')==html.phxConstants.UserProfileType.WorkerTemp"
+                routerLink="/next/contact/{{workOrder.UserProfileIdWorker|lookupNoCache:html.lists.listUserProfileWorker:'Id':'ContactId'}}/profile/workertemp/{{workOrder.UserProfileIdWorker}}">
+                {{workOrder.UserProfileIdWorker|lookupNoCache:html.lists.listUserProfileWorker:'Id':'Contact.FullName'}}
+                -
+                {{workOrder.UserProfileIdWorker}}({{workOrder.workerProfileTypeId| lookupNoCache:html.lists.profileTypeList:'id':'text'}})
+              </a>
+              <a *ngIf="(workOrder.UserProfileIdWorker|lookupNoCache:html.lists.listUserProfileWorker:'Id':'ProfileTypeId')==html.phxConstants.UserProfileType.WorkerCanadianSp"
+                routerLink="/next/contact/{{workOrder.UserProfileIdWorker|lookupNoCache:html.lists.listUserProfileWorker:'Id':'ContactId'}}/profile/workercanadiansp/{{workOrder.UserProfileIdWorker}}">
+                {{workOrder.UserProfileIdWorker|lookupNoCache:html.lists.listUserProfileWorker:'Id':'Contact.FullName'}}
+                -
+                {{workOrder.UserProfileIdWorker}}({{workOrder.workerProfileTypeId| lookupNoCache:html.lists.profileTypeList:'id':'text'}})
+              </a>
+              <a *ngIf="(workOrder.UserProfileIdWorker|lookupNoCache:html.lists.listUserProfileWorker:'Id':'ProfileTypeId')==html.phxConstants.UserProfileType.WorkerCanadianInc"
+                routerLink="/next/contact/{{workOrder.UserProfileIdWorker|lookupNoCache:html.lists.listUserProfileWorker:'Id':'ContactId'}}/profile/workercanadianinc/{{workOrder.UserProfileIdWorker}}">
+                {{workOrder.UserProfileIdWorker|lookupNoCache:html.lists.listUserProfileWorker:'Id':'Contact.FullName'}}
+                -
+                {{workOrder.UserProfileIdWorker}}({{workOrder.workerProfileTypeId| lookupNoCache:html.lists.profileTypeList:'id':'text'}})
+              </a>
+              <a *ngIf="(workOrder.UserProfileIdWorker|lookupNoCache:html.lists.listUserProfileWorker:'Id':'ProfileTypeId')==html.phxConstants.UserProfileType.WorkerSubVendor"
+                routerLink="/next/contact/{{workOrder.UserProfileIdWorker|lookupNoCache:html.lists.listUserProfileWorker:'Id':'ContactId'}}/profile/workersubvendor/{{workOrder.UserProfileIdWorker}}">
+                {{workOrder.UserProfileIdWorker|lookupNoCache:html.lists.listUserProfileWorker:'Id':'Contact.FullName'}}
+                -
+                {{workOrder.UserProfileIdWorker}}({{workOrder.workerProfileTypeId| lookupNoCache:html.lists.profileTypeList:'id':'text'}})
+              </a>
+              <a *ngIf="(workOrder.UserProfileIdWorker|lookupNoCache:html.lists.listUserProfileWorker:'Id':'ProfileTypeId')==html.phxConstants.UserProfileType.WorkerUnitedStatesW2"
+                routerLink="/next/contact/{{workOrder.UserProfileIdWorker|lookupNoCache:html.lists.listUserProfileWorker:'Id':'ContactId'}}/profile/workerunitedstatesw2/{{workOrder.UserProfileIdWorker}}">
+                {{workOrder.UserProfileIdWorker|lookupNoCache:html.lists.listUserProfileWorker:'Id':'Contact.FullName'}}
+                -
+                {{workOrder.UserProfileIdWorker}}({{workOrder.workerProfileTypeId| lookupNoCache:html.lists.profileTypeList:'id':'text'}})
+              </a>
+              <a *ngIf="(workOrder.UserProfileIdWorker|lookupNoCache:html.lists.listUserProfileWorker:'Id':'ProfileTypeId')==html.phxConstants.UserProfileType.WorkerUnitedStatesLLC"
+                routerLink="/next/contact/{{workOrder.UserProfileIdWorker|lookupNoCache:html.lists.listUserProfileWorker:'Id':'ContactId'}}/profile/workerunitedstatesllc/{{workOrder.UserProfileIdWorker}}">
+                {{workOrder.UserProfileIdWorker|lookupNoCache:html.lists.listUserProfileWorker:'Id':'Contact.FullName'}}
+                -
+                {{workOrder.UserProfileIdWorker}}({{workOrder.workerProfileTypeId| lookupNoCache:html.lists.profileTypeList:'id':'text'}})
+              </a>
+            </div>
+          </div>
+          <div class="col-xs-12 col-lg-3">
+            <label class="col-xs-3 col-md-12 control-label no-padding-h-l">Work Order Period</label>
+            <div class="ng-binding">
+              <span>{{workOrder.StartDate | date:html.phxConstants.DateFormat.mediumDate}}</span>
+              -
+              <span>{{workOrder.EndDate | date:html.phxConstants.DateFormat.mediumDate}}</span>
+
+            </div>
+          </div>
+          <div class="col-xs-12 col-lg-2">
+            <label class="col-xs-3 col-md-12 control-label no-padding-h-l">Status</label>
+            <div>
+              <span>
+                {{workOrder.StatusId | lookupNoCache: html.lists.workOrderStatuses}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

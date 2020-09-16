@@ -1,0 +1,31 @@
+.action-link {
+    cursor: pointer;
+}
+
+.item-modal {
+    .modal-dialog {
+        width: 600px;
+        margin: 0 auto;
+        .modal-body {
+            min-height: 40vh;
+        }
+    }
+    .modal-footer {
+        button {
+            min-width: 80px;
+        }
+    }
+}
+
+@media screen and (max-width:600px) {
+    .item-modal {
+        .modal-dialog {
+            width: 100vw;
+        }
+    }
+    .modal-footer {
+        button {
+            width: initial;
+        }
+    }    
+}

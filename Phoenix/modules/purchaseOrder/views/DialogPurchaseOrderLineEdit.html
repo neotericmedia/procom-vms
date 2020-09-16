@@ -1,0 +1,269 @@
+﻿<div class="slider-content" data-ng-form="formPurchaseOrderLineEditDialog">
+    <div class="slider-header">
+        <div class="panel">
+            <div class="panel-heading headstone">
+                <div class="row keystone-row">
+                    <div class="col-lg-2">
+                        <span class="text-gray ">PO Number</span>
+                    </div>
+                    <div class="col-lg-2">
+                        <span class="text-gray ">PO Line</span>
+                    </div>
+                    <div class="col-lg-2">
+                        <span class="text-gray ">Total Funds</span>
+                    </div>
+                    <div class="col-lg-2">
+                        <span class="text-gray ">Funds Committed</span>
+                    </div>
+                    <div class="col-lg-2">
+                        <span class="text-gray ">Funds Spent</span>
+                    </div>
+                    <div class="col-lg-2">
+                        <span class="text-gray ">Status</span>
+                    </div>
+                </div>
+                <div class="row keystone-row">
+                    <div class="col-lg-2">
+                        <a data-ui-sref="purchaseorder.edit.details({purchaseOrderId: model.Id })">{{model.PurchaseOrderNumber}}</a>
+                        <!--<a data-ng-click="cancel(model.polEntity)" style="cursor: hand; cursor: pointer;">{{model.PurchaseOrderNumber}}</a>-->
+                    </div>
+                    <div class="col-lg-2">
+                        <span>{{model.polEntity.PurchaseOrderLineNumber}}</span>
+                    </div>
+                    <div class="col-lg-2">
+                        <span>{{model.polEntity.Amount|currency:""}} {{model.polEntity.CurrencyId | lookup:lists.currencyList:'id':'code'}}</span>
+                    </div>
+                    <div class="col-lg-2">
+                        <span>{{model.polEntity.amountCommitedTotal()|currency:""}} {{model.polEntity.CurrencyId | lookup:lists.currencyList:'id':'code'}}</span>
+                    </div>
+                    <div class="col-lg-2">
+                        <span>{{model.polEntity.amountSpentTotal()|currency:""}} {{model.polEntity.CurrencyId | lookup:lists.currencyList:'id':'code'}}</span>
+                    </div>
+                    <div class="col-lg-2">
+                        <span data-ng-class="model.polEntity.StatusId==ApplicationConstants.PurchaseOrderStatus.Active?'text-warning':''">{{model.polEntity.StatusId | lookup:lists.purchaseOrderStatuses}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="slider-body">
+        <div class="content-group form-horizontal">
+            <div class="form-group">
+                <div class="form-group">
+                    <label data-for-property="PurchaseOrderLineReference" for="PurchaseOrderLineReference" data-model-property="model.polEntity.PurchaseOrderLineReference"
+                        class="col-lg-2 control-label" data-original-title="" title="">PO Line Reference</label>
+                    <div class="col-lg-4">
+                        <input type="text" data-ng-model="model.polEntity.PurchaseOrderLineReference"
+                            name="PurchaseOrderLineReference" data-pt-field-view="model.ptFieldViewConfigOnChangeStatusId" class="form-control ng-scope">
+                    </div>
+                    <label data-for-property="Description" for="Description" data-model-property="model.polEntity.Description" class="col-lg-2 control-label"
+                        data-original-title="" title="">Description</label>
+                    <div class="col-lg-4">
+                        <input type="text"  data-ng-model="model.polEntity.Description" name="Description" data-pt-field-view="model.ptFieldViewConfigOnChangeStatusId"
+                            class="form-control ng-scope">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label data-for-property="DepletionOptionId" for="DepletionOptionId" data-model-property="model.polEntity.DepletionOptionId"
+                        class="col-lg-2 control-label req-lab-right" data-original-title="" title="">Depletion Option</label>
+                    <div class="col-lg-4">
+                        <div class="input-group select2-bootstrap-append">
+                            <ui-select name="DepletionOptionId" class="form-control" data-ng-model="model.polEntity.DepletionOptionId" theme="select2"  required data-pt-field-view="model.ptFieldViewConfigOnChangeStatusId" data-pt-field-view-custom="{{model.polEntity.DepletionOptionId|lookupnocache:lists.purchaseOrderDepletedOptionList:'id':'text'}}">
+                                <ui-select-match placeholder="-- Select One --">{{$select.selected.text}}</ui-select-match>
+                                <ui-select-choices repeat="item.id as item in lists.purchaseOrderDepletedOptionList| uiSelectChoicesFilter: $select.search: 'text'"><span data-ng-bind-html="item.text | highlight: $select.search"></span></ui-select-choices>
+                            </ui-select>
+                            <span class="input-group-btn">
+                                <button tabindex="-1" data-ng-click="model.polEntity.DepletionOptionId=undefined" class="btn btn-default"><i class="material-icons md-18">clear</i></button>
+                            </span>
+                        </div>
+                    </div>
+                    <label data-for-property="CurrencyId" for="CurrencyId" data-model-property="model.polEntity.CurrencyId" class="col-lg-2 control-label req-lab-right"
+                        data-original-title="" title="">Currency</label>
+                    <div class="col-lg-4">
+                        <div class="input-group select2-bootstrap-append">
+                            <ui-select name="CurrencyId" data-ng-model="model.polEntity.CurrencyId" theme="select2" class="form-control" data-pt-field-view="model.ptFieldViewConfigOnChangeStatusId"
+                                required>
+                                <ui-select-match placeholder="-- Select One --">{{$select.selected.text}}</ui-select-match>
+                                <ui-select-choices repeat="item.id as item in lists.currencyList | uiSelectChoicesFilter: $select.search: 'text'"><span data-ng-bind-html="item.text | highlight: $select.search"></span></ui-select-choices>
+                            </ui-select>
+                            <span class="input-group-btn">
+                                <button tabindex="-1" data-ng-click="model.polEntity.CurrencyId=undefined" class="btn btn-default"><i class="material-icons md-18">clear</i></button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label data-for-property="AmountCommited" for="AmountCommited" data-model-property="model.polEntity.Amount" class="col-lg-2 control-label req-lab-right"
+                        data-original-title="" title="">Total Funds</label>
+                    <div class="col-lg-4">
+                        <div class="input-group">
+                            <input type="text" data-ng-model="model.polEntity.Amount" xdata-ng-blur="model.polEntity.Amount=floatApplyTwoDecimalPlaces(model.polEntity.Amount)"
+                                name="AmountCommited" data-float-between-input="{from:0, to:999999999.99, decimalplaces:2, doesemptytozero:'false'}"
+                                data-required-message="Required" data-pt-field-view="model.ptFieldViewConfigOnChangeStatusId"
+                                data-ng-required="true" class="form-control form-control ng-scope input-align-right" required="required">
+                        </div>
+                    </div>
+                    <label for-property="IsTaxIncluded" for="IsTaxIncluded" data-model-property="model.polEntity.IsTaxIncluded" class="col-lg-2 control-label req-lab-right"
+                        data-original-title="" title="">
+                        Tax Included?
+                    </label>
+                    <div class="col-lg-4">
+                        <pt-input-radio name="IsTaxIncluded" data-ng-required="true" data-template-type="input-radio" data-ng-model="model.polEntity.IsTaxIncluded"
+                            data-options="[{ key: true, value: 'Yes' },{ key: false, value: 'No' }]" data-pt-field-view="model.ptFieldViewConfigOnChangeStatusId"
+                        />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label data-for-property="DepletionGroupId" for="DepletionGroupId" data-model-property="model.polEntity.DepletionGroupId"
+                        class="col-lg-2 control-label req-lab-right" data-original-title="" title="">Depletion Group</label>
+                    <div class="col-lg-4">
+                        <div class="input-group select2-bootstrap-append">
+                            <ui-select name="DepletionGroupId" data-ng-model="model.polEntity.DepletionGroupId" theme="select2" class="form-control"
+                                required data-pt-field-view="model.ptFieldViewConfigOnChangeStatusId" data-pt-field-view-custom="{{model.polEntity.DepletionGroupId|lookupnocache:lists.purchaseOrderDepletedGroupList:'id':'text'}}">
+                                <ui-select-match placeholder="-- Select One --">{{$select.selected.text}}</ui-select-match>
+                                <ui-select-choices repeat="item.id as item in lists.purchaseOrderDepletedGroupList| uiSelectChoicesFilter: $select.search: 'text'"><span data-ng-bind-html="item.text | highlight: $select.search"></span></ui-select-choices>
+                            </ui-select>
+                            <span class="input-group-btn">
+                                <button tabindex="-1" data-ng-click="model.polEntity.DepletionGroupId=undefined" class="btn btn-default"><i class="material-icons md-18">clear</i></button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="form-group">
+                <label class="col-lg-2 control-label h4 bold">PO Line Stats</label>
+            </div>
+            <div class="form-group without-margin-bottom">
+                <div class="col-lg-6 with-background">
+                    <label class="col-lg-4 control-label">Total Funds</label>
+                    <div class="col-lg-8">
+                        <p class="form-control-static">$ {{model.polEntity.Amount|currency:""}}</p>
+                    </div>
+                </div>
+                <div class="col-lg-6 with-background">
+                    <label class="col-lg-4 control-label">Funds Spent</label>
+                    <div class="col-lg-8">
+                        <p class="form-control-static">$ {{model.polEntity.amountSpentTotal()|currency:""}}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group without-margin-bottom">
+                <div class="col-lg-6 with-background">
+                    <label class="col-lg-4 control-label">Funds Committed</label>
+                    <div class="col-lg-8">
+                        <p class="form-control-static">$ {{model.polEntity.amountCommitedTotal()|currency:""}}</p>
+                    </div>
+                </div>
+                <div class="col-lg-6 with-background">
+                    <label class="col-lg-4 control-label">Funds Reserved</label>
+                    <div class="col-lg-8">
+                        <p class="form-control-static">$ {{model.polEntity.amountResevedTotal()|currency:""}}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-lg-6 with-background">
+                    <label class="col-lg-4 control-label">Funds Available</label>
+                    <div class="col-lg-8">
+                        <p class="form-control-static">$ {{model.polEntity.fundsAvailable()|currency:""}}</p>
+                    </div>
+                </div>
+                <div class="col-lg-6 with-background">
+                    <label class="col-lg-4 control-label">Funds Remaining</label>
+                    <div class="col-lg-8">
+                        <p class="form-control-static">$ {{model.polEntity.amountCommitedTotal() - model.polEntity.amountSpentTotal() - model.polEntity.amountResevedTotal()|currency:""}}</p>
+                    </div>
+                </div>
+            </div>
+
+            <div data-ng-show="{{model.polEntity.WorkOrderPurchaseOrderLines.length > 0}}">
+                <div class="form-group">
+                    <label class="col-lg-2 control-label h4 bold">Work Orders</label>
+                </div>
+
+                <div class="panel-internal row table-responsive">
+                    <table class="table table-striped table-content table-hover"  data-ng-form="workOrders">
+                        <thead>
+                            <tr>
+                                <th scope="col">
+                                    Work<br /> Order
+                                </th>
+                                <th scope="col" class="text-right">
+                                    Funds<br /> Committed
+                                </th>
+                                <th scope="col" class="text-right">
+                                    Funds<br /> Reserved
+                                </th>
+                                <th scope="col" class="text-right">
+                                    Funds<br /> Spent
+                                </th>
+                                <th scope="col" class="text-right">
+                                    Funds<br /> Remaining
+                                </th>
+                                <th scope="col" class="text-right">
+                                    Work Units<br /> Remaining
+                                </th>
+                                <th scope="col">
+                                    Allocation<br /> Note
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr data-ng-repeat="workOrderPurchaseOrderLine in model.polEntity.WorkOrderPurchaseOrderLines">
+                                <td style="vertical-align: middle;" class="col-lg-2">
+                                    <a class="form-control-static" data-ui-sref="workorder.edit.core({assignmentId:workOrderPurchaseOrderLine.AssignmentId,workOrderId:workOrderPurchaseOrderLine.WorkOrderId,workOrderVersionId:0 })">
+                                        {{workOrderPurchaseOrderLine.AssignmentId}}.{{workOrderPurchaseOrderLine.WorkOrderNumber}}
+                                    </a>
+                                </td>
+                                <td class="col-lg-2" data-ng-if="model.polEntity.DepletionOptionId !=2">
+                                    <div class="input-group">
+                                        <input type="text" data-ng-model="workOrderPurchaseOrderLine.AmountCommited" xdata-ng-blur="workOrderPurchaseOrderLine.AmountCommited=floatApplyTwoDecimalPlaces(workOrderPurchaseOrderLine.AmountCommited)"
+                                            name="AmountCommited" data-float-between-input="{from:0, to:999999999.99, decimalplaces:2, doesemptytozero:'false'}"
+                                            data-required-message="Required" data-pt-field-view="model.ptFieldViewConfigOnChangeStatusId"
+                                            data-ng-required="true" class="form-control ng-scope input-align-right" required="required">
+                                    </div>
+                                    <!--<p class="form-control-static pull-right" data-ng-if="!$state.includes('workorder')">$ {{workOrderPurchaseOrderLine.AmountCommited|currency:""}}</p>-->
+                                </td>
+                                <td class="col-lg-2" data-ng-if="model.polEntity.DepletionOptionId==2">-</td>
+                                <td class="col-lg-2">
+                                    <p class="form-control-static pull-right">$ {{workOrderPurchaseOrderLine.AmountReserved|currency:""}}</p>
+                                </td>
+                                <td class="col-lg-2">
+                                    <p class="form-control-static pull-right">$ {{workOrderPurchaseOrderLine.AmountSpent|currency:""}}</p>
+                                </td>
+                                <td class="col-lg-2" data-ng-if="model.polEntity.DepletionOptionId !=2">
+                                    <p class="form-control-static pull-right">$ {{workOrderPurchaseOrderLine.AmountCommited-workOrderPurchaseOrderLine.AmountReserved-workOrderPurchaseOrderLine.AmountSpent|currency:""}}</p>
+                                </td>
+                                <td class="col-lg-2">
+                                    <p class="form-control-static pull-right">{{(workOrderPurchaseOrderLine.rate>0) ? ((workOrderPurchaseOrderLine.AmountCommited-workOrderPurchaseOrderLine.AmountReserved-workOrderPurchaseOrderLine.AmountSpent)/workOrderPurchaseOrderLine.rate|number:1)
+                                        : "--" }} {{workOrderPurchaseOrderLine.workunit}}</p>
+                                </td>
+                                <td class="col-lg-2" data-ng-if="model.polEntity.DepletionOptionId==2">-</td>
+                                <td class="col-lg-3">
+                                    <input type="text" data-ng-model="workOrderPurchaseOrderLine.AllocationNote" name="AllocationNote"
+                                        data-ng-maxlength="128" maxlength="128" data-pt-field-view="model.ptFieldViewConfigOnChangeStatusId"
+                                        class="form-control ng-scope" />
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+
+            <div class="panel-body" data-pt-validation-messages="model.ValidationMessages"></div>
+
+        </div>
+    </div>
+    <div class="slider-footer">
+        <div class="row">
+            <div class="pull-right">
+                <button type="button" class="btn btn-default" data-ng-click="cancel(model.polEntity)" data-ng-disabled="hasPendingRequests">Cancel</button>
+                <button type="button" class="btn btn-primary" data-ng-click="save(model.polEntity)" data-ng-disabled="hasPendingRequests||!formPurchaseOrderLineEditDialog.$valid">Ok</button>
+            </div>
+        </div>
+    </div>
+</div>

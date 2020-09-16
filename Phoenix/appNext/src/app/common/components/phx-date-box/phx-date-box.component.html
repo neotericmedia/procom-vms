@@ -1,0 +1,13 @@
+<dx-date-box *ngIf="pickerType;else noPickerType" [(value)]="value" [type]="type" [disabled]="disabled" [min]="min" [max]="max" [acceptCustomValue]="allowUserInput"
+  [readOnly]="readOnly" [showClearButton]="showClearButton" (onValueChanged)="onValueChangedHandler($event)" (onClosed)="closedHandler($event)"
+  (onOpened)="openedHandler($event)" [width]="width" [displayFormat]="displayFormat" [maxZoomLevel]="maxZoomLevel" [minZoomLevel]="minZoomLevel"
+  [interval]="interval" [pickerType]="pickerType" (isValidChange)="isValidChangeHandler($event)" (onFocusIn)="focusIn($event)" (onFocusOut)="focusOut($event)">
+</dx-date-box>
+
+<ng-template #noPickerType>
+  <dx-date-box [(value)]="value" [type]="type" [disabled]="disabled" [min]="min" [max]="max" [readOnly]="readOnly" [showClearButton]="showClearButton" [acceptCustomValue]="allowUserInput"
+    (onValueChanged)="onValueChangedHandler($event)" (onClosed)="closedHandler($event)" (onOpened)="openedHandler($event)"
+    [width]="width" [displayFormat]="displayFormat" [maxZoomLevel]="maxZoomLevel" [minZoomLevel]="minZoomLevel" [interval]="interval"
+    (isValidChange)="isValidChangeHandler($event)" (onFocusIn)="focusIn($event)" (onFocusOut)="focusOut($event)">
+  </dx-date-box>
+</ng-template>

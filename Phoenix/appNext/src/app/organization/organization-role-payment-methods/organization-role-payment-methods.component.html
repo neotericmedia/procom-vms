@@ -1,0 +1,310 @@
+<app-phx-panel [formGroup]="inputFormGroup" headerTitle="Payment Methods">
+
+  <div class="form-group" *ngIf="isEditable && readOnlyStorage.IsEditable">
+   
+    <div class="col-lg-4" >
+      <div class="text-right" >
+      <label class="control-label label-to-right">Payment method
+        <span _ngcontent-c9 class="asterisk" [ngClass]="{'error' : isPaymentMethodRequired }" >*</span>
+      </label>
+      </div>
+    </div>
+
+    <div class="col-lg-8" >
+      <div *ngFor="let paymentMethod of paymentMethodFormGroups; let i = index; trackBy: trackByFn">
+        <label [formGroup]="paymentMethod" [for]="'checkbox_OrganizationPaymentMethod_' + i" class="checkbox-inline">
+          <input class="form-check-input" type="checkbox" (change)="onPaymentMethodSelect($event,paymentMethod)" [id]="'checkbox_OrganizationPaymentMethod_' + i"
+            formControlName="IsSelected" [value]="paymentMethod.get('IsSelected')?.value">
+          {{paymentMethod.controls.PaymentMethodTypeId?.value | CodeValue: html?.codeValueGroups.PaymentMethodType }}</label>
+      </div>
+    </div>
+
+  </div>
+
+  <phx-form-control labelText="Payment Method" name="paymentMethod" *ngIf="!isEditable || !readOnlyStorage.IsEditable">
+    <div *ngFor="let paymentMethod of paymentMethodFormGroups; let i = index;">
+      <label [formGroup]="paymentMethod" class="checkbox-inline">
+        <input class="form-check-input" disabled type="checkbox" (change)="onPaymentMethodSelect($event,paymentMethod)"
+          formControlName="IsSelected" [value]="paymentMethod.get('IsSelected')?.value">
+        {{paymentMethod.controls.PaymentMethodTypeId?.value | CodeValue: html?.codeValueGroups.PaymentMethodType }}</label>
+    </div>
+  </phx-form-control>
+
+  <div [formGroup]="inputFormGroup">
+    <phx-form-control [control]="inputFormGroup.controls.PaymentPreference" name="PaymentPreference" labelText="Payment Preference"
+      [editable]="isEditable && readOnlyStorage.IsEditable" 
+      viewModeText="{{inputFormGroup.controls.PaymentPreference?.value | CodeValue: html.codeValueGroups.PaymentMethodType}}">
+      <app-phx-select-box #paymentPreferenceSelectBox [items]="html.paymentMethodList" textField="text" valueField="id" (valueChanged)="onPaymentPreferenceChange($event)"
+        [formControl]="inputFormGroup.controls.PaymentPreference">
+      </app-phx-select-box>
+    </phx-form-control>
+  </div>
+
+  <div formArrayName="PaymentMethods">
+    <app-phx-panel *ngIf="html.hasDirectDeposit" [formGroupName]="getFormGroupName(html.phxConstants.PaymentMethodType.DirectDeposit)"
+      headerTitle="Direct Deposit">
+
+      <phx-form-control [editable]="isEditable && readOnlyStorage.IsEditable" 
+      [control]="findCtrlByPaymentMethod('BankCode',html.phxConstants.PaymentMethodType.DirectDeposit)"
+        labelText="Bank Code" viewModeText="{{ inputFormGroup ? findCtrlByPaymentMethod('BankCode',html.phxConstants.PaymentMethodType.DirectDeposit)?.value : '' }}">
+        <input type="text" maxlength="30" minlength="3" class="form-control" formControlName="BankCode" />
+      </phx-form-control>
+
+      <phx-form-control [editable]="isEditable && readOnlyStorage.IsEditable" 
+      [control]="findCtrlByPaymentMethod('BankBranchCode',html.phxConstants.PaymentMethodType.DirectDeposit)"
+        labelText="Bank Branch Code" viewModeText="{{ findCtrlByPaymentMethod('BankBranchCode',html.phxConstants.PaymentMethodType.DirectDeposit)?.value }}">
+        <input type="text" maxlength="30" class="form-control" formControlName="BankBranchCode" />
+      </phx-form-control>
+
+      <phx-form-control [editable]="isEditable && readOnlyStorage.IsEditable" 
+      [control]="findCtrlByPaymentMethod('BankAccountNumber',html.phxConstants.PaymentMethodType.DirectDeposit)"
+        labelText="Bank Account Number" viewModeText="{{findCtrlByPaymentMethod('BankAccountNumber',html.phxConstants.PaymentMethodType.DirectDeposit)?.value}}">
+        <input type="text" maxlength="30" minlength="3" class="form-control" formControlName="BankAccountNumber" />
+      </phx-form-control>
+    </app-phx-panel>
+
+    <app-phx-panel *ngIf="html.hasWireTransfer" class="clearfix" [formGroupName]="getFormGroupName(html.phxConstants.PaymentMethodType.WireTransfer)"
+      headerTitle="Wire Transfer">
+      <div class="col-lg-6">
+        <app-phx-panel headerTitle="Beneficiary Information">
+          <phx-form-control [editable]="isEditable && readOnlyStorage.IsEditable" 
+          [control]="findCtrlByPaymentMethod('ProfileNameBeneficiary',html.phxConstants.PaymentMethodType.WireTransfer)"
+            labelText="Profile Name" viewModeText="{{ findCtrlByPaymentMethod('ProfileNameBeneficiary',html.phxConstants.PaymentMethodType.WireTransfer)?.value }}">
+            <input type="text" maxlength="35" class="form-control" formControlName="ProfileNameBeneficiary" />
+          </phx-form-control>
+
+          <phx-form-control [editable]="isEditable && readOnlyStorage.IsEditable" 
+          [control]="findCtrlByPaymentMethod('NameBeneficiary',html.phxConstants.PaymentMethodType.WireTransfer)"
+            labelText="Name" viewModeText="{{ findCtrlByPaymentMethod('NameBeneficiary',html.phxConstants.PaymentMethodType.WireTransfer)?.value }}">
+            <input type="text" maxlength="35" class="form-control" formControlName="NameBeneficiary" />
+          </phx-form-control>
+
+          <phx-form-control [editable]="isEditable && readOnlyStorage.IsEditable" 
+          [control]="findCtrlByPaymentMethod('AccountNumberBeneficiary',html.phxConstants.PaymentMethodType.WireTransfer)"
+            labelText="Account Number" viewModeText="{{ findCtrlByPaymentMethod('AccountNumberBeneficiary',html.phxConstants.PaymentMethodType.WireTransfer)?.value }}">
+            <input type="text" maxlength="35" class="form-control" formControlName="AccountNumberBeneficiary" />
+          </phx-form-control>
+
+          <phx-form-control [editable]="isEditable && readOnlyStorage.IsEditable" 
+          [control]="findCtrlByPaymentMethod('Address1Beneficiary',html.phxConstants.PaymentMethodType.WireTransfer)"
+            labelText="Address"  viewModeText="{{ findCtrlByPaymentMethod('Address1Beneficiary',html.phxConstants.PaymentMethodType.WireTransfer)?.value }}">
+            <input type="text" maxlength="35" class="form-control" formControlName="Address1Beneficiary" />
+          </phx-form-control>
+
+          <phx-form-control [editable]="isEditable && readOnlyStorage.IsEditable" 
+          [control]="findCtrlByPaymentMethod('Address2Beneficiary',html.phxConstants.PaymentMethodType.WireTransfer)"
+            labelText="" viewModeText="{{ findCtrlByPaymentMethod('Address2Beneficiary',html.phxConstants.PaymentMethodType.WireTransfer)?.value }}">
+            <input type="text" maxlength="35" class="form-control" formControlName="Address2Beneficiary" />
+          </phx-form-control>
+
+          <phx-form-control [editable]="isEditable && readOnlyStorage.IsEditable" 
+          [control]="findCtrlByPaymentMethod('CityBeneficiary',html.phxConstants.PaymentMethodType.WireTransfer)"
+            labelText="City" viewModeText="{{ findCtrlByPaymentMethod('CityBeneficiary', html.phxConstants.PaymentMethodType.WireTransfer)?.value }}">
+            <input type="text" maxlength="35" class="form-control" formControlName="CityBeneficiary" />
+          </phx-form-control>
+
+          <phx-form-control [editable]="isEditable && readOnlyStorage.IsEditable" 
+          [control]="findCtrlByPaymentMethod('ProvinceOrStateBeneficiary',html.phxConstants.PaymentMethodType.WireTransfer)"
+            labelText="Province/State" viewModeText="{{ findCtrlByPaymentMethod('ProvinceOrStateBeneficiary',html.phxConstants.PaymentMethodType.WireTransfer)?.value }}">
+            <input type="text" maxlength="35" class="form-control" formControlName="ProvinceOrStateBeneficiary" />
+          </phx-form-control>
+
+          <phx-form-control [editable]="isEditable && readOnlyStorage.IsEditable" 
+          [control]="findCtrlByPaymentMethod('CountryCodeBeneficiary',html.phxConstants.PaymentMethodType.WireTransfer)"
+            labelText="Country Code" viewModeText="{{findCtrlByPaymentMethod('CountryCodeBeneficiary', html.phxConstants.PaymentMethodType.WireTransfer)?.value | CodeValue:html.codeValueGroups.Country}}">
+            <app-phx-select-box-code-value [groupName]="html.codeValueGroups.Country" sortByFieldName="text"
+              [formControl]="findCtrlByPaymentMethod('CountryCodeBeneficiary',html.phxConstants.PaymentMethodType.WireTransfer)">
+            </app-phx-select-box-code-value>
+          </phx-form-control>
+
+          <phx-form-control [editable]="isEditable && readOnlyStorage.IsEditable" 
+          [control]="findCtrlByPaymentMethod('PostalorZipBeneficiary',html.phxConstants.PaymentMethodType.WireTransfer)"
+            labelText="Postal/Zip" viewModeText="{{ findCtrlByPaymentMethod('PostalorZipBeneficiary', html.phxConstants.PaymentMethodType.WireTransfer)?.value }}">
+            <input type="text" class="form-control" 
+            [textMask]="commonService.setMask(findCtrlByPaymentMethod('CountryCodeBeneficiary', html.phxConstants.PaymentMethodType.WireTransfer)?.value)"
+            phxPostalZipCodeValid='{"countryId": {{findCtrlByPaymentMethod("CountryCodeBeneficiary", html.phxConstants.PaymentMethodType.WireTransfer)?.value}}, "isRequired": true}'
+              formControlName="PostalorZipBeneficiary" />
+          </phx-form-control>
+
+          <phx-form-control [editable]="isEditable && readOnlyStorage.IsEditable" 
+          [control]="findCtrlByPaymentMethod('PayCurrencyBeneficiary',html.phxConstants.PaymentMethodType.WireTransfer)"
+            labelText="Pay Currency" viewModeText="{{findCtrlByPaymentMethod('PayCurrencyBeneficiary', html.phxConstants.PaymentMethodType.WireTransfer)?.value | CodeValue:html.codeValueGroups.Currency}}">
+            <app-phx-select-box-code-value [groupName]="html.codeValueGroups.Currency" sortByFieldName="text"
+              [formControl]="findCtrlByPaymentMethod('PayCurrencyBeneficiary', html.phxConstants.PaymentMethodType.WireTransfer)">
+            </app-phx-select-box-code-value>
+          </phx-form-control>
+
+          <phx-form-control [editable]="isEditable && readOnlyStorage.IsEditable" 
+          [control]="findCtrlByPaymentMethod('WireTransferBankTypeIdBeneficiary',html.phxConstants.PaymentMethodType.WireTransfer)"
+            labelText="Bank ID Type" viewModeText="{{findCtrlByPaymentMethod('WireTransferBankTypeIdBeneficiary', html.phxConstants.PaymentMethodType.WireTransfer)?.value | CodeValue:html.codeValueGroups.WireTransferBankType}}">
+            <app-phx-select-box-code-value [groupName]="html.codeValueGroups.WireTransferBankType" sortByFieldName="text"
+              [formControl]="findCtrlByPaymentMethod('WireTransferBankTypeIdBeneficiary',html.phxConstants.PaymentMethodType.WireTransfer)">
+            </app-phx-select-box-code-value>
+          </phx-form-control>
+
+          <phx-form-control [editable]="isEditable && readOnlyStorage.IsEditable" 
+          [control]="findCtrlByPaymentMethod('BankIDBeneficiary',html.phxConstants.PaymentMethodType.WireTransfer)"
+            labelText="Bank ID" viewModeText="{{ findCtrlByPaymentMethod('BankIDBeneficiary', html.phxConstants.PaymentMethodType.WireTransfer)?.value }}">
+            <input type="text" maxlength="35" class="form-control" formControlName="BankIDBeneficiary" />
+          </phx-form-control>
+
+          <phx-form-control [editable]="isEditable && readOnlyStorage.IsEditable" 
+          [control]="findCtrlByPaymentMethod('ABANoBeneficiary',html.phxConstants.PaymentMethodType.WireTransfer)"
+            labelText="ABA #" viewModeText="{{ findCtrlByPaymentMethod('ABANoBeneficiary', html.phxConstants.PaymentMethodType.WireTransfer)?.value }}">
+            <input type="text" maxlength="35" class="form-control" formControlName="ABANoBeneficiary" />
+          </phx-form-control>
+
+        </app-phx-panel>
+        <app-phx-panel headerTitle="Receivers Correspondent Information">
+
+          <phx-form-control [control]="findCtrlByPaymentMethod('WireTransferBankTypeIdReceivers',html.phxConstants.PaymentMethodType.WireTransfer)"
+            labelText="Bank ID Type" [editable]="isEditable && readOnlyStorage.IsEditable" viewModeText="{{findCtrlByPaymentMethod('WireTransferBankTypeIdReceivers', html.phxConstants.PaymentMethodType.WireTransfer)?.value | CodeValue:html.codeValueGroups.WireTransferBankType}}">
+            <app-phx-select-box-code-value [groupName]="html.codeValueGroups.WireTransferBankType" sortByFieldName="text"
+              [formControl]="findCtrlByPaymentMethod('WireTransferBankTypeIdReceivers',html.phxConstants.PaymentMethodType.WireTransfer)">
+            </app-phx-select-box-code-value>
+          </phx-form-control>
+
+          <phx-form-control [editable]="isEditable && readOnlyStorage.IsEditable" 
+          [control]="findCtrlByPaymentMethod('BankNameReceivers',html.phxConstants.PaymentMethodType.WireTransfer)"
+            labelText="Bank Name" viewModeText="{{ findCtrlByPaymentMethod('BankNameReceivers', html.phxConstants.PaymentMethodType.WireTransfer)?.value }}">
+            <input type="text" maxlength="18" class="form-control" formControlName="BankNameReceivers" />
+          </phx-form-control>
+
+          <phx-form-control [editable]="isEditable && readOnlyStorage.IsEditable" 
+          [control]="findCtrlByPaymentMethod('BankIdReceivers',html.phxConstants.PaymentMethodType.WireTransfer)"
+            labelText="Bank ID" viewModeText="{{ findCtrlByPaymentMethod('BankIdReceivers', html.phxConstants.PaymentMethodType.WireTransfer)?.value }}">
+            <input type="text" maxlength="35" class="form-control" formControlName="BankIdReceivers" />
+          </phx-form-control>
+
+          <phx-form-control [editable]="isEditable && readOnlyStorage.IsEditable" 
+          [control]="findCtrlByPaymentMethod('Address1Receivers',html.phxConstants.PaymentMethodType.WireTransfer)"
+            labelText="Address" viewModeText="{{ findCtrlByPaymentMethod('Address1Receivers',html.phxConstants.PaymentMethodType.WireTransfer)?.value }}">
+            <input type="text" maxlength="35" class="form-control" formControlName="Address1Receivers" />
+          </phx-form-control>
+
+          <phx-form-control [editable]="isEditable && readOnlyStorage.IsEditable" 
+          [control]="findCtrlByPaymentMethod('Address2Receivers',html.phxConstants.PaymentMethodType.WireTransfer)"
+            labelText="" viewModeText="{{ findCtrlByPaymentMethod('Address2Receivers',html.phxConstants.PaymentMethodType.WireTransfer)?.value }}">
+            <input type="text" maxlength="35" class="form-control" formControlName="Address2Receivers" />
+          </phx-form-control>
+
+          <phx-form-control [editable]="isEditable && readOnlyStorage.IsEditable" 
+          [control]="findCtrlByPaymentMethod('CityReceivers',html.phxConstants.PaymentMethodType.WireTransfer)"
+            labelText="City" viewModeText="{{ findCtrlByPaymentMethod('CityReceivers', html.phxConstants.PaymentMethodType.WireTransfer)?.value }}">
+            <input type="text" maxlength="35" class="form-control" formControlName="CityReceivers" />
+          </phx-form-control>
+
+          <phx-form-control [editable]="isEditable && readOnlyStorage.IsEditable" 
+          [control]="findCtrlByPaymentMethod('ProvinceOrStateReceivers',html.phxConstants.PaymentMethodType.WireTransfer)"
+            labelText="Province/State" viewModeText="{{ findCtrlByPaymentMethod('ProvinceOrStateReceivers',html.phxConstants.PaymentMethodType.WireTransfer)?.value }}">
+            <input type="text" maxlength="35" class="form-control" formControlName="ProvinceOrStateReceivers" />
+          </phx-form-control>
+
+          <phx-form-control [control]="findCtrlByPaymentMethod('CountryCodeReceivers',html.phxConstants.PaymentMethodType.WireTransfer)"
+            labelText="Country Code" [editable]="isEditable && readOnlyStorage.IsEditable" viewModeText="{{findCtrlByPaymentMethod('CountryCodeReceivers', html.phxConstants.PaymentMethodType.WireTransfer)?.value | CodeValue:html.codeValueGroups.Country}}">
+            <app-phx-select-box-code-value [groupName]="html.codeValueGroups.Country" sortByFieldName="text"
+              [formControl]="findCtrlByPaymentMethod('CountryCodeReceivers',html.phxConstants.PaymentMethodType.WireTransfer)">
+            </app-phx-select-box-code-value>
+          </phx-form-control>
+
+          <phx-form-control [editable]="isEditable && readOnlyStorage.IsEditable" 
+          [control]="findCtrlByPaymentMethod('PostalOrZipReceivers',html.phxConstants.PaymentMethodType.WireTransfer)"
+            labelText="Postal/Zip" viewModeText="{{ findCtrlByPaymentMethod('PostalOrZipReceivers', html.phxConstants.PaymentMethodType.WireTransfer)?.value }}">
+            <input type="text" class="form-control" 
+            [textMask]="commonService.setMask(findCtrlByPaymentMethod('CountryCodeReceivers', html.phxConstants.PaymentMethodType.WireTransfer)?.value)"
+            phxPostalZipCodeValid='{"countryId": {{findCtrlByPaymentMethod("CountryCodeReceivers", html.phxConstants.PaymentMethodType.WireTransfer)?.value}}, "isRequired": true}'
+              formControlName="PostalOrZipReceivers" />
+          </phx-form-control>
+        </app-phx-panel>
+      </div>
+      <div class="col-lg-6">
+        <app-phx-panel headerTitle="Intermediary Information">
+
+          <phx-form-control [control]="findCtrlByPaymentMethod('WireTransferBankTypeIdIntemediary',html.phxConstants.PaymentMethodType.WireTransfer)"
+            labelText="Bank ID Type" [editable]="isEditable && readOnlyStorage.IsEditable" viewModeText="{{findCtrlByPaymentMethod('WireTransferBankTypeIdIntemediary', html.phxConstants.PaymentMethodType.WireTransfer)?.value | CodeValue:html.codeValueGroups.WireTransferBankType}}">
+            <app-phx-select-box-code-value [groupName]="html.codeValueGroups.WireTransferBankType" sortByFieldName="text"
+              [formControl]="findCtrlByPaymentMethod('WireTransferBankTypeIdIntemediary',html.phxConstants.PaymentMethodType.WireTransfer)">
+            </app-phx-select-box-code-value>
+          </phx-form-control>
+
+          <phx-form-control [editable]="isEditable && readOnlyStorage.IsEditable" [control]="findCtrlByPaymentMethod('BankNameIntemediary',html.phxConstants.PaymentMethodType.WireTransfer)"
+            labelText="Bank Name" viewModeText="{{ findCtrlByPaymentMethod('BankNameIntemediary', html.phxConstants.PaymentMethodType.WireTransfer)?.value }}">
+            <input type="text" maxlength="18" class="form-control" formControlName="BankNameIntemediary" />
+          </phx-form-control>
+
+          <phx-form-control [editable]="isEditable && readOnlyStorage.IsEditable" [control]="findCtrlByPaymentMethod('BankIdIntemediary',html.phxConstants.PaymentMethodType.WireTransfer)"
+            labelText="Bank ID" viewModeText="{{ findCtrlByPaymentMethod('BankIdIntemediary', html.phxConstants.PaymentMethodType.WireTransfer)?.value }}">
+            <input type="text" maxlength="35" class="form-control" formControlName="BankIdIntemediary" />
+          </phx-form-control>
+
+          <phx-form-control [editable]="isEditable && readOnlyStorage.IsEditable" [control]="findCtrlByPaymentMethod('Address1Intemediary',html.phxConstants.PaymentMethodType.WireTransfer)"
+            labelText="Address" viewModeText="{{ findCtrlByPaymentMethod('Address1Intemediary',html.phxConstants.PaymentMethodType.WireTransfer)?.value }}">
+            <input type="text" maxlength="35" class="form-control" formControlName="Address1Intemediary" />
+          </phx-form-control>
+
+          <phx-form-control [editable]="isEditable && readOnlyStorage.IsEditable" [control]="findCtrlByPaymentMethod('Address2Intemediary',html.phxConstants.PaymentMethodType.WireTransfer)"
+            labelText="" viewModeText="{{ findCtrlByPaymentMethod('Address2Intemediary',html.phxConstants.PaymentMethodType.WireTransfer)?.value }}">
+            <input type="text" maxlength="35" class="form-control" formControlName="Address2Intemediary" />
+          </phx-form-control>
+
+          <phx-form-control [editable]="isEditable && readOnlyStorage.IsEditable" [control]="findCtrlByPaymentMethod('CityIntemediary',html.phxConstants.PaymentMethodType.WireTransfer)"
+            labelText="City" viewModeText="{{ findCtrlByPaymentMethod('CityIntemediary', html.phxConstants.PaymentMethodType.WireTransfer)?.value }}">
+            <input type="text" maxlength="35" class="form-control" formControlName="CityIntemediary" />
+          </phx-form-control>
+
+          <phx-form-control [editable]="isEditable && readOnlyStorage.IsEditable" [control]="findCtrlByPaymentMethod('ProvinceOrStateIntemediary',html.phxConstants.PaymentMethodType.WireTransfer)"
+            labelText="Province/State" viewModeText="{{ findCtrlByPaymentMethod('ProvinceOrStateIntemediary',html.phxConstants.PaymentMethodType.WireTransfer)?.value }}">
+            <input type="text" maxlength="35" class="form-control" formControlName="ProvinceOrStateIntemediary" />
+          </phx-form-control>
+
+          <phx-form-control [editable]="isEditable && readOnlyStorage.IsEditable" [control]="findCtrlByPaymentMethod('CountryCodeIntemediary',html.phxConstants.PaymentMethodType.WireTransfer)"
+            labelText="Country Code" viewModeText="{{findCtrlByPaymentMethod('CountryCodeIntemediary', html.phxConstants.PaymentMethodType.WireTransfer)?.value | CodeValue:html.codeValueGroups.Country}}">
+            <app-phx-select-box-code-value [groupName]="html.codeValueGroups.Country" sortByFieldName="text"
+              [formControl]="findCtrlByPaymentMethod('CountryCodeIntemediary',html.phxConstants.PaymentMethodType.WireTransfer)">
+            </app-phx-select-box-code-value>
+          </phx-form-control>
+
+          <phx-form-control [editable]="isEditable && readOnlyStorage.IsEditable" [control]="findCtrlByPaymentMethod('PostalOrZipIntemediary',html.phxConstants.PaymentMethodType.WireTransfer)"
+            labelText="Postal/Zip" viewModeText="{{ findCtrlByPaymentMethod('PostalOrZipIntemediary', html.phxConstants.PaymentMethodType.WireTransfer)?.value }}">
+            <input type="text" class="form-control" 
+            [textMask]="commonService.setMask(findCtrlByPaymentMethod('CountryCodeIntemediary ', html.phxConstants.PaymentMethodType.WireTransfer)?.value)"
+            phxPostalZipCodeValid='{"countryId": {{findCtrlByPaymentMethod("CountryCodeIntemediary", html.phxConstants.PaymentMethodType.WireTransfer)?.value}}, "isRequired": true}'
+              formControlName="PostalOrZipIntemediary" />
+          </phx-form-control>
+
+        </app-phx-panel>
+        <app-phx-panel headerTitle="Payment Detail Notes">
+
+          <!-- <phx-form-control *ngIf="isEditable && readOnlyStorage.IsEditable" [editable]="isEditable && readOnlyStorage.IsEditable"
+            [control]="findCtrlByPaymentMethod('PaymentDetailNotes',html.phxConstants.PaymentMethodType.WireTransfer)"
+            viewModeText="{{ findCtrlByPaymentMethod('PaymentDetailNotes', html.phxConstants.PaymentMethodType.WireTransfer)?.value }}">
+            <textarea [rows]="5" maxlength="2000" class="form-control" formControlName="PaymentDetailNotes"></textarea>
+          </phx-form-control> -->
+
+          <div class="form-group" *ngIf="isEditable && readOnlyStorage.IsEditable" >
+              <div class="col-lg-12">
+                  <textarea [formControl]="findCtrlByPaymentMethod('PaymentDetailNotes',html.phxConstants.PaymentMethodType.WireTransfer)"
+                   class="form-control" id="PaymentDetailNotes" 
+                  name="PaymentDetailNotes"
+                       maxlength="2000" rows="6" style="resize: none"></textarea>
+              </div>
+          </div>
+
+          <div *ngIf="!(isEditable && readOnlyStorage.IsEditable)" class="fieldViewMode form-control-static">
+            <pre>
+                {{ findCtrlByPaymentMethod('PaymentDetailNotes', html.phxConstants.PaymentMethodType.WireTransfer)?.value }}
+            </pre>
+          </div>
+
+        </app-phx-panel>
+      </div>
+    </app-phx-panel>
+
+    <app-phx-panel *ngIf="html.hasADP" headerTitle="ADP" [formGroupName]="getFormGroupName(html.phxConstants.PaymentMethodType.ADP)">
+      <phx-form-control [editable]="isEditable && readOnlyStorage.IsEditable" [control]="findCtrlByPaymentMethod('EmployeeId',html.phxConstants.PaymentMethodType.ADP)"
+        labelText="Employee Id" viewModeText="{{findCtrlByPaymentMethod('EmployeeId',html.phxConstants.PaymentMethodType.ADP)?.value}}">
+        <input type="text" class="form-control" formControlName="EmployeeId" />
+      </phx-form-control>
+    </app-phx-panel>
+  </div>
+</app-phx-panel>

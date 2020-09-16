@@ -1,0 +1,28 @@
+<app-phx-panel [headerTitle]="invoiceModuleResourceKeys.detail.detailsTitle| phxTranslate">
+    <div class="form-horizontal" *ngIf="invoice">
+        <form [formGroup]="form">
+            <phx-form-control [control]="form.controls['InvoiceDate']" [labelText]="invoiceModuleResourceKeys.detail.invoiceDateLabel| phxTranslate" [editable]="editable" viewModeText="{{invoice?.InvoiceDate | date:commonService.ApplicationConstants.DateFormat.mediumDate}}">
+                <app-phx-date-box formControlName="InvoiceDate" type="date"></app-phx-date-box>
+            </phx-form-control>
+            <phx-form-control [control]="form.controls['ReleaseDate']" [labelText]="invoiceModuleResourceKeys.detail.invoiceReleaseDateLabel| phxTranslate" [editable]="false" viewModeText="{{invoice?.ReleaseDate | date:commonService.ApplicationConstants.DateFormat.mediumDate}}"
+                *ngIf="invoice.ReleaseDate">
+            </phx-form-control>
+            <phx-form-control [control]="form.controls['OrganizationClientRoleAlternateBillId']" [labelText]="invoiceModuleResourceKeys.detail.billingClientLabel| phxTranslate" [editable]="editable"
+                viewModeText="{{invoice?.OrganizationClientRoleAlternateBillLegalName || invoice?.OrganizationClientLegalName}}">
+                <app-phx-select-box [items]="alternateBillClients" textField="AlternateBillLegalName" valueField="Id" formControlName="OrganizationClientRoleAlternateBillId"
+                    [placeholder]="invoice?.OrganizationClientLegalName">
+                </app-phx-select-box>
+            </phx-form-control>
+            <phx-form-control *ngIf="isCurrentUserHasClientRelatedRoles === false" [control]="form.controls['BillingInvoiceTemplateId']" [labelText]="invoiceModuleResourceKeys.detail.templateLabel| phxTranslate" [editable]="editable" viewModeText="{{invoice?.BillingInvoiceTemplateId | CodeValue:codeValueGroups.BillingInvoiceTemplate}}">
+                <app-phx-select-box-code-value #invoicetemplate [groupName]="codeValueGroups.BillingInvoiceTemplate" sortByFieldName="text"
+                    formControlName="BillingInvoiceTemplateId">
+                </app-phx-select-box-code-value>
+            </phx-form-control>
+            <phx-form-control [control]="form.controls['BillingInvoiceTermId']" [labelText]="invoiceModuleResourceKeys.detail.invoiceTermLabel| phxTranslate" [editable]="editable" viewModeText="{{invoice?.BillingInvoiceTermId | CodeValue:codeValueGroups.BillingInvoiceTerms}}">
+                <app-phx-select-box-code-value #invoiceterm [groupName]="codeValueGroups.BillingInvoiceTerms" sortByFieldName="text" formControlName="BillingInvoiceTermId"
+                    [filter]="filterAvailableBillingTerms">
+                </app-phx-select-box-code-value>
+            </phx-form-control>
+        </form>
+    </div>
+</app-phx-panel>

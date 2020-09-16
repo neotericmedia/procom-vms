@@ -1,0 +1,29 @@
+<div class="panel-body row" data-ng-form="email.emailForm" style="background-color:#fafafa">
+    <div class="form-group">
+        <div class="col-lg-12">
+            <h4>Profile Details</h4>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for-property="PrimaryEmail" for="PrimaryEmail" data-model-property="email.currentProfile.PrimaryEmail" class="col-lg-3 label-to-right control-label req-lab-right" data-original-title="" title="">Primary Email</label>
+        <div class="col-lg-7 email-input">
+            <div class="input-group">
+                <span class="input-group-addon"><i class="fontello-icon-email"></i></span>
+                <input type="email" required="required" validate-email class="form-control" data-ng-required="true" data-required-message="Required" name="PrimaryEmail" ng-model="email.currentProfile.PrimaryEmail" oldautocomplete="remove" autocomplete="off" data-ng-maxlength="249" maxlength="250" data-pt-field-view="edit.ptFieldViewStatus">
+            </div>
+        </div>
+        <div class="col-lg-2" data-ng-show="email.isAlowedToInvite">
+            <button data-ng-if="edit.currentProfile.ProfileStatusId === ApplicationConstants.ProfileStatus.Active" class="btn btn-default btn-profile-invite"  data-ng-click="email.invite()" data-ng-disabled="email.isInvited">Invite</button>
+            <span class="btn btn-material" uib-tooltip-html="email.invitationTooltip" placement="top">
+                <i class="material-icons md-18">info_outline</i>
+            </span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-lg-3 label-to-right req-lab-right-valid control-label" data-original-title="" title="">Profile Type</label>
+        <div class="col-lg-7 form-control-static" data-original-title="" title=""><i>{{email.currentProfile.IsPrimary ? 'Primary' : 'Not Primary'}}</i></div>
+        <div class="col-lg-3 col-xl-2">
+            <button data-ng-if="edit.currentProfile.ProfileStatusId === ApplicationConstants.ProfileStatus.Active" class="btn btn-default btn-profile-primary" data-ng-click="email.makePrimary()" data-ng-hide="email.currentProfile.IsPrimary">Make Primary</button>
+        </div>
+    </div>
+</div>

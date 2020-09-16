@@ -1,0 +1,113 @@
+<div class="row">
+	<div class="col-lg-10">
+		<div class="panel">
+			<div class="panel-heading headstone">
+				<div class="row">
+					<div class="col-lg-1 col-md-1">
+						<label class="control-label col-xs-12 ">ID</label>
+						<span class="col-xs-12">{{vm.branch.Id ? vm.branch.Id : ''}}</span>
+					</div>
+					<div class="col-lg-5 col-md-5">
+						<label class="control-label col-xs-12 ">Branch Name</label>
+						<span class=" col-xs-12 ">{{vm.branch.Name}} &nbsp;</span>
+					</div>
+
+				</div>
+			</div>
+			<div class="panel-body">
+				<form class="form-horizontal col-sm-offset-1" name="vm.myForm">
+					<h4>Branch Info</h4>
+					<div class="form-group">
+						<label class="col-sm-3 control-label label-to-right req-lab-right" for-property="Code" for="Code" data-model-property="vm.branch.Code">
+							Branch Code
+						</label>
+						<div class="col-sm-6">
+							<input type="text" class="form-control" name="Code" data-ng-maxlength="6" maxlength="6" required="required"
+								ng-model="vm.branch.Code"
+								data-ng-blur="vm.checkCodeUniqueness(vm.myForm.Code)"
+								data-pt-field-view="vm.ptFieldViewStatus" />
+							<div class="alert alert-danger" data-ng-if="vm.myForm.Code.$error.codeIsNotUnique">
+								This branch code is not unique.
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label label-to-right req-lab-right" for-property="Name" for="Name" data-model-property="vm.branch.Name">
+							Branch Name
+						</label>
+						<div class="col-sm-6">
+							<input type="text" class="form-control" name="Name" ng-model="vm.branch.Name" required="required" data-ng-maxlength="64" data-pt-field-view="vm.ptFieldViewStatus" maxlength="64">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label">Description</label>
+						<div class="col-sm-6">
+							<input type="text" class="form-control" ng-model="vm.branch.Description" data-ng-maxlength="128" data-pt-field-view="vm.ptFieldViewStatus" maxlength="128">
+						</div>
+					</div>
+					<div class="form-group">
+						<h4><span class="col-sm-3" style="padding: 0">Branch Manager</span></h4>
+						<div class="col-lg-6">
+							<button type="button" data-ng-show="vm.branch.BranchManagers.length==0" class="btn btn-default btn-material" data-ng-if="vm.isEditMode" data-ng-click="vm.addBranchManager()">
+								<i class="material-icons">add</i>
+							</button>
+						</div>
+					</div>
+					<div class="form-group" data-ng-repeat="branchManager in vm.branch.BranchManagers">
+						<label class="col-sm-3 control-label label-to-right req-lab-right" for-property="BranchManager" for="BranchManager" data-model-property="branchManager.UserProfileInternalId" data-original-title="" title="">Branch Manager</label>
+						<div>
+							<div class="col-sm-6 col-xs-10">
+								<div class="input-group select2-bootstrap-append">
+									<ui-select name="BranchManager" data-ng-model="branchManager.UserProfileInternalId" theme="select2" class="form-control" data-pt-field-view="vm.ptFieldViewStatus" required
+											data-pt-field-view-custom="{ { branchManager.UserProfileInternalId | lookupnocache:vm.userProfileInternalList:'Id':'Contact.FullName' } }">
+										<ui-select-match placeholder="-- Select One --">{{$select.selected.Contact.FullName}}</ui-select-match>
+										<ui-select-choices repeat="item.Id as item in vm.userProfileInternalList | uiSelectChoicesFilteredByUsage: $select.search:vm.branch.BranchManagers:branchManager:'UserProfileInternalId':'Id': 'Contact.FullName'">
+											<span data-ng-bind-html="item.Contact.FullName | highlight: $select.search"></span>
+										</ui-select-choices>
+									</ui-select>
+									<span class="input-group-btn">
+										<button tabindex="-1" data-ng-click="vm.clearBranchManager(branchManager)" class="btn btn-default"><i class="material-icons md-18">clear</i></button>
+									</span>
+								</div>
+							</div>
+							<div class="col-xs-1" style="padding: 0">
+								<div class="btn-group">
+									<button type="button" class="btn btn-default btn-material" data-ng-if="vm.isEditMode" data-ng-click="vm.removeBranchManager(branchManager)">
+										<i class="material-icons">delete</i>
+									</button>
+									
+								</div>
+							</div>
+							<div class="col-sm-offset-9 col-xs-offset-10 col-xs-1" style="padding: 8px 0">
+								<button type="button" class="btn btn-default btn-material" ng-disabled="!vm.canAddManager()" data-ng-if="vm.isEditMode&&$last" data-ng-click="vm.addBranchManager()">
+									<i class="material-icons">add</i>
+								</button>
+							</div>
+						</div>
+					</div>
+					
+				</form>
+			</div>
+			<div class="panel-footer" ng-if="vm.canCreate">
+				<div class="row">
+					<div class="col-md-offset-6 col-lg-6">
+						<div class="pull-right">
+							<button class="btn btn-default" ng-click="vm.discardChanges()" data-ng-if="vm.isEditMode">Cancel and Discard</button>
+							<button class="btn btn-primary" ng-click="vm.saveBranch()" ng-disabled="!vm.canSave()" data-ng-if="vm.isEditMode">Submit</button>
+							<button type="button" class="btn btn-primary" data-ng-click="vm.edit()" data-ng-if="!vm.isEditMode">Edit</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="panel-body" data-pt-validation-messages="vm.ValidationMessages"></div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+

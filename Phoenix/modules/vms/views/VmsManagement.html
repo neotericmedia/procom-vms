@@ -1,0 +1,159 @@
+﻿<div class="app-accordion-container app-accordion-container-28">
+    <div class="app-accordion-level-one" data-ng-repeat="company in vms.internalCompanies" data-ng-if="vms.internalCompanies.length>0">
+        <div class="app-accordion-level-one-item" data-ng-click="vms.showRecords(company)">
+            <i class="app-accordion-chevron" data-ng-class="{'icon-chevron-down': !company.isOpen, 'icon-chevron-up': company.isOpen}"></i>
+            <span>{{company.InternalCompanyName}}</span>
+        </div>
+        <div class="app-accordion-level-two" data-ng-show="company.isOpen">
+            <div ng-if="vms.hasVMSImportAccess" ng-click="vms.toggleImportOpen(company)" class="app-accordion-level-two-item">
+                <span>Import files</span>
+                <i class="app-accordion-chevron" data-ng-class="{'icon-chevron-down': !company.openImport, 'icon-chevron-up': company.openImport}"></i>
+            </div>
+            <div class="row" style="margin: 5px 0;" ng-show="company.openImport">
+                <label class="col-lg-offset-1 col-lg-2" for-property="ImportOrgId" for="ImportOrgId" data-model-property="company.importOrgId" data-original-title="" title="" style="">Select client company</label>
+                <div class="col-lg-5" style="margin-bottom: 5px;">
+                    <div class="input-group select2-bootstrap-append">
+                        <ui-select name="ImportOrgId" data-ng-model="company.importOrgId" theme="select2" class="form-control">
+                            <ui-select-match placeholder="-- Select one --">{{$select.selected.DisplayName}} - {{$select.selected.Id}}</ui-select-match>
+                            <ui-select-choices repeat="item.Id as item in vms.lists.listOrganizationClient | uiSelectChoicesFilter : $select.search : 'DisplayName': 'Id'">
+                                <span data-ng-bind-html="item.DisplayName | highlight: $select.search"></span>
+                                <span data-ng-bind-html="' - ' + item.Id  | highlight: $select.search"></span>
+                            </ui-select-choices>
+                        </ui-select>
+                        <span class="input-group-btn">
+                            <button tabindex="-1" data-ng-click="company.importOrgId=undefined" class="btn btn-default"><i class="material-icons md-18">clear</i></button>
+                        </span>
+                    </div>
+                </div>
+                <div class="col-lg-offset-1 col-lg-1 app-text-right-sm">
+                    <a href="javascript:void(0);" ng-disabled="!company.importOrgId" data-ng-click="vms.importFile(company.InternalCompanyId, company.importOrgId)"
+                       class="btn btn-primary">Upload file(s)</a>
+                </div>
+            </div>
+            <div class="app-accordion-level-two-item" ng-click="vms.toggleProcessingOpen(company)">
+                <span>Files ready for preprocessing</span>&nbsp;
+                <span class="badge app-badge" data-ng-class="company.documentCountTotal > 0 ? 'badge-warning' : 'badge-default'">{{+company.documentCountTotal}}</span>
+                <i class="app-accordion-chevron" data-ng-class="{'icon-chevron-down': !company.openProcessing, 'icon-chevron-up': company.openProcessing}"></i>
+            </div>
+            <div class="row" style="margin: 5px 0;" ng-show="company.openProcessing">
+                <label class="col-lg-offset-1 col-lg-2" for-property="PreprosOrgId" for="PreprosOrgId" data-model-property="company.preprosOrgId" data-original-title="" title="" style="">Select client company</label>
+                <div class="col-lg-5" style="margin-bottom: 5px;">
+                    <div class="input-group select2-bootstrap-append">
+                        <ui-select name="PreprosOrgId" data-ng-model="company.preprosOrgId" theme="select2" class="form-control">
+                            <ui-select-match placeholder="-- Select one --">
+                                {{$select.selected.ClientOrgDisplayName}} - {{$select.selected.Id}} ({{$select.selected.totalDocumentCount}}
+                                document(s))
+                            </ui-select-match>
+                            <ui-select-choices repeat="item.OrganizationIdClient as item in company.clientCompanyDocuments | uiSelectChoicesFilter : $select.search : 'ClientOrgDisplayName': 'OrganizationIdClient'">
+                                <span data-ng-bind-html="item.ClientOrgDisplayName | highlight: $select.search"></span>
+                                <span data-ng-bind-html="' - ' + item.OrganizationIdClient + ' ( ' + item.totalDocumentCount + ' document(s) )'  | highlight: $select.search"></span>
+                            </ui-select-choices>
+                        </ui-select>
+                        <span class="input-group-btn">
+                            <button tabindex="-1" data-ng-click="company.preprosOrgId=undefined" class="btn btn-default"><i class="material-icons md-18">clear</i></button>
+                        </span>
+                    </div>
+                </div>
+                <div class="col-lg-offset-1 col-lg-2 app-text-right-sm">
+                    <a href="javascript:;" ng-disabled="!company.preprosOrgId" ng-click="vms.goToPreprocess(company)" class="btn btn-primary">Preprocess</a>
+                    <!--<a href="javascript:void(0);" ng-disabled="!company.preprosOrgId" ui-sref="vms.preprocessed({ organizationIdInternal: company.InternalCompanyId, organizationIdClient: company.preprosOrgId })"
+            class="btn btn-primary">Preprocess</a>-->
+                </div>
+            </div>
+            <div class="app-accordion-level-two-item" ng-click="vms.toggleOpen2(company)">
+                <span>Pending transaction creation</span>
+                <span class="badge app-badge" ng-class="company.preparedCountTotal > 0 ? 'badge-warning' : 'badge-default'">{{+company.preparedCountTotal}}</span>
+                <i class="app-accordion-chevron" data-ng-class="{'icon-chevron-down': !company.openPrepared, 'icon-chevron-up': company.openPrepared}"></i>
+            </div>
+            <div class="app-accordion-level-three" ng-show="company.openPrepared">
+                <!--<a ui-sref="vms.transactions({internalOrganizationId:company.InternalCompanyId })">-->
+                <div class="app-accordion-level-three-item" ng-class="{ 'app-no-link': company.PreparedCount == 0 }"
+                        ui-sref="ngtwo.m({'p':'transaction/vms-timesheet/process/' + company.InternalCompanyId })">
+                    <span>Timesheet</span>&nbsp;
+                    <span class="badge badge-warning app-badge" ng-if="company.PreparedCount > 0">{{+company.PreparedCount}}</span>
+                </div>
+                <!--<a ui-sref="vms-discount.process({internalOrganizationId:company.InternalCompanyId })">-->
+                <div class="app-accordion-level-three-item" ng-class="{ 'app-no-link': company.discountPreparedCount == 0 }"
+                        ui-sref="ngtwo.m({'p':'transaction/vms-discount/process/' + company.InternalCompanyId })">
+                    <span>Discount</span>&nbsp;
+                    <span class="badge badge-warning app-badge" ng-if="company.discountPreparedCount > 0">{{+company.discountPreparedCount}}</span>
+                </div>
+                <div class="app-accordion-level-three-item" ng-class="{ 'app-no-link': company.unitedstatessourcedeductionPreparedCount == 0 }"
+                        ui-sref="ngtwo.m({'p':'transaction/vms-ussourcededuction/process/' + company.InternalCompanyId })">
+                    <span>United States Source Deduction</span>&nbsp;
+                    <span class="badge badge-warning app-badge" ng-if="company.unitedstatessourcedeductionPreparedCount > 0">{{+company.unitedstatessourcedeductionPreparedCount}}</span>
+                </div>
+                <!--<a ui-sref="vms-expense.process({internalOrganizationId:company.InternalCompanyId })">-->
+                <div class="app-accordion-level-three-item" ng-class="{ 'app-no-link': company.expensePreparedCount == 0 }"
+                        ui-sref="ngtwo.m({'p':'transaction/vms-expense/process/' + company.InternalCompanyId })">
+                    <span>Expense</span>&nbsp;
+                    <span class="badge badge-warning app-badge" ng-if="company.expensePreparedCount > 0">{{+company.expensePreparedCount}}</span>
+                </div>
+                <div class="app-accordion-level-three-item" ng-class="{ 'app-no-link': company.commissionPreparedCount == 0 }"
+                        ui-sref="ngtwo.m({'p':'transaction/vms-commission/process/' + company.InternalCompanyId })">
+                    <span>Commission</span>&nbsp;
+                    <span class="badge badge-warning app-badge" ng-if="company.commissionPreparedCount > 0">{{+company.commissionPreparedCount}}</span>
+                </div>
+                <div class="app-accordion-level-three-item" ng-class="{ 'app-no-link': company.fixedPricePreparedCount == 0 }"
+                        ui-sref="ngtwo.m({'p':'transaction/vms-fixedprice/process/' + company.InternalCompanyId })">
+                    <span>Fixed Price</span>&nbsp;
+                    <span class="badge badge-warning app-badge" ng-if="company.fixedPricePreparedCount > 0">{{+company.fixedPricePreparedCount}}</span>
+                </div>
+            </div>
+            <div class="app-accordion-level-two-item" ng-click="vms.toggleOpen3(company)">
+                <span class="vms-company-body-item-in">Transactions with conflicts</span>
+                <span class="badge app-badge" ng-class="company.conflictCountTotal > 0 ? 'badge-warning' : 'badge-default'">{{+company.conflictCountTotal}}</span>
+                <i class="app-accordion-chevron" data-ng-class="{'icon-chevron-down': !company.openConflicts, 'icon-chevron-up': company.openConflicts}"></i>
+            </div>
+            <div class="app-accordion-level-three" ng-show="company.openConflicts">
+                <div class="app-accordion-level-three-item" ng-class="{ 'app-no-link': company.conflictCount == 0 }"
+                        ui-sref="ngtwo.m({'p':'transaction/vms-timesheet-conflict/search/' + company.InternalCompanyId })">
+                    <span>Timesheet</span>&nbsp;
+                    <span class="badge badge-warning app-badge" ng-if="company.conflictCount" ng-class="company.conflictCount > 0 ? 'badge-warning' : 'badge-default'">{{+company.conflictCount}}</span>
+                </div>
+                <div class="app-accordion-level-three-item" ng-class="{ 'app-no-link': company.discountConflictCount == 0 }"
+                        ui-sref="ngtwo.m({'p':'transaction/vms-discount-conflict/search/' + company.InternalCompanyId })">
+                    <span>Discount</span>&nbsp;
+                    <span class="badge badge-warning app-badge" ng-if="company.discountConflictCount">{{+company.discountConflictCount}}</span>
+                </div>
+                <div class="app-accordion-level-three-item" ng-class="{ 'app-no-link': company.unitedstatessourcedeductionConflictCount == 0 }"
+                        ui-sref="ngtwo.m({'p':'transaction/vms-ussourcededuction-conflict/search/' + company.InternalCompanyId })">
+                    <span>United States Source Deduction</span>&nbsp;
+                    <span class="badge badge-warning app-badge" ng-if="company.unitedstatessourcedeductionConflictCount">{{+company.unitedstatessourcedeductionConflictCount}}</span>
+                </div>
+                <div class="app-accordion-level-three-item" ng-class="{ 'app-no-link': company.expenseConflictCount == 0 }"
+                        ui-sref="ngtwo.m({'p':'transaction/vms-expense-conflict/search/' + company.InternalCompanyId })">
+                    <span>Expense</span>&nbsp;
+                    <span class="badge badge-warning app-badge" ng-if="company.expenseConflictCount > 0">{{+company.expenseConflictCount}}</span>
+                </div>
+                <div class="app-accordion-level-three-item" ng-class="{ 'app-no-link': company.commissionConflictCount == 0 }"
+                        ui-sref="ngtwo.m({'p':'transaction/vms-commission-conflict/search/' + company.InternalCompanyId })">
+                    <span>Commission</span>&nbsp;
+                    <span class="badge badge-warning app-badge" ng-if="company.commissionConflictCount > 0">{{+company.commissionConflictCount}}</span>
+                </div>
+                <div class="app-accordion-level-three-item" ng-class="{ 'app-no-link': company.fixedPriceConflictCount == 0 }"
+                        ui-sref="ngtwo.m({'p':'transaction/vms-fixedprice-conflict/search/' + company.InternalCompanyId })">
+                    <span>Fixed Price</span>&nbsp;
+                    <span class="badge badge-warning app-badge" ng-if="company.fixedPriceConflictCount > 0">{{+company.fixedPriceConflictCount}}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <p class="app-no-items" ng-if="vms.internalCompanies.length==0">
+        There are no VMS items to show
+    </p>
+</div>
+
+<div id="uploadDocument" data-ng-show="vms.showUploader">
+    <div class="form-group">
+        <div class="col-lg-12">
+            <div data-pt-document-upload="" data-holder-id="documentUpload-vmsimportedrecord" data-entity-type-id="ApplicationConstants.EntityType.VmsImportedRecord"
+                 data-entity-id="0" data-custom-id-1="vms.selectedOrganizationIdInternal" data-custom-id-2="vms.selectedOrganizationIdClient"
+                 data-show-description-input="true" data-enable-image-resize="false" data-max-file-size="20971520" data-accept-file-types="/(\.|\/)(csv)$/i"
+                 data-file-picker-types=".csv" data-limit-multi-file-uploads="2" data-func-callback-on-done="vms.documentUploadCallbackOnDone"
+                 data-func-validation="vms.documentUploadValidation" data-header-text="Upload a Vendor Management System document"
+                 data-content-text1="Accepted file types: CSV" data-content-text2="20 MB file size limit">
+            </div>
+        </div>
+    </div>
+</div>

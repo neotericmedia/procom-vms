@@ -1,0 +1,13 @@
+<div class="content-group form-horizontal" *ngIf="inputFormGroup">
+  <div class="content-left">
+    <app-workorder-billing-parties [inputFormGroup]="inputFormGroup.controls.TabPartyBillingInfoes" [readOnlyStorage]="readOnlyStorage"
+      (outputEvent)="onOutputEvent($event)" (addBillingPartyRate)="onAddBillingPartyRate()" (removeBillingPartyRate)="onRemoveBillingPartyRate($event)"
+      (addPaymentPartyRate)="onAddPaymentPartyRate($event)"></app-workorder-billing-parties>
+  </div>
+  <div class="content-right">
+    <app-workorder-payment-parties [inputFormGroup]="inputFormGroup.controls.TabPartyPaymentInfoes" [readOnlyStorage]="readOnlyStorage"
+      (outputEvent)="onOutputEvent($event)"></app-workorder-payment-parties>
+    <app-workorder-incentive-compensation [inputFormGroup]="inputFormGroup.controls.IncentiveCompensation"
+      [readOnlyStorage]="readOnlyStorage" (outputEvent)="onOutputEvent($event)"></app-workorder-incentive-compensation>
+  </div>
+</div>

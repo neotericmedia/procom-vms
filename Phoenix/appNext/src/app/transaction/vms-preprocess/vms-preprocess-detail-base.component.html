@@ -1,0 +1,26 @@
+﻿<div class="row">
+    <div class="col-lg-12">
+        <div *ngIf="showTable">
+            <app-phx-data-table #phxTable [columns]="columns" [configuration]="dataTableConfiguration" [dataSourceUrl]="dataSourceUrl"
+                                [exportFileName]="'VmsPreprocess'" [componentName]="'VmsPreprocess' + tableComponentNameSuffix" 
+                                (rowPrepared)="onRowPrepare($event)" >
+                <div *dxTemplate="let item of 'ChangeRecordTypeTemplate'">
+                    <div class="action-buttons">
+<!--                         
+                        <button *ngIf="canMarkAsReadyToProcess(item)" type="button" class="btn btn-xs btn-warning" (click)="markAsReadyToProcess(item)">Mark as Ready to Process</button>
+                        <button *ngIf="canMarkAsConflict(item)" type="button" class="btn btn-xs btn-warning" (click)="markAsConflict(item)">Mark as Conflict</button>
+                        <button *ngIf="canMarkAsDiscarded(item)" type="button" class="btn btn-xs btn-warning" (click)="markAsDiscarded(item)">Mark as Discarded</button>
+                        <button *ngIf="hasAccess" type="button" class="btn btn-xs btn-default" (click)="editNote(item)">Edit Note</button>
+ -->
+                    
+                        <app-phx-state-action-buttons [displayType]="'SMALL_BUTTON'" [stateActions]="tableStateActions" [refData]="item"></app-phx-state-action-buttons>
+
+                    </div>
+                </div>
+            </app-phx-data-table>
+        </div>
+    </div>
+</div>
+<app-phx-dialog [config]="phxDialogComponentConfigModel"></app-phx-dialog>
+
+

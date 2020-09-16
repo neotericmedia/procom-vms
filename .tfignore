@@ -1,0 +1,10 @@
+\bin
+\debug
+\obj
+\node_modules
+\vendor
+\Phoenix\appNext\node_modules
+\npm-debug.log*
+\App_Data
+\Phoenix\appNext\dist
+\.vscode

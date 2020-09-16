@@ -1,0 +1,10 @@
+<div *ngIf="timeSheetDay" class="time-sheet-cell-day" [ngClass]="{ 'active': active }">
+  <div class="date-md-up" [class.holiday]="timeSheetDay.IsHoliday">
+    {{ uiService.formatCalendarDate(timeSheetDay.Date) }}
+  </div>
+  <div class="date-sm-down">
+    <div class="date-font" [ngClass]="getDayType()">{{ uiService.formatCalendarDate(timeSheetDay.Date, 'ddd') | uppercase }}</div>
+    <div class="date">{{ uiService.formatCalendarDate(timeSheetDay.Date, 'D') }} </div>
+    <div class="date-font">{{ uiService.formatCalendarDate(timeSheetDay.Date, 'MMM') | uppercase }} </div>
+  </div>
+</div>

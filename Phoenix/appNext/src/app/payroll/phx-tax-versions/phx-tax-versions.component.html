@@ -1,0 +1,13 @@
+<div *ngIf="phxTaxVersions.length > 0">
+  <div class="version-version-item" *ngFor="let version of phxTaxVersions" (click)="onVersionClick(version)" [ngClass]="{'active':(version.Id == currentVersionId)}">
+    <div>
+      <div>
+        <span class="small-text">Effective Date:&nbsp;</span>{{version.EffectiveDate | date:phxConstants.DateFormat.mediumDate }}
+      </div>
+      <span [ngClass]="{'text-warning':(version.TaxVersionStatusId == phxConstants.TaxVersionStatus.Active)}">
+        <span class="small-text">Status:&nbsp;</span>
+        {{version?.TaxVersionStatusId | CodeValue:codeValueGroups.TaxVersionStatus:'code'}}
+      </span>
+    </div>
+  </div>
+</div>

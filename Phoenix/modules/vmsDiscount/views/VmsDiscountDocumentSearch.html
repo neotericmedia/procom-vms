@@ -1,0 +1,75 @@
+<div class="smart-table-wrapper">
+    <div class="row" data-cg-busy="search.busyPromise">
+        <table data-st-table-struct='[{"stTableValue" : "search.items"}, {"stPipeValue" : "search.callServer"}, {"widthValues" : "[9, 15, 15, 15, 13, 13, 15, 5]"}, {"stPaginationValue" : "search.pageSize"}]'>
+            <thead data-st-head="1300px">
+                <tr>
+                    <th data-st-sort="ImportDate" data-st-sort-default="reverse">Import Date</th>
+                    <th data-st-sort="ClientOrganizationName">Client</th>
+                    <th data-st-sort="FileName">File Name</th>
+                    <th data-st-sort="TotalRecords">Total Records</th>
+                    <th data-st-sort="TotalOutstandingRecords">No. Records Outstanding</th>
+                    <th data-st-sort="UploadedBy">Uploaded By</th>
+                    <th data-st-sort="Status">Status</th>
+                    <th data-st-pen-name="Action">Action</th>
+                </tr>
+                <tr>
+                    <th>
+                        <input data-st-advanced-search="'ImportDate'"
+                               data-st-as-operator-override="'le'"
+                               close-on-date-selection="false" show-button-bar="false" show-weeks="false" class="input-sm form-control"
+                               data-st-as-lazy-attributes="{'uib-datepicker' : ApplicationConstants.formatDate}"
+                               data-st-as-height-override="400"
+                               data-st-as-width-override="315" />
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="'ClientOrganizationName'" placeholder="" class="input-sm form-control" type="search" />
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="'FileName'" placeholder="" class="input-sm form-control" type="search" />
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="{property: 'TotalRecords', ignoreQuotes: true, valueSuffix: 'M'}" placeholder=""
+                               class="input-sm form-control numberType" data-safe-restrict-input="[^0123456789.]" />
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="{property: 'TotalOutstandingRecords', ignoreQuotes: true, valueSuffix: 'M'}" placeholder=""
+                               class="input-sm form-control numberType" data-safe-restrict-input="[^0123456789.]" />
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="'UploadedBy'" placeholder="" class="input-sm form-control" type="search" />
+                    </th>
+                    <th>
+                        <select data-st-advanced-search="{property: 'FileStatus', ignoreQuotes: true}" class="input-sm form-control">
+                            <option value="2">Pending Processing</option>
+                            <option value="4">Completed</option>
+                        </select>
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr data-ng-repeat="item in search.items" data-ui-sref-tr="vms-discount.document.details({ internalOrganizationId:search.internalOrganizationId, documentId: item.DocumentId })" style="cursor:pointer;">
+                    <td ng-bind="::item.ImportDate | date:ApplicationConstants.formatDateComma"></td>
+                    <td ng-bind="::item.ClientOrganizationName"></td>
+                    <td ng-bind="::item.FileName"></td>
+                    <td ng-bind="::item.TotalRecords"></td>
+                    <td ng-bind="::item.TotalOutstandingRecords"></td>
+                    <td ng-bind="::item.UploadedBy"></td>
+                    <td><span ng-bind="::item.FileStatus | lookup: search.lists.fileStatusList"></span></td>
+                    <td>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-xs btn-clouds btn-row-action no-padding-bottom-right" data-action="view" title="View"><i class=" fontello-icon-eye-1"></i>&nbsp;</button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="8">
+                        <span>Total Count: {{search.totalItemCount || 0}}; Items Loaded: {{ search.items ? search.items.length : 0}}</span>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>

@@ -1,0 +1,85 @@
+<div class="panel margin-top-5">
+  <div class="panel-body">
+
+    <div class="col col-lg-1 col-xs-12 head-portrait">
+      <div class="profile-container cursor-pointer">
+        <div class="profile-picture-container">
+          <app-phx-profile-picture [profileId]="expenseClaim?.UserProfileIdWorker"></app-phx-profile-picture>
+        </div>
+      </div>
+    </div>
+    <div class="col col-lg-11 col-xs-12">
+      <div class="row head-info">
+        <div class="col col-lg-1 col-xs-12">
+          <div class="form-group">
+            <label class="control-label">{{header.idLabel| phxTranslate}}</label>
+            <div class="control-value">{{expenseClaim?.Id}}</div>
+          </div>
+        </div>
+        <div class="col col-lg-2 col-xs-12">
+          <div class="form-group">
+            <label class="control-label">{{header.workerLabel| phxTranslate}}</label>
+            <div class="control-value">{{expenseClaim?.WorkerName}}</div>
+          </div>
+        </div>
+        <div class="col col-lg-2 col-xs-12">
+          <div class="form-group">
+            <label class="control-label">{{header.currentApproversLabel| phxTranslate}}</label>
+            <div class="control-value">{{expenseClaim?.CurrentApproverNames}}</div>
+          </div>
+        </div>
+        <div class="col col-lg-2 col-xs-12">
+          <div class="form-group">
+            <label class="control-label">{{header.clientLabel| phxTranslate}}</label>
+            <div class="control-value">{{expenseClaim?.ClientDisplayName}}</div>
+          </div>
+        </div>
+        <div class="col col-lg-2 col-xs-12">
+          <div class="form-group">
+            <label class="control-label">{{header.workOrderLabel| phxTranslate}}</label>
+            <div class="control-value">{{expenseClaim?.WorkOrderNumber}}</div>
+          </div>
+        </div>
+        <div class="col col-lg-1 col-xs-12">
+          <div class="form-group">
+            <label class="control-label">{{header.noOfExpensesLabel| phxTranslate}}</label>
+            <div class="control-value">{{expenseClaim?.ExpenseItems?.length}}</div>
+          </div>
+        </div>
+        <div class="col col-lg-2 col-xs-12">
+          <div class="form-group">
+            <label class="control-label">{{header.statusLabel| phxTranslate}}</label>
+            <div class="control-value">{{expenseClaim?.ExpenseClaimStatusId | CodeValue:'expense.CodeExpenseClaimStatus':'text'}}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row head-seperator">
+        <div class="col col-lg-12 horizontalseperator"></div>
+      </div>
+      
+      <div class="row head-description">
+        <div class="col col-lg-12">
+          <div class="form-group">
+            <label class="control-label">{{header.workOrderDescriptionLabel| phxTranslate}}</label>
+            <div class="control-value">{{expenseClaim?.WorkOrderExpenseDescription}}</div>
+          </div>
+        </div>
+      </div>
+
+    </div><!--end of .header-right -->
+
+    <div class="row">
+      <div class="col-xs-12 totalamouontsection">
+        <div class="pull-right">
+        </div>
+        <div class="text-center">
+          <h4>
+            <span class="marginall">{{header.totalLabel| phxTranslate}} {{calculateTotal() | number : '1.2-2'}} {{expenseClaim?.CurrencyId
+              | CodeValue:codeValueGroups.Currency:'code'}}</span>
+          </h4>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

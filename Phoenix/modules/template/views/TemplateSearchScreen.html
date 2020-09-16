@@ -1,0 +1,66 @@
+﻿<div data-update-template-settings="" data-control="templateControl"></div>
+<div class="smart-table-wrapper">
+    <div class="row" data-cg-busy="loadItemsPromise">
+        <table data-st-table-struct='[{"stTableValue" : "items"}, {"stPipeValue" : "callServer"}, {"widthValues" : "[10, 25, 25, 25, 15]"}, {"stPaginationValue" : "pageSize"}]'>
+            <thead data-st-head="1500px">
+                <tr>
+                    <th data-st-sort="Id" data-st-sort-default="reverse">ID</th>
+                    <th data-st-sort="Name">Template Name</th>
+                    <th data-st-sort="EntityTypeId">Template Type</th>
+                    <th data-st-sort="CreatedByFullName">Created By</th>
+                    <th data-st-pen-name="Action">Actions</th>
+                </tr>
+                <tr>
+                    <th>
+                        <input data-st-advanced-search="{property: 'Id', ignoreQuotes: true}" placeholder=""
+                               class="input-sm form-control numberType" data-safe-restrict-input="[^0123456789]" />
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="'Name'" placeholder="" class="input-sm form-control" type="search" />
+                    </th>
+                    <!-- <th>
+                        <select data-st-advanced-search="{ property:'AAAA', useODataExpressions: true, useSecondarySearch : true, switchSearchType : true }" class="input-sm form-control">
+                            <option data-st-advanced-search-expression="TemplateMetadatas/any(t: t/TemplateMetadataName eq 'CommissionRateTypeId' and t/TemplateMetadataValue eq '1')">Fixed Percentage</option>
+                            <option data-st-advanced-search-expression="TemplateMetadatas/any(t: t/TemplateMetadataName eq 'CommissionRateTypeId' and t/TemplateMetadataValue eq '2')">2</option>
+                        </select>
+
+                    </th>-->
+                   <th>
+                        <select data-st-advanced-search="{property: 'TemplateMetadatas/TemplateMetadataValue'}" class="input-sm form-control" id="transactionIsDraft"
+                                data-st-as-options-override="lists.listCommissionRateType "></select>
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="'CreatedByFullName'" placeholder="" class="input-sm form-control" type="search" />
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr data-ng-repeat="item in items" data-ng-click="rowCallback('view', item)" style="cursor:pointer;" title="{{item.Name}} ({{item.Description}})">
+                    <td>{{item.Id}}</td>
+                    <td>{{item.Name}}</td>
+                    <td>{{item.Entity.CommissionRateTypeId|lookup:lists.listCommissionRateType}}</td>
+                    <td>{{item.CreatedByFullName}}</td>
+                    <td>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-xs btn-clouds btn-row-action no-padding-bottom-right" data-action="view" title="View"><i class="fontello-icon-eye-1"></i>&nbsp;</button>
+                        </div>
+                        <div class="btn-group" data-ng-if="item.EntityTypeId!=ApplicationConstants.EntityType.Assignment&&item.EntityTypeId!=ApplicationConstants.EntityType.CommissionRateHeader">
+                            <button type="button" class="btn btn-xs btn-clouds btn-row-action no-padding-bottom-right" data-action="create" title="Create" data-ng-click="$event.stopPropagation(); rowCallback('create', item);"><i class="fontello-icon-edit"></i>&nbsp;</button>
+                        </div>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-xs btn-clouds btn-row-action no-padding-bottom-right" data-action="settings" title="Settings" data-ng-click="$event.stopPropagation(); rowCallback('settings', item);"><i class="fontello-icon-cog"></i>&nbsp;</button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="9">
+                        <span>Total Count: {{totalItemCount || 0}}; Items Loaded: {{ items ? items.length : 0}}</span>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>

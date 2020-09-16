@@ -1,0 +1,36 @@
+<div class="account-container stacked">
+  <div class="content clearfix margin-10-v-t">
+    <form [formGroup]="form">
+      <div class="login-fields">
+        <div class="field text-center">
+          <img class="margin-10-v" src="/assets/logo-flex-backoffice.png" alt="logo" />
+        </div>
+        <div class="field">
+          <label name="UserEmail" class="text-gray control-label">Username</label>
+          <input type="text" class="form-control input-lg" formControlName="email" />
+        </div>
+        <div class="field">
+          <label name="Password" class="text-gray control-label">Password</label>
+          <input type="password" class="form-control input-lg" formControlName="password" />
+        </div>
+      </div>
+      <div class="login-actions">
+        <span class="login-checkbox" style="display: none">
+          <label class="checkbox">
+            <input type="checkbox" value="true" class="field login-checkbox" formControlName="rememberMe" id="RememberMe">
+            Remember Me
+          </label>
+        </span>
+        <span id="loading" style="display: none;">Loading </span>
+        <button [disabled]="form.invalid" class="login-action btn btn-primary" (click)="login()">sign in</button>
+      </div>
+
+      <div class="login-recover">
+        <a (click)="forgotAccount()">Recover Password</a>
+      </div>
+      <div *ngIf="isLoginFailed" class="login-recover text-center alert alert-danger margin-top-20 margin-left-10">
+        <strong>Error </strong>- Login has failed.
+      </div>
+    </form>
+  </div>
+</div>

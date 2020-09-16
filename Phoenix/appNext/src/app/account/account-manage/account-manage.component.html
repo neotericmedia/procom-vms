@@ -1,0 +1,68 @@
+<div class="panel-group panel-sections col-lg-7">
+  <section class="row">
+    <div class="icons-account circle profile-picture">
+      <app-phx-profile-picture [profileId]="profileId$ | async"></app-phx-profile-picture>
+    </div>
+    <div class="mobile-header">
+      <h2>{{'account.manage.profilePictureLabel' | phxTranslate}}</h2>
+    </div>
+    <div class="account-content-justify">
+      <h2 class="header">{{'account.manage.profilePictureLabel' | phxTranslate}}</h2>
+      <p>{{'account.manage.profilePictureDescription' | phxTranslate}}
+        <a class="nowrap" routerLink="/next/account/profile-picture">
+          {{'account.manage.profilePictureChangeLink' | phxTranslate}}
+        </a>
+      </p>
+    </div>
+  </section>
+  <section class="row">
+    <div class="icons-account">
+      <i class="material-icons md-48">lock</i>
+    </div>
+    <div class="mobile-header">
+      <h2>{{'account.manage.changePasswordHeader' | phxTranslate}}</h2>
+    </div>
+    <div class="account-content-justify">
+      <h2 class="header">{{'account.manage.changePasswordHeader' | phxTranslate}}</h2>
+      <p>{{'account.manage.changePasswordDescription' | phxTranslate}}:
+        <a class="nowrap" routerLink="/next/account/change-password">{{'account.manage.changePasswordLink' | phxTranslate}}</a>
+      </p>
+    </div>
+  </section>
+
+  <div *ngIf="form">
+    <section class="row">
+      <div class="icons-account">
+        <i class="material-icons md-48">language</i>
+      </div>
+      <div class="mobile-header">
+        <h2>{{'account.manage.changeCultureHeader' | phxTranslate}}</h2>
+      </div>
+      <div class="account-content-justify">
+        <h2 class="header">{{'account.manage.changeCultureHeader' | phxTranslate}}</h2>
+        <p>{{'account.manage.changeCultureDescription' | phxTranslate}}</p>
+        <app-account-change-language [form]="loginUserSettingsForm"></app-account-change-language>
+      </div>
+    </section>
+    <section class="row" *ngIf="allowUnfinishedFeatures">
+      <div class="icons-account">
+        <i class="material-icons md-48">notifications_active</i>
+      </div>
+      <div class="mobile-header">
+        <h2>{{'account.manage.changeNotificationSettingsHeader' | phxTranslate}}</h2>
+      </div>
+      <div class="account-content-justify">
+        <h2 class="header">{{'account.manage.changeNotificationSettingsHeader' | phxTranslate}}</h2>
+        <p>{{'account.manage.changeNotificationSettingsDescription' | phxTranslate}}</p>
+        <app-account-notification-settings [form]="notificationSettingsForm"></app-account-notification-settings>
+      </div>
+    </section>
+    <div class="row">
+      <app-phx-validation-messages [messages]="validationMessages"></app-phx-validation-messages>
+    </div>
+    <div class="row btn-row">
+      <button class="btn btn-primary" (click)="save()" [disabled]="!form.valid || !form.dirty">{{'account.manage.saveButton' | phxTranslate}}</button>
+      <button class="btn btn-default" (click)="reset()" *ngIf="form.dirty">{{'account.manage.resetButton' | phxTranslate}}</button>
+    </div>
+  </div>
+</div>

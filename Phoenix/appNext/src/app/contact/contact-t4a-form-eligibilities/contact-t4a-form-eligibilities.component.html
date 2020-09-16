@@ -1,0 +1,22 @@
+<form [formGroup]="inputFormGroup" *ngIf="readOnlyStorage && inputFormGroup">
+    <div formArrayName="UserProfileWorkerSPGovernmentRulings">
+        <div *ngFor="let ruling of formArrayDefaultRulings?.controls; let i = index; trackBy: trackByFn">
+            <app-contact-t4a-form-eligibility [readOnlyStorage]="readOnlyStorage" [inputFormGroup]="ruling"
+                (outputEvent)="onOutputEvent($event)"
+                [areComplianceFieldsEditable]="areComplianceFieldsEditable"
+                [selectedValues]="selectedValues"
+                [rulingIndex]="i" [workerClientOrganizations]="html.workerClientOrganizations">
+
+            </app-contact-t4a-form-eligibility>
+        </div>
+    </div>
+    <div class="button-bar">
+        <div class="btn-toolbar pull-right" *ngIf="areComplianceFieldsEditable">
+            <button type="button" style="margin-right: 11px; margin-top: 10px;" class="btn btn-material btn-default pull-right" (click)="onClickAddRuling($event)" 
+            [disabled]="currentProfile.UserProfileWorkerSPGovernmentRulings.length >= html.workerClientOrganizations.length"
+                title="Used {{currentProfile?.UserProfileWorkerSPGovernmentRulings.length}} from {{html.workerClientOrganizations.length}} available client(s)">
+                <i class="material-icons">add</i>
+            </button>
+        </div>
+    </div>
+</form>

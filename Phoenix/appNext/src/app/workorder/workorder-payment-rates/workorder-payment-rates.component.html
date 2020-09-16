@@ -1,0 +1,17 @@
+<form>
+  <div class="panel-internal">
+    <div class="form-group" style="margin-top:30px">
+      <div class="col-lg-10">
+        <h4>Rates </h4>
+        </div>
+    </div>
+  </div>
+  <div>
+    <div *ngFor="let paymentRate of inputFormGroup.controls.PaymentRates.controls; let i = index; trackBy: trackByFn" style="border: none;">
+      <div>
+        <app-workorder-payment-rate [inputFormGroup]="paymentRate" [rateIndex]="i" [readOnlyStorage]="readOnlyStorage"
+          [paymentInfoIndex]="paymentInfoIndex" (outputEvent)="onOutputEvent($event,i)"></app-workorder-payment-rate>
+      </div>
+    </div>
+  </div>
+</form>

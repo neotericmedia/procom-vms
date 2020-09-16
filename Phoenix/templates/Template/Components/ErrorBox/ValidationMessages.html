@@ -1,0 +1,5 @@
+﻿<div class="alert alert-danger alert-dismissable error-box" data-ng-show="validationMessageBox.visible">
+    <div  data-ng-repeat="item in validationMessageBox.items">
+        <span ng-if="item.propertyName && item.propertyName.length > 0">{{item.propertyName}}:</span> <span ng-bind-html="item.message"></span>
+    </div>
+</div>

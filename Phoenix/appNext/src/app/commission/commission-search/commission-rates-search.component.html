@@ -1,0 +1,45 @@
+﻿<!--<div class="row page-control">
+    <div class="page-control-bar col-lg-12">
+        <div class="btn-toolbar">
+            <a href="javascript:;" type="button" class="btn btn-clouds" (click)="createComm()">New</a>
+        </div>
+    </div>
+</div>-->
+
+<div class="btn-group">
+    <button type="button" class="btn btn-clouds dropdown-toggle" data-toggle="dropdown">
+        <span class="payroll-btn-name">Actions...</span> <span class="caret ml payroll-btn-caret"></span>
+    </button>
+    <ul class="dropdown-menu bordered">
+        <li>
+            <!--<a data-ui-sref="commission.ratesetup({ commissionUserProfileId:ratesScope.CommissionUserProfileId })">Create New Commission</a>-->
+            <a (click)="newCommission()">Create New Commission</a>
+        </li>
+
+    </ul>
+</div>
+
+<div class="panel-heading headstone">
+    <div class="row">
+        <div class="col-lg-2">
+            <label class="control-label col-xs-12 ">Id</label>
+            <span class="col-xs-12">{{header && header.CommissionUserProfileId}}</span>
+        </div>
+        <div class="col-lg-6">
+            <label class="control-label col-xs-12 ">Name</label>
+            <span class="col-xs-12">{{header && header.CommissionUserProfileFirstName}} {{header && header.CommissionUserProfileLastName}}</span>
+        </div>
+        <div class="col-lg-4">
+            <label class="control-label col-xs-12 ">Status</label>
+            <span class="col-xs-12">{{header && header.CommissionUserProfileStatusName}}</span>
+        </div>
+    </div>
+</div>
+
+
+<app-phx-data-table [columns]="columns" [configuration]="dataTableConfiguration" [dataSourceUrl]="dataSourceUrl"
+                    [dataSourceParams]='oDataParams' componentName="CommissionRates" [summary]="summary" (rowClick)="viewCommissionDetail($event)" (contextMenuOpenTab)="onContextMenuOpenTab($event)">
+    <div *dxTemplate="let pn of 'rateCellTemplate'">
+        <span>{{ pn.value }}%</span>
+    </div>
+</app-phx-data-table>

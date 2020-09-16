@@ -1,0 +1,30 @@
+<ng-template #itemModal>
+	<div class="modal-header">
+		<h4 class="modal-title pull-left">{{title}}</h4>
+		<button type="button" class="close pull-right" aria-label="Close" (click)="hide()" *ngIf="showCloseButton === true">
+			<i class="material-icons">close</i>
+		</button>
+	</div>
+	<div class="modal-body" [class.no-button]="(!buttons || buttons.length === 0) || isMobile">
+		<ng-content></ng-content>
+	</div>
+	<div class="row" *ngIf="buttons && buttons.length">
+		<app-phx-responsive-buttons [buttons]="buttons" [placedOnModal]="true"></app-phx-responsive-buttons>
+	</div>
+</ng-template>
+
+
+<!--<ng-template #nestedModal>
+	<div class="modal-header">
+		<h4 class="modal-title pull-left">Modal Nested</h4>
+		<button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+		<i class="material-icons">close</i>
+	</button>
+	</div>
+	<div class="modal-body">
+		This is a modal from a template, ngx-bootstrap service appends it to the body.
+	</div>
+  <div class="row">
+		<app-phx-responsive-buttons [buttons]="buttons" [placedOnModal]="true"></app-phx-responsive-buttons>
+  </div>
+</ng-template>-->

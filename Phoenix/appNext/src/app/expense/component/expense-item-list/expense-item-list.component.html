@@ -1,0 +1,27 @@
+<app-phx-panel [headerTitle]="expenseModuleResourceKeys.itemList.itemsTitle| phxTranslate">
+    <div *ngIf="expenseClaim && expenseClaim.ExpenseItems">
+        <div class="top-spacer"></div>
+        <app-phx-data-table #expenseItemGrid [configuration]="dataTableConfiguration" [dataSource]="expenseClaim.ExpenseItems" [columns]="columns"
+            (cellClick)="cellClick($event)" [componentName]="'expenseClaimItems'" (rowPrepared)="rowPrepared($event)">
+            <div *dxTemplate="let c of 'categoryCellTemplate'">
+                <app-expense-category-icon class="category-icon" icon="{{c.value?.Icon}}" size="sm"></app-expense-category-icon>
+                <span class="category-name">{{c.value?.DisplayName}} </span>
+            </div>
+            <div *dxTemplate="let a of 'actionCellTemplate'">
+                <button type="button" class="btn btn-material" *ngIf="editable" (click)="removeItem(a)">
+                    <i class="material-icons">clear</i>
+                </button>
+            </div>
+        </app-phx-data-table>
+    </div>
+    <div *ngIf="!expenseClaim || !expenseClaim.ExpenseItems">
+        <app-loading-spinner [text]="expenseModuleResourceKeys.itemList.loadingText" color="gray"></app-loading-spinner>
+    </div>
+    <div class="row" *ngIf="expenseClaim && editable">
+        <div class="col-xs-12">
+            <button type="button" class="btn btn-material btn-default pull-right btn-add" (click)="onAddItemClick()" [title]="expenseModuleResourceKeys.itemList.addBtn| phxTranslate">
+                <i class="material-icons">add</i>
+            </button>
+        </div>
+    </div>
+</app-phx-panel>

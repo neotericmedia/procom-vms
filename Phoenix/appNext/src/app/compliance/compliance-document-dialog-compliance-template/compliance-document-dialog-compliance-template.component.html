@@ -1,0 +1,33 @@
+<app-phx-modal [title]="title" [buttons]="buttons">
+  <div [formGroup]="form" *ngIf="form">
+    <div class="row form-check">
+      <label class="form-check-label h5">
+        <input type="checkbox" [formControl]="form.controls.selectAll" class="form-check-input"> Select all templates to include in zip file to download
+      </label>
+    </div>
+    <div class="row compliance-document-dialog-compliance-template-on-entity" *ngFor="let entityGroup of documentEntityGroups">
+        <label class="control-label bold h4">{{entityGroup.EntityTypeId|CodeValue:codeValueGroups.EntityType:'text'}}</label>
+        <div class="row col-lg-12 compliance-document-dialog-compliance-template-on-header" *ngFor="let header of entityGroup.Headers">
+          <ng-container *ngIf="header.ApplicableTemplateDocuments.length">
+            <label class="control-label bold">
+              {{header.ComplianceDocumentRuleDisplayName}}
+            </label>
+            <div class="row">
+              <div class="form-check" *ngFor="let template of header.ApplicableTemplateDocuments">
+                <label class="form-check-label" [formGroup]="templateIdsControl.controls[template.Id]">
+                  <input type="checkbox" class="form-check-input"
+                    formControlName="checked"> {{template.Name}}
+                </label>
+              </div>
+            </div>
+          </ng-container>
+        </div>
+      </div>
+    <div class="row">
+      <p class="pull-left">
+        <span class="bold">{{countSelected}}</span> template(s) selected out of
+        <span class="bold">{{countAll}}</span>
+      </p>
+    </div>
+  </div>
+</app-phx-modal>

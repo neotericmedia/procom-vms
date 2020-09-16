@@ -1,0 +1,57 @@
+import { PhxConstants } from '../../common/index';
+
+import { CourtesyCopyProfile } from './courtesy-copy-profile';
+
+export interface BillingTransactionBase {
+    BillingTransactionId: number;
+    TransactionHeaderId: number;
+    OrganizationIdinternal: number;
+    OrganizationinternalLegalName: string;
+    OrganizationIdClient: number;
+    OrganizationClientLegalName: string;
+    CurrencyId: number;
+    WorkOrderNumber: string;
+    BillingTransactionNumber: string;
+    TransactionTypeId: PhxConstants.TransactionType;
+    BillingInvoiceTemplateId?: PhxConstants.BillingInvoiceTemplate;
+    BillingInvoiceTermId: PhxConstants.BillingInvoiceTerms;
+    AgencyClientLegalName: string;
+    WorkerName: string;
+    WorkerProfileTypeId?: number;
+    BillingDate?: Date;
+    StartDate?: Date;
+    EndDate?: Date;
+    PrimaryBillRate?: number;
+    BillRateUnitId?: number;
+    SumUnits?: number;
+    SubTotalAmount?: number;
+    GstHst?: number;
+    Pst?: number;
+    Qst?: number;
+    Tax?: number;
+    TotalAmount: number;
+    BranchId?: number;
+    WorksiteId?: number;
+    InvoiceToName: string;
+    InvoiceToProfileId?: number;
+    ClientManagerName: string;
+    OrganizationClientRoleAlternateBillId?: number;
+    OrganizationClientRoleAlternateBillLegalName: string;
+    ProjectName: string;
+    PurchaseOrderNumber: string;
+    InvoiceNote1: string;
+    InvoiceNote2: string;
+    InvoiceNote3: string;
+    InvoiceNote4: string;
+    DeliveryMethodId?: number;
+    CurrentWorkOrderVersionId?: number;
+    WorkOrderId?: number;
+    AssignmentId?: number;
+    TransactionHeaderTimeSheetId?: number;
+    TransactionHeaderVmsCommisionProcessedRecordId?: number;
+    TransactionHeaderVmsExpenseProcessedRecordId?: number;
+    TransactionHeaderVmsTimesheetProcessedRecordId?: number;
+    ARStatusId: PhxConstants.ARStatus;
+    ARPayDate?: Date;
+    CourtesyCopyProfiles: Array<CourtesyCopyProfile>;
+}

@@ -1,0 +1,84 @@
+﻿<div class="btn-group btn-garnishee-search-nav" data-ng-if="!edit.currentProfile.ActiveGarnisheesCount">
+    <div class="garnishee-btn-wrapper">
+        <button type="button" class="btn btn-clouds dropdown-toggle" data-toggle="dropdown">
+            <span class="garnishee-btn-name">Actions</span> <span class="caret ml garnishee-btn-caret"></span>
+        </button>
+        <ul class="dropdown-menu bordered">
+            <li data-ng-if="$state.includes('EditWorkerTempProfile')"><a data-ui-sref="EditWorkerTempProfile.NewGarnishee()">Add Garnishee</a></li>
+            <li data-ng-if="$state.includes('EditWorkerCanadianSPProfile')"><a data-ui-sref="EditWorkerCanadianSPProfile.NewGarnishee()">Add Garnishee</a></li>
+        </ul>
+    </div>
+</div>
+
+<div ng-if="scopeGarnishee.showTable">
+    <app-contact-garnishees [user-profile-id]="edit.currentProfile.Id"></app-contact-garnishees>
+</div>
+<!--
+<div class="smart-table-wrapper garnishee-search-table">
+    <div class="row" data-cg-busy="loadItemsPromise">
+        <table class="table table-striped table-content table-hover" data-st-table="scopeGarnishee.items" data-st-pagination-scroll="scopeGarnishee.pageSize" data-st-pipe="scopeGarnishee.callServer" data-st-fixed-header="" data-st-column-widths="[10, 29, 17, 17, 17, 10]">
+            <thead>
+                <tr>
+                    <th data-st-sort="Id" data-st-sort-default="">ID</th>
+                    <th data-st-sort="Description">Description</th>
+                    <th data-st-sort="PayAmountMaximum">Garnish Amount</th>
+                    <th data-st-sort="PaidAmount">Amount Paid</th>
+                    <th data-st-sort="PaybackRemainder">Amount Remaining</th>
+                    <th data-st-sort="GarnisheeStatusId">Status</th>
+                </tr>
+                <tr>
+                    <th>
+                        <input data-st-advanced-search="{property: 'Id', ignoreQuotes: true}" placeholder="" class="input-sm form-control numberType" data-safe-restrict-input="[^0123456789.]" />
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="'Description'" placeholder=""
+                               class="input-sm form-control" />
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="{property: 'PayAmountMaximum', ignoreQuotes: true, valueSuffix: 'M'}" placeholder=""
+                               class="input-sm form-control" type="search" data-safe-restrict-input="[^0123456789.]" />
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="{property: 'PaidAmount', ignoreQuotes: true, valueSuffix: 'M'}" placeholder=""
+                               class="input-sm form-control" type="search" data-safe-restrict-input="[^0123456789.]" />
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="{property: 'PaybackRemainder', ignoreQuotes: true, valueSuffix: 'M'}" placeholder=""
+                               class="input-sm form-control" type="search" data-safe-restrict-input="[^0123456789.]" />
+                    </th>
+                    <th>
+                        <select data-st-advanced-search="{property: 'GarnisheeStatusId', ignoreQuotes: false}" class="input-sm form-control">
+                            <option value="1">Active</option>
+                            <option value="2">Complete</option>
+                            <option value="3">Cancelled</option>
+                        </select>
+                    </th>
+                </tr>
+            </thead>
+            <tbody class="ignore-set-height garnishee-collapsible-body">
+                <tr data-ng-repeat="item in scopeGarnishee.items" data-ui-sref-tr="{{scopeGarnishee.garnisheeDetailsState}}({ garnisheeId: item.Id })" style="cursor:pointer">
+                    <td title="{{item.Id}}"><span class="garnishee-search-item" ng-bind="::item.Id"></span></td>
+                    <td title="{{item.Description}}"><span class="garnishee-search-item garnishee-description" ng-bind="::item.Description"></span></td>
+                    <td title="{{item.PayAmountMaximum ? (item.CurrencyId | lookup: scopeGarnishee.currencies:'id':'code') : ''}}{{item.PayAmountMaximum ? (item.PayAmountMaximum | currency: ' $') : 'N/A'}}"><span class="garnishee-search-item"><span ng-bind="item.PayAmountMaximum ? (item.CurrencyId | lookup: scopeGarnishee.currencies:'id':'code') : ''"></span><span ng-bind="item.PayAmountMaximum ? (item.PayAmountMaximum | currency: ' $') : 'N/A'"></span></span></td>
+                    <td title="{{item.CurrencyId | lookup: scopeGarnishee.currencies:'id':'code'}}{{item.PaidAmount | currency: ' $'}}"><span class="garnishee-search-item"><span ng-bind="item.CurrencyId | lookup: scopeGarnishee.currencies:'id':'code'"></span><span ng-bind="item.PaidAmount | currency: ' $'"></span></span></td>
+                    <td title="{{item.PaybackRemainder ? (item.CurrencyId | lookup: scopeGarnishee.currencies:'id':'code') : ''}}{{item.PaybackRemainder ? (item.PaybackRemainder | currency: ' $') : 'N/A'}}"><span class="garnishee-search-item"><span ng-bind="item.PaybackRemainder ? (item.CurrencyId | lookup: scopeGarnishee.currencies:'id':'code') : ''"></span><span ng-bind="item.PaybackRemainder ? (item.PaybackRemainder | currency: ' $') : 'N/A'"></span></span></td>
+                    <td title="{{item.GarnisheeStatusId | lookup: scopeGarnishee.statuses}}"><span class="garnishee-search-item" ng-bind="::item.GarnisheeStatusId | lookup: scopeGarnishee.statuses"></span></td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="9">
+                        <span>Total Count: {{scopeGarnishee.totalItemCount || 0}}; Items Loaded: {{ scopeGarnishee.items ? scopeGarnishee.items.length : 0}}</span>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>
+-->
+<div class="slider-view-garnishee" data-ng-class="{ out: !$state.is('EditWorkerTempProfile.NewGarnishee') && !$state.is('EditWorkerCanadianSPProfile.NewGarnishee'), in: $state.is('EditWorkerTempProfile.NewGarnishee') || $state.is('EditWorkerCanadianSPProfile.NewGarnishee')}">
+    <div ui-view="newGarnisheeView" style="height:100%;"></div>
+</div>
+<div class="slider-view-garnishee" data-ng-class="{ out: !$state.is('EditWorkerTempProfile.GarnisheeDetails') && !$state.is('EditWorkerCanadianSPProfile.GarnisheeDetails'), in: $state.is('EditWorkerTempProfile.GarnisheeDetails') || $state.is('EditWorkerCanadianSPProfile.GarnisheeDetails')}">
+    <div ui-view="garnisheeDetailsView" style="height:100%;"></div>
+</div>

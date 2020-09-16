@@ -1,0 +1,59 @@
+﻿<div class="version-panel">
+    <div class="assignment-workorders" data-ng-show="!actionButton.show.graphIsNew">
+        <div class="panel-group">
+            <div class="panel panel-default">
+                <div>
+                    <a data-toggle="collapse" data-target="#notes-panel" class="panel-header panel-header-link col-lg-6 notes-panel">
+                        NOTES
+                        <span class="badge " data-ng-if="woNotesLength>0" style="padding: 2px 5px;background-color:#FE9701">{{woNotesLength}}</span>
+                    </a>
+                    <button type="button" class="btn btn-material pull-right" data-toggle="collapse" data-ng-click="activityNotes()">
+                        <i class="material-icons md-dark">launch</i>
+                    </button>
+                </div>
+                <div id="notes-panel" class="panel-collapse collapse" data-ng-if="woNotesTotal>0">
+                    <div class="panel-body form-horizontal">
+                        <div class="row">
+                            <div data-pt-notes-list="" data-entity-type-id="ApplicationConstants.EntityType.WorkOrder" data-entity-id="$state.params.workOrderId">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div>
+            <div class="assignment-workorders-header">
+                <span class="bold">Work Order:&nbsp;{{model.entity.Id}}</span>
+            </div>
+            <div class="workorders-selection">
+                <ui-select name="WorkorderVersion" data-ng-model="Counter" theme="select2" class="form-control" data-ng-change="workOrderVersionChanged(Counter)">
+                    <ui-select-match placeholder="Select Version:">#{{$select.selected.Counter}}</ui-select-match>
+                    <ui-select-choices repeat="item.Counter as item in uniqueWorkOrders | uiSelectChoicesFilter: $select.search: 'Description': 'Counter'">
+                        <span data-ng-bind-html="item.Counter | highlight: $select.search"></span>
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+        </div>
+        <div class="assignment-workorder-item" data-ng-repeat="workOrder in model.grouped" data-ng-class="workOrder.Id==$state.params.workOrderId?'active':''">
+            <div class="workorder-item bold">
+                <div>
+                    {{workOrder.StartDate|date:ApplicationConstants.formatDate}} - {{workOrder.EndDate|date:ApplicationConstants.formatDate}}
+                </div>
+            </div>
+            <div class="workorder-version-item" data-ng-repeat="workOrderVersion in workOrder.WorkOrderVersions | orderBy: 'VersionNumber':true"
+                data-ng-class="workOrderVersion.Id==$state.params.workOrderVersionId?'active':''" data-ng-click="workOrderVersionChange(model.entity.Id,workOrderVersion.WorkOrderId,workOrderVersion.Id)"
+                title="{{model.entity.Id}}.{{workOrder.WorkOrderNumber}}.{{workOrderVersion.VersionNumber}} - {{workOrderVersion.EffectiveDate|date:ApplicationConstants.formatDate}}">
+                <div>
+                    <span class="small-text">Version:&nbsp;</span>
+                    <span class="bold">{{workOrderVersion.VersionNumber}}</span>
+                </div>
+                <div>
+                    <span class="small-text">Effective Date:&nbsp;</span>{{workOrderVersion.EffectiveDate|date:ApplicationConstants.formatDate}}</div>
+                <div class="ellipsis-field">
+                    <span data-ng-class="workOrderVersion.StatusId==ApplicationConstants.WorkOrderStatus.Active?'text-warning':''">
+                        <span class="small-text">Status:&nbsp;</span>{{workOrderVersion.StatusId | lookup:lists.workOrderStatuses}}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

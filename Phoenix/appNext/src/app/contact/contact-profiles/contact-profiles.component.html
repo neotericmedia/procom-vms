@@ -1,0 +1,99 @@
+<div class="row">
+  <div class="col-lg-12 app-col-original">
+    <div class="contact-profiles" *ngIf="html.currentProfile">
+      <ul class="profile-list" *ngIf="html.currentProfiles && html.currentProfiles.length > 0">
+        <li class="profile-card" *ngFor="let profile of html.currentProfiles" [ngClass]="{'active': profile.Id === html.currentProfile.Id }">
+          <a class="icon {{profile.ProfileIcon}}" *ngIf="profile" href="javascript:void(0);" (click)="navigateTo(profile.ProfileTypeCode, profile.Id, contact.Id)"
+            title="{{profile.ProfileTitle}}">&nbsp;</a>
+        </li>
+      </ul>
+      <ul class="profile-list" *ngIf="html.currentProfiles === null || html.currentProfiles === []">
+        <li class="profile-card active">
+          <!-- {{edit.title.ProfileIcon}} -->
+          <a class="icon" href="javascript:void(0);" [title]="html.currentProfile.ProfileTypeCode + 'Profile'">&nbsp;</a>
+        </li>
+      </ul>
+      <div class="profile-content">
+        <div class="row">
+          <div class="profile-title">{{html.currentProfile.ProfileTypeCode}}&nbsp;Profile</div>
+          <div style="margin-left: 40px;" *ngIf="showActions(html.currentProfile)">
+            <app-phx-state-action-buttons [stateActions]="stateActions" 
+              [availableStateActions]="availableStateActions"
+              [displayType] = "ActionDisplayType.DROPDOWN">
+            </app-phx-state-action-buttons>
+          </div>
+        </div>
+        <div class="row profile-form">
+          <div class="col-lg-12 form-horizontal">
+
+            <!-- Set profiles here... -->
+            <app-contact-organizational-profile *ngIf="html.currentProfile.ProfileTypeId === html.phxConstants.UserProfileType.Organizational && readOnlyStorage"
+              [readOnlyStorage]="readOnlyStorage" [inputFormGroup]="inputFormGroup.controls.OrganizationalProfile"
+              (outputEvent)="onOutputEvent($event)">
+
+            </app-contact-organizational-profile>
+
+            <app-contact-internal-profile *ngIf="html.currentProfile.ProfileTypeId === html.phxConstants.UserProfileType.Internal && readOnlyStorage"
+              [readOnlyStorage]="readOnlyStorage" (outputEvent)="onOutputEvent($event)" [inputFormGroup]="inputFormGroup.controls.InternalProfile">
+
+            </app-contact-internal-profile>
+
+            <app-contact-temp-profile *ngIf="html.currentProfile.ProfileTypeId === html.phxConstants.UserProfileType.WorkerTemp && readOnlyStorage"
+              [readOnlyStorage]="readOnlyStorage" (outputEvent)="onOutputEvent($event)" [inputFormGroup]="inputFormGroup.controls.TempProfile"
+              [triggerComplianceDocumentRefresh]="triggerComplianceDocumentRefresh">
+
+            </app-contact-temp-profile>
+
+            <app-contact-canadian-sp-profile *ngIf="html.currentProfile.ProfileTypeId === html.phxConstants.UserProfileType.WorkerCanadianSp && readOnlyStorage"
+              [readOnlyStorage]="readOnlyStorage" (outputEvent)="onOutputEvent($event)" [inputFormGroup]="inputFormGroup.controls.CanadianSPProfile"
+              [triggerComplianceDocumentRefresh]="triggerComplianceDocumentRefresh">
+
+            </app-contact-canadian-sp-profile>
+
+            <app-contact-canadian-inc-profile *ngIf="html.currentProfile.ProfileTypeId === html.phxConstants.UserProfileType.WorkerCanadianInc && readOnlyStorage"
+              [readOnlyStorage]="readOnlyStorage" (outputEvent)="outputEvent" (outputEvent)="onOutputEvent($event)"
+              [inputFormGroup]="inputFormGroup.controls.CanadianIncProfile" [triggerComplianceDocumentRefresh]="triggerComplianceDocumentRefresh">
+
+            </app-contact-canadian-inc-profile>
+
+            <app-contact-canadian-engagement-sub-vendor-profile *ngIf="html.currentProfile.ProfileTypeId === html.phxConstants.UserProfileType.WorkerSubVendor && readOnlyStorage"
+              [readOnlyStorage]="readOnlyStorage" (outputEvent)="onOutputEvent($event)" [inputFormGroup]="inputFormGroup.controls.CanadianEngagementSubVendorProfile"
+              [triggerComplianceDocumentRefresh]="triggerComplianceDocumentRefresh">
+
+            </app-contact-canadian-engagement-sub-vendor-profile>
+
+            <app-contact-united-states-w2-profile *ngIf="html.currentProfile.ProfileTypeId === html.phxConstants.UserProfileType.WorkerUnitedStatesW2 && readOnlyStorage"
+              [readOnlyStorage]="readOnlyStorage" (outputEvent)="onOutputEvent($event)" [inputFormGroup]="inputFormGroup.controls.W2WorkerProfile"
+              [triggerComplianceDocumentRefresh]="triggerComplianceDocumentRefresh">
+
+            </app-contact-united-states-w2-profile>
+
+            <app-contact-united-states-llc-profile *ngIf="html.currentProfile.ProfileTypeId === html.phxConstants.UserProfileType.WorkerUnitedStatesLLC && readOnlyStorage"
+              [readOnlyStorage]="readOnlyStorage" (outputEvent)="onOutputEvent($event)" [inputFormGroup]="inputFormGroup.controls.LLCWorkerProfile"
+              [triggerComplianceDocumentRefresh]="triggerComplianceDocumentRefresh">
+
+            </app-contact-united-states-llc-profile>
+
+            <div class="row" style="margin-right: 30px;" *ngIf="showActions(html.currentProfile)">
+              <app-phx-state-action-buttons [stateActions]="stateActions" 
+                [availableStateActions]="availableStateActions"
+                [displayType] = "ActionDisplayType.BUTTON">
+              </app-phx-state-action-buttons>
+            </div>
+          </div>
+        </div>
+
+        <div class="alert alert-danger" *ngIf="html.ValidationMessages?.length" role="alert">
+          <ol>
+            <li *ngFor="let error of html.ValidationMessages;">
+              {{ error.Message }}
+            </li>
+          </ol>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-phx-dialog [config]="phxDialogComponentConfigModel"></app-phx-dialog>

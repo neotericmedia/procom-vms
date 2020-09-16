@@ -1,0 +1,11 @@
+<div class="col col-xs-12">
+  <div class="row">
+    <app-phx-data-table [configuration]="dataTableConfiguration" [dataSourceUrl]="'ComplianceDocument/getListComplianceDocumentDeclined'"
+      [columns]="columns" [exportFileName]="'compliance-document-expiry'" [componentName]="'ComplianceDocumentExpirySearch'"
+      (rowClick)="onRowClick($event)" [height]="700">
+      <div *dxTemplate="let area of 'commaDelimitedLookupCellTemplate'">
+        <span>{{ area.value |  CodeValue:commonService.CodeValueGroups.ComplianceDocumentRuleEntityType:'text'}}</span>
+      </div>
+    </app-phx-data-table>
+  </div>
+</div>

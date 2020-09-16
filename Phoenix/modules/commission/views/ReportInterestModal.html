@@ -1,0 +1,51 @@
+﻿<div class="modal-header dialog-header-notify">
+    <button type="button" class="close pull-right" ng-click="modal.close()">&times;</button>
+    <h4 class="modal-title">{{modal.title}}</h4>
+</div>
+<div class="modal-body">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Transaction Id</th>
+                <th>Worker</th>
+                <th>Client Organization</th>
+                <th>Invoice Release Date</th>
+                <th>Worker Pay Date</th>
+                <th>Client Pay Date</th>
+                <th>Payment Amount</th>
+                <th>Days Passed</th>
+                <th>Interest Days</th>
+                <th>Commission Rate</th>
+                <th>Client Percentage Paid</th>
+                <th>Interest Incurred</th>
+                <th>Interest On Transaction</th>                
+                <th>Interest To Sales</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr data-ng-repeat="row in modal.data">
+                <td>{{row.TransactionId}}</td>
+                <td>{{row.WorkerName}}</td>
+                <td>{{row.ClientOrganization}}</td>
+                <td class="text-nowrap">{{row.InvoiceReleaseDate | date:'MMM d yyyy'}}</td>
+                <td class="text-nowrap">{{row.WorkerPayReleaseDate | date:'MMM d yyyy'}}</td>
+                <td class="text-nowrap">{{row.ClientPayDate | date:'MMM d yyyy'}}</td>
+                <td class="text-nowrap">{{row.PaymentAmount | currency}}</td>
+                <td>{{row.DaysPassed}}</td>
+                <td>{{row.DaysInterestAccrued}}</td>
+                <td class="text-nowrap">{{row.CommissionRate | displayPercentageView:4}}</td>
+                <td class="text-nowrap">{{row.ClientPercentPaid | displayPercentageView:4}}</td>
+                <td class="text-nowrap">{{row.InterestIncurred | currency}}</td>
+                <td class="text-nowrap">{{row.InterestOnTransaction | currency}}</td>
+                <td class="text-nowrap">{{row.InterestToSales | currency}}</td>
+                <td>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-xs btn-clouds" data-action="view" title="View" data-ui-sref="transaction.view.summary({transactionHeaderId:row.TransactionId})"><i class="fontello-icon-eye-1"></i>&nbsp;</button>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div class="modal-footer"><button type="button" class="btn btn-primary" ng-click="modal.close()">{{"DIALOGS_OK" | translate}}</button></div>

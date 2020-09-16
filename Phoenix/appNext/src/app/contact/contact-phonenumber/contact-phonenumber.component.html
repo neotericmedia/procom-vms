@@ -1,0 +1,42 @@
+<form [formGroup]="inputFormGroup" *ngIf="readOnlyStorage && inputFormGroup">
+
+  <phx-form-control [control]="inputFormGroup.controls.ProfilePhoneTypeId" labelText="Type" [editable]="readOnlyStorage.IsEditable"
+    viewModeText="{{inputFormGroup.controls.ProfilePhoneTypeId.value | CodeValue:codeValueGroups.ProfilePhoneType}}">
+    <app-phx-select-box-code-value [formControl]="inputFormGroup.controls.ProfilePhoneTypeId" [groupName]="codeValueGroups.ProfilePhoneType"
+      sortByFieldName="text" placeholder="-- select one --">
+    </app-phx-select-box-code-value>
+  </phx-form-control>
+
+  <div class="form-group">
+    <div [ngClass]="{'col-md-9 padding-0': inputFormGroup.controls.Extension.value && !readOnlyStorage.IsEditable, 'col-md-12 padding-0': !inputFormGroup.controls.Extension.value }">
+      <phx-form-control [control]="inputFormGroup.controls.Phone" [editable]="readOnlyStorage.IsEditable" labelText="Phone"
+        viewModeText="{{inputFormGroup.controls.Phone.value}}">
+        <div class="col-md-12 padding-0">
+          <div class="padding-left-0" [ngClass]="{'col-md-7': inputFormGroup.controls.Extension.value, 'col-md-9': !inputFormGroup.controls.Extension.value }">
+            <input formControlName="Phone" type="text" class="form-control" maxlength="20"
+              phxFloatBetweenInput='{"from":1, "to":999999999999999, "decimalplaces":0}' />
+          </div>
+          <div *ngIf="inputFormGroup.controls.Extension.value" class="col-md-2 padding-right-0" style="font-weight: 600;padding-top: 8px;">
+            <span class="profile-phone-ext-span">Ext.</span>
+          </div>
+          <div class="col-md-3 padding-0">
+            <input [formControl]="inputFormGroup.controls.Extension" type="text" class="form-control" placeholder="Ext."
+              maxlength="9" phxFloatBetweenInput='{"from":1, "to":999999999, "decimalplaces":0}' />
+          </div>
+        </div>
+      </phx-form-control>
+    </div>
+    <div class="col-md-3" *ngIf="inputFormGroup.controls.Extension.value && !readOnlyStorage.IsEditable">
+      <phx-form-control [control]="inputFormGroup.controls.Extension" [editable]="false" labelText="Ext." viewModeText="{{inputFormGroup.controls.Extension.value}}">
+      </phx-form-control>
+    </div>
+  </div>
+
+  <phx-form-control labelText="">
+    <button type="button" class="btn btn-default btn-material right pull-right" (click)="onClickDeletePhoneNumber()"
+      *ngIf="readOnlyStorage.IsEditable">
+      <i class="material-icons">delete</i>
+    </button>
+  </phx-form-control>
+
+</form>

@@ -1,0 +1,37 @@
+<form [formGroup]="inputFormGroup">
+  <div>
+    <div class="panel-internal">
+      <div class="form-group">
+        <div class="col-lg-12">
+          <h4>Billing Invoice</h4>
+        </div>
+      </div>
+      <div formArrayName="BillingInfoes">
+        <div *ngFor="let billingInfo of inputFormGroup.controls.BillingInfoes.controls; let i = index; trackBy: trackByForBillingInfo">
+          <div class="form-group">
+            <div class="col-lg-8">
+              <p class="form-control-static" *ngIf="billingInfo.controls.OrganizationClientDisplayName.value">
+                <a routerLink="/next/organization/{{billingInfo.controls.OrganizationIdClient.value}}/details">
+                  {{billingInfo.controls.OrganizationClientDisplayName.value}} -
+                  {{billingInfo.controls.OrganizationIdClient.value}}</a>
+              </p>
+            </div>
+          </div>
+          <div [formGroupName]="i">
+            <div formArrayName="BillingInvoices">
+              <div *ngFor="let billingInvoice of billingInfo.controls.BillingInvoices.controls; let j = index; trackBy: trackByForBillingInvoice">
+                <div [formGroupName]="j">
+                  <div *ngIf="billingInvoice.controls.InvoiceTypeId.value === invoiceType">
+                    <app-workorder-billing-invoice [inputFormGroup]="billingInvoice" [readOnlyStorage]="readOnlyStorage" [invoiceType]="invoiceType"
+                      [organizationClientId]="billingInfo.controls.OrganizationIdClient.value" (outputEvent)="onOutputEvent($event, j)">
+                    </app-workorder-billing-invoice>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

@@ -1,0 +1,157 @@
+<style>
+    a.disabled {
+        pointer-events: none;
+        cursor: default;
+    }
+</style>
+
+<div class="app-accordion-container app-accordion-container-28">
+    <div *ngIf="vmsArrayLength > 0">
+        <div class="app-accordion-level-one" *ngFor="let company of internalCompanies">
+            <div class="app-accordion-level-one-item" (click)="showRecords(company)">
+                <i class="app-accordion-chevron" [ngClass]="{'icon-chevron-down': !company.isOpen, 'icon-chevron-up': company.isOpen}"></i>
+                <span>{{company.InternalCompanyName}}</span>
+            </div>
+            <div class="app-accordion-level-two" *ngIf="company.isOpen">
+                <div (click)="toggleImportOpen(company)" class="app-accordion-level-two-item">
+                    <span>Import files</span>
+                    <i class="app-accordion-chevron" [ngClass]="{'icon-chevron-down': !company.openImport, 'icon-chevron-up': company.openImport}"></i>
+                </div>
+
+                <div class="row" style="margin: 5px 0;" *ngIf="company.openImport">
+                    <div class="col-lg-12" style="margin-bottom: 5px;">
+                        <div class="col-lg-offset-1 col-lg-2">
+                            <label>Select Client Company</label>
+                        </div>
+                        <div class="col-lg-5" style="margin-bottom: 5px;">
+                            <app-phx-select-box [items]="listOrganizationClient" textField="DisplayName" valueField="Id"
+                                placeholder="Select One" [(ngModel)]="company.importOrgId">
+                            </app-phx-select-box>
+                        </div>
+                        <div class="col-lg-offset-1 col-lg-2 app-text-right-sm" style="margin-bottom: 5px;">
+                            <a href="javascript:void(0);" [class.disabled]="!company.importOrgId ? true : null" (click)="importFile(company.InternalCompanyId, company.importOrgId)"
+                                class="btn btn-primary">Upload file(s)</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="app-accordion-level-two-item" (click)="toggleProcessingOpen(company)">
+                    <span>Files ready for preprocessing</span>&nbsp;
+                    <span class="badge app-badge" [ngClass]="company.documentCountTotal > 0 ? 'badge-warning' : 'badge-default'">{{+company.documentCountTotal}}</span>
+                    <i class="app-accordion-chevron" [ngClass]="{'icon-chevron-down': !company.openProcessing, 'icon-chevron-up': company.openProcessing}"></i>
+                </div>
+                <div class="row" style="margin: 5px 0;" *ngIf="company.openProcessing">
+
+                    <div class="col-lg-12" style="margin-bottom: 5px;">
+                        <div class="col-lg-offset-1 col-lg-2">
+                            <label>Select Client Company</label>
+                        </div>
+                        <div class="col-lg-5" style="margin-bottom: 5px;">
+                            <app-phx-select-box [items]="company.clientCompanyDocuments" textField="ClientOrgDisplayName"
+                                valueField="OrganizationIdClient" placeholder="Select One" [(ngModel)]="company.preprosOrgId">
+                            </app-phx-select-box>
+                        </div>
+                        <div class="col-lg-offset-1 col-lg-2 app-text-right-sm" style="margin-bottom: 5px;">
+                            <a href="javascript:;" [class.disabled]="!company.preprosOrgId ? true : null" (click)="goToPreprocess(company)"
+                                class="btn btn-primary">Preprocess</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="app-accordion-level-two-item" (click)="toggleOpen2(company)">
+                    <span>Pending transaction creation</span>
+                    <span class="badge app-badge" [ngClass]="company.preparedCountTotal > 0 ? 'badge-warning' : 'badge-default'">{{+company.preparedCountTotal}}</span>
+                    <i class="app-accordion-chevron" [ngClass]="{'icon-chevron-down': !company.openPrepared, 'icon-chevron-up': company.openPrepared}"></i>
+                </div>
+                <div class="app-accordion-level-three" *ngIf="company.openPrepared">
+                    <!--<a ui-sref="vms.transactions({internalOrganizationId:company.InternalCompanyId })">-->
+                    <div class="app-accordion-level-three-item" [ngClass]="{ 'app-no-link': company.PreparedCount == 0 }"
+                        (click)="gotoProfile(company.InternalCompanyId,'vms-timesheet')">
+                        <span>Timesheet</span>&nbsp;
+                        <span class="badge badge-warning app-badge" *ngIf="company.PreparedCount > 0">{{+company.PreparedCount}}</span>
+                    </div>
+                    <!--<a ui-sref="vms-discount.process({internalOrganizationId:company.InternalCompanyId })">-->
+                    <div class="app-accordion-level-three-item" [ngClass]="{ 'app-no-link': company.discountPreparedCount == 0 }"
+                        (click)="gotoProfile(company.InternalCompanyId,'vms-discount')">
+                        <span>Discount</span>&nbsp;
+                        <span class="badge badge-warning app-badge" *ngIf="company.discountPreparedCount > 0">{{+company.discountPreparedCount}}</span>
+                    </div>
+                    <div class="app-accordion-level-three-item" [ngClass]="{ 'app-no-link': company.unitedstatessourcedeductionPreparedCount == 0 }"
+                        (click)="gotoProfile(company.InternalCompanyId,'vms-ussourcededuction')">
+                        <span>United States Source Deduction</span>&nbsp;
+                        <span class="badge badge-warning app-badge" *ngIf="company.unitedstatessourcedeductionPreparedCount > 0">{{+company.unitedstatessourcedeductionPreparedCount}}</span>
+                    </div>
+                    <!--<a ui-sref="vms-expense.process({internalOrganizationId:company.InternalCompanyId })">-->
+                    <div class="app-accordion-level-three-item" [ngClass]="{ 'app-no-link': company.expensePreparedCount == 0 }"
+                        (click)="gotoProfile(company.InternalCompanyId,'vms-expense')">
+                        <span>Expense</span>&nbsp;
+                        <span class="badge badge-warning app-badge" *ngIf="company.expensePreparedCount > 0">{{+company.expensePreparedCount}}</span>
+                    </div>
+                    <div class="app-accordion-level-three-item" [ngClass]="{ 'app-no-link': company.commissionPreparedCount == 0 }"
+                        (click)="gotoProfile(company.InternalCompanyId,'vms-commission')">
+                        <span>Commission</span>&nbsp;
+                        <span class="badge badge-warning app-badge" *ngIf="company.commissionPreparedCount > 0">{{+company.commissionPreparedCount}}</span>
+                    </div>
+                    <div class="app-accordion-level-three-item" [ngClass]="{ 'app-no-link': company.fixedPricePreparedCount == 0 }"
+                        (click)="gotoProfile(company.InternalCompanyId,'vms-fixedprice')">
+                        <span>Fixed Price</span>&nbsp;
+                        <span class="badge badge-warning app-badge" *ngIf="company.fixedPricePreparedCount > 0">{{+company.fixedPricePreparedCount}}</span>
+                    </div>
+                </div>
+
+                <div class="app-accordion-level-two-item" (click)="toggleOpen3(company)">
+                    <span class="vms-company-body-item-in">Transactions with conflicts</span>
+                    <span class="badge app-badge" [ngClass]="company.conflictCountTotal > 0 ? 'badge-warning' : 'badge-default'">{{+company.conflictCountTotal}}</span>
+                    <i class="app-accordion-chevron" [ngClass]="{'icon-chevron-down': !company.openConflicts, 'icon-chevron-up': company.openConflicts}"></i>
+                </div>
+                <div class="app-accordion-level-three" *ngIf="company.openConflicts">
+                    <div class="app-accordion-level-three-item" [ngClass]="{ 'app-no-link': company.conflictCount == 0 }"
+                        (click)="gotoProfile(company.InternalCompanyId,'vms-timesheet-conflict')">
+                        <span>Timesheet</span>&nbsp;
+                        <span class="badge badge-warning app-badge" *ngIf="company.conflictCount" [ngClass]="company.conflictCount > 0 ? 'badge-warning' : 'badge-default'">{{+company.conflictCount}}</span>
+                    </div>
+                    <div class="app-accordion-level-three-item" [ngClass]="{ 'app-no-link': company.discountConflictCount == 0 }"
+                        (click)="gotoProfile(company.InternalCompanyId,'vms-discount-conflict')">
+                        <span>Discount</span>&nbsp;
+                        <span class="badge badge-warning app-badge" *ngIf="company.discountConflictCount">{{+company.discountConflictCount}}</span>
+                    </div>
+                    <div class="app-accordion-level-three-item" [ngClass]="{ 'app-no-link': company.unitedstatessourcedeductionConflictCount == 0 }"
+                        (click)="gotoProfile(company.InternalCompanyId,'vms-ussourcededuction-conflict')">
+                        <span>United States Source Deduction</span>&nbsp;
+                        <span class="badge badge-warning app-badge" *ngIf="company.unitedstatessourcedeductionConflictCount">{{+company.unitedstatessourcedeductionConflictCount}}</span>
+                    </div>
+                    <div class="app-accordion-level-three-item" [ngClass]="{ 'app-no-link': company.expenseConflictCount == 0 }"
+                        (click)="gotoProfile(company.InternalCompanyId,'vms-expense-conflict')">
+                        <span>Expense</span>&nbsp;
+                        <span class="badge badge-warning app-badge" *ngIf="company.expenseConflictCount > 0">{{+company.expenseConflictCount}}</span>
+                    </div>
+                    <div class="app-accordion-level-three-item" [ngClass]="{ 'app-no-link': company.commissionConflictCount == 0 }"
+                        (click)="gotoProfile(company.InternalCompanyId,'vms-commission-conflict')">
+                        <span>Commission</span>&nbsp;
+                        <span class="badge badge-warning app-badge" *ngIf="company.commissionConflictCount > 0">{{+company.commissionConflictCount}}</span>
+                    </div>
+                    <div class="app-accordion-level-three-item" [ngClass]="{ 'app-no-link': company.fixedPriceConflictCount == 0 }"
+                        (click)="gotoProfile(company.InternalCompanyId,'vms-fixedprice-conflict')">
+                        <span>Fixed Price</span>&nbsp;
+                        <span class="badge badge-warning app-badge" *ngIf="company.fixedPriceConflictCount > 0">{{+company.fixedPriceConflictCount}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!---->
+    <p class="app-no-items" *ngIf="vmsArrayLength == 0">
+        There are no VMS items to show
+    </p>
+</div>
+
+<div id="uploadDocument" *ngIf="showUploader">
+    <div class="form-group">
+        <div class="col-lg-12">
+            <div>
+                <app-phx-document-file-upload #fileUpload [showAddButton]="false" [(configuration)]="html.DocumentFileUploadConfiguration"
+                    [funcValidation]="documentUploadValidation" (onSuccessItem)="onCompleteUpload($event)" [editable]="this.readOnlyStorage?.IsEditable"
+                    [fileUploaderOptions]="html.fileUploaderOptions_DocumentMain" [docTypeList]="documentTypeList"></app-phx-document-file-upload>
+            </div>
+        </div>
+    </div>
+</div>

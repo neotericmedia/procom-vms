@@ -1,0 +1,279 @@
+// Core variables and mixins
+@import "variables.less";
+@import "mixins.less";
+
+@fc-border-color: lighten(@border-color, 5%);
+@fc-highlight-background: lighten(@yellow, 38%);
+@fc-hover-background: lighten(@fc-highlight-background, 5%);
+@fc-inactive-background: lighten(@yellow, 38%);
+
+@fc-weekend-background: lighten(@fc-highlight-background, 7%);
+
+.fc {
+    width: 100%;
+    direction: ltr;
+    text-align: left;
+    margin-bottom: @line-height-base;
+    font-size: @font-size-small;
+
+    .fc-header {
+        height: 24px;
+
+        .fc-day-header {
+            width: 14%;
+            border: 1px solid @fc-border-color;
+        }
+
+        .fc-sun {
+        }
+
+        .fc-mon {
+        }
+
+        .fc-tue {
+        }
+
+        .fc-wed {
+        }
+
+        .fc-thu {
+        }
+
+        .fc-fri {
+        }
+
+        .fc-sat {
+        }
+    }
+
+    .fc-week {
+        .fc-day {
+            border: 1px solid @fc-border-color;
+
+            .fc-day-number {
+                color: @gray-light;
+                margin: 3px;
+            }
+
+            &.time-entry {
+                // editable timesheet details entry
+            }
+
+            &.empty {
+                // placeholder - readonly calendar box
+            }
+
+            .fc-day-content {
+                position: relative;
+                height: 50px;
+                padding: 2px 10px 10px;
+
+                .hours {
+                    vertical-align: bottom;
+                    text-align: end;
+                    font-weight: 400;
+                    width: 100%;
+                    text-align: right;
+                    border: 0; 
+                    background: transparent; 
+                    border-style: none; 
+                    font-size: 24px;
+
+                    &.hours-readonly{
+                        padding-top:1px;
+                        padding-right:3px;
+                    }
+                }
+
+                .print-show{
+                    display: none;
+                }
+
+                .void {
+                }
+            }
+
+            &:hover {
+                background: @fc-hover-background;
+            }
+
+            &.fc-sun {
+                background: @fc-weekend-background;
+
+                &:hover {
+                    background: @fc-hover-background;
+                }
+            }
+
+            &.fc-mon {
+            }
+
+            &.fc-tue {
+            }
+
+            &.fc-wed {
+            }
+
+            &.fc-thu {
+            }
+
+            &.fc-fri {
+            }
+
+            &.fc-sat {
+                background: @fc-weekend-background;
+
+                &:hover {
+                    background: @fc-hover-background;
+                }
+            }
+        }
+
+        .fc-today {
+            background: @fc-highlight-background;
+
+            &:hover {
+                background: @fc-highlight-background;
+            }
+        }
+
+        .empty, .empty:hover {
+            background: none repeat scroll 0 0 #FFF !important;
+
+            .fc-day-number {
+                color: #FFF !important;
+            }
+        }
+    }
+
+    .fc-footer {
+        visibility: hidden;
+    }
+}
+
+/* Reusable Separate-border Table
+------------------------------------------------------------*/
+
+table {
+    &.fc-border-separate {
+        border-collapse: collapse;
+        border-spacing: 0;
+
+        th,
+        td {
+            padding: 0;
+            vertical-align: top;
+            border-width: 1px 0 0 1px;
+
+            &.fc-last {
+                border-right-width: 1px;
+            }
+        }
+
+        tr.fc-last {
+            th,
+            td {
+                border-bottom-width: 1px;
+            }
+        }
+
+        tbody {
+            td {
+                //border-left-color: #dcdde4;
+                &.fc-first {
+                    //border-left-color: #c0c2cd;
+                }
+            }
+
+            tr.fc-first {
+                td,
+                th {
+                    border-top-width: 0;
+                }
+            }
+        }
+    }
+}
+
+.timesheet-view {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+
+    /*.ts-header {
+        display: block;
+    }
+
+    .ts-details {
+        .ts-navigation {
+            display: block;
+        }
+
+        .col-lg-2,
+        .col-lg-3 {
+            display: block;
+        }
+
+        .ts-calendar {
+            .print-hiden {
+                display: block;
+            }
+        }
+    }
+        */
+    .ts-view-header {
+        display: block;
+        font-size: 16px;
+    }
+
+    .ts-view-date-range {
+        display: block;
+        text-align: center;
+    }
+
+    .ts-view-footer {
+        display: block;
+
+        table {
+            text-align: center;
+
+            .consultant-signature {
+                padding-top: 30px;
+            }
+
+            .client-signature {
+                padding-top: 30px;
+            }
+        }
+    }
+
+    .fc {
+        width: 100%;
+        direction: ltr;
+        text-align: left;
+        margin-bottom: 10px;
+
+        .fc-footer {
+            visibility: visible;
+            height: 50px;
+
+            .fc-footer-details-left {
+                border-bottom: 1px solid #EAEAEA;
+                border-left: 1px solid #EAEAEA;
+                font-size: 12px;
+                padding-top: 18px;
+            }
+
+            .fc-footer-details-right {
+                border-bottom: 1px solid #EAEAEA;
+                border-right: 1px solid #EAEAEA;
+                font-size: 28px;
+                text-align: center;
+                padding-top: 4px;
+            }
+        }
+    }
+}

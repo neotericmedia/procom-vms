@@ -1,0 +1,16 @@
+Hours by Rate Type
+<ul *ngFor="let item of getUnitsByRateType()">
+  <li>{{ item.RateTypeId | CodeValue:commonService.CodeValueGroups.RateType:'text'}} | {{ item.UnitAmount }} {{ item.UnitId |
+    CodeValue:commonService.CodeValueGroups.RateUnit:'text' | lowercase}}</li>
+</ul>
+
+<div *ngIf="timeSheet.IsTimeSheetUsesProjects">
+  <br> Projects by Rate and Unit type
+  <ul *ngFor="let item of getUnitsByProjectAndRateType()">
+    <li>{{ item.ProjectId === null ? 'Project Not Selected' : getProjectNameById(item.ProjectId, item.ProjectVersionId) }} </li>
+    <ul *ngFor="let item2 of item.UnitsByRateType">
+      <li>{{ item2.RateTypeId | CodeValue:commonService.CodeValueGroups.RateType:'text'}} | {{ item2.UnitAmount }} {{ item2.UnitId
+        | CodeValue:commonService.CodeValueGroups.RateUnit:'text' | lowercase}}</li>
+    </ul>
+  </ul>
+</div>

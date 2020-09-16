@@ -1,0 +1,139 @@
+﻿<div class="smart-table-wrapper" data-ng-show="!refreshTable">
+    <div class="row" data-cg-busy="loadItemsPromise">
+        <table data-st-table-struct='[{"stTableValue" : "items" }, {"stPipeValue" : "callServer" }, {"widthValues" : "[12, 12, 10, 5, 8, 8, 8, 8, 8, 8, 8, 7]"}, {"stPaginationValue" : "pageSize"}]'>
+            <thead data-st-head="2400px">
+                <tr>
+                    <th data-st-sort="ClientName">Client</th>
+                    <th data-st-sort="OrganizationInternalLegalName">Internal Company</th>
+                    <th data-st-sort="WorkerName">Worker</th>
+                    <th>Total H/D</th>
+                    <th data-st-sort="StartDate">From</th>
+                    <th data-st-sort="EndDate">To</th>
+                    <th data-st-sort="TimeSheetId" data-st-sort-default="reverse">TS ID</th>
+                    <th data-st-sort="BankBranchCode">Branch</th>
+                    <th data-st-sort="WorkOrderNumber">Work Order</th>
+                    <th data-st-sort="WorkOrderStartDate">WO Start</th>
+                    <th data-st-sort="WorkOrderEndDate">WO End</th>
+                    <th data-st-pen-name="Action">Action</th>
+                </tr>
+                <tr>
+                    <th>
+                        <input data-st-advanced-search="'ClientName'" placeholder=""
+                               class="input-sm form-control" type="search" />
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="'OrganizationInternalLegalName'" placeholder=""
+                               class="input-sm form-control" type="search" />
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="'WorkerName'" placeholder=""
+                               class="input-sm form-control" type="search" />
+                    </th>
+                    <th>
+                        <!-- No Unit search -->
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="'StartDate'"
+                               data-st-as-operator-override="'ge'"
+                               close-on-date-selection="false" show-button-bar="false" show-weeks="false" class="input-sm form-control"
+                               data-st-as-lazy-attributes="{'uib-datepicker' : ApplicationConstants.formatDate}"
+                               data-st-as-height-override="400"
+                               data-st-as-width-override="315" />
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="'EndDate'"
+                               data-st-as-operator-override="'le'"
+                               close-on-date-selection="false" show-button-bar="false" show-weeks="false" class="input-sm form-control"
+                               data-st-as-lazy-attributes="{'uib-datepicker' : ApplicationConstants.formatDate}"
+                               data-st-as-height-override="400"
+                               data-st-as-width-override="315" />
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="{property: 'TimeSheetId', ignoreQuotes: true}" placeholder=""
+                               class="input-sm form-control numberType" data-safe-restrict-input="[^0123456789]" />
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="'BankBranchCode'" placeholder=""
+                               class="input-sm form-control" type="search" />
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="'WorkOrderNumber'" placeholder=""
+                               class="input-sm form-control" type="search" />
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="'WorkOrderStartDate'"
+                               data-st-as-operator-override="'ge'"
+                               close-on-date-selection="false" show-button-bar="false" show-weeks="false" class="input-sm form-control"
+                               data-st-as-lazy-attributes="{'uib-datepicker' : ApplicationConstants.formatDate}"
+                               data-st-as-height-override="400"
+                               data-st-as-width-override="315" />
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="'WorkOrderEndDate'"
+                               data-st-as-operator-override="'le'"
+                               close-on-date-selection="false" show-button-bar="false" show-weeks="false" class="input-sm form-control"
+                               data-st-as-lazy-attributes="{'uib-datepicker' : ApplicationConstants.formatDate}"
+                               data-st-as-height-override="400"
+                               data-st-as-width-override="315" />
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <!--timesheet.details', { timesheetId: exception.TimeSheetId, workOrderId: exception.WorkOrderId, redirectOnComplete: 'timesheet.exceptions' });-->
+            <tbody>
+                <tr data-ng-repeat-start="timesheetException in items"
+                    ng-class="{'even-group': timesheetException.$even, 'odd-group': !timesheetException.$even, 'hover' : timesheetException.isHovering }"
+                    data-ng-init="timesheetException.$even = $even;"
+                    ng-mouseenter="timesheetException.isHovering = true" ng-mouseleave="timesheetException.isHovering = false"
+                    class="first-member" style="cursor: pointer" ng-if="timesheetException && timesheetException.TimeSheetId && timesheetException.WorkOrderId ? routeChangeString = 'timesheet.details({ timesheetId: timesheetException.TimeSheetId, workOrderId: timesheetException.WorkOrderId, redirectOnComplete: \'timesheet.exceptions\' })' : ''" data-ui-sref-tr="{{routeChangeString}}">
+                    <!--style="cursor: pointer" data-ng-click=""-->
+                    <td ng-bind="::timesheetException.ClientName"></td>
+                    <td ng-bind="::timesheetException.OrganizationInternalLegalName"></td>
+                    <td ng-bind="::timesheetException.WorkerName"></td>
+                    <td ng-bind="::timesheetException.TotalUnits ? timesheetException.TotalUnits : 'N/A'"></td>
+                    <td ng-bind="::timesheetException.StartDate | date: ApplicationConstants.formatDate"></td>
+                    <td ng-bind="::timesheetException.EndDate | date: ApplicationConstants.formatDate"></td>
+                    <td><a href="" ng-bind="::timesheetException.TimeSheetId"></a></td>
+                    <td ng-bind="::timesheetException.BankBranchCode"></td>
+                    <td><a href="" data-ng-click="selectWorkOrder(timesheetException)" ng-bind="::timesheetException.WorkOrderNumber"></a></td>
+                    <td ng-bind="::timesheetException.WorkOrderStartDate | date: ApplicationConstants.formatDate"></td>
+                    <td ng-bind="::timesheetException.WorkOrderEndDate | date: ApplicationConstants.formatDate"></td>
+                    <td>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-xs btn-clouds btn-row-action" title="View"><i class="fontello-icon-eye-1"></i></button>
+                        </div>
+                    </td>
+                </tr>
+                <tr data-ng-repeat-end=""
+                    ng-class="{'even-group': timesheetException.$even, 'odd-group': !timesheetException.$even, 'hover' : timesheetException.isHovering }"
+                    ng-mouseenter="timesheetException.isHovering = true" ng-mouseleave="timesheetException.isHovering = false">
+                    <td class="ignore-st-column-width" style="width: 10%; cursor: pointer" ></td>
+                    <td colspan="11" class="ignore-st-column-width" style="width: 90%" data-ng-if="timesheetException.Comments">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div>
+                                    <span class="timesheet-exception-label">Reasons for Exception:</span>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <ul class="timesheet-exception" style="margin-left: 1em;">
+                                    <li data-ng-repeat="comment in timesheetException.Comments">
+                                        <span class="comment">{{comment.Comment}}</span>
+                                        <a href="" class="viewLink" data-ng-click="viewExceptionComment(comment, timesheetException)">View</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="9">
+                        <span>Total Count: {{totalItemCount || 0}}; Items Loaded: {{ items ? items.length : 0}}</span>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>

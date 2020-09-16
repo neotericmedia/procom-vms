@@ -1,0 +1,120 @@
+// Core variables and mixins
+@import "variables.less";
+@import "mixins.less";
+
+//
+// Dropdown menus
+// --------------------------------------------------
+
+
+// Dropdown arrow/caret
+// --------------------
+.caret {
+
+    &.caret-right {
+        margin-left: 4px !important;
+        border-top:   @caret-width-large solid transparent;
+        border-left:  @caret-width-large solid @dropdown-caret-color;
+        border-bottom:@caret-width-large solid transparent;
+    }
+
+    &.caret-left {
+        margin-right: 6px;
+        margin-left: 0;
+        border-top:   @caret-width-large solid transparent;
+        border-right: @caret-width-large solid @dropdown-caret-color;
+        border-bottom:@caret-width-large solid transparent;
+    }
+
+}
+
+
+// The dropdown menu (ul)
+// ----------------------
+.dropdown-menu {
+    text-align: left;
+
+    > li > a {
+        position: relative;
+    }
+
+    > .current > a {
+        color: @brand-primary-accent;
+
+        &:before {
+            display: block;
+            position: absolute;
+            top: 3px;
+            right: 10px;
+            .size(14,14);
+            color: @dropdown-link-color;
+            font-family: 'appicon';
+            content: "\e0b5";
+        }
+
+        &:hover {
+            &:before {
+                color: @dropdown-link-hover-color;
+            }
+        }
+    }
+}
+
+.dropdown-menu.bordered {
+    border: 1px solid #ccc;
+}
+
+// Animation
+// ---------
+.dropdown-menu {
+    .animation(bounceInDrop);
+    .animation-duration(.15s);
+}
+
+.dropdown-submenu {
+    position: relative;
+}
+
+.dropdown-submenu>.dropdown-menu {
+    top: 35px;
+    left: -100%;
+    margin-top: -6px;
+    margin-left: -1px;
+    -webkit-border-radius: 0 6px 6px 6px;
+    -moz-border-radius: 0 6px 6px;
+    border-radius: 0 6px 6px 6px;
+}
+
+.dropdown-submenu:hover>.dropdown-menu {
+    display: block;
+}
+
+.dropdown-submenu>a:after {
+    display: block;
+    content: " ";
+    float: right;
+    width: 0;
+    height: 0;
+    border-color: transparent;
+    border-style: solid;
+    border-width: 5px 0 5px 5px;
+    border-left-color: #ccc;
+    margin-top: 5px;
+    margin-right: -10px;
+}
+
+.dropdown-submenu:hover>a:after {
+    border-left-color: #fff;
+}
+
+.dropdown-submenu.pull-right {
+    float: none;
+}
+
+.dropdown-submenu.pull-right>.dropdown-menu {
+    left: -100%;
+    margin-left: 10px;
+    -webkit-border-radius: 6px 0 6px 6px;
+    -moz-border-radius: 6px 0 6px 6px;
+    border-radius: 6px 0 6px 6px;
+}

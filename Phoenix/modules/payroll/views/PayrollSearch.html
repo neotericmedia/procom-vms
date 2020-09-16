@@ -1,0 +1,76 @@
+<div class="btn-group btn-payroll-search-nav">
+    <div class="payroll-btn-wrapper">
+        <button type="button" class="btn btn-clouds dropdown-toggle" data-toggle="dropdown">
+            <span class="payroll-btn-name">Actions</span> <span class="caret ml payroll-btn-caret"></span>
+        </button>
+        <ul class="dropdown-menu bordered">
+            <li><a data-ui-sref="payroll.federalTax({ federalTaxHeaderId:0, federalTaxVersionId:0 })">Create New Federal Tax</a></li>
+            <li><a data-ui-sref="payroll.provincialTax({ provincialTaxHeaderId: 0, provincialTaxVersionId:0 })">Create New Provincial/State Tax</a></li>
+        </ul>
+    </div>
+</div>
+<div class="smart-table-wrapper">
+    <div class="row" data-cg-busy="loadItemsPromise">
+        <table data-st-table-struct='[{"stTableValue" : "search.items"}, {"stPipeValue" : "search.callServer"}, {"widthValues" : "[10, 20, 20, 20, 20, 10]"}, {"stPaginationValue" : "search.pageSize"}]'>
+            <thead data-st-head="1200px">
+                <tr>
+                    <th data-st-sort="Id" data-st-sort-default="reverse">ID</th>
+                    <th data-st-sort="TaxType">Type</th>
+                    <th data-st-sort="Country">Country</th>
+                    <th data-st-sort="Province">Province/State</th>
+                    <th data-st-sort="EffectiveDate">Effective Date</th>
+                    <th data-st-pen-name="Action" title="Action">Action</th>
+                </tr>
+                <tr>
+                    <th>
+                        <input data-st-advanced-search="{property: 'Id', ignoreQuotes: true}" placeholder="" class="input-sm form-control numberType" data-safe-restrict-input="[^0123456789]" />
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="'TaxType'" placeholder=""
+                               class="input-sm form-control" />
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="'Country'" placeholder=""
+                               class="input-sm form-control" type="search" />
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="'Province'" placeholder=""
+                               class="input-sm form-control" type="search" />
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="'EffectiveDate'"
+                               data-st-as-operator-override="'ge'"
+                               close-on-date-selection="false" show-button-bar="false" show-weeks="false" class="input-sm form-control"
+                               data-st-as-lazy-attributes="{'uib-datepicker' : ApplicationConstants.formatDate}"
+                               data-st-as-height-override="400"
+                               data-st-as-width-override="315" />
+                    </th>
+                    <th>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr data-ng-repeat="item in search.items" style="cursor:pointer" data-ng-click="search.rowClicked(item)">
+                    <td title="{{item.Id}}"><span class="payroll-search-item" ng-bind="::item.Id"></span></td>
+                    <td title="{{item.TaxType}}"><span class="payroll-search-item" ng-bind="::item.TaxType"></span></td>
+                    <td title="{{item.Country}}"><span class="payroll-search-item" ng-bind="::item.Country"></span></td>
+                    <td title="{{item.Province ? item.Province : 'N/A'}}"><span class="payroll-search-item" ng-bind="::item.Province ? item.Province : 'N/A'"></span></td>
+                    <td title="{{item.EffectiveDate  | date:ApplicationConstants.formatDateComma}}"><span class="payroll-search-item" ng-bind="::item.EffectiveDate | date:ApplicationConstants.formatDateComma"></span></td>
+                    <td>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-xs btn-clouds btn-row-action btn-payroll-view no-padding-bottom" data-action="view" title="View"><i class="fontello-icon-eye-1"></i></button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="9">
+                        <span>Total Count: {{search.totalItemCount || 0}}; Items Loaded: {{ search.items ? search.items.length : 0}}</span>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>
+

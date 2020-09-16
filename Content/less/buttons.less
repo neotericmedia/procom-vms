@@ -1,0 +1,167 @@
+// Core variables and mixins
+@import "variables.less";
+@import "mixins.less";
+
+//
+// Buttons
+// --------------------------------------------------
+
+.btn {
+    position: relative;
+    font-size:13px;
+    font-weight: 600;
+    line-height: 1.53846154;
+    /*&[data-icon]:before {
+	    font-family: 'appicon';
+        display: inline-block;
+        vertical-align: middle;
+        margin-right: 6px;
+        margin-top: -3px;
+        font-size: ceil(@font-size-base * 1.05); // ~16px
+    }*/
+}
+
+// Info appears as blue-green
+.btn-outline {
+    .btn-pseudo-states(@text-color;
+    @btn-default-bg;
+    @btn-default-border
+    );
+
+    &:hover,
+    &:focus {
+        color: @text-color;
+    }
+
+    &.br-strong {
+        padding: (@padding-base-vertical - 1) @padding-base-horizontal;
+        border-width: 2px;
+    }
+}
+
+/*.btn-icon {
+    padding: 0;
+
+    &.br-strong {
+        padding: 0;
+    }
+
+    &[data-icon]:before {
+        margin-right: 0;
+        margin-top: 0;
+        .size((@padding-base-vertical * 2) + @line-height-computed, ((@padding-base-vertical * 2) + @line-height-computed));
+        font-size: ceil(@font-size-base * 1.50); // ~18px
+        line-height: ((@padding-base-vertical * 2) + @line-height-computed);
+        .opacity(.6)
+    }
+
+    &.br-strong {
+        &[data-icon]:before {
+            .size((@padding-base-vertical * 2) + @line-height-computed, ((@padding-base-vertical * 2) + @line-height-computed) - 2);
+            line-height: ((@padding-base-vertical * 2) + @line-height-computed) - 2;
+        }
+    }
+
+    &:hover {
+        &[data-icon]:before {
+            .opacity(100)
+        }
+    }
+}*/
+
+// Info appears as blue-green
+.btn-accent {
+    .btn-pseudo-states(#fff;
+    @btn-info-bg;
+    @btn-info-border
+    );
+}
+
+.btn-yellow {
+    .btn-pseudo-states(#fff;
+    #f3cf3f;
+    #f3cf3f
+    );
+}
+
+.btn-clouds {
+    .btn-pseudo-states(#444;
+    #f6f6f6;
+    #ddd
+    );
+}
+
+.btn-silver {
+    .btn-pseudo-states(#222;
+    #eee;
+    #ccc
+    );
+}
+
+.btn-label {
+    .btn-pseudo-states(#fff;
+    #b9d9ef;
+    #b9d9ef
+    );
+}
+
+// Button Sizes
+// --------------------------------------------------
+
+/*.btn-lg {
+  font-size: @font-size-large;
+}*/
+.btn-sm,
+.btn-xs {
+    font-size: ceil(@font-size-base * .92); // ~13px
+}
+
+
+.btn-corp {
+    .button-variant(@btn-corp-color;
+    @btn-corp-bg;
+    @btn-corp-border
+    );
+}
+
+
+// Reposition the caret correction space
+.btn .caret {
+    &.ml {
+        margin-left: 5px;
+    }
+
+    &.mr {
+        margin-right: 5px;
+        margin-left: 0;
+    }
+}
+
+.btn-scroll-up {
+    border: none;
+    position: absolute;
+    right: 2px;
+    bottom: 2px;
+    z-index: 11;
+}
+
+@media (min-width: @screen-tablet) {
+    .main-container.container > .btn-scroll-up {
+        right: auto;
+        margin-left: @container-tablet - 36;
+    }
+}
+
+@media (min-width: @screen-desktop) {
+    .main-container.container > .btn-scroll-up {
+        right: auto;
+        margin-left: @container-desktop - 36;
+    }
+}
+
+@media (min-width: @screen-lg-desktop) {
+    .main-container.container > .btn-scroll-up {
+        right: auto;
+        margin-left: @container-lg-desktop - 36;
+    }
+}

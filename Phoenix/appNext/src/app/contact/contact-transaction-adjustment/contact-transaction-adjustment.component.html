@@ -1,0 +1,307 @@
+<div>
+    <div class="col-md-12">
+        <form [formGroup]="transactionAdjustmentForm">
+            <div class="row ">
+                <div class="tab-content">
+                    <div class="tabbable panel panel-tabbable">
+                        <div class="tab-content">
+                            <div class="tab-pane active">
+                                <div class="panel-heading">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="">
+                                                <div class="row form-group ">
+                                                    <div class="col-md-12">
+                                                        <h4>Transaction Info</h4>
+                                                    </div>
+                                                </div>
+                                                <div class="row form-group col-md-12">
+                                                    <label class="col-md-4 control-label">Employee Amount Total:</label>
+                                                    <div class="col-md-8">
+                                                        {{(EmployeeAmountTotal || 0.00) | currency: ' $'}}
+                                                    </div>
+                                                </div>
+                                                <div class="row form-group col-md-12">
+                                                    <label class="col-md-4 control-label">Employer Amount Total:</label>
+                                                    <div class="col-md-8">
+                                                        {{(EmployerAmountTotal || 0.00) | currency: ' $'}}
+                                                    </div>
+                                                </div>
+                                                <div class="row form-group col-md-12">
+                                                    <label class="col-md-4 control-label">Client Amount Total:</label>
+                                                    <div class="col-md-8">
+                                                        {{(ClientAmountTotal || 0.00) | currency: ' $'}}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="">
+
+                                                <div class="row form-group">
+                                                    <div class="col-md-12">
+                                                        <h4>Work Order Info</h4>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row form-group col-md-12">
+                                                    <!-- <phx-form-control labelText="Work Order:" [editable]="true"
+                                                        [control]="transactionAdjustmentForm.controls.WorkOrderId">
+                                                        <div class="col-md-8 padding-0">
+                                                            <app-phx-select-box [items]="listsWorkOrder" textField="WorkOrderFullNumber"
+                                                                valueField="WorkOrderVersionId" [formControl]="transactionAdjustmentForm.controls.WorkOrderId"
+                                                                placeholder="-- Select One --" (valueChanged)="workerOrderChanged($event)">
+                                                            </app-phx-select-box>
+                                                        </div>
+                                                    </phx-form-control> -->
+
+                                                    <div class="col-md-4">
+                                                        <label for-property="WorkOrderVersionId" for="WorkOrderVersionId"
+                                                            class="control-label">Work
+                                                            Order</label>
+                                                        <span _ngcontent-c11 [ngClass]="transactionAdjustmentForm.controls.WorkOrderId.value === null ? 'error' : ''"
+                                                            class="asterisk">*</span>
+                                                    </div>
+
+                                                    <div class="col-md-8">
+                                                        <app-phx-select-box [items]="listsWorkOrder" textField="WorkOrderFullNumber"
+                                                            valueField="WorkOrderVersionId" [formControl]="transactionAdjustmentForm.controls.WorkOrderId"
+                                                            placeholder="-- Select One --" (valueChanged)="workerOrderChanged($event)">
+                                                        </app-phx-select-box>
+                                                    </div>
+
+
+                                                </div>
+                                                <div class="row form-group col-md-12">
+                                                    <label class="col-md-4 control-label">Worker:</label>
+                                                    <div class="col-md-8">
+                                                        <a *ngIf="contactDetails?.ProfileTypeId === phxConstants.UserProfileType.Organizational">{{contactDetails?.Contact.FullName}}
+                                                            - {{contactDetails?.ContactId}} (Organizational -
+                                                            {{contactDetails?.Id}})</a>
+                                                        <a *ngIf="contactDetails?.ProfileTypeId === phxConstants.UserProfileType.Internal">{{contactDetails?.Contact.FullName}}
+                                                            - {{contactDetails?.ContactId}} (Internal -
+                                                            {{contactDetails?.Id}})</a>
+                                                        <a *ngIf="contactDetails?.ProfileTypeId === phxConstants.UserProfileType.WorkerTemp">{{contactDetails?.Contact.FullName}}
+                                                            - {{contactDetails?.ContactId}} (Worker Temp -
+                                                            {{contactDetails?.Id}})</a>
+                                                        <a *ngIf="contactDetails?.ProfileTypeId === phxConstants.UserProfileType.WorkerCanadianSp">{{contactDetails?.Contact.FullName}}
+                                                            - {{contactDetails?.ContactId}} (Worker Canadian SP -
+                                                            {{contactDetails?.Id}})</a>
+                                                        <a *ngIf="contactDetails?.ProfileTypeId === phxConstants.UserProfileType.WorkerCanadianInc">{{contactDetails?.Contact.FullName}}
+                                                            - {{contactDetails?.ContactId}} (Worker Canadian Inc -
+                                                            {{contactDetails?.Id}})</a>
+                                                        <a *ngIf="contactDetails?.ProfileTypeId === phxConstants.UserProfileType.WorkerUnitedStatesW2">{{contactDetails?.Contact.FullName}}
+                                                            - {{contactDetails?.ContactId}} (Worker W2 -
+                                                            {{contactDetails?.Id}})</a>
+                                                        <a *ngIf="contactDetails?.ProfileTypeId === phxConstants.UserProfileType.WorkerUnitedStatesLLC">{{contactDetails?.Contact.FullName}}
+                                                            - {{contactDetails?.ContactId}} (Worker LLC -
+                                                            {{contactDetails?.Id}})</a>
+                                                    </div>
+                                                </div>
+                                                <div class="row form-group col-md-12">
+                                                    <label class="col-md-4 control-label">Internal Company:</label>
+                                                    <div class="col-md-8">
+                                                        <a *ngIf="organizationIdInternal">
+                                                            {{workerDetails.OrganizationInternalDisplayName}} -
+                                                            {{workerDetails.OrganizationIdInternal}}
+                                                            ({{workerDetails.OrganizationInternalCode}}) </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="">
+                                    <div class="panel-internal content-group form-horizontal">
+                                        <div class="content-group form-horizontal">
+                                            <div class="row">
+                                                <div class="form-group col-md-6">
+                                                    <phx-form-control [control]="transactionAdjustmentForm.controls.Description"
+                                                        [editable]="true" labelText="Description" viewModeText="{{transactionAdjustmentForm.controls.Description}}">
+                                                        <div>
+                                                            <input formControlName="Description" maxlength="64" type="text" class="form-control" />
+                                                        </div>
+                                                    </phx-form-control>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="form-group col-md-6">
+                                                    <phx-form-control [control]="transactionAdjustmentForm.controls.ReleaseType"
+                                                        labelText="Release Type" [editable]="true" viewModeText="{{transactionAdjustmentForm.controls.ReleaseType.value}}">
+                                                        <label class="radio-inline">
+                                                            <input class="form-check-input" name="ReleaseType" type="radio"
+                                                                [value]="false" [checked]="transactionAdjustmentForm.controls.ReleaseType.value == false"
+                                                                formControlName="ReleaseType">Payment/Invoice Release</label>
+                                                        <label class="radio-inline">
+                                                            <input class="form-check-input" name="ReleaseType" type="radio"
+                                                                [value]="true" [checked]="transactionAdjustmentForm.controls.ReleaseType.value == true"
+                                                                formControlName="ReleaseType">Record-keeping only
+                                                            (Suppress Payment/Invoice)</label>
+                                                    </phx-form-control>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="form-group col-md-6">
+                                                    <div *ngIf="adjustmentList.length > 0">
+                                                        <phx-form-control labelText="Add Adjustment" [editable]="true"
+                                                            [control]="transactionAdjustmentForm.controls.AdjustmentId">
+                                                            <div>
+                                                                <app-phx-select-box [items]="adjustmentList" textField="Name"
+                                                                    valueField="Name" [formControl]="transactionAdjustmentForm.controls.AdjustmentId"
+                                                                    placeholder="-- Select One --" (valueChanged)="addAdjustment($event)">
+                                                                </app-phx-select-box>
+                                                            </div>
+                                                        </phx-form-control>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <br />
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <table class="table table-striped table-content table-hover" *ngIf="selectedAdjustments.length>0">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Deduction Type</th>
+                                                                <th><span class="pull-right">YTD Worker Deduction</span></th>
+                                                                <th><span class="pull-right">Worker Amount</span></th>
+                                                                <th><span class="pull-right">New YTD Worker Deduction</span></th>
+                                                                <th><span class="pull-right">YTD Employer Deduction</span></th>
+                                                                <th><span class="pull-right">Employer Amount</span></th>
+                                                                <th><span class="pull-right">New YTD Employer Deduction</span></th>
+                                                                <th><span class="pull-right">Client Amount</span></th>
+                                                                <th><span class="pull-right">Action</span></th>
+                                                            </tr>
+                                                        </thead>
+
+                                                        <tbody class="sales-patt-table-body" formArrayName="Amount">
+                                                            <tr style="cursor:pointer" *ngFor="let data of transactionAdjustmentForm.controls.Amount.controls; let k= index;"
+                                                                [formGroupName]="k">
+                                                                <td title="{{data.value.EntityName}} - {{data.value.Name}}"><span
+                                                                        class="adj-item-in">{{trimFirstPart(data.value.Name)}}</span></td>
+                                                                <td><span class="adj-item-in pull-right">{{data.value.EmployeeYtdDeduction
+                                                                        | currency: ' $'}}</span></td>
+                                                                <td>
+                                                                    <div class="input-group pull-right" *ngIf="data.value.IsApplicableToEmployee"
+                                                                        style="width:130px">
+                                                                        <input type="number" phxFloatBetweenInput='{"from":0, "to":999999.99, "decimalplaces":2}'
+                                                                            class="input-align-right form-control form-control ng-scope"
+                                                                            formControlName="EmployeeAmount" (input)="CommitChange(transactionAdjustmentForm.get('Amount').controls)">
+                                                                    </div>
+                                                                </td>
+                                                                <td><span class="adj-item-in pull-right">{{data.value.NewYTDWorkerDeduction
+                                                                        | currency: ' $'}}</span></td>
+                                                                <td><span class="adj-item-in pull-right">{{(data.value.EmployerYtdDeduction
+                                                                        || 0.00)
+                                                                        | currency: ' $'}}</span></td>
+                                                                <td>
+                                                                    <div class="input-group pull-right" *ngIf="data.value.IsApplicableToEmployer"
+                                                                        style="width:130px">
+                                                                        <input type="number" phxFloatBetweenInput='{"from":0, "to":999999.99, "decimalplaces":2}'
+                                                                            class="input-align-right form-control form-control ng-scope"
+                                                                            formControlName="EmployerAmount" (input)="CommitChange(transactionAdjustmentForm.get('Amount').controls)">
+                                                                    </div>
+                                                                </td>
+                                                                <td><span class="adj-item-in pull-right">{{data.value.NewYTDEmployerDeduction
+                                                                        | currency: ' $'}}</span></td>
+                                                                <td>
+                                                                    <div class="input-group pull-right" *ngIf="data.value.IsApplicableToClient"
+                                                                        style="width:130px">
+                                                                        <input type="number" phxFloatBetweenInput='{"from":0, "to":999999.99, "decimalplaces":2}'
+                                                                            class="input-align-right form-control form-control ng-scope"
+                                                                            formControlName="ClientAmount" (input)="CommitChange(transactionAdjustmentForm.get('Amount').controls)">
+                                                                    </div>
+                                                                </td>
+                                                                <td>
+                                                                    <div class="pull-right">
+                                                                        <button type="button" class="btn btn-default btn-material pull-right"
+                                                                            (click)="removeAdjustment(k, transactionAdjustmentForm.get('Amount').controls)"><i
+                                                                                class="material-icons">delete</i></button>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+
+                                                        <tfoot>
+                                                            <tr>
+                                                                <td></td>
+                                                                <td></td>
+                                                                <td><span class="pull-right">{{EmployeeAmountTotal |
+                                                                        currency: ' $'}}</span></td>
+                                                                <td></td>
+                                                                <td></td>
+                                                                <td><span class="pull-right">{{EmployerAmountTotal |
+                                                                        currency: ' $'}}</span></td>
+                                                                <td></td>
+                                                                <td><span class="pull-right">{{ClientAmountTotal |
+                                                                        currency: ' $'}}</span></td>
+                                                                <td></td>
+                                                            </tr>
+                                                        </tfoot>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane active">
+                                        <div class="panel">
+                                            <div class="panel-body"></div>
+                                        </div>
+                                    </div>
+                                    <div class="panel-footer">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="pull-right">
+                                                    <button type="button" class="btn btn-default" (click)="cancelClick()">Cancel</button>
+                                                    <button type="button" class="btn btn-primary" (click)="onClickSubmit()"
+                                                        [disabled]="!transactionAdjustmentForm.valid">Create</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div *ngIf="validationMessages">
+        <div *ngIf="validationMessages.length > 0" class="alert alert-danger alert-dismissable error-box">
+            <div *ngFor="let message of validationMessages">
+                <div>
+                    {{message}}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<app-phx-modal title="" #ConfirmModal>
+    <div class="slider-content">
+        <div class="slider-header">
+            <div>Create Adjustment Transaction </div>
+        </div>
+        <div class="slider-body">
+            <div class="alert alert-warning" *ngIf="!isWorkerProfileSpValid || !isWorkerProfileIncValid">Some source
+                deductions selected are not normally charged for this profile type</div>
+            <div> <label>Employee Amount :</label> {{EmployeeAmountTotal | currency: ' $'}} </div>
+            <div> <label>Employer Amount :</label> {{EmployerAmountTotal | currency: ' $'}} </div>
+            <div> <label>Client Amount :</label> {{ClientAmountTotal | currency: ' $'}} </div>
+            <div> An Adjustment transaction will be created. Are you sure? </div>
+        </div>
+        <div class="slider-footer">
+            <div class="row">
+                <div class="pull-right">
+                    <button type="button" class="btn btn-default" (click)="cancelModal()">No</button>
+                    <button type="button" class="btn btn-primary" (click)="finalSubmit()">Yes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</app-phx-modal>

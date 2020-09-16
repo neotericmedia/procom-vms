@@ -1,0 +1,13 @@
+<div class="journal-batch">
+    <app-phx-data-table [configuration]="dataTableConfiguration" [dataSourceUrl]="dataSourceUrl" [dataSourceParams]='odataParams'
+                        [columns]="columns" [exportFileName]="'payment'" [componentName]="'JournalBatch'">
+        <div *dxTemplate="let d of 'viewJournalCellTemplate'">
+            <div class="btn-group">
+                <a class="btn btn-default journal-button-style" [href]="csvUrl(d.data?.Id)" title="Create JE Report"><i class="fontello-icon-doc-7"></i>JE Report</a>
+                <a class="btn btn-default journal-button-style" [href]="arReportUrl(d.data?.Id)" title="Create AR Report"><i class="fontello-icon-doc-7"></i>AR Report</a>
+                <a class="btn btn-default journal-button-style" [href]="accpacUrl(d.data?.Id)" *ngIf="d.data?.ShowAP" title="Create JE Export"><i class="fontello-icon-doc-5"></i>JE</a>
+                <a class="btn btn-default journal-button-style" [href]="accpacARUrl(d.data?.Id)" *ngIf="d.data?.ShowAR" title="Create AR Export"><i class="fontello-icon-doc-5"></i>AR</a>
+            </div>
+        </div>
+    </app-phx-data-table>
+</div>

@@ -1,0 +1,52 @@
+<accordion>
+  <accordion-group *ngFor="let version of stateHistoryVersionHeader; first as isfirstVersion"
+    [(isOpen)]="version.isOpen" [isDisabled]="nonVersion" panelClass="state-history-panel"
+    [class.non-version]="nonVersion">
+    <div accordion-heading class="version-header" [class.first-version-header]="isfirstVersion">
+      <div class="menu-icon">
+        <i class="glyphicon"
+          [ngClass]="{'glyphicon-menu-up': version.isOpen, 'glyphicon-menu-down': !version.isOpen}"></i>
+      </div>
+      <div class="version-header-content">
+        <div class="col-sm-8">
+          <div class="version-number">Version: {{version.VersionNumber}}</div>
+          <div class="version-status">Status: {{version.CurrentStatus | CodeValue: statusCodeValueGroups}}</div>
+        </div>
+        <div class="col-sm-4">
+          <div class="version-effective-date">Effective:
+            {{version.EffectiveDate | date:phxConstant.DateFormat.MMM_dd_yyyy}}</div>
+        </div>
+      </div>
+    </div>
+    <div class="content-group state-history-wrapper">
+      <div *ngIf="version.StateHistoryGrouped.length === 0">
+        History Not Available
+      </div>
+      <div *ngFor="let group of version.StateHistoryGrouped; last as isLastGroup" class="time-block"
+        [class.future]="group.Future" [class.last]="isLastGroup" [class.current]="group.LatestCurrent">
+        <div class="time-block-container">
+          <div *ngFor="let history of group.StateHistory; last as isLastHistory" class="content"
+            [class.last]="isLastHistory">
+            <div class="row">
+              <div class="col-lg-9 col-xs-8">
+                <div class="col-lg-4 status" [class.next-step]="history.NextStep">
+                  <ng-container *ngIf="history.NextStep">
+                    {{'workflow.stateHistory.NextStep' | phxTranslate}}
+                  </ng-container>
+                  {{history.EntityStatusId | CodeValue: statusCodeValueGroups}}
+                </div>
+                <div class="col-lg-8 description">
+                  {{history.Description}}
+                </div>
+              </div>
+              <div class="col-lg-3 col-xs-4 date">
+                <ng-container *ngIf="history.CreatedDatetime">
+                  {{history.CreatedDatetime | date:phxConstant.DateFormat.MMM_dd_yyyy_HH_mm_ss}}</ng-container>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </accordion-group>
+</accordion>

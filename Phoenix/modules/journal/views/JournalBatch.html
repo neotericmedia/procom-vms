@@ -1,0 +1,56 @@
+﻿<div class="smart-table-wrapper">
+    <div class="row" data-cg-busy="loadItemsPromise">
+        <table data-st-table-struct='[{"stTableValue" : "items"}, {"stPipeValue" : "callServer"}, {"widthValues" : "[20, 20, 30, 30]"}, {"stPaginationValue" : "pageSize"}]'>
+            <thead data-st-head="1700px">
+                <tr>
+                    <th data-st-sort="BatchNumber" data-st-sort-default=""> Batch Number</th>
+                    <th data-st-sort="BatchCount">Number of Records</th>
+                    <th data-st-sort="ExportDate">Create Date</th>
+                    <th data-st-pen-name="Action" class="journal-batch-td" style="text-align:left;">Actions</th>
+                </tr>
+                <tr>
+                    <th>
+                        <input data-st-advanced-search="{property: 'BatchNumber', ignoreQuotes: true}" placeholder=""
+                               class="input-sm form-control numberType" data-safe-restrict-input="[^0123456789]" />
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="{property: 'BatchCount', ignoreQuotes: true}" placeholder=""
+                               class="input-sm form-control numberType" data-safe-restrict-input="[^0123456789]" />
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="'ExportDate'"
+                               data-st-as-operator-override="'ge'"
+                               close-on-date-selection="false" show-button-bar="false" show-weeks="false" class="input-sm form-control"
+                               data-st-as-lazy-attributes="{'uib-datepicker' : ApplicationConstants.formatDate}"
+                               data-st-as-height-override="400"
+                               data-st-as-width-override="315" />
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr data-ng-repeat="item in items" class="journalBatchRow">
+                    <td title="{{item.BatchNumber}}" ng-bind="::item.BatchNumber"></td>
+                    <td title="{{item.BatchCount}}" ng-bind="::item.BatchCount"></td>
+                    <td title="{{item.ExportDate | date:ApplicationConstants.formatDateComma}}" ng-bind="::item.ExportDate | date:ApplicationConstants.formatDateComma"></td>
+                    <td class="journal-batch-td" style="text-align: left;">
+                        <div class="btn-group">
+                            <a class="btn btn-default journal-csv-button" data-ng-href="{{csvUrl(item.Id)}}" title="Create JE Report"><i class="fontello-icon-doc-7"></i>JE Report</a><!--fontello-icon-eye-1-->
+                            <a class="btn btn-default journal-csv-button" data-ng-href="{{arReportUrl(item.Id)}}" title="Create AR Report"><i class="fontello-icon-doc-7"></i>AR Report</a><!--fontello-icon-eye-1-->
+                            <a class="btn btn-default journal-accpcc-button" data-ng-href="{{accpacUrl(item.Id)}}" ng-show="item.ShowAP" title="Create JE Export"><i class="fontello-icon-doc-5"></i>JE</a>
+                            <a class="btn btn-default journal-accpcc-button" data-ng-href="{{accpacARUrl(item.Id)}}" ng-show="item.ShowAR" title="Create AR Export"><i class="fontello-icon-doc-5"></i>AR</a>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="9">
+                        <span>Total Count: {{totalItemCount || 0}}; Items Loaded: {{ items ? items.length : 0}}</span>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>
+

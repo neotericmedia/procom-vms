@@ -1,0 +1,110 @@
+﻿<div class="smart-table-wrapper" data-ng-show="!refreshTable">
+    <div class="row" data-cg-busy="loadItemsPromise">
+        <table data-st-table-struct='[{"stTableValue" : "items" }, {"stPipeValue" : "callServer" }, {"widthValues" : "[5, 15, 15, 8, 8, 8, 10, 12, 10, 9, 10, 5]"}, {"stPaginationValue" : "pageSize"}]'>
+            <thead data-st-head="1800px">
+                <tr>
+                    <th data-st-sort="Id" data-st-sort-default="reverse" title="Id">ID</th>
+                    <th data-st-sort="WorkerName" title="Worker Name">Worker Name</th>
+                    <th data-st-sort="ClientName" title="Client Name">Client</th>
+                    <th data-st-sort="StartDate" data-st-sort-default="" title="From Date">From Date</th>
+                    <th data-st-sort="EndDate" title="To Date">To Date</th>
+                    <th>Units Worked</th>
+                    <th data-st-sort="TimeSheetStatusId" title="Timesheet Status">Timesheet Status</th>
+                    <th data-st-sort="CurrentApprovers" title="Current Approvers">Current Approvers</th>
+                    <th data-st-sort="POUnitsRemaining" title="PO Units Remaining">PO Units Remaining</th>
+                    <th data-st-sort="PONumber" title="PO Number">PO Number</th>
+                    <th data-st-pen-name="Action">Action</th>
+                </tr>
+                <tr>
+                    <th>
+                        <input data-st-advanced-search="{property: 'Id', ignoreQuotes: true}" placeholder=""
+                               class="input-sm form-control numberType" data-safe-restrict-input="[^0123456789]" />
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="'WorkerName'" placeholder="" type="search"
+                               class="input-sm form-control" />
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="'ClientName'" placeholder="" type="search"
+                               class="input-sm form-control" />
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="'StartDate'"
+                               data-st-as-operator-override="'ge'"
+                               close-on-date-selection="false" show-button-bar="false" show-weeks="false" class="input-sm form-control"
+                               data-st-as-lazy-attributes="{'uib-datepicker' : ApplicationConstants.formatDate}"
+                               data-st-as-height-override="400"
+                               data-st-as-width-override="315" />
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="'EndDate'"
+                               data-st-as-operator-override="'le'"
+                               close-on-date-selection="false" show-button-bar="false" show-weeks="false" class="input-sm form-control"
+                               data-st-as-lazy-attributes="{'uib-datepicker' : ApplicationConstants.formatDate}"
+                               data-st-as-height-override="400"
+                               data-st-as-width-override="315" />
+                    </th>
+                    <th>
+                        <!-- No Unit search -->
+                    </th>
+                    <th>
+                        <select data-st-as-width-override="175" data-st-advanced-search="{property: 'TimeSheetStatusId', ignoreQuotes: true}" class="input-sm form-control" id="timesheetSearchStatus">
+                            <option value="1">New</option>
+                            <option value="2">Draft</option>
+                            <option value="3" data-st-advanced-search-selected="true">Pending Review</option>
+                            <option value="4">Approved</option>
+                            <!--<option value="5">Declined</option>-->
+                            <option value="6">Pending Documents</option>
+                            <!--<option value="7">Withdrawn</option>-->
+                        </select>
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="'CurrentApprovers'" placeholder="" class="input-sm form-control" type="search" />
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="{property: 'POUnitsRemaining', ignoreQuotes: true, valueSuffix: 'M'}" placeholder=""
+                               class="input-sm form-control numberType" data-safe-restrict-input="[^0123456789.]" />
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="'PONumber'" placeholder="" class="input-sm form-control" type="search" data-safe-restrict-input="[^0123456789]" />
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody class="timesheetBody">
+                <tr data-ng-repeat="timesheet in items" data-ui-sref-tr="ngtwo.m({ p:'timesheet/' + timesheet.Id })" style="cursor: pointer" class="timesheetTr">
+                    <td ng-bind="::timesheet.Id"></td>
+                    <td ng-bind="::timesheet.WorkerName"></td>
+                    <td ng-bind="::timesheet.ClientName"></td>
+                    <td ng-bind="::timesheet.StartDate | date: ApplicationConstants.formatDate"></td>
+                    <td ng-bind="::timesheet.EndDate | date: ApplicationConstants.formatDate"></td>
+                    <td ng-bind="::timesheet.TotalUnits"></td>
+                    <td ng-bind="::timesheet.TimeSheetStatusId | lookup:lists.timesheetStatusList"></td>
+                    <td ng-bind="::timesheet.CurrentApprovers"></td>
+                    <td ng-model="key" ng-init="timesheet.POUnitsRemaining != null ? key = 'isValue' : key = 'noUnits'">
+                        <span ng-init="(key == 'isValue') ? (timesheet.PORateUnitId ==2 ? key = 'Days' : key = 'Hours') : key = 'noUnits'">
+                            <span ng-if="key == 'Days' || key == 'Hours'"><span ng-bind="timesheet.POUnitsRemaining | currency : '' : 2" /></span>
+                            <span ng-if="key == 'noUnits'"><span ng-bind="'0 Units'"></span></span>
+                            <span ng-if="key == 'Days'"><span> Days</span></span>
+                            <span ng-if="key == 'Hours'"><span> Hours</span></span>
+                        </span>
+                    </td>
+                    <td ng-bind="::timesheet.PONumber || 'N/A'"></td>
+                    <td>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-xs btn-clouds btn-row-action no-padding-bottom" data-action="view" title="View"><i class="fontello-icon-eye-1"></i></button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="10">
+                        <span>Total Count: {{totalItemCount || 0}}; Items Loaded: {{ items ? items.length : 0}}</span>
+                        <button class="btn btn-default pull-right" data-ng-click="getExcel()" data-ng-disabled="!IsLoaded">Export to Excel</button>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>

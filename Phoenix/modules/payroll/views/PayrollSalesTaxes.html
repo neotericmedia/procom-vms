@@ -1,0 +1,63 @@
+<div class="btn-group btn-payroll-search-nav" data-ng-if="taxes.itemsLength<taxes.taxCodes.length">
+    <div class="payroll-btn-wrapper">
+        <button type="button" class="btn btn-clouds dropdown-toggle" data-toggle="dropdown">
+            <span class="payroll-btn-name">Actions</span> <span class="caret ml payroll-btn-caret"></span>
+        </button>
+        <ul class="dropdown-menu bordered">
+            <li><a data-ui-sref="payroll.salesTaxDetails({ salesTaxHeaderId:0, salesTaxVersionId:0 })">Create New Tax Type</a></li>
+        </ul>
+    </div>    
+</div>
+<div class="smart-table-wrapper">
+    <div class="row" data-cg-busy="loadItemsPromise">
+        <table data-st-table-struct='[{"stTableValue" : "taxes.items"}, {"stPipeValue" : "taxes.callServer"}, {"widthValues" : "[15, 35, 35, 15]"}, {"stPaginationValue" : "taxes.pageSize"}]'>
+            <thead data-st-head="1600px">  
+                <tr>
+                    <th data-st-sort="Id" data-st-sort-default="">ID</th>
+                    <th data-st-sort="TaxId">Tax Name</th>
+                    <th data-st-sort="CountryId">Country</th>
+                    <th data-st-pen-name="Action" title="Action">Action</th>
+                </tr>
+                <tr>
+                    <th>
+                        <input data-st-advanced-search="{property: 'Id', ignoreQuotes: true}" placeholder="" class="input-sm form-control numberType" data-safe-restrict-input="[^0123456789]" />
+                    </th>
+                    <th>
+                        <select data-st-advanced-search="{property: 'TaxId', ignoreQuotes: true}" class="input-sm form-control">
+                            <option value="1">GST/HST</option>
+                            <option value="2">GST</option>
+                            <option value="3">QST</option>
+                            <option value="4">PST</option>
+                        </select>
+                    </th>
+                    <th>
+                        <select data-st-advanced-search="{property: 'CountryId', ignoreQuotes: true}" class="input-sm form-control">
+                            <option value="124">Canada</option>
+                        </select>
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr data-ng-repeat="item in taxes.items" data-ui-sref-tr="payroll.salesTaxDetails({ salesTaxHeaderId: item.Id, salesTaxVersionId: item.VersionId })" style="cursor:pointer">
+                    <td title="{{item.Id}}"><span class="payroll-search-item">{{item.Id}}</span></td>
+                    <td title="{{item.TaxId | lookup: taxes.taxCodes}}"><span class="payroll-search-item">{{item.TaxId | lookup: taxes.taxCodes}}</span></td>
+                    <td title="{{item.CountryId | lookup: taxes.countries}}"><span class="payroll-search-item">{{item.CountryId | lookup: taxes.countries}}</span></td>
+                    <td>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-xs btn-clouds btn-row-action btn-payroll-view no-padding-bottom" data-action="view" title="View"><i class="fontello-icon-eye-1"></i></button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="9">
+                        <span>Total Count: {{taxes.totalItemCount || 0}}; Items Loaded: {{ taxes.items ? taxes.items.length : 0}}</span>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>
+

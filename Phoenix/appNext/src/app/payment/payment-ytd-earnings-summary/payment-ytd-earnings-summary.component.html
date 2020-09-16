@@ -1,0 +1,27 @@
+<div>
+  <div class="panel-body">
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="row" style="padding-left:5px" *ngFor="let item of maxInfos; let i= index;">
+          <div class="col-md-6">{{paymentModuleResourceKeys.ytdEarning.yearMaximumSourceDeduction | phxTranslate : codeValueService.getCodeValueText(item.SourceDeductionTypeId, commonService.CodeValueGroups.SourceDeductionType) : item.YearMaximum}}:
+            <span class="pull-right">$ {{ item.AmountMaximum | number:'.2'}}</span>
+          </div>
+        </div>
+      </div>
+      <div class="col-xs-12">
+        <h3>{{userProfile.FirstName}} {{userProfile.LastName}}</h3>
+      </div>
+      <div class="col-xs-12">
+        <h4>{{userProfileType}}</h4>
+      </div>
+
+      <div class="col-xs-12 padding-10-h-l">
+        <div class="row" style="padding-left:5px" *ngFor="let item of items; let i = index;">
+          <div class="col-md-6">{{item.Name}}
+            <span class="pull-right">$ {{ item.TotalAmount | number:'.2'}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

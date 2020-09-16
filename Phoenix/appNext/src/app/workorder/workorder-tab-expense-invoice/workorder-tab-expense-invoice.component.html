@@ -1,0 +1,18 @@
+<form [formGroup]="inputFormGroup">
+  <div class="form-horizontal">
+    <app-workorder-expense-detail [inputFormGroup]="inputFormGroup.controls.TabExpenseInvoiceDetail" [readOnlyStorage]="readOnlyStorage"
+      (outputEvent)="onOutputEvent()"></app-workorder-expense-detail>
+    <div class="content-group" [hidden]="hideBillingPaymentInvoice">
+      <div class="content-left">
+        <app-workorder-billing-invoices [inputFormGroup]="inputFormGroup.controls.TabExpenseInvoiceBillingInfoes"
+          [invoiceType]="phxConstants.InvoiceType.Expense" [readOnlyStorage]="readOnlyStorage" (outputEvent)="onOutputEvent()">
+        </app-workorder-billing-invoices>
+      </div>
+      <div class="content-right">
+        <app-workorder-payment-invoices [inputFormGroup]="inputFormGroup.controls.TabExpenseInvoicePaymentInfoes"
+          [invoiceType]="phxConstants.InvoiceType.Expense" [readOnlyStorage]="readOnlyStorage" (outputEvent)="onOutputEvent()">
+        </app-workorder-payment-invoices>
+      </div>
+    </div>
+  </div>
+</form>

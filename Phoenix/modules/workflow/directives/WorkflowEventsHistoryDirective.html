@@ -1,0 +1,47 @@
+﻿<div class="row" data-cg-busy="loadItemsPromise">
+    <div style="font-weight:600;padding-bottom:5px;border-bottom:2px solid #999999;" ng-if="displayHeader">
+        <div class="row">
+            <div class="col-lg-3"><div class="col-lg-2" style="padding-left:15px;"></div><div class="col-lg-10" style="padding-left:0px;">Action</div></div>
+            <div class="col-lg-2">Started</div>
+            <div class="col-lg-2">Completed</div>
+            <div class="col-lg-3">Current Assigned</div>
+            <div class="col-lg-2">Current Task</div>
+        </div>
+    </div>
+    <div data-ng-repeat="item in wfItems" style="font-weight:600;" class="workflowHistory">
+        <div data-toggle="collapse" style="cursor:pointer;margin-left:0;margin-right:0;" class="row workflowBlock"
+             data-ng-click="rowClicked(entityTypeId,entityId,$index)">
+            <div class="col-lg-3" style="background-color:#f9f9f9; padding-top:7px;padding-bottom:7px;padding-left:3px;min-height:34px">
+                <div class="row wf-action">
+                    <div class="col-lg-2 wf-action-icon" style="padding-left:15px;"><i class="icon-chevron-down" id="workflowIcon{{entityTypeId}}_{{entityId}}_{{$index}}_{{unique}}"></i></div>
+                    <div class="col-lg-10 restricted" title="{{item.action}}" style="padding-left:0;">&nbsp;&nbsp;{{item.action}}</div>
+                </div>
+            </div>
+            <div class="col-lg-2 restricted" title="{{item.started| date:'MMM dd yyyy HH:mm' || '-'}}" style="background-color:#f9f9f9; padding-top:7px;padding-bottom:7px;padding-left:3px;min-height:34px">{{item.started| date:'MMM dd yyyy HH:mm'}}</div>
+            <div class="col-lg-2 restricted" title="{{(item.completed| date:'MMM dd yyyy HH:mm') || '-'}}" style="background-color:#f9f9f9; padding-top:7px;padding-bottom:7px;padding-left:5px;min-height:34px">{{(item.completed| date:'MMM dd yyyy HH:mm') || '-'}}</div>
+            <div class="col-lg-3 restricted" title="{{item.approver}}" style="background-color:#f9f9f9; padding-top:7px;padding-bottom:7px;padding-left:7px;min-height:34px">{{item.approver}}</div>
+            <div class="col-lg-2 restricted" title="{{item.task}}" style="background-color:#f9f9f9; padding-top:7px;padding-bottom:7px;padding-left:7px;min-height:34px">{{item.task}}</div>
+        </div>
+        <div id="workflowBlock{{entityTypeId}}_{{entityId}}_{{$index}}_{{unique}}" class="panel-collapse collapse workflowBlock" style="overflow-y:scroll;overflow-x:hidden;max-height:26em;padding-right:10px;">
+            <div class="wfHeader row">
+                <div class="col-lg-2 to-uppercase title">Task</div>
+                <div class="col-lg-2 to-uppercase title">Assigned On</div>
+                <div class="col-lg-2 to-uppercase title">Assigned To</div>
+                <div class="col-lg-2 to-uppercase title">Completed On</div>
+                <div class="col-lg-2 to-uppercase title">Completed By</div>
+                <div class="col-lg-2 to-uppercase title">Notes</div>
+            </div>
+            <div data-ng-repeat="el in item.items" style="padding:3px 0;">
+                <div class="wfBody row">
+                    <div class="col-lg-2 restricted" title="{{el.TaskTemplateDisplayHistoryEventName}}">{{el.TaskTemplateDisplayHistoryEventName}}</div>
+                    <div class="col-lg-2 restricted" title="{{el.CreatedDatetime | date:'MMM dd yyyy HH:mm'}}">{{el.CreatedDatetime | date:'MMM dd yyyy HH:mm'}}</div>
+                    <div class="col-lg-2 restricted" title="{{el.AssignedOnContactName || '-'}}">{{el.AssignedOnContactName || '-'}}</div>
+                    <div class="col-lg-2 restricted" title="{{(el.LastModifiedDatetime | date:'MMM dd yyyy HH:mm') || '-'}}">{{(el.LastModifiedDatetime | date:'MMM dd yyyy HH:mm') || '-'}}</div>
+                    <div class="col-lg-2 restricted" title="{{el.LastModifiedByContactName || '-'}}">{{el.LastModifiedByContactName || '-'}}</div>
+                    <div class="col-lg-2 restricted" title="{{el.Comment || '-'}}">{{el.Comment || '-'}}</div>
+                </div>
+            </div>
+            <div class="col-lg-12 wfEmptyRow"></div>
+        </div>
+    </div>
+</div>

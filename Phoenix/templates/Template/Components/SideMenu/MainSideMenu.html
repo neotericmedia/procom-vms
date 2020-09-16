@@ -1,0 +1,43 @@
+﻿<ul class="nav nav-list">
+    <li ng-repeat="nitem in _component.items">
+        <!-- a tag for item without submenu -->
+        <a ng-if="!nitem.HasChildren" data-ui-sref="{{nitem.State}}" id="{{nitem.Code}}" ng-click="menuItemClick()" style="border-left: 6px solid transparent;">
+            <i ng-if="nitem.Icon" class="material-icons">{{nitem.Icon}}</i>
+            <span class="menu-text"> {{nitem.Value}} </span>
+        </a>
+
+        <!-- a tag for item with submenu -->
+        <a ng-if="nitem.HasChildren" href="javascript:void(0)" class="dropdown-toggle sidemenuBorder" 
+           ng-style="{borderColor:nitem.Color}" id="{{nitem.Code}}" ng-click="itemClick(nitem, true)">
+            <i ng-if="nitem.Icon" class="material-icons">{{nitem.Icon}}</i>
+            <span class="menu-text">{{nitem.Value}}</span>
+        </a>
+
+        <!-- submenu level 1 -->
+        <ul ng-if="nitem.HasChildren" class="submenu">
+            <li ng-repeat="s1item in nitem.Children">
+                <!-- a tag for item without submenu -->
+                <a ng-click="menuItemClick()" ng-style="{borderLeft: '2px solid' ,borderLeftColor: nitem.Color}" ng-if="!s1item.HasChildren" data-ui-sref="{{s1item.State}}" id="{{nitem.Code}}">
+                    {{s1item.Value}}
+                </a>
+
+                <!-- a tag for item with submenu -->
+                <a ng-click="toggleExpanded(s1item, true)" ng-style="{borderLeft: '2px solid' , borderLeftColor: nitem.Color}" ng-if="s1item.HasChildren" href="javascript:void(0)" class="dropdown-toggle" id="{{s1item.Code}}">
+                    {{s1item.Value}}
+                    <i class="arrow material-icons md-18"></i>
+                </a>
+
+                <!-- submenu level 2 -->
+                <ul ng-if="s1item.HasChildren" class="submenu">
+                    <li ng-repeat="s2item in s1item.Children">
+                        <!-- a tag for item without submenu -->
+                        <a ng-click="menuItemClick()" class='sideSubSubmenuBorder' ng-style="{borderColor: nitem.Color}" data-ui-sref="{{s2item.State}}" id="{{nitem.Code}}">
+                            <i ng-if="s2item.Icon" class="{{s2item.Icon}}"></i>
+                            {{s2item.Value}}
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </li>
+</ul>

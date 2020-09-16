@@ -1,0 +1,63 @@
+<div class="form-group" *ngIf="inputFormGroup.controls.OrganizationIdSupplier.value > 0
+  && (workerProfileTypeId == phxConstants.ProfileType.WorkerCanadianSP
+  || workerProfileTypeId == phxConstants.ProfileType.WorkerCanadianInc
+  || workerProfileTypeId == phxConstants.ProfileType.WorkerSubVendor)">
+  <div class="col-lg-9">
+    <h4>Sales Tax</h4>
+  </div>
+  <div class="form-group">
+    <phx-form-control labelText="Charge Sales Tax" [control]="inputFormGroup.controls.ApplySalesTax" [editable]="editable && checkPtFiledAccessibility('WorkOrderVersion.PaymentInfoes','ApplySalesTax')"
+      viewModeText="{{inputFormGroup.controls.ApplySalesTax.value ? 'Yes' : 'No'}}">
+      <label class="radio-inline">
+        <input class="form-check-input" type="radio" name="ApplySalesTax + {{paymentInfoIndex}}" [value]="true"
+          [formControl]="inputFormGroup.controls.ApplySalesTax">Yes</label>
+      <label class="radio-inline">
+        <input class="form-check-input" type="radio" name="ApplySalesTax + {{paymentInfoIndex}}" [value]="false"
+          [formControl]="inputFormGroup.controls.ApplySalesTax">No</label>
+    </phx-form-control>
+  </div>
+</div>
+<div *ngIf="(inputFormGroup.controls.OrganizationIdSupplier.value>0 || workerProfileTypeId === phxConstants.ProfileType.WorkerCanadianSP) && inputFormGroup.controls.ApplySalesTax.value && validateComplianceDraft">
+  <div data-ng-form="paymentTaxesForm">
+    <div class="form-group">
+      <phx-form-control labelText="Tax Province/State" [editable]="editable && checkPtFiledAccessibility('WorkOrderVersion.PaymentInfoes','SubdivisionIdSalesTax')"
+        [control]="inputFormGroup.controls.SubdivisionIdSalesTax" viewModeText="{{inputFormGroup.controls.SubdivisionIdSalesTax.value | CodeValue:codeValueGroups.Subdivision}}">
+        <app-phx-select-box [items]="salesTaxTerritories" textField="text" valueField="id" [formControl]="inputFormGroup.controls.SubdivisionIdSalesTax"
+          placeholder="-- select one --">
+        </app-phx-select-box>
+      </phx-form-control>
+    </div>
+
+    <div class="form-group" *ngIf="inputFormGroup.controls.PaymentSalesTaxes.length>0">
+      <div class="col-lg-12">
+        <table class="table table-striped" style="background-color: white;margin-top:10px">
+          <thead>
+            <tr>
+              <th style="font-size: 12px; width: 25%;">Tax Type</th>
+              <th style="font-size: 12px; width: 25%;">Percentage</th>
+              <th style="font-size: 12px; width: 25%;">Has Number</th>
+              <th style="font-size: 12px; width: 25%;">Is Applied</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let paymentSalesTax of inputFormGroup.controls.PaymentSalesTaxes.controls">
+              <td>{{paymentSalesTax.controls.SalesTaxId.value |
+                CodeValue:codeValueGroups.SalesTax}}</td>
+              <td>{{paymentSalesTax.controls.ratePercentage.value}}<span data-ng-show="paymentSalesTax.ratePercentage">
+                  %</span></td>
+              <td>{{paymentSalesTax.controls.hasNumber.value ? 'Yes' : 'No'}}</td>
+              <td class="billing-info-apply">
+                <phx-form-control [layoutType]="layoutType.InputOnly" [editable]="editable && checkPtFiledAccessibility('WorkOrderVersion.PaymentInfoes.PaymentSalesTaxes','IsApplied')"
+                  [control]="paymentSalesTax.controls.IsApplied" viewModeText="{{paymentSalesTax.controls.IsApplied.value ? 'Yes' : 'No'}}">
+                  <app-phx-select-box [items]="isAppliedList" textField="text" valueField="id" [formControl]="paymentSalesTax.controls.IsApplied"
+                    [showClearButton]="false">
+                  </app-phx-select-box>
+                </phx-form-control>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

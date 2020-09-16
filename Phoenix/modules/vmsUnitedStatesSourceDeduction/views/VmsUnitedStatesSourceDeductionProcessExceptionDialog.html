@@ -1,0 +1,39 @@
+<div class="modal-content" data-ng-form="formVmsUnitedStatesSourceDeductionProcessExceptionDialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <span class="modal-title">{{title}}</span>
+            <div class="btn pull-right paymentBatchClose" data-ng-click="cancel()"><i class="fontello-icon-cancel-circle"></i></div>
+        </div>
+        <div class="modal-body">
+            <div class="content-group form-horizontal">
+                <div class="form-group col-lg-12">
+                    <label for-property="DepositDate" for="DepositDate" data-model-property="data.DepositDate" class="col-lg-4 control-label label-to-right" data-original-title="" title="">Reason:</label>
+                    <div class="col-lg-6">
+                        <label class="control-label">{{reason}}</label>
+                    </div>
+                </div>
+                <table class="table">
+                    <thead class="my-thead">
+                        <tr>
+                            <th>WorkOrder</th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Payment Transaction</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr data-ng-repeat="unprocessedRecord in unprocessedRecords">
+                            <td>{{::unprocessedRecord.WorkOrderNumber}}</a></td>
+                            <td>{{::unprocessedRecord.FirstName}}</td>
+                            <td>{{::unprocessedRecord.LastName}}</td>
+                            <td>{{::unprocessedRecord.PaymentTransactionNumber}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" ng-click="cancel()">Ok</button>
+        </div>
+    </div>
+</div>

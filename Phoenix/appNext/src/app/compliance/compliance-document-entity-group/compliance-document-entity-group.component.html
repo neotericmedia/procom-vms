@@ -1,0 +1,24 @@
+<div class="row compliance-document-entity">
+    <div class="col-lg-12" class="entity-name-col">
+        <h4 [ngClass]="{ 'font-weight-bold' : useBoldHeading }">
+            <span *ngIf="!url"
+                style="display:block;">{{documentEntityGroup.EntityTypeId | CodeValue:codeValueGroups.EntityType:'text'}}</span>
+
+            <a *ngIf="url" target="_blank"
+                [href]="url">{{documentEntityGroup.EntityTypeId | CodeValue:codeValueGroups.EntityType:'text'}}</a>
+        </h4>
+    </div>
+    <div class="col-lg-12">
+        <div class="row compliance-document-header">
+            <div class="col-lg-2 elipsis">ID</div>
+            <div class="col-lg-4 elipsis">Document Rule Name</div>
+            <div class="col-lg-2 elipsis">Requirement</div>
+            <div class="col-lg-2 elipsis">Expiry Date</div>
+            <div class="col-lg-2 elipsis">Status</div>
+        </div>
+        <app-compliance-document-header *ngFor="let header of documentEntityGroup.Headers; trackBy: identifyHeader"
+            [header]="header" (onStateAction)="onStateAction.emit($event)"
+            (onGenerateDocument)="onGenerateDocument.emit($event)" (onViewSample)="onViewSample.emit($event)">
+        </app-compliance-document-header>
+    </div>
+</div>

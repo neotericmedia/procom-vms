@@ -1,0 +1,170 @@
+<div class="content-group form-horizontal" data-ng-form="rateSetupScope.formCommissionRateAdd" style="height:100%;">
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="row page-control" data-ng-if="$state.params.commissionUserProfileId>0">
+                <div class="col-lg-6">
+                    <div class="col-lg-2">ID</div>
+                    <div class="col-lg-6">Name</div>
+                    <div class="col-lg-4">Status</div>
+                </div>
+                <div class="col-lg-6">
+                </div>
+            </div>
+            <div class="row page-control" data-ng-if="$state.params.commissionUserProfileId>0">
+                <div class="col-lg-6">
+                    <div class="col-lg-2">{{rateSetupScope.CommissionUserProfileId}}</div>
+                    <div class="col-lg-6">{{rateSetupScope.CommissionUserProfileFirstName}}
+                        {{rateSetupScope.CommissionUserProfileLastName}}</div>
+                    <div class="col-lg-4">{{rateSetupScope.CommissionUserProfileStatusName}}</div>
+                </div>
+                <div class="col-lg-6">
+                </div>
+            </div>
+            <div class="form-group col-lg-12" data-ng-if="$state.params.commissionUserProfileId==0">
+                <label for-property="CommissionUserProfileId" for="CommissionUserProfileId" data-model-property="rateSetupScope.CommissionUserProfileId"
+                    class="col-lg-4 control-label label-to-right req-lab-right" data-original-title="" title="">Select
+                    Internal User</label>
+                <div class="col-lg-8">
+                    <div class="input-group select2-bootstrap-append">
+                        <ui-select name="CommissionUserProfileId" data-ng-model="rateSetupScope.CommissionUserProfileId"
+                            theme="select2" class="form-control" data-ng-change="rateSetupScope.onChangeCommissionUserProfileId()"
+                            required>
+                            <ui-select-match placeholder="-- Select One --">{{$select.selected.CommissionUserProfileFirstName}}
+                                {{$select.selected.CommissionUserProfileLastName}}</ui-select-match>
+                            <ui-select-choices repeat="item.CommissionUserProfileId as item in rateSetupScope.listInternalUserProfiles | orderBy:'CommissionUserProfileFirstName'| uiSelectChoicesFilter: $select.search:'CommissionUserProfileId':'CommissionUserProfileName'">
+                                <span data-ng-bind-html="item.CommissionUserProfileName | highlight: $select.search"></span>
+                            </ui-select-choices>
+                        </ui-select>
+                        <span class="input-group-btn">
+                            <button data-ng-click="rateSetupScope.CommissionUserProfileId=undefined" class="btn btn-default">
+                                <i class="material-icons md-18">clear</i>
+                            </button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-lg-12">
+                <label for-property="commissionRoleId" for="commissionRoleId" data-model-property="rateSetupScope.commissionRoleId"
+                    class="col-lg-4 control-label label-to-right req-lab-right" data-original-title="" title="">Commission
+                    Role</label>
+                <div class="col-lg-8">
+                    <div class="input-group select2-bootstrap-append">
+                        <ui-select name="commissionRoleId" data-ng-model="rateSetupScope.commissionRoleId" theme="select2"
+                            class="form-control" required data-ng-change="rateSetupScope.onChangeCommissionRoleId()">
+                            <ui-select-match placeholder="-- Select One --">{{$select.selected.text}}</ui-select-match>
+                            <ui-select-choices repeat="item.id as item in rateSetupScope.lists.listCommissionRole | uiSelectChoicesFilter: $select.search: 'text'">
+                                <span data-ng-bind-html="item.text | highlight: $select.search"></span>
+                            </ui-select-choices>
+                        </ui-select>
+                        <span class="input-group-btn">
+                            <button tabindex="-1" data-ng-click="rateSetupScope.commissionRoleId=undefined" class="btn btn-default">
+                                <i class="material-icons md-18">clear</i>
+                            </button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-lg-12">
+                <label for-property="commissionRateTypeId" for="commissionRateTypeId" data-model-property="rateSetupScope.commissionRateTypeId"
+                    class="col-lg-4 control-label label-to-right req-lab-right" data-original-title="" title="">Commission
+                    Rate Type</label>
+                <div class="col-lg-8">
+                    <div class="input-group select2-bootstrap-append">
+                        <ui-select name="commissionRateTypeId" data-ng-model="rateSetupScope.commissionRateTypeId"
+                            theme="select2" class="form-control" required data-ng-change="rateSetupScope.onChangeCommissionRateTypeId()">
+                            <ui-select-match placeholder="-- Select One --">{{$select.selected.text}}</ui-select-match>
+                            <ui-select-choices repeat="item.id as item in rateSetupScope.lists.listCommissionRateType | uiSelectChoicesFilter: $select.search: 'text'">
+                                <span data-ng-bind-html="item.text | highlight: $select.search"></span>
+                            </ui-select-choices>
+                        </ui-select>
+                        <span class="input-group-btn">
+                            <button tabindex="-1" data-ng-click="rateSetupScope.commissionRateTypeId=undefined" class="btn btn-default">
+                                <i class="material-icons md-18">clear</i>
+                            </button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-lg-12">
+                <label for-property="commissionTemplateId" for="commissionTemplateId" data-model-property="rateSetupScope.commissionTemplateId"
+                    class="col-lg-4 control-label label-to-right" data-original-title="" title="">Commission Template</label>
+                <div class="col-lg-8">
+                    <div class="input-group select2-bootstrap-append">
+                        <ui-select name="commissionTemplateId" data-ng-model="rateSetupScope.commissionTemplateId"
+                            theme="select2" class="form-control">
+                            <ui-select-match placeholder="-- Select One --">{{$select.selected.Name}}
+                                ({{$select.selected.Description}})</ui-select-match>
+                            <ui-select-choices repeat="item.Id as item in rateSetupScope.listCommissionTemplates | filter:{Entity:{CommissionRoleId: rateSetupScope.commissionRoleId, CommissionRateTypeId: rateSetupScope.commissionRateTypeId}}:true | uiSelectChoicesFilter: $select.search: 'Name':'Description'">
+                                <span data-ng-bind-html="item.Name | highlight: $select.search"></span>
+                                (
+                                <span data-ng-bind-html="item.Description | highlight: $select.search"></span>)
+                            </ui-select-choices>
+                        </ui-select>
+                        <span class="input-group-btn">
+                            <button tabindex="-1" data-ng-click="rateSetupScope.commissionTemplateId=undefined" class="btn btn-default">
+                                <i class="material-icons md-18">clear</i>
+                            </button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <div class="duplicate-commission-warning" data-ng-show="rateSetupScope.formCommissionRateAdd.$valid && rateSetupScope.duplicateCommissionRates.length > 0 && rateSetupScope.continueClicked">
+                    <p>{{rateSetupScope.msgDuplicateFound}}</p>
+                </div>
+                <div class="duplicate-commission-warning" data-ng-show="rateSetupScope.formCommissionRateAdd.$valid && rateSetupScope.duplicateCommissionRates.length === 0">
+                    <p>{{rateSetupScope.msgDuplicateNotFound}}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+        </div>
+        
+    </div>
+    <div class="row panel-footer">
+        <div class="col-lg-6"></div>
+        <div class="col-lg-6">
+            <div class="row">
+                <button type="button" class="pull-right btn btn-primary" data-ng-click="rateSetupScope.onClickContinue()"
+                    ng-if="!rateSetupScope.continueClicked" data-ng-disabled="!rateSetupScope.formCommissionRateAdd.$valid || rateSetupScope.checkingDuplicateCommissionRates">Continue</button>
+                <button type="button" class="pull-right btn btn-primary" data-ng-click="rateSetupScope.onClickCreateNew()"
+                    ng-if="rateSetupScope.continueClicked" data-ng-disabled="!rateSetupScope.formCommissionRateAdd.$valid || rateSetupScope.checkingDuplicateCommissionRates">Create
+                    New</button>
+            </div>
+            <div class="row">
+                <div ng-if="rateSetupScope.checkingDuplicateCommissionRates" class="pull-right text-right text-primary error-box">
+                    <strong>Looking for matching commission rates...</strong>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row" data-ng-show="rateSetupScope.continueClicked && rateSetupScope.formCommissionRateAdd.$valid && rateSetupScope.duplicateCommissionRates.length > 0">
+        <div class="col-lg-12 duplicate-commission-rate-table">
+            <div class="row bg-gray-strong duplicate-commission-rate-table-header">
+                <div class="col-xs-3 col-sm-1 text-black duplicate-commission-rate-table-cell">Rate</div>
+                <div class="col-xs-3 col-sm-2 text-black duplicate-commission-rate-table-cell">Description</div>
+                <div class="col-xs-3 col-sm-2 text-black duplicate-commission-rate-table-cell">Internal Org</div>
+                <div class="col-xs-3 col-sm-2 text-black duplicate-commission-rate-table-cell">Client Org</div>
+                <div class="clearfix visible-xs-block"></div>
+                <div class="col-xs-3 col-sm-2 text-black duplicate-commission-rate-table-cell">Line Of Business</div>
+                <div class="col-xs-3 col-sm-1 text-black duplicate-commission-rate-table-cell">Branch</div>
+                <div class="col-xs-3 col-sm-1 text-black duplicate-commission-rate-table-cell">Status</div>
+                <div class="col-xs-3 col-sm-1 text-black duplicate-commission-rate-table-cell">Action</div>
+            </div>
+            <div class="row" data-ng-repeat="rate in rateSetupScope.duplicateCommissionRates">
+                <div class="col-xs-3 col-sm-1 text-black duplicate-commission-rate-table-cell">{{rate.CommissionRateVersionPercentage}}%</div>
+                <div class="col-xs-3 col-sm-2 text-black duplicate-commission-rate-table-cell">{{rate.CommissionRateHeaderDescription}}</div>
+                <div class="col-xs-3 col-sm-2 text-black duplicate-commission-rate-table-cell">{{rate.CommissionRateRestrictionsForInternalOrganization}}</div>
+                <div class="col-xs-3 col-sm-2 text-black duplicate-commission-rate-table-cell">{{rate.CommissionRateRestrictionsForClientOrganization}}</div>
+                <div class="clearfix visible-xs-block"></div>
+                <div class="col-xs-3 col-sm-2 text-black duplicate-commission-rate-table-cell">{{rate.CommissionRateRestrictionsForLineOfBusiness}}</div>
+                <div class="col-xs-3 col-sm-1 text-black duplicate-commission-rate-table-cell">{{rate.CommissionRateRestrictionsForBranch}}</div>
+                <div class="col-xs-3 col-sm-1 text-black duplicate-commission-rate-table-cell">{{rate.CommissionRateHeaderStatus}}</div>
+                <div class="col-xs-3 col-sm-1 text-black duplicate-commission-rate-table-cell">
+                    <a class="duplicate-commission-rate-table-action" data-ng-click="rateSetupScope.openCommissionRate(rate)">Select</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

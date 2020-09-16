@@ -1,0 +1,86 @@
+﻿<div class="row page-control">
+    <div class="col-lg-4">
+    </div>
+    <div class="page-control-bar col col-lg-8">
+    </div>
+</div>
+<div class="row page-control">
+    <div class="page-control-bar col-lg-12">
+        <div class="btn-toolbar">
+            <button type="button" class="btn btn-clouds" ng-click="addPurchaseOrder()"> New</button>
+        </div>
+    </div>
+</div>
+<div class="smart-table-wrapper">
+    <div class="row" data-cg-busy="loadItemsPromise">
+        <table data-st-table-struct='[{"stTableValue" : "items"}, {"stPipeValue" : "callServer"}, {"widthValues" : "[6, 12, 25, 12, 12, 9, 8, 9]"}, {"stPaginationValue" : "pageSize"}]'>
+            <thead data-st-head="1200px">
+                <tr>
+                    <th data-st-sort="Id" data-st-sort-default="reverse">ID</th>
+                    <th data-st-sort="PurchaseOrderNumber">PO Number</th>
+                    <th data-st-sort="OrganizationDisplayName">Client Name</th>
+                    <th data-st-sort="TotalAmount">Total Funds</th>
+                    <th data-st-sort="TotalAmountCommitted">Funds Committed</th>
+                    <th data-st-sort="TotalAmountSpent">Funds Spent</th>
+                    <th data-st-sort="PurchaseOrderStatusId">Status</th>
+                    <th data-st-pen-name="Action">Action</th>
+                </tr>
+                <tr>
+                    <th>
+                        <input data-st-advanced-search="{property: 'Id', ignoreQuotes: true}" placeholder=""
+                               class="input-sm form-control numberType" data-safe-restrict-input="[^0123456789]" />
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="'PurchaseOrderNumber'" placeholder="" class="input-sm form-control" />
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="'OrganizationDisplayName'" placeholder="" class="input-sm form-control" type="search" />
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="{property: 'TotalAmount', ignoreQuotes: true, valueSuffix: 'M'}" placeholder="" class="input-sm form-control numberType" data-safe-restrict-input="[^0123456789.]" />
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="{property: 'TotalAmountCommitted', ignoreQuotes: true, valueSuffix: 'M'}" placeholder="" class="input-sm form-control numberType" data-safe-restrict-input="[^0123456789.]" />
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="{property: 'TotalAmountSpent', ignoreQuotes: true, valueSuffix: 'M'}" placeholder="" class="input-sm form-control numberType" data-safe-restrict-input="[^0123456789.]" />
+                    </th>
+                    <th>
+                        <select data-st-advanced-search="{property: 'PurchaseOrderStatusId', ignoreQuotes: true}" class="input-sm form-control">
+                            <option value="1">New</option>
+                            <option value="2">Active</option>
+                            <option value="3">Draft</option>
+                            <option value="4">Reserved</option>
+                            <option value="5">Reversed</option>
+                            <option value="6">Committed</option>
+                        </select>
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr data-ng-repeat="item in items" data-ui-sref-tr="purchaseorder.edit.details({ purchaseOrderId: item.Id })" style="cursor:pointer;">
+                    <td ng-bind="::item.Id"></td>
+                    <td ng-bind="::item.PurchaseOrderNumber"></td>
+                    <td ng-bind="::item.OrganizationDisplayName"></td>
+                    <td><span ng-bind="::item.TotalAmount | currency"></span></td>
+                    <td><span ng-bind="::item.TotalAmountCommitted | currency"></span></td>
+                    <td><span ng-bind="::item.TotalAmountSpent| currency"></span></td>
+                    <td ng-bind="::item.PurchaseOrderStatusName"></td>
+                    <td>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-xs btn-clouds btn-row-action" data-action="view" title="View"><i class="fontello-icon-eye-1"></i>&nbsp;</button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="8">
+                        <span>Total Count: {{totalItemCount || 0}}; Items Loaded: {{ items ? items.length : 0}}</span>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>

@@ -1,0 +1,45 @@
+<div class="account-container stacked" ng-if="$ctrl.isInit">
+    <div class="content clearfix" ng-if="!$ctrl.tokenObj">
+        <p>{{ 'account.register.genericErrorMessage' | phxTranslate }}</p>
+    </div>
+    <div class="content clearfix" ng-if="$ctrl.tokenObj">
+        <div class="login-fields">
+            <div class="field text-center">
+                <img class="margin-10-v" src="/assets/logo-flex-backoffice.png" alt="logo" />
+            </div>
+            <div class="field">
+                <label for="Username" class="text-gray control-label">{{ 'account.register.usernameLabel' | phxTranslate }}</label>
+                <input type="text" id="Username" name="Username" ng-model="$ctrl.register.username" readonly="readonly" class="form-control input-lg username-field"
+                    placeholder="Email Address" />
+            </div>
+            <div class="field">
+                <label for="Password" class="text-gray control-label">{{ 'account.register.pwdLabel' | phxTranslate }}</label>
+                <input type="password" id="Password" name="Password" ng-model="$ctrl.register.password" class="form-control input-lg password-field"
+                    placeholder="{{'account.register.pwdPlaceholder' | phxTranslate}}" />
+            </div>
+            <div class="field">
+                <label for="ConfirmPassword" class="text-gray control-label">{{ 'account.register.confirmPwdLabel' | phxTranslate }}</label>
+                <input type="password" id="ConfirmPassword" name="ConfirmPassword" ng-model="$ctrl.register.confirmPassword" class="form-control input-lg password-field"
+                    placeholder="{{'account.register.confirmPwdPlaceholder' | phxTranslate}}" />
+            </div>
+            <div class="field">
+                <label for="CultureId" class="text-gray control-label">{{ 'account.register.languageLabel' | phxTranslate }}</label>
+                <div class="input-group select2-bootstrap-append">
+                    <ui-select name="CultureId" data-ng-model="$ctrl.register.cultureId" theme="select2" class="form-control" required>
+                        <ui-select-match placeholder="-- {{'common.generic.select' | phxTranslate}} --">{{$select.selected.text}}</ui-select-match>
+                        <ui-select-choices repeat="item.id as item in $ctrl.cultureList | uiSelectChoicesFilter: $select.search: 'text'">
+                            <span data-ng-bind-html="item.text | highlight: $select.search"></span>
+                        </ui-select-choices>
+                    </ui-select>
+                    <span class="input-group-btn">
+                        <button tabindex="-1" data-ng-click="$ctrl.register.cultureId = undefined" class="btn btn-default btn-contact-drp"><i class="material-icons md-18">clear</i></button>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="login-actions">
+            <button class="login-action btn btn-primary" ng-click="$ctrl.onRegister()">{{ 'account.register.registerButton' | phxTranslate }}</button>
+        </div>
+        <div class="login-recover" data-pt-validation-messages="errorMessage" data-ng-if="showError"></div>
+    </div>
+</div>

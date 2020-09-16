@@ -1,0 +1,80 @@
+<app-phx-panel [headerTitle]="!isMinimalistic ? 'Organization Info' : ''">
+    <form [formGroup]="inputFormGroup" *ngIf="inputFormGroup && profileDetails">
+        <div class="form-group" *ngIf="profileDetails.Organization && 
+            (!readOnlyStorage.IsEditable || 
+            (profileDetails.ProfileTypeId === phxConstants.UserProfileType.Organizational && 
+            (profileDetails.ProfileStatusId === phxConstants.ProfileStatus.Draft || profileDetails.ProfileStatusId === phxConstants.ProfileStatus.ComplianceDraft)))">
+            <div class="col-lg-4 col-xl-4" style="text-align: right;">
+                <label class="control-label" title="">Organization</label>
+            </div>
+            <input type="hidden" [formControl]="inputFormGroup.controls.OrganizationId" class="form-control" name="OrganizationId" />
+            <div class="col-lg-8 col-xl-8">
+                <p class="form-control-static">
+                    <a routerLink="/next/organization/{{profileDetails.Organization.Id}}/details">{{profileDetails.Organization.Title}}</a>
+                </p>
+            </div>
+        </div>
+        <div class="form-group" *ngIf="readOnlyStorage.IsEditable && !(profileDetails.Organization && 
+        (!readOnlyStorage.IsEditable || 
+        (profileDetails.ProfileTypeId === phxConstants.UserProfileType.Organizational && 
+        (profileDetails.ProfileStatusId === phxConstants.ProfileStatus.Draft || profileDetails.ProfileStatusId === phxConstants.ProfileStatus.ComplianceDraft))))">
+            <phx-form-control labelText="Organization" [control]="inputFormGroup.controls.OrganizationId" [editable]="(profileDetails.IsDraftStatus) 
+            || profileDetails.Organization===null"
+                viewModeText="{{inputFormGroup.value.OrganizationId}}">
+                <app-phx-select-box [items]="organizationsList" textField="DisplayName" valueField="Id"
+                    [formControl]="inputFormGroup.controls.OrganizationId" (valueChanged)="organizationChanged($event,profileDetails)"
+                    placeholder="-- Select One --">
+                </app-phx-select-box>
+            </phx-form-control>
+        </div>
+
+        <div class="profile-worker-block" style="clear:left;" *ngIf="(profileDetails.Organization && !profileDetails.IsDraftStatus)
+         && profileDetails.ProfileTypeId === html.phxConstants.UserProfileType.WorkerSubVendor">
+            <label style="margin-left: 64px;" class="col-lg-3 control-label label-to-right" title="">Organization Rep</label>
+            <div style="margin-left: 10px;" class="col-lg-7 col-xl-7">
+                <p class="form-control-static col-lg-7 ">
+                    {{profileDetails.UserProfileOrgRep}}
+                </p>
+            </div>
+        </div>
+
+        <div class="form-group" *ngIf="(profileDetails.Organization == null || profileDetails.IsDraftStatus) 
+            && profileDetails.ProfileTypeId == html.phxConstants.UserProfileType.WorkerSubVendor">
+            <phx-form-control labelText="Organization Rep" name="UserProfileIdOrgRep" [editable]="readOnlyStorage.IsEditable"
+                [control]="inputFormGroup.controls.UserProfileIdOrgRep" viewModeText="{{inputFormGroup.controls.UserProfileIdOrgRep}}">
+                <div>
+                    <app-phx-select-box [items]="organizationProfilesList" textField="Contact.FullName" valueField="Id"
+                        [formControl]="inputFormGroup.controls.UserProfileIdOrgRep" placeholder="-- Select One --">
+                    </app-phx-select-box>
+                </div>
+            </phx-form-control>
+        </div>
+
+        <div name="InternalOrganizationDefinition1Id" class="form-group" *ngIf="profileDetails.ProfileTypeId === html.phxConstants.UserProfileType.Internal">
+            <phx-form-control [control]="inputFormGroup.controls.InternalOrganizationDefinition1Id" labelText="Branch"
+                [editable]="readOnlyStorage.IsEditable" viewModeText="{{inputFormGroup.controls.InternalOrganizationDefinition1Id.value | CodeValue:codeValueGroups.InternalOrganizationDefinition1}}">
+                <app-phx-select-box [items]="internalOrganizationDefinition1List" textField="value" valueField="id"
+                    [formControl]="inputFormGroup.controls.InternalOrganizationDefinition1Id" placeholder="-- Select One --">
+                </app-phx-select-box>
+            </phx-form-control>
+        </div>
+
+        <phx-form-control name="Department" *ngIf="!isMinimalistic" labelText="Department" [control]="inputFormGroup.controls.Department"
+            viewModeText="{{inputFormGroup.controls.Department.value}}" [editable]="readOnlyStorage.IsEditable">
+            <div>
+                <input type="text" formControlName="Department" class="form-control" name="Department" />
+            </div>
+        </phx-form-control>
+
+        <div *ngIf="!isMinimalistic" class="form-group">
+            <phx-form-control labelText="Reports To" [editable]="readOnlyStorage.IsEditable" [control]="inputFormGroup.controls.ReportsToProfileId"
+                viewModeText="{{inputFormGroup.controls.ReportsToProfileId.value | lookupNoCache:organizationProfilesList:'Id':'Contact.FullName'}}">
+                <div>
+                    <app-phx-select-box [items]="organizationProfilesList" textField="Contact.FullName" valueField="Id"
+                        [formControl]="inputFormGroup.controls.ReportsToProfileId" placeholder="-- Select One --">
+                    </app-phx-select-box>
+                </div>
+            </phx-form-control>
+        </div>
+    </form>
+</app-phx-panel>

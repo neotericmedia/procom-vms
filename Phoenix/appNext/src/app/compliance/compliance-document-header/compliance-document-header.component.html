@@ -1,0 +1,62 @@
+
+<div class="row compliance-document-row">
+    <div class="col-lg-2 workflow-history-column">
+        <button class="btn btn-material btn-workflow-history" (click)="onToggleHistory()">
+            <i class="material-icons">{{showWorkflowHistory ? 'keyboard_arrow_down' : 'keyboard_arrow_right'}}</i>
+        </button>
+
+        <span>
+            {{header.Id}}.{{header.ComplianceDocumentCurrent.Id}}
+        </span>
+    </div>
+    <div class="col-lg-4 elipsis">
+        <a [routerLink]="documentRuleLink">{{header.ComplianceDocumentRuleDisplayName}}</a>
+    </div>
+    <div class="col-lg-2 elipsis">{{header.ComplianceDocumentRuleRequiredTypeId|CodeValue:codeValueGroups.ComplianceDocumentRuleRequiredType:'text'}}</div>
+    <div class="col-lg-2 elipsis" *ngIf="header.ComplianceDocumentCurrent.ComplianceDocumentExpiryDate">{{header.ComplianceDocumentCurrent.ComplianceDocumentExpiryDate | date:dateFormat}}</div>
+    <div class="col-lg-2 elipsis" *ngIf="!header.ComplianceDocumentCurrent.ComplianceDocumentExpiryDate">{{header.ComplianceDocumentCurrent.ComplianceDocumentSnoozeExpiryDate | date:dateFormat}}</div>
+    <div class="col-lg-2 elipsis">
+        {{header.ComplianceDocumentCurrent.ComplianceDocumentStatusId | CodeValue:codeValueGroups.ComplianceDocumentStatus:'text'}}
+    </div>
+</div>
+<div class="row compliance-document-action-row">
+    <div class="col-lg-12">
+        <app-phx-state-action-buttons displayType="BUTTON_WITH_ELIPSIS" [availableStateActions]="header.ComplianceDocumentCurrent.AvailableStateActions" [stateActions]="stateActions" [refData]="header.ComplianceDocumentCurrent" >
+        </app-phx-state-action-buttons>
+    </div>
+</div>
+<div class="row history-container " *ngIf="showWorkflowHistory || showPreviousDocuments">
+    <div class="history-panel" *ngIf="showWorkflowHistory">
+        <span class="history-panel-label">Workflow History</span>
+        <div class="row ">
+            <div class="col-lg-12">
+                <div *ngIf="header?.Id">
+                    <app-phx-workflow-event-history [entityTypeId]="entityTypeEnum.ComplianceDocumentHeader" [entityId]="header?.Id"></app-phx-workflow-event-history>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="history-panel" *ngIf="showPreviousDocuments && header.PreviousDocuments.length">
+        <div class="history-panel-label">Document History</div>
+        <div class="row document-history-row">
+            <app-phx-data-table [columns]="documentHistoryColumns" [componentName]="'document-history'" [dataSource]="header.PreviousDocuments"
+                [configuration]="documentHistoryConfiguration">
+                <div *dxTemplate="let a of 'idCellTemplate'">
+                    {{header.Id}}.{{a.data.Id}}
+                </div>
+                <div *dxTemplate="let a of 'expiryDateCellTemplate'">
+                    <span *ngIf="a.data.ComplianceDocumentExpiryDate">{{a.data.ComplianceDocumentExpiryDate|date:dateFormat}}</span>
+                    <span *ngIf="!a.data.ComplianceDocumentExpiryDate">{{a.data.ComplianceDocumentSnoozeExpiryDate|date:dateFormat}}</span>
+                </div>
+                <div *dxTemplate="let a of 'actionCellTemplate'">
+                    <div class="btn-toolbar pull-right document-history-toolbar">
+                      <app-phx-state-action-buttons [stateActions]="previousVersionStateActions" [refData]="a.data">
+                      </app-phx-state-action-buttons>
+                    </div>
+                </div>
+
+            </app-phx-data-table>
+        </div>
+    </div>
+</div>
+      

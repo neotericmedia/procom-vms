@@ -1,0 +1,126 @@
+<ul class="nav navbar-nav pull-right">
+  <li class="dropdown hidden-xs hidden-sm">
+    <a class="btn btn-link dataicon" href="javascript:void(0);" (click)="showFeedback()">
+      <i class="material-icons hidden-xs grey">feedback</i>
+      <span class="hidden-xs"> {{ resourceKeys.feedbackLabel | phxTranslate }}</span>
+    </a>
+  </li>
+
+  <li class="dropdown" dropdown [isOpen]="menuOpen" (isOpenChange)="onMenuOpenChange($event)" [autoClose]="!isMobile">
+
+    <!-- navbar context menu -->
+    <a dropdownToggle *ngIf="codeValueGroups" class="btn btn-link dropdown-toggle text-right userinfo" title="{{resourceKeys.manageAccountLabel | phxTranslate}}">
+      <div class="profile-picture">
+        <div class="dropdown-toggle-button" [class.display]="!isMobile || !menuOpen">
+          <app-phx-profile-picture [profileId]="currentProfile?.Id"></app-phx-profile-picture>
+        </div>
+        <div class="dropdown-toggle-button" [class.display]="isMobile && menuOpen">
+          <i class="material-icons">clear</i>
+        </div>
+      </div>
+      <span class="hidden-xs hidden-sm userfullname">{{ fullName }}</span>
+      <span class="hidden-xs hidden-sm">
+        ({{currentProfile?.ProfileTypeId | CodeValue:codeValueGroups.ProfileType:'text'}})
+      </span>
+    </a>
+    <ul *dropdownMenu class="dropdown-menu dropdown-menu-right" [class.menuOverlay]="isMobile" [class.noanimate]="isMobile" role="menu" [ngStyle]="!isMobile && {'margin-top': '-2px'}">
+      <!-- Desktop -->
+      <ng-container *ngIf="!isMobile">
+        <ng-container *ngIf="moreThanOneProfiles">
+          <li>
+            <a class="name-profile" class="name-profile">{{ fullName }}</a>
+          </li>
+          <li *ngFor="let profile of profiles" >
+            <a href="javascript:void(0);" (click)="setProfile(profile)">
+              <ng-container *ngIf="profile?.Label?.length">{{profile?.Label}} </ng-container>
+              ({{profile.ProfileTypeId | CodeValue:codeValueGroups.ProfileType:'text'}})
+            </a>
+          </li>
+          <li role="separator" class="divider"></li>
+      </ng-container>
+        <li>
+          <a href="/#/next/account/manage">
+            <i class="material-icons md-18">settings</i>
+            {{ resourceKeys.manageAccountLabel | phxTranslate }}</a>
+        </li>
+        <li>
+          <a href="/#/next/user-guides">
+            <i class="material-icons md-18">help_outline</i>
+            {{ resourceKeys.userGuidesLabel | phxTranslate }}</a>
+        </li>
+        <li>
+          <a class="btn-logout" href="javascript:void(0);" (click)="logoff()">
+            <svg class="svg-18px material-icons">
+              <use xlink:href="assets/mdi.svg#logout"></use>
+            </svg> {{ resourceKeys.signOutLabel | phxTranslate }}
+          </a>
+        </li>
+      </ng-container>
+      <!-- Mobile -->
+      <ng-container *ngIf="isMobile">
+        <li>
+          <div>
+            <div class="menu-profile-picture" title="{{resourceKeys.manageAccountLabel | phxTranslate}}">
+              <app-phx-profile-picture [profileId]="currentProfile?.Id"></app-phx-profile-picture>
+            </div>
+            <div class="menu-instance-name">{{ currentInstanceName }}</div>
+            <h3 class="menu-profile-name">{{ fullName }}</h3>
+
+            <button class="btn btn-link" [disabled]="!multiProfile" (click)="openPickProfileModal()">
+              ({{ currentProfile?.ProfileTypeId | CodeValue:codeValueGroups.ProfileType:'text' }})
+              <span *ngIf="multiProfile" class="caret"></span>
+            </button>
+
+            <ul class="menu-profile-list">
+              <li>
+                <a href="/#/next/account/manage" (click)="closeMenu()">
+                  <i class="material-icons md-18">settings</i>
+                  {{ resourceKeys.manageAccountLabel | phxTranslate }}</a>
+              </li>
+              <li>
+                <a href="/#/next/user-guides" (click)="closeMenu()">
+                  <i class="material-icons md-18">help_outline</i>
+                  {{ resourceKeys.userGuidesLabel | phxTranslate }}</a>
+              </li>
+              <li>
+                <a href="/#/next/account/manage" (click)="showFeedback()">
+                  <i class="material-icons md-18">feedback</i>
+                  {{ resourceKeys.feedbackLabel | phxTranslate }}</a>
+              </li>
+              <li>
+                <a class="btn-logout" href="javascript:void(0);" (click)="logoff()">
+                  <svg class="svg-18px material-icons">
+                    <use xlink:href="assets/mdi.svg#logout"></use>
+                  </svg> {{ resourceKeys.signOutLabel | phxTranslate }}
+                </a>
+              </li>
+            </ul>
+          </div>
+        </li>
+      </ng-container>
+    </ul>
+    <!-- end navbar context menu -->
+  </li>
+</ul>
+
+<app-phx-modal #pickProfileModal>
+  <div *ngFor="let group of profilesGroupedByInstance; let first = first" class="profile-instance-group">
+    <hr *ngIf="!first" />
+    <div class="heading-instance-name">
+      {{group.instanceName}}
+    </div>
+    <h2 class="heading-contact-name">
+      {{group.fullName}}
+    </h2>
+    <ul *ngIf="codeValueGroups">
+      <li *ngFor="let profile of group.profiles" [class.highlight]="profile.DatabaseId === currentDatabaseId && profile.ProfileId === currentProfileId">
+        <a (click)="setProfile(profile)">
+          <strong>{{profile.ProfileTypeId | CodeValue:codeValueGroups.ProfileType:'text'}}</strong>
+        </a>
+      </li>
+    </ul>
+  </div>
+</app-phx-modal>
+
+
+<app-feedback></app-feedback>

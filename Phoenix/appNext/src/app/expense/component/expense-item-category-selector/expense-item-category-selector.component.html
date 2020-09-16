@@ -1,0 +1,14 @@
+<div class="form-group">
+  <label class="control-label" title="">{{expenseModuleResourceKeys.itemAdd.description | phxTranslate}}</label>
+</div>
+<div class="row" *ngIf="categories && categories.Items" class="category-list">
+  <div class="col col-xs-6 col-sm-4 col-md-3 col-lg-3" *ngFor="let category of categories.Items">
+    <div class="category" (click)="selectCategory(category)">
+      <app-expense-category-icon icon="{{category.Icon}}" align="center" size="lg"></app-expense-category-icon>
+      <div class="category-name">
+        {{category.DisplayName}}
+        <span *ngIf="category.HelpText"><small>({{category.HelpText}})</small></span>
+      </div>
+    </div>
+  </div>
+</div>

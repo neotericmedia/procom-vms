@@ -1,0 +1,42 @@
+<div class="panel panel-default">
+    <div fxHide.xs fxHide.sm fxLayout="row" class="header-row">
+        <div fxFlex="0 0 14.28%" class="header-weekend">{{'timesheet.calendar.daySundayShort' | phxTranslate}}</div>
+        <div fxFlex="0 0 14.28%" class="header-weekday">{{'timesheet.calendar.dayMondayShort' | phxTranslate}}</div>
+        <div fxFlex="0 0 14.28%" class="header-weekday">{{'timesheet.calendar.dayTuesdayShort' | phxTranslate}}</div>
+        <div fxFlex="0 0 14.28%" class="header-weekday">{{'timesheet.calendar.dayWednesdayShort' | phxTranslate}}</div>
+        <div fxFlex="0 0 14.28%" class="header-weekday">{{'timesheet.calendar.dayThursdayShort' | phxTranslate}}</div>
+        <div fxFlex="0 0 14.28%" class="header-weekday">{{'timesheet.calendar.dayFridayShort' | phxTranslate}}</div>
+        <div fxFlex="0 0 14.28%" class="header-weekend">{{'timesheet.calendar.daySaturdayShort' | phxTranslate}}</div>
+    </div>
+    <div class="calendar-outer-container">
+        <div class="calendar-middle-container">
+            <div class="calendar-inner-container">
+                <div fxLayout="row" fxLayout.xs="column" fxLayout.sm="column" fxLayoutAlign=" stretch" *ngFor="let week of timeSheet.Calendar; trackBy: identifyWeek;"
+                    class="cell-row">
+                    <div fxFlex="0 0 14.28%" *ngFor="let day of week.TimeSheetDays;  trackBy: identifyDay;" (click)="onSelect(day)" class="text-gray cell-day" [ngClass]="{ 
+                            'active'  : selectedDay && day?.Id !== null && day?.Id === selectedDay.Id, 
+                            'weekend' : getCalendarBackgroundColor(day) === 'weekend',
+                            'holiday' : getCalendarBackgroundColor(day) === 'holiday',
+                            'fillDay' : getCalendarBackgroundColor(day) === 'fillDay',
+                            'weekday' : getCalendarBackgroundColor(day) === 'weekday' }">
+                        <div class="cell-wrap" (click)="active = true" [ngClass]="day?.Date?.toISOString()?.substring(0, 10)">
+                            <app-time-sheet-cell [projectManagement]="projectManagement" [lineManagement]="lineManagement" [timeSheet]="timeSheet" [timeSheetDay]="timeSheet?.TimeSheetDays[day?.Id]"
+                                (notifySelection)="onSelect($event)" [isSelected]="selectedDay && day?.Id !== null && day?.Id === selectedDay.Id"
+                                ></app-time-sheet-cell>
+                        </div>
+                        <div *ngIf="timeSheet.IsEditable && day && day?.Id !== null" class="add-btn-container" (click)="onSelect(day)">
+                            <i class="material-icons add-btn">add_circle</i>
+                        </div>
+                    </div>
+                </div>
+                <button class="btn btn-link btn-add" (click)="openCapsuleSelectModal()"  *ngIf="timeSheet?.IsEditable && !timeSheet.ExpandAllDays">
+                    <i class="material-icons">add_circle</i>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- TODO: extract the following modals' content into components, show inside single modal for better looking navigation -->
+<app-time-sheet-capsule-select [timeSheet]="timeSheet" [lineManagement]="lineManagement" (capsuleSelect)="onCapsuleSelected($event)"></app-time-sheet-capsule-select>
+<app-phx-modal-date-picker [showBackButton]="true" (onDateSelected)="onCurrentPeriodDateSelected($event)" (back)="onDatePickerBack()" [(dataModel)]="currentTimeCardDatePickerModel"></app-phx-modal-date-picker>
+<app-time-sheet-capsule-edit [projectManagement]="projectManagement" [timeSheet]="timeSheet" [lineManagement]="lineManagement"></app-time-sheet-capsule-edit>

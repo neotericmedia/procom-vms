@@ -1,0 +1,54 @@
+<div class="sidebar menu-min" id="sidebar" style="z-index: 101;" [class.display]="mobileExpanded">
+
+  <accordion *ngIf="navigation" closeOthers="true">
+    <div *ngFor="let n of navigation.NavigationItems">
+
+      <!--no child-->
+      <a *ngIf='!n.HasChildren && n.Code!=="dashboard"' [routerLink]="getUrl(n)" (click)="onSideNavLinkClick(n.Id)">
+        <accordion-group class="parentPanel">
+          <span accordion-heading>
+            <i class='material-icons accordion-heading'>{{n.Icon}}</i>
+            {{n.Value}}
+          </span>
+        </accordion-group>
+      </a>
+
+      <!--yes child-->
+      <accordion-group *ngIf='n.HasChildren' [isOpen]="n.IsOpen" (isOpenChange)="accordionGroupOpenChange($event, n)">
+
+        <span accordion-heading >
+          <i class='material-icons accordion-heading'>{{n.Icon}}</i>
+          {{n.Value}}
+        </span>
+
+        <div *ngFor='let s of n.Children' class="childPanel">
+          <!--no child-->
+          <a *ngIf='!s.HasChildren' [routerLink]="getUrl(s)" class="myButton" routerLinkActive="active-link"
+            (click)="onSideNavLinkClick(s.Id)">
+            <i *ngIf="s.Icon" class='material-icons'>{{s.Icon}}</i> {{s.Value}}
+          </a>
+
+          <!--yes child-->
+          <ng-container *ngIf="s.HasChildren">
+            <a (click)="toggleCollapsed(s)" class="myButton" routerLinkActive="active-link">
+              {{s.Value}}
+              <i class="arrow material-icons md-18" [ngClass]="{'arrowExpanded' : s.IsOpen}"></i>
+              
+            </a>
+            <div [class.hide]="!s.IsOpen">
+              <div *ngFor='let p of s.Children'>
+                <a [routerLink]="getUrl(p)" class="myButtonSub" (click)="onSideNavLinkClick(p.Id)"
+                  routerLinkActive="active-link">
+                  {{p.Value}}
+                </a>
+              </div>
+            </div>
+          </ng-container>
+
+        </div>
+
+      </accordion-group>
+
+    </div>
+  </accordion>
+</div>

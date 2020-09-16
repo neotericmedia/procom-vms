@@ -1,0 +1,158 @@
+<div class="col-lg-2 row" style="margin:-18px 0 0 -5px; z-index:10;">
+    <div class="btn-toolbar">
+        <div class="btn-group">            
+            <button type="button" class="btn btn-clouds dropdown-toggle" data-toggle="dropdown" ng-disabled="(details.conflictRecords.length === 0 || details.lists.actionList.length === 0)">
+                Actions...<span class="caret ml"></span>
+            </button>
+            <ul class="dropdown-menu bordered">
+                <li style="cursor: pointer;"
+                    data-ng-repeat="action in details.lists.actionList"
+                    data-ng-click="details.onActionChange(action)"><a>{{action.Text}}</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="smart-table-wrapper" data-ng-init="details.initialize(document)">
+    <div class="row vms-discount-pending-rows" data-cg-busy="details.busyPromise">
+        <table data-st-table-struct='[{"stTableValue" : "details.items"}, {"stPipeValue" : "details.callServer"}, {"widthValues" : "[6, 10, 10, 10, 8, 8, 10, 10, 10, 8, 10]" }, {"stPaginationValue" : "details.pageSize"}]'>
+            <thead data-st-head="1800px">
+                <tr>
+                    <th data-st-sort="Id" data-st-sort-default="reverse">ID</th>
+                    <th data-st-sort="WorkOrderReference">Work Order Id</th>
+                    <th data-st-sort="FirstName">First Name</th>
+                    <th data-st-sort="LastName">Last Name</th>
+                    <th data-st-sort="StartDate">Start Date</th>
+                    <th data-st-sort="EndDate">End Date</th>
+                    <th data-st-sort="BillAmount">Bill Amount</th>
+                    <th data-st-sort="PayAmount">Pay Amount</th>
+                    <th data-st-sort="VmsInvoiceReference">Invoice Id</th>                    
+                    <th data-st-sort="VmsImportedRecordTypeId">Status</th>
+                    <th>Reason</th>
+                </tr>
+                <tr>
+                    <th>
+                        <input data-st-advanced-search="{property: 'Id', ignoreQuotes: true}" placeholder=""
+                               class="input-sm form-control numberType" data-safe-restrict-input="[^0123456789]" />
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="'WorkOrderReference'" placeholder="" class="input-sm form-control" type="search" />
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="'FirstName'" placeholder="" class="input-sm form-control" type="search" />
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="'LastName'" placeholder="" class="input-sm form-control" type="search" />
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="'StartDate'"
+                               data-st-as-operator-override="'le'"
+                               close-on-date-selection="false" show-button-bar="false" show-weeks="false" class="input-sm form-control"
+                               data-st-as-lazy-attributes="{'uib-datepicker' : ApplicationConstants.formatDate}"
+                               data-st-as-height-override="400"
+                               data-st-as-width-override="315" />
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="'EndDate'"
+                               data-st-as-operator-override="'le'"
+                               close-on-date-selection="false" show-button-bar="false" show-weeks="false" class="input-sm form-control"
+                               data-st-as-lazy-attributes="{'uib-datepicker' : ApplicationConstants.formatDate}"
+                               data-st-as-height-override="400"
+                               data-st-as-width-override="315" />
+                    </th>                 
+                    <th>
+                        <input data-st-advanced-search="{property: 'BillAmount', ignoreQuotes: true, valueSuffix: 'M'}" placeholder=""
+                               class="input-sm form-control numberType" data-safe-restrict-input="[^0123456789.]" />
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="{property: 'PayAmount', ignoreQuotes: true, valueSuffix: 'M'}" placeholder=""
+                               class="input-sm form-control numberType" data-safe-restrict-input="[^0123456789.]" />
+                    </th>                
+                    <th>
+                        <input data-st-advanced-search="'VmsInvoiceReference'" placeholder="" class="input-sm form-control" type="search" />
+                    </th>
+                    <th>
+                        <select data-st-advanced-search="{property: 'VmsFixedPriceImportedRecordTypeId', ignoreQuotes: false}" class="input-sm form-control">
+                            <option value="1">To Process</option>
+                            <option value="2">Conflict</option>
+                            <option value="3">Discarded</option>
+                            <option value="5">Completed</option>
+                        </select>
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="'Reason'" placeholder="" class="input-sm form-control" type="search" />
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr data-ng-repeat="item in details.items" data-ui-sref-tr="vms.batch.fixedprice.details({vmsFixedPriceProcessedRecordId:item.Id})" style="cursor:pointer;"
+ng-class="{success:item.VmsFixedPriceImportedRecordTypeId==ApplicationConstants.VmsImportedRecordType.ToProcess, warning:item.VmsFixedPriceImportedRecordTypeId==ApplicationConstants.VmsImportedRecordType.Conflict, danger:item.VmsFixedPriceImportedRecordTypeId==ApplicationConstants.VmsImportedRecordType.Discarded, 'app-vms-completed':item.VmsFixedPriceImportedRecordTypeId==ApplicationConstants.VmsImportedRecordType.Completed}"                    
+                    >
+                    <td ng-bind="::item.Id"></td>
+                    <td ng-bind="::item.WorkOrderReference"></td>
+                    <td ng-bind="::item.FirstName"></td>
+                    <td ng-bind="::item.LastName"></td>
+                    <td ng-bind="::item.StartDate | date:ApplicationConstants.formatDateComma"></td>
+                    <td ng-bind="::item.EndDate | date:ApplicationConstants.formatDateComma"></td>
+                    <td ng-bind="::item.BillAmount"></td>
+                    <td ng-bind="::item.PayAmount"></td>                  
+                    <td ng-bind="::item.VmsInvoiceReference"></td>
+                    <td ng-bind="::item.VmsFixedPriceImportedRecordTypeId | lookup : details.vmsTypes"></td>
+                    <td ng-bind-html="::item.Reason"></td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="8">
+                        <span>Total Count: {{details.totalItemCount || 0}}; Items Loaded: {{ details.items ? details.items.length : 0}}</span>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>
+<div class="skippedHeader">
+    <h4>Discarded Fixed Price Records</h4>
+</div>
+<div class="col-lg-12 vms-ts-skipped-records">
+    <div class="row" data-cg-busy="details.loadSkippedPromise">
+        <div class="panel panel-internal panel-contact">
+            <div class="contact-name">
+                <table class="table">
+                    <thead class="my-thead">
+                        <tr>
+                            <th class="vms-skipped0">ID</th>
+                            <th class="vms-skipped-text0">Work Order ID</th>
+                            <th class="vms-skipped-name0">First Name</th>
+                            <th class="vms-skipped-name0">Last Name</th>                            
+                            <th class="vms-skipped-date0">Start Date</th>
+                            <th class="vms-skipped-date0">End Date</th>
+                            <th class="vms-skipped-rate0">Bill Amount</th>
+                            <th class="vms-skipped-rate0">Pay Amount</th>
+                            <th class="vms-skipped-text0">Invoice ID</th>
+                            <th class="vms-skipped-number0">Status</th>
+                            <th class="vms-skipped-desc0">Reason</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr data-ng-repeat="item in details.skippedRecords" style="cursor:pointer" class="danger">
+                            <td class="vms-skipped0" ng-bind="::item.Id"></td>
+                            <td class="vms-skipped-text0" ng-bind="::item.WorkOrderReference"></td>
+                            <td class="vms-skipped-name0" ng-bind="::item.FirstName"></td>
+                            <td class="vms-skipped-name0" ng-bind="::item.LastName"></td>
+                            <td class="vms-skipped-date0" ng-bind="::item.StartDate | date:ApplicationConstants.formatDateComma"></td>
+                            <td class="vms-skipped-date0" ng-bind="::item.EndDate | date:ApplicationConstants.formatDateComma"></td>                            
+                            <td class="vms-skipped-rate0" ng-bind="::item.BillAmount"></td>
+                            <td class="vms-skipped-rate0" ng-bind="::item.PayAmount"></td>                           
+                            <td class="vms-skipped-text0" ng-bind="::item.VmsInvoiceReference"></td>
+                            <td class="vms-skipped-number0" ng-bind="::item.VmsFixedPriceImportedRecordTypeId | lookup : details.vmsTypes"></td>
+                            <td class="vms-skipped-text0" ng-bind-html="::item.Reason"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="skippedLength">
+    <span>Total Discarded Count: {{details.skippedRecords.length}}</span>
+</div>

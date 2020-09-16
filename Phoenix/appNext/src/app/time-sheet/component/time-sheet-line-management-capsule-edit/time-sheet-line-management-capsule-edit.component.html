@@ -1,0 +1,33 @@
+<div *ngIf="timeSheet.IsTimeSheetUsesProjects">
+    <button class="btn btn-default chevron-action clearfix" [disabled]="!timeSheet.IsEditable" (click)="startPorjectDialog()">
+        <i class="material-icons pull-right">chevron_right</i>
+        <div class="action-label pull-left text-left project-name">
+            <span *ngIf="lineManagement?.activeProject?.ActiveProjectVersion">{{ lineManagement.activeProject.ActiveProjectVersion.Name }}</span>
+            <span *ngIf="!lineManagement?.activeProject?.ActiveProjectVersion">{{'timesheet.lineManagement.projectPlaceholder' | phxTranslate}}</span>
+        </div>
+    </button>
+</div>
+<div class="form-group" *ngIf="timeSheet && lineManagement">
+    <app-phx-select-box [disabled]="!timeSheet.IsEditable" [value]="lineManagement?.activeRate?.RateTypeId" [items]="timeSheet.Rates"
+        textField="Display" valueField="RateTypeId" [placeholder]="'timesheet.lineManagement.rateTypePlaceholder' | phxTranslate"
+        (valueChanged)="setSelectedRate($event.value)">
+    </app-phx-select-box>
+</div>
+<button class="btn btn-primary" [disabled]="!timeSheet?.IsEditable || !lineManagement?.enableAdd" (click)="addCapsule()">{{'timesheet.lineManagement.addCapsuleBtn' | phxTranslate}}</button>
+
+<!-->
+<div class="responsiveModal">
+    <div bsModal [config]="{ show: false, backdrop: 'static', keyboard: true }" #selectProjectModal="bs-modal" class="modal fade"
+        tabindex="-1" role="dialog" aria-hidden="true">
+    </div>
+</div>-->
+
+<ng-template #selectProjectModal>
+    <ng-container *ngIf="activeProjectManagementState === ProjectManagementState.list">
+        <app-project-select-detail [availableProjectList]="timeSheet?.AvailableProjectList" (projectManagementState)="projectListStateChange($event)"
+            (selectedProject)="setSelectedProject($event)"></app-project-select-detail>
+    </ng-container>
+    <ng-container *ngIf="activeProjectManagementState === ProjectManagementState.edit">
+        <app-project-edit [assignmentId]="timeSheet.AssignmentId" (projectManagementState)="projectEditStateChange($event)" (selectedProject)="setSelectedProject($event)"></app-project-edit>
+    </ng-container>
+</ng-template>

@@ -1,0 +1,8 @@
+<div>
+    <div *ngIf="isTableVisible">
+        <app-phx-data-table #phxTable [configuration]="dataTableConfiguration" [dataSourceUrl]="dataSourceUrl" [dataSourceParams]='oDataParams'
+                            [columns]="columns" [exportFileName]="'workorderSearch2qwe'" [componentName]="'workorderSearch2qwe'"
+                            [dataStoreKey]="dataStoreKey" (selectionChanged)="onSelectionChanged($event)">
+        </app-phx-data-table>
+    </div>
+</div>

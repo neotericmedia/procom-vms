@@ -1,0 +1,24 @@
+<div *ngIf="billingTransactionGrouped?.length == 0" class="empty">
+  There are no pending invoicing billing transactions
+</div>
+
+<div class="app-accordion-container app-accordion-container-28">
+  <app-phx-accordion>
+    <app-phx-badged-accordion-group *ngFor="let btg of billingTransactionGrouped; let groupIndex = index" [badge]="btg.Count"
+      [showToggle]="btg.Count > 0" [isOpen]="groupIndex === 0 && btg.Count > 0">
+      <span accordion-heading>{{btg.OrganizationInternalLegalName}}</span>
+      <div *ngIf="btg.Count > 0">
+        <app-phx-accordion *ngIf="btg.BillingInvoicePresentationStyles">
+          <div class="entityBlock app-accordion-level-two">
+            <div *ngFor="let presentationStyle of btg.BillingInvoicePresentationStyles" (click)="goToTransactionClearing(btg.OrganizationIdInternal, presentationStyle.BillingInvoicePresentationStyleId)">
+              <div class="divPresentationStyle navWithLink app-accordion-level-two-item">
+                <span>{{presentationStyle.BillingInvoicePresentationStyleId | CodeValue:codeValueGroups.BillingInvoicePresentationStyle}}</span>
+                <span class="badge badge-warning Badge">{{presentationStyle.Count}}</span>
+              </div>
+            </div>
+          </div>
+        </app-phx-accordion>
+      </div>
+    </app-phx-badged-accordion-group>
+  </app-phx-accordion>
+</div>

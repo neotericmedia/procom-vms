@@ -1,0 +1,6 @@
+<app-phx-dialog (onCallBack)="dialogAction_CallBackObButtonClick($event)" [config]="phxDialogComponentConfigModel"></app-phx-dialog>
+
+<app-phx-modal title="" #modalTemplate showCloseButton="true">
+    <app-workorder-save-as-template [Templatemodal] = "modalTemplate" [workorderDetails] = "workOrderDetails">
+    </app-workorder-save-as-template>
+  </app-phx-modal>

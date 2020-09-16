@@ -1,0 +1,45 @@
+﻿<div class="form-horizontal">
+    <div class="form-group">
+        <h4 class="col-lg-12">Billing Documents</h4>
+    </div>
+    <div class="form-group">
+        <label class="col-xs-12 col-sm-2 control-label">Timesheet ID</label>
+        
+        <div class="col-xs-8 input-group select2-bootstrap-append" style="float: left; padding-left: 10px">
+            <ui-select data-ng-model="model.transactionTimeSheetId" theme="select2" class="form-control" data-ng-change="changeTimesheet(model.transactionTimeSheetId)">
+                <ui-select-match placeholder="Select timesheet to view">{{$select.selected.Description}}</ui-select-match>
+                <ui-select-choices repeat="item.Id as item in model.allTimesheets | uiSelectChoicesFilter: $select.search: 'Description': 'Id'">
+                    <span data-ng-bind-html="item.Description | highlight: $select.search"></span>
+                </ui-select-choices>
+            </ui-select>
+            <span class="input-group-btn">
+                <button tabindex="-1" data-ng-click="model.transactionTimeSheetId=undefined" class="btn btn-default"><i class="material-icons md-18">clear</i></button>
+            </span>
+        </div>
+        <div class="col-xs-4 col-sm-2">
+            <button type="button" class="btn btn-default btn-material" data-ng-click="viewTimesheet(model.transactionTimeSheetId)">
+                <i class="material-icons">remove_red_eye</i>
+            </button>
+            <button type="button" class="btn btn-default btn-material" data-toggle="collapse" data-target="#documentUpload-transaction">
+                <i class="material-icons">add</i>
+            </button>
+        </div>
+    </div>
+    <div class="form-group">
+        <h4 class="col-lg-12">Uploaded Documents</h4>
+    </div>
+    <div class="form-group">
+        <div class="col-lg-12" data-pt-document-list="" data-entity-type-id="ApplicationConstants.EntityType.TransactionHeader" data-entity-id="$state.params.transactionHeaderId"
+            data-func-get-documents-length="model.documents.length" data-func-get-document-id-to-preview="getPdfStreamByPublicId"
+            data-template-url="/Phoenix/templates/Template/Components/Document/DocumentListDefault.html">
+        </div>
+    </div>
+</div>
+<div id="documentUpload-transaction" class="panel-collapse collapse">
+    <div data-pt-document-upload="" data-holder-id="documentUpload-transaction" data-entity-type-id="ApplicationConstants.EntityType.TransactionHeader"
+        data-entity-id="$state.params.transactionHeaderId" data-show-description-input="true" data-enable-image-resize="false"
+        data-max-file-size="20971520" data-accept-file-types="" data-limit-multi-file-uploads="15" data-func-callback-on-done="documentUploadCallbackOnDone"
+        data-header-text="Upload a supporting document to your transaction" data-content-text1="Accepted file types: PNG, JPG, JPEG, TIF, BMP, PDF, DOC, DOCX"
+        data-content-text2="20 MB file size limit">
+    </div>
+</div>

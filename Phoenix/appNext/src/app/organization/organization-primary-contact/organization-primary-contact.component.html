@@ -1,0 +1,48 @@
+<app-phx-panel headerTitle="Primary Contact">
+  <form [formGroup]="inputFormGroup" *ngIf="readOnlyStorage&&inputFormGroup">
+
+    <phx-form-control [control]="inputFormGroup.controls.Email" [editable]="readOnlyStorage.IsEditable"
+        labelText="Email" viewModeText="{{inputFormGroup.controls.Email.value}}">
+        <input formControlName="Email" type="text" class="form-control" />
+    </phx-form-control>
+
+    <phx-form-control [control]="inputFormGroup.controls.PersonTitleId" [editable]="readOnlyStorage.IsEditable" 
+        labelText="Salutation" viewModeText="{{inputFormGroup.controls.PersonTitleId.value}}">
+        <app-phx-select-box [items]="html.codeValueLists.listPersonType" textField="text" valueField="id" 
+            [formControl]="inputFormGroup.controls.PersonTitleId">
+        </app-phx-select-box>
+    </phx-form-control>
+
+    <phx-form-control [control]="inputFormGroup.controls.FirstName" [editable]="readOnlyStorage.IsEditable" 
+        labelText="First Name" viewModeText="{{inputFormGroup.controls.FirstName.value}}">
+        <input formControlName="FirstName" type="text" class="form-control" />
+    </phx-form-control>
+
+    <phx-form-control [control]="inputFormGroup.controls.LastName" [editable]="readOnlyStorage.IsEditable" 
+        labelText="Last Name" viewModeText="{{inputFormGroup.controls.LastName.value}}">
+        <input formControlName="LastName" type="text" class="form-control" />
+    </phx-form-control>
+
+    <phx-form-control [control]="inputFormGroup.controls.PhoneTypeId" [editable]="readOnlyStorage.IsEditable" 
+        labelText="Phone Type" viewModeText="{{inputFormGroup.controls.PhoneTypeId.value}}">
+        <app-phx-select-box [items]="html.codeValueLists.listPhoneType" textField="text" valueField="id" 
+            [formControl]="inputFormGroup.controls.PhoneTypeId">
+        </app-phx-select-box>
+    </phx-form-control>
+
+    <phx-form-control [control]="inputFormGroup.controls.PhoneNumber" [editable]="readOnlyStorage.IsEditable" 
+        labelText="Phone" viewModeText="{{inputFormGroup.controls.PhoneNumber.value}}">
+        <div class="col-md-12 padding-0">
+            <div class="col-md-8 padding-0">
+                <input formControlName="PhoneNumber" type="text" class="form-control" maxlength="20" 
+                    phxFloatBetweenInput='{"from":1, "to":999999999999999, "decimalplaces":0}' />
+            </div>
+            <div class="col-md-4 padding-right-0">
+                <input [formControl]="inputFormGroup.controls.PhoneExtension" type="text" class="form-control" 
+                    placeholder="Ext." maxlength="3" phxFloatBetweenInput='{"from":1, "to":999, "decimalplaces":0}' />
+            </div>
+        </div>
+    </phx-form-control>
+
+  </form>
+</app-phx-panel>

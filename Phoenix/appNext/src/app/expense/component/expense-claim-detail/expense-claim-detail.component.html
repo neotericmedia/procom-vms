@@ -1,0 +1,24 @@
+<app-phx-panel [headerTitle]="expenseModuleResourceKeys.detail.expenseClaimTitle| phxTranslate">
+  <div class="form-horizontal" *ngIf="expenseClaim">
+    <form [formGroup]="myform">
+      <div class="row">
+        <div class="col col-lg-6">
+          <phx-form-control [control]="myform.controls['Title']" [labelText]="expenseModuleResourceKeys.detail.titleLabel| phxTranslate" [editable]="editable" viewModeText="{{expenseClaim.Title}}">
+            <dx-text-box formControlName="Title" [maxLength]="128" valueChangeEvent="keyup"></dx-text-box>
+          </phx-form-control>
+          <phx-form-control [control]="myform.controls['CurrencyId']" [labelText]="expenseModuleResourceKeys.detail.currencyLabel| phxTranslate" [editable]="editable" viewModeText="{{expenseClaim?.CurrencyId | CodeValue:codeValueGroups.Currency}}">
+            <app-phx-select-box #currencySelectBox [items]="currencies" textField="code" valueField="id" [disabled]="(expenseClaim && expenseClaim.ExpenseItems && expenseClaim.ExpenseItems.length > 0)"
+              placeholder="Choose Currency" [value]="expenseClaim.CurrencyId" formControlName="CurrencyId">
+            </app-phx-select-box>
+          </phx-form-control>
+        </div>
+        <div class="col col-lg-6">
+          <phx-form-control [control]="myform.controls['Description']" [labelText]="expenseModuleResourceKeys.detail.descriptionLabel| phxTranslate" [editable]="editable" viewModeText="{{expenseClaim.Description}}">
+            <dx-text-area [height]="90" [maxLength]="255" formControlName="Description" valueChangeEvent="keyup">
+            </dx-text-area>
+          </phx-form-control>
+        </div>
+      </div>
+    </form>
+  </div>
+</app-phx-panel>

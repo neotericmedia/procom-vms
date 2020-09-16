@@ -1,0 +1,72 @@
+<div class="row notes-attachments-wrap">
+    <div class="col-md-3 section documents clearfix">
+        <header class="header">{{ 'timesheet.notesAttachments.documentsHeader' | phxTranslate }}</header>
+        <div class="col-xs-12">
+            <p>{{ 'timesheet.notesAttachments.documentDescription' | phxTranslate }}</p>
+        </div>
+        <div class="col-xs-12" *ngIf="timeSheet && timeSheet?.Id && documentUploadConfiguration">
+            <app-phx-document-file-upload [editable]="documentUploadConfiguration != null" [showAddButton]="true" [(configuration)]="documentUploadConfiguration"
+                [fileUploaderOptions]="fileUploadOptions" (onCompleteAll)="onUploadComplete()" (onSuccessItem)="getUploadCompleteNotification($event)"></app-phx-document-file-upload>
+
+        </div>
+        <div class="col-xs-12">
+            <div class="card-columns margintop10" *ngFor="let doc of documentList">
+                <div class="card borderbottom">
+                    <div class="card-block">
+                        <div class="card-title">
+
+
+                            <a class="pull-right" (click)="deleteDocument(doc)" *ngIf="documentDeleteConfiguration"><button class="btn btn-link no-pad"><i class="material-icons">clear</i></button></a>
+                            <a class="doc-anchor" [title]="doc.Name" [href]="createPdfDocumentLink(doc)" target="_blank">{{ doc.Name }}</a>
+                        </div>
+                        <div class="card-text">
+                            <p class="uploaded-by-content pull-right">{{doc.UploadedDatetime | date:formatDateTime}}</p>
+                            <p class="uploaded-by-content">{{doc.UploadedByContactFirstName}} {{doc.UploadedByContactLastName}} </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4 section time-card-notes">
+        <header class="header">{{ 'timesheet.notesAttachments.notesHeader' | phxTranslate }}</header>
+        <div *ngIf="timeSheet?.Id && showNoteBackOffice" class="time-card-notes-group">
+            <p>{{ 'timesheet.notesAttachments.noteInternalDescription' | phxTranslate : timeSheet.InternalName }}</p>
+            <app-time-sheet-notes-attachments-edit [maxLength]="1500" [isEditable]="timeSheet?.IsEditable" [noteText]="timeSheet?.NoteBackOffice"
+                [noteLabel]="'Note'" (udpatedNote)="onUpdatedNote($event, 'NoteBackOffice')">
+            </app-time-sheet-notes-attachments-edit>
+        </div>
+        <div *ngIf="timeSheet?.Id" class="time-card-notes-group">
+            <p>{{ 'timesheet.notesAttachments.noteClientDescription' | phxTranslate }}:</p>
+            <app-time-sheet-notes-attachments-edit [maxLength]="1500" [isEditable]="timeSheet?.IsEditable" [noteText]="timeSheet?.NoteClientApprover"
+                [noteLabel]="'Note'" (udpatedNote)="onUpdatedNote($event, 'NoteClientApprover')">
+            </app-time-sheet-notes-attachments-edit>
+        </div>
+    </div>
+
+    <div class="col-md-5 section">
+        <header class="header">{{ 'timesheet.notesAttachments.dayNotesHeader' | phxTranslate }}</header>
+        <div class="col-xs-9">
+            <p class="day-note-description">{{ 'timesheet.notesAttachments.dayNotesDescription' | phxTranslate }}</p>
+
+        </div>
+        <div class="col-xs-3 text-align-right">
+            <button class="btn btn-default notes-block-toggle" [class.collapsed]="isNotesBlockCollapsed" (click)="isNotesBlockCollapsed = !isNotesBlockCollapsed">{{'timesheet.notesAttachments.toggleCollapseAllBtn' | phxTranslate}}</button>
+        </div>
+        <div class="col-xs-12">
+            <div *ngIf="timeSheet && !timeSheet.IsTimeSheetUsesProjects" class="paddingright15">
+                <div *ngFor="let day of timeSheet.TimeSheetDays | keyValue; trackBy: identify;">
+                    <app-time-sheet-notes-attachments-day-detail [timeSheetDay]="day.value" [timeSheet]="timeSheet" [assignmentId]="timeSheet.AssignmentId"
+                        [date]="day.value?.Date" [isCollapsedContent]="isNotesBlockCollapsed"></app-time-sheet-notes-attachments-day-detail>
+                </div>
+            </div>
+            <div *ngIf="timeSheet && timeSheet.IsTimeSheetUsesProjects && sortedTimeSheetDetails.length > 0 && projectGroupedTimeSheetDetails" class="paddingright15">
+                <div *ngFor="let projectGroupedDetail of projectGroupedTimeSheetDetails | keyValue; trackBy: identifyProject;">
+                    <app-time-sheet-notes-by-project [timeSheet]="timeSheet" [projectGroupedTimeSheetDetail]="projectGroupedDetail" [isCollapsedContent]="isNotesBlockCollapsed">
+                    </app-time-sheet-notes-by-project>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

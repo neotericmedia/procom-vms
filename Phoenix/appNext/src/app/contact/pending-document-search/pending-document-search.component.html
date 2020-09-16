@@ -1,0 +1,11 @@
+<app-phx-data-table [columns]="columns" [configuration]="dataTableConfiguration" [dataSourceUrl]="'Contact/SearchWithDocumentCounts'" [dataSourceParams]='oDataParams'
+        [exportFileName]="'ContactDocuments'" [componentName]="'ContactDocumentSearch'" (rowClick)="onRowClick($event)">
+  <div *dxTemplate="let d of 'commaDelimitedLookupCellTemplate'">
+    {{ d.value }}
+  </div>
+  <div *dxTemplate="let d of 'viewContactDetailTemplate'">
+    <div class="btn-group">
+      <button type="button" class="btn btn-xs btn-clouds btn-row-action no-padding-bottom-right" title="View" (click)="viewContactDetail(d.data)"><i class="fontello-icon-eye-1"></i>&nbsp;</button>
+    </div>
+  </div>
+</app-phx-data-table>

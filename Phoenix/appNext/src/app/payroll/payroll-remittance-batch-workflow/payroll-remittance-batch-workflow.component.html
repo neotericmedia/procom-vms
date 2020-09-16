@@ -1,0 +1,7 @@
+<div class="remittance-batch-workflow">
+    <div class="col-md-12 text-center">
+        <app-phx-workflow-event-history *ngIf="batchId" [entityTypeId]="commonService.ApplicationConstants.EntityType.RemittanceTransactionBatch"
+            [entityId]="batchId">
+        </app-phx-workflow-event-history>
+    </div>
+</div>

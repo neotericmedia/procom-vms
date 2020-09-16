@@ -1,0 +1,17 @@
+﻿{
+    "Framework": "jasmine",
+    
+    "TestFileTimeout": "3000",
+    
+    "TestHarnessLocationMode": "Custom",
+    
+    "TestHarnessDirectory": "..\unit\",
+
+    "TypeScriptCodeGenTarget" : "ES5",
+    
+    "RootReferencePathMode":"DriveRoot|SettingsFileDirectory",
+    
+    "CodeCoverageIncludes": [],
+    
+    "CodeCoverageExcludes": []
+}

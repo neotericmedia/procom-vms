@@ -1,0 +1,15 @@
+﻿<div class="modal-header">
+    <h4 class="modal-title">{{typeName}}</h4>
+</div>
+<div class="modal-body">
+    <ng-form name="reasonDialog" novalidate role="form">
+        <div class="form-group input-group-lg">
+            <label class="control-label" for="course">Enter the Reason to {{typeName}}:</label>
+            <input type="text" class="form-control" name="reason" id="reason" ng-model="reason" required maxlength="255">
+        </div>
+    </ng-form>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-default" ng-click="cancel()">Cancel</button>
+    <button type="button" class="btn btn-primary" ng-click="save()" ng-disabled="(reasonDialog.$dirty && reasonDialog.$invalid) || reasonDialog.$pristine">Ok</button>
+</div>

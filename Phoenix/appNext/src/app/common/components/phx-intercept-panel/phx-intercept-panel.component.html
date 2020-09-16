@@ -1,0 +1,28 @@
+<div class="row">
+  <div class="col-xs-12">
+    <div class="error-panel">
+
+      <div class="row">
+        <div class="col-sm-2 text-right col-icon">
+           <img [src]="imgageSource">
+        </div>
+        <div class="col-sm-9">
+          <h3>{{mainHeading}}</h3>
+          <div class="sub-text">            
+            <ng-content></ng-content>
+          </div>
+          <div class="row" *ngIf="buttonList && buttonList.length > 0">
+            <div class="col-xs-12 text-right">
+              <button type="button" *ngFor="let button of buttonList" class="btn" [disabled]="button.IsDisabled === true" [className]="button.ClassName"
+                (click)="emittButtonClick(button.ActionEventName)">
+                {{ button.DisplayText }}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+

@@ -1,0 +1,143 @@
+<div data-cg-busy="loadItemsPromise" data-ng-form="formPayrollTax">
+    <div class="col-lg-12">
+        <div style="height: 30px;">
+            <label class="col-lg-2 control-label label-to-right" style="height:30px;">&nbsp;</label>
+        </div>
+    </div>
+    <div class="col-lg-10">
+        <div class="row " data-ng-form="entityForm">
+            <div class="tab-content">
+                <div class="tabbable panel panel-tabbable">
+                    <div class="tab-content">
+                        <div class="tab-pane active">
+                            <div class="panel">
+                                <div class="panel-heading">
+                                    <div class="row">
+                                        <div class="col-lg-1">
+                                            <span class="text-gray">ID</span>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <span class="text-gray">Country</span>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <span class="text-gray">Created Date</span>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <span class="text-gray">Effective Date</span>
+                                        </div>
+                                        <div class="col-lg-2">
+                                            <span class="text-gray">Status</span>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                       
+                                        </div>
+                                        </div>
+                                        </div>
+                                        </div>
+                                    </div>
+                    <div class="tabbable">
+                        <div class="tab-content">
+                            <div class="tab-pane active">
+                                <div class="panel">
+                                    <div class="panel-body">
+                                       <div class="row"> <div class="form-group col-lg-12">
+                                            <label for-property="CountryId" for="CountryId" data-model-property="header.CountryId" class="col-lg-2 control-label label-to-right req-lab-right" data-original-title="" title="">Country</label>
+                                            <div class="col-lg-3">
+                                                <div class="input-group select2-bootstrap-append">
+                                                </div>
+                                            </div>
+                                        </div></div>
+                                       <div class="row">  <div class="form-group col-lg-12"> 
+                                        </div> </div>
+                                       <div class="row">  <div class="form-group col-lg-12">
+                                            <label for-property="TD1Minimum" for="TD1Minimum" data-model-property="header.currentVersion.TD1Minimum" class="col-lg-2 control-label label-to-right req-lab-right" data-original-title="" title="">TD1 Minimum</label>
+                                            <div class="col-lg-3">
+                                                <div class="input-group">                                                    
+                                                    <input type="text"
+                                                           data-input-by-float-range="{from:0, to:ApplicationConstants.max.currency, decimalplaces:2, doesemptytozero:'true'}"
+                                                           data-ng-model="header.currentVersion.TD1Minimum"
+                                                           input-display-decimal-places="2"
+                                                           name="TD1Minimum"
+                                                           data-required-message="Required"
+                                                           data-pt-field-view="header.common.ptFieldViewConfigOnChangeStatusId"
+                                                           data-pt-field-view-custom="{ { header.currentVersion.TD1Minimum | currency } }"
+                                                           data-ng-required="true"
+                                                           class="form-control form-control ng-scope"
+                                                           required="required">
+                                                </div>
+                                            </div>
+                                        </div></div>
+                                       <div class="row">  <div class="form-group col-lg-12">
+                                            <label for-property="AbatementRatePercentage" for="AbatementRatePercentage" data-model-property="header.currentVersion.AbatementRatePercentage" class="col-lg-2 control-label label-to-right req-lab-right" data-original-title="" title="">Abatement Rate</label>
+                                            <div class="col-lg-3">
+                                                <div class="input-group">
+                                                    <input type="text"
+                                                           input-by-float-range="{from:0, to:100, decimalplaces:4, doesemptytozero:'true'}"
+                                                           ng-model="header.currentVersion.AbatementRatePercentage"
+                                                           input-display-decimal-places="4"
+                                                           name="AbatementRatePercentage"
+                                                           data-required-message="Required"
+                                                           data-pt-field-view="header.common.ptFieldViewConfigOnChangeStatusId"
+                                                           data-pt-field-view-custom="{ { header.currentVersion.AbatementRatePercentage | displayPercentageView:4 } }"
+                                                           data-ng-required="true"
+                                                           class="form-control form-control ng-scope"
+                                                           required="required">
+                                                    <span class="input-group-addon">%</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-lg-12">
+                                            <label for-property="NonResidentWithholdingPercentage" for="NonResidentWithholdingPercentage" data-model-property="header.currentVersion.NonResidentWithholdingPercentage" class="col-lg-2 control-label label-to-right req-lab-right" data-original-title="" title="">Non Resident With holding Percentage</label>
+                                            <div class="col-lg-3">
+                                                <div class="input-group">
+                                                    <input type="text"
+                                                           input-by-float-range="{from:0, to:100, decimalplaces:4, doesemptytozero:'true'}"
+                                                           placeholder="Primary NonResidentWithholdingPercentage"
+                                                           ng-model="header.currentVersion.NonResidentWithholdingPercentage"
+                                                           input-display-decimal-places="4"
+                                                           name="NonResidentWithholdingPercentage"
+                                                           data-required-message="Required"
+                                                           data-pt-field-view="header.common.ptFieldViewConfigOnChangeStatusId"
+                                                           data-pt-field-view-custom="{ { header.currentVersion.NonResidentWithholdingPercentage | displayPercentageView:4 } }"
+                                                           data-ng-required="true"
+                                                           class="form-control form-control ng-scope"
+                                                           required="required">
+                                                    <span class="input-group-addon">%</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12 panel-body" data-pt-validation-messages="header.validationMessages" data-ng-if="header.validationMessages"></div>
+                                        <div class="col-lg-12 panel panel-internal">
+                                            <div class="panel-heading">
+                                                <div class="row">
+                                                    <h3 class="col-lg-10 panel-title">Tax Rates</h3>
+                                                    <div class="col-lg-2">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <div class="panel-body" data-ng-form="formRates">
+                                                   
+                                            </div>
+                                    </div>
+                                            </div>
+
+                                        </div>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="col-lg-2">
+    <div class="payrolltax-versions">
+        <div class="payrolltax-version-group">
+           
+        </div>
+    </div>
+</div>

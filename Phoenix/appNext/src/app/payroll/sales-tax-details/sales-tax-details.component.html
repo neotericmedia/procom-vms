@@ -1,0 +1,106 @@
+<div class="form-horizontal sales-tax-details col-lg-12" *ngIf="tax">
+  <form [formGroup]="salesTaxForm" *ngIf="salesTaxForm">
+    <div class="col-lg-12 sales-tax-actions-wrapper">
+      <div class="col-lg-3 sales-tax-actions-drp">
+        <app-phx-state-action-buttons [stateActions]="stateActions" [availableStateActions]="tax.AvailableStateActions"
+          [displayType]="stateActionDisplayType.DROPDOWN"></app-phx-state-action-buttons>
+      </div>
+    </div>
+    <div class=" col-lg-10">
+      <div class="headstone panel-heading">
+        <div class="row">
+          <div class="col-lg-1"></div>
+          <div class="col-lg-2">
+            <label class="control-label col-xs-12 ">Id</label>
+            <span class="col-xs-12 ">{{tax?.Id}}</span>
+          </div>
+          <div class="col-lg-3">
+            <label class="control-label col-xs-12 ">Country</label>
+            <span class="col-xs-12 ">{{tax?.CountryId | CodeValue:codeValueGroups.Country:'text'}}</span>
+          </div>
+          <div class="col-lg-3">
+            <label class="control-label col-xs-12 ">Tax Type</label>
+            <span class="col-xs-12">{{tax?.SalesTaxId | CodeValue:codeValueGroups.SalesTax:'text'}}</span>
+          </div>
+          <div class="col-lg-3">
+            <label class="control-label col-xs-12 ">Status</label>
+            <label *ngIf="!editable" class="col-xs-12" [ngClass]="{'text-warning':(tax?.CurrentVersion?.TaxVersionStatusId == phxConstants.TaxVersionStatus.Active)}">
+              {{tax?.CurrentVersion?.TaxVersionStatusId | CodeValue:codeValueGroups.TaxVersionStatus:'code'}}
+            </label>
+            <label class="col-xs-12" *ngIf="editable">
+              {{editable && isCorrection ? 'To Correct' : 'To Schedule Change'}}
+            </label>
+          </div>
+        </div>
+      </div>
+      <app-phx-panel>
+        <div class="panel-body">
+          <div class="col-lg-12">
+            <phx-form-control [control]="salesTaxForm.controls['CountryId']" labelText="Country" [editable]="false"
+              viewModeText="{{salesTaxForm.get('CountryId').value | CodeValue:codeValueGroups.Country:'text'}}">
+            </phx-form-control>
+          </div>
+          <div class="col-lg-12">
+            <phx-form-control [control]="salesTaxForm.controls['SalesTaxId']" labelText="Tax Type" [editable]="false"
+              viewModeText="{{salesTaxForm.get('SalesTaxId').value | CodeValue:codeValueGroups.SalesTax:'text'}}">
+            </phx-form-control>
+          </div>
+          <div formGroupName="CurrentVersion">
+            <div class="col-lg-12">
+              <phx-form-control [control]="salesTaxForm.controls['CurrentVersion'].controls.EffectiveDate" [editable]="editable && !isCorrection"
+                labelText="Effective Date" viewModeText="{{tax?.CurrentVersion?.EffectiveDate | date:phxConstants.DateFormat.mediumDate}}">
+                <app-phx-date-box type="date" [displayFormat]="phxConstants.DateFormat.MMM_dd_yyyy" [formControl]="salesTaxForm.controls['CurrentVersion'].controls.EffectiveDate"></app-phx-date-box>
+              </phx-form-control>
+            </div>
+            <div formArrayName="SalesTaxVersionRates">
+              <div class="form-group col-lg-12 sales-tax-provinces">
+                <div class="row bg-gray-strong sales-tax-provinces-header col-md-12">
+                  <div class="col-xs-5 text-black">Province/State</div>
+                  <div class="col-xs-4 text-black text-center">Is Applied</div>
+                  <div class="col-xs-3 text-black text-right">
+                    <span class="sales-tax-provinces-header-last pull-right">Percentage (%)</span>
+                  </div>
+                </div>
+                <div class="sales-tax-provinces-body col-md-12" *ngFor="let rate of salesTaxForm.controls['CurrentVersion'].controls['SalesTaxVersionRates'].controls; let i = index;">
+                  <div class="col-xs-5 text-black sales-tax-province-cell">{{rate.get('SubdivisionId').value |
+                    CodeValue: codeValueGroups.Subdivision:'text'}}</div>
+                  <div [formGroupName]="i">
+                    <div class="col-xs-7 col-sm-4 sales-tax-radio-cell">
+                      <phx-form-control [control]="salesTaxForm.controls['CurrentVersion'].controls['SalesTaxVersionRates'].controls['IsApplied']"
+                        [editable]="editable" viewModeText="{{rate.get('IsApplied').value ? 'Yes' : 'No'}}">
+                        <label class="radio-inline">
+                          <input class="form-check-input" type="radio" [value]="true" formControlName="IsApplied">Yes</label>
+                        <label class="radio-inline">
+                          <input class="form-check-input" type="radio" [value]="false" formControlName="IsApplied">No</label>
+                      </phx-form-control>
+                    </div>
+                    <div class="col-sm-3 text-black sales-tax-percent-cell" style="text-align: right;" *ngIf="rate.get('IsApplied').value">
+                      <phx-form-control [showValidationMessages]="false" [control]="salesTaxForm.controls['CurrentVersion'].controls['SalesTaxVersionRates'].controls['RatePercentage']"
+                        [editable]="editable" viewModeText="{{rate.get('RatePercentage').value | phxPercentWithDecimals}}">
+                        <input type="number" class="form-control text-right" formControlName="RatePercentage"
+                          phxFloatBetweenInput='{"from":0, "to":100, "decimalplaces":4}' />
+                      </phx-form-control>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="panel-footer" *ngIf="editable">
+          <app-phx-state-action-buttons [stateActions]="stateActions" [availableStateActions]="tax.AvailableStateActions"></app-phx-state-action-buttons>
+        </div>
+        <app-phx-validation-messages [messages]="validationMessages"></app-phx-validation-messages>
+      </app-phx-panel>
+    </div>
+    <div class="col-lg-2">
+      <div class="payrolltax-versions">
+        <div class="payrolltax-version-group">
+          <app-phx-tax-versions [taxVersions]="tax?.SalesTaxVersions" [currentVersionId]="taxVersionId" [editable]="editable"
+            (selectedTaxVersion)="selectedSalesTaxVersion($event)">
+          </app-phx-tax-versions>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

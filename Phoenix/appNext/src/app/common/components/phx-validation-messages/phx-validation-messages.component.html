@@ -1,0 +1,10 @@
+<div class="alert alert-danger alert-dismissable error-box" *ngIf="validationMessageBox.visible">
+    <div *ngFor="let item of validationMessageBox.items; let i = index;">
+        <span *ngIf="item.propertyName && item.propertyName.length > 0">{{item.propertyName}}:</span>
+
+        <span *ngFor="let message of item.messages">
+         {{message}}
+        </span>
+
+    </div>
+</div>

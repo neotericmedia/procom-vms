@@ -1,0 +1,20 @@
+<app-phx-panel headerTitle="Phone Number">
+    <form [formGroup]="inputFormGroup" *ngIf="readOnlyStorage && inputFormGroup">
+        <div formArrayName="UserProfilePhones">
+            <div *ngFor="let instanceOfFormGroupPhone of formArrayUserProfilePhones?.controls; let i = index; trackBy: trackByFn">
+                <div [formGroupName]="i">
+                    <div class="form-group organization-panel-of-array">
+                        <app-contact-phonenumber [inputFormGroup]="instanceOfFormGroupPhone" [addressIndex]="i" [readOnlyStorage]="readOnlyStorage"
+                            [isQuickAdd]="isQuickAdd" (outputEvent)="onOutputEvent($event,i)"></app-contact-phonenumber>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <phx-form-control *ngIf="readOnlyStorage.IsEditable" class="padding-10">
+            <button type="button" class="btn btn-default btn-material right pull-right" (click)="onClickAddPhone()"
+            [disabled]="!formArrayUserProfilePhones.valid">
+                <i class="material-icons">add</i>
+            </button>
+        </phx-form-control>
+    </form>
+  </app-phx-panel>

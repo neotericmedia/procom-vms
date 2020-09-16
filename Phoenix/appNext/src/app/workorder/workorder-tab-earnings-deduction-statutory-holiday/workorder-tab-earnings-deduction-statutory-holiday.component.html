@@ -1,0 +1,24 @@
+<div class="form-group" [formGroup]="inputFormGroup">
+  <phx-form-control labelText="Apply flat stat pay instead of calculating stat pay" [control]="inputFormGroup.controls.ApplyFlatStatPay"
+    [editable]="readOnlyStorage.IsEditable && checkPtFiledAccessibility('WorkOrderVersion','ApplyFlatStatPay')"
+    viewModeText="{{inputFormGroup.controls.ApplyFlatStatPay.value ? 'Yes' : 'No'}}">
+    <label class="radio-inline">
+      <input class="form-check-input" type="radio" [value]="true" required formControlName="ApplyFlatStatPay">Yes</label>
+    <label class="radio-inline">
+      <input class="form-check-input" type="radio" [value]="false" required formControlName="ApplyFlatStatPay">No</label>
+  </phx-form-control>
+  <div id="toolTip" style="display: inline;">
+    <i class="material-icons" style="color:#333333; font-size: 18px;">info</i>
+  </div>
+  <app-phx-tool-tip targetId="#toolTip">
+    <div style="text-align:left; width:300px;">
+      <p style="white-space: normal">Statutory wages for Ontario are calculated based on the sum of units worked
+        in the previous work period
+        (excluding OT) divided by the business days in that period.</p>
+      <p style="white-space: normal">If the average units exeed the standard hours per day, then the units are capped
+        at the standard hours
+        per day.</p>
+      <p style="white-space: normal">Statutory wages are paid using the Primary Rate amount.</p>
+    </div>
+  </app-phx-tool-tip>
+</div>

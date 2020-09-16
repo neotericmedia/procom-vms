@@ -1,0 +1,11 @@
+<button type="button" class="btn btn-default" (click)="createOrg()">New</button>
+<app-phx-data-table [columns]="columns" [configuration]="dataTableConfiguration" [dataSourceUrl]="dataSourceUrl" [dataSourceParams]="oDataParams"
+ [componentName]="dataGridComponentName" (rowClick)="onRowClick($event)" exportFileName="Organization" (contextMenuOpenTab)="onContextMenuOpenTab($event)">
+	<div *dxTemplate="let role of 'orgRolesTemplate'">
+		<i *ngIf='role.data.IsOrganizationClientRole' class="icon icon-small icon-organization-client ng-scope role-icon" title="Client"></i>
+		<i *ngIf='role.data.IsOrganizationIndependentContractorRole' class="icon icon-small icon-organization-independentcontractor ng-scope role-icon" title="Independent Contractor"></i>
+        <i *ngIf='role.data.IsOrganizationLimitedLiabilityCompanyRole' class="icon icon-small icon-organization-limitedliabilitycompany ng-scope role-icon" title="Limited Liability Company"></i>
+		<i *ngIf='role.data.IsOrganizationSubVendorRole' class="icon icon-small icon-organization-independentcontractor ng-scope role-icon" title="Sub Vendor"></i>
+		<i *ngIf='role.data.IsOrganizationInternalRole' class="icon icon-small icon-organization-internal ng-scope role-icon" title="Internal"></i>
+	</div>
+</app-phx-data-table>

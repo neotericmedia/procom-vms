@@ -1,0 +1,28 @@
+<div bsModal #dialogCommentModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="modal-title">{{ title }}</span>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <div class="col-md-12">
+                        <label>{{ inputname }}</label>
+                        <dx-text-area [height]="100" [(ngModel)]="comment" required [maxLength]="maxLength" [phxDebounce]="500" (onDebounce)="updateComment($event)"
+                            valueChangeEvent="keyup" [placeholder]="'common.phxDialogComment.commentPlaceholder' | phxTranslate : title : maxLength"></dx-text-area>
+                        <span class="help-block">{{ helpblock }}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" (click)="cancel()">
+                    {{ cancelButtonText }}
+                </button>
+                <button type="button" class="btn" (click)="save()" [class.btn-primary]="saveButtonClass === 'primary'" [class.btn-danger]="saveButtonClass === 'danger'"
+                    [class.btn-secondary]="!saveButtonClass || saveButtonClass === 'secondary'" [disabled]="!comment || comment.trim().length == 0">
+                    {{ saveButtonText }}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

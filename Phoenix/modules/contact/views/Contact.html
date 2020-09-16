@@ -1,0 +1,413 @@
+﻿<div class="row base-contact-form contact-page-wrapper">
+    <div class="col-lg-12">
+        <div class="col-lg-10">
+            <div class="btn-group contact-btn-profile-add" data-ng-if="edit.currentContact.UserStatusId == ApplicationConstants.ContactStatus.Active && !edit.isNotProfilePage">
+                <button type="button" class="btn btn-clouds dropdown-toggle" data-toggle="dropdown" data-ng-if="edit.currentProfile.ProfileStatusId === ApplicationConstants.ProfileStatus.Active">
+                    New
+                    <span class="caret ml"></span>
+                </button>
+                <ul class="dropdown-menu bordered pull-left">
+                    <li data-ng-repeat="profileType in ApplicationConstants.UserProfileType">
+                        <a href="javascript:;" data-ng-click="edit.CreateAdditionalProfile(edit.currentContact.Id, profileType)" data-ng-if="edit.CanAddProfile(profileType)">{{ profileType | lookup:edit.profileTypes }}</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-lg-10 margin-10-v-t">
+            <div class="panel tabbable panel-tabbable">
+                <div class="tab-content">
+                    <div class="tab-pane active">
+                        <div class="panel">
+                            <div class="panel-heading headstone profile-headstone">
+                                <div class="row">
+                                    <div class="col-xs-12 col-md-3">
+                                        <label class="control-label col-xs-12">Contact Id</label>
+                                        <span class="col-xs-12">{{edit.currentContact.SourceId || edit.currentContact.Id || '0'}}</span>
+                                    </div>
+                                    <div class="col-xs-12 col-md-3">
+                                        <label class="control-label col-xs-12 ">Legal Name</label>
+                                        <span class=" col-xs-12 ">{{edit.currentContact.FirstName}} {{edit.currentContact.LastName}}</span>
+                                        <span class=" col-xs-12 " data-ng-if="!edit.currentContact.FirstName && !edit.currentContact.LastName">N/A</span>
+                                    </div>
+                                    <div class="col-xs-12 col-md-3">
+                                        <label class="control-label col-xs-12 ">Login</label>
+                                        <div class="col-xs-12">
+                                            {{edit.currentContact.LoginName || 'N/A'}}
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-12 col-md-3">
+                                        <label class="control-label col-xs-12 ">Contact Status</label>
+                                        <div class="col-xs-12 ">
+                                            {{(edit.currentContact.UserStatusId | lookup:edit.contactStatuses) || 'Draft'}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tabbable tabbable-profile">
+                    <ul class="nav nav-tabs">
+                        <li data-ng-class="{ active : $state.is('Create' + edit.activeProfileType + 'Profile' ) || $state.is('Edit' + edit.activeProfileType + 'Profile' ) }"
+                            class="tab-profile">
+                            <a data-ng-if="edit.currentContact.Id > 0" data-ng-click="edit.goUp()">Contact</a>
+                        </li>
+                        <li data-ng-class="{ active : $state.includes('Edit' + edit.activeProfileType + 'Profile.WorkOrders') }" data-ng-if="edit.currentContact.Id > 0 && edit.currentProfile.Id > 0 && !edit.currentContact.SourceId">
+                            <a data-ui-sref=".WorkOrders">Work Orders</a>
+                        </li>
+                        <li data-ng-class="{ active : $state.includes('Edit' + edit.activeProfileType + 'Profile.ContactNotes')}" data-ng-if="edit.currentContact.Id > 0 && edit.currentProfile.Id > 0 && !edit.currentContact.SourceId">
+                            <a data-ui-sref=".ContactNotes">Notes</a>
+                        </li>
+                        <li data-ng-class="{ active : $state.includes('Edit' + edit.activeProfileType + 'Profile.History') }" data-ng-if="edit.currentContact.Id > 0 && edit.currentProfile.Id > 0 && !edit.currentContact.SourceId">
+                            <a data-ui-sref=".History">History</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="tab-content">
+                    <div class="tab-pane active">
+                        <div class="panel">
+                            <div class="panel-body no-padding-h" data-ng-form="mainContactForm" data-ng-if="!edit.isNotProfilePage">
+                                <div class="contact-form text-right" ng-if="!edit.currentContact.SourceId && edit.currentContact.UserStatusId != ApplicationConstants.ContactStatus.Active">
+                                    <div class="alert alert-info alert-dismissable error-box" style="display: inline-block;">
+                                        <a class="close" data-dismiss="alert" aria-label="close">
+                                            <i class="material-icons">clear</i>
+                                        </a>
+                                        <div class="row text-right" style="padding-right: 40px;">
+                                            <div class="col-xs-12">
+                                                <strong>Information!</strong> You cannot edit this contact or create new profiles
+                                                until all pending changes have been approved.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="contact-form" data-ng-form="contactForm">
+                                    <div class="row">
+                                        <div class="col-lg-12 col-sm-12 app-col-original form-horizontal">
+                                            <div class="panel panel-internal panel-contact">
+                                                <div class="contact-name">
+                                                    <div class="col-sm-12">
+                                                        <h4>Details</h4>
+                                                    </div>
+                                                    <div ui-view="ContactName"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="contact-form" data-ng-if="edit.isBlockVisible && !edit.currentProfile.IsDraft">
+                                    <div class="row profile-collapse-wrapper">
+                                        <div class="profile-collapse col-lg-12 col-xs-12 app-col-original">
+                                            <div class="col-lg-6 col-xs-6">
+                                                <span class="profile-title">Profiles</span>
+                                            </div>
+                                            <div class="col-lg-6 col-xs-6">
+                                                <button class="btn btn-default btn-material contact-block-expand-btn pull-right" data-ng-click="edit.block.isProfiles=!edit.block.isProfiles"
+                                                        title="Expand to see details">
+                                                    <i class="material-icons">
+                                                        {{edit.block.isProfiles ? 'remove' : 'add'}}
+                                                    </i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row" data-ng-if="edit.block.isProfiles">
+                                    <div class="col-lg-12 app-col-original">
+                                        <div class="contact-profiles">
+                                            <ul class="profile-list" data-ng-if="edit.currentProfiles && edit.currentProfiles.length > 0">
+                                                <li class="profile-card" data-ng-repeat="profile in edit.currentProfiles" data-ng-class="{'active': profile.Id == $stateParams.profileId }">
+                                                    <a class="icon {{profile.ProfileIcon}}" data-ui-sref="Edit{{profile.ProfileTypeCode}}Profile({contactId: profile.ContactId, profileId: profile.Id})"
+                                                       title="{{profile.ProfileTitle}}">&nbsp;</a>
+                                                </li>
+                                            </ul>
+                                            <ul class="profile-list" data-ng-if="edit.currentProfiles === null">
+                                                <li class="profile-card active">
+                                                    <a class="icon {{edit.title.ProfileIcon}}" href="javascript:void(0);" title="{{edit.currentProfile.ProfileTypeCode}} Profile">&nbsp;</a>
+                                                </li>
+                                            </ul>
+                                            <div class="profile-content">
+                                                <div class="row">
+                                                    <div class="profile-title">{{edit.currentProfile.ProfileTypeCode}}&nbsp;Profile</div>
+                                                    <div ng-if="edit.currentProfile.WorkflowAvailableActions && edit.currentProfile.WorkflowAvailableActions.length > 0">
+                                                        <div class="btn-group profile-role" data-ng-if="edit.currentProfile.ProfileStatusId === ApplicationConstants.ProfileStatus.Active"
+                                                             style="margin-top:2px;margin-bottom:15px;">
+                                                            <button type="button" class="btn btn-clouds dropdown-toggle" data-toggle="dropdown">
+                                                                Actions
+                                                                <span class="caret ml"></span>
+                                                            </button>
+                                                            <ul class="dropdown-menu bordered pull-left">
+                                                                <li style="cursor: pointer;" data-ng-repeat="action in edit.currentProfile.WorkflowAvailableActions | orderBy:'DisplayButtonOrder'"
+                                                                    data-ng-click="edit.clickOnWorkflowAvailableAction(action)">
+                                                                    <a data-ng-disabled="edit.isSubmitted && action.CommandName === 'UserProfileCorrect'">{{action.Name}}</a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                        <div class="btn-group profile-role"
+                                                             data-ng-if="edit.currentProfile.ProfileStatusId === ApplicationConstants.ProfileStatus.Draft || edit.currentProfile.ProfileStatusId === ApplicationConstants.ProfileStatus.Recalled || edit.currentProfile.ProfileStatusId === ApplicationConstants.ProfileStatus.Declined || edit.currentProfile.ProfileStatusId === ApplicationConstants.ProfileStatus.ComplianceDraft || edit.currentProfile.ProfileStatusId === ApplicationConstants.ProfileStatus.RecalledCompliance"
+                                                             style="margin-top:2px;margin-bottom:15px;">
+                                                            <button type="button" class="btn btn-clouds dropdown-toggle" data-toggle="dropdown">
+                                                                Actions
+                                                                <span class="caret ml"></span>
+                                                            </button>
+                                                            <ul class="dropdown-menu bordered pull-left">
+                                                                <li style="cursor: pointer;" data-ng-repeat="action in edit.currentProfile.WorkflowAvailableActions | orderBy:'DisplayButtonOrder'"
+                                                                    data-ng-click="edit.clickOnWorkflowAvailableAction(action)">
+                                                                    <a data-ng-disabled="edit.isSubmitted && action.CommandName === 'UserProfileCorrect'">{{action.Name}}</a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row profile-form">
+                                                    <div class="col-lg-12 form-horizontal">
+                                                        <div class="row">
+                                                            <div>
+                                                                <div class="row panel-email panel-internal-block panel-internal">
+                                                                    <div class="col-lg-12">
+                                                                        <div ui-view="ContactEmail" class="col-lg-12"></div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row panel-internal-block" data-ng-if="edit.currentProfile.ProfileTypeId===ApplicationConstants.UserProfileType.Internal">
+                                                                    <div class="col-lg-12">
+                                                                        <div class="row">
+                                                                            <div class="col-xl-6">
+                                                                                <div ui-view="InternalCommission"></div>
+                                                                                <div ui-view="InternalOrganization" data-onload="labelwidth=4;inputwidth=8"></div>
+                                                                            </div>
+                                                                            <div class="col-xl-6 panel-internal-roles">
+                                                                                <div ui-view="Internal" class="col-lg-12 no-padding"></div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row panel-organization" data-ng-if="edit.currentProfile.ProfileTypeId===ApplicationConstants.UserProfileType.Organizational">
+                                                                    <div class="col-lg-12">
+                                                                        <div ui-view="Organization"></div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row panel-profile-info">
+                                                                    <div class="col-lg-12">
+                                                                        <div ui-view="Profile"></div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row" data-ng-if="edit.isWorkerProfile && edit.currentProfile.IdOriginal>0 && !edit.complianceDocument.parentEntityHasNoApplicableComplianceDocuments">
+                                                            <div class="row panel-internal-block panel-internal">
+                                                                <div class="col-lg-12">
+                                                                    <div class="profile-title" style="padding-bottom: 1px">
+                                                                        <h4>User Profile Compliance Documents</h4>
+                                                                    </div>
+                                                                    <div class="compliance-body">
+                                                                        <app-compliance-document [entity-type-id]="ApplicationConstants.EntityType.UserProfile" [entity-id]="edit.currentProfile.IdOriginal"
+                                                                                                 [entity-name]="edit.currentProfile.Contact.FullName"
+                                                                                                 (compliance-document-output)="edit.complianceDocument.onComplianceDocumentOutput($event)"
+                                                                                                 reference-entity-link="#/contacts/{{edit.currentProfile.ContactId}}/profile/{{edit.profileTypeKey}}/{{edit.currentProfile.Id}}"
+                                                                                                 [trigger-to-refresh]="edit.complianceDocument.triggerToRefreshComplianceDocument">
+
+                                                                        </app-compliance-document>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <!--<div class="btn-toolbar pull-right mrl btn-toolbar-profile" data-ng-if="edit.currentProfile.ProfileStatusId !== ApplicationConstants.ProfileStatus.PendingChange">
+                                                                <button type="button" class="btn btn-default" data-ng-click="edit.discard()" data-ng-if="edit.isSave" data-ng-disabled="edit.isSubmitted">Cancel and Discard</button>
+                                                                <button type="button" class="btn btn-default" data-ng-click="edit.profileSave()" data-ng-if="edit.isSave" data-ng-disabled="edit.isSubmitted">Save</button>
+                                                                <button type="button" class="btn btn-primary" data-ng-click="edit.profileSubmit()" data-ng-if="edit.isSave" data-ng-disabled="!mainContactForm.$valid || edit.isSubmitted">Submit</button>
+
+                                                                <button type="button" class="btn btn-default" data-ng-click="edit.declineProfile()" data-ng-if="edit.isApprove" data-ng-disabled="edit.isSubmitted">Decline</button>
+                                                                <button type="button" class="btn btn-default" data-ng-click="edit.recallProfile()" data-ng-if="edit.isRecall" data-ng-disabled="edit.isSubmitted">Recall</button>
+                                                                <button type="button" class="btn btn-primary" data-ng-click="edit.approveProfile()" data-ng-if="edit.isApprove" data-ng-disabled="edit.isSubmitted">Approve</button>
+                                                            </div>-->
+                                                            <div class="btn-toolbar pull-right mrl btn-toolbar-profile">
+                                                                <button type="button" class="btn" data-ng-repeat="action in edit.currentProfile.WorkflowAvailableActions | orderBy:'DisplayButtonOrder' : true | filter: { IsActionButton: true }"
+                                                                        data-ng-class="edit.buttonClass(action.CommandName)" data-ng-click="edit.clickOnWorkflowAvailableAction(action)"
+                                                                        data-ng-disabled="edit.isSubmitted||(edit.validateButton(action.CommandName) && !mainContactForm.$valid)">
+                                                                    {{action.Name}}
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="contact-form" data-ng-if="(edit.currentProfile.ProfileStatusId === ApplicationConstants.ProfileStatus.Active || edit.currentProfile.ProfileStatusId === ApplicationConstants.ProfileStatus.PendingChange) && edit.isWorkerProfile">
+                                    <div class="row profile-collapse-wrapper advance-garnishee-wrapper">
+                                        <div class="profile-collapse col-lg-12 col-xs-12">
+                                            <div class="col-lg-6 col-xs-6">
+                                                <span class="profile-title">Worker Documents</span>
+                                            </div>
+                                            <div class="col-lg-6 col-xs-6">
+                                                <button class="btn btn-default btn-material contact-block-expand-btn pull-right" data-ng-click="edit.block.isDocuments=!edit.block.isDocuments"
+                                                        title="Expand to see details">
+                                                    <i class="material-icons">
+                                                        {{edit.block.isDocuments ? 'remove' : 'add'}}
+                                                    </i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="">
+                                    <div class="form-group col-lg-3 worker-profile-docs-header" data-ng-if="(edit.currentProfile.ProfileStatusId === ApplicationConstants.ProfileStatus.Active || edit.currentProfile.ProfileStatusId === ApplicationConstants.ProfileStatus.PendingChange) && edit.isWorkerProfile && edit.block.isDocuments">
+                                        <label class="col-lg-9 control-label label-to-right" data-original-title="" title="">Source File(s)</label>
+                                        <div class="col-lg-3">
+                                            <button class="btn btn-default adj-doc-btn" data-toggle="collapse" data-target="#documentUpload-worker" title="Add a Document">Add</button>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-lg-9 worker-profile-docs-wrapper">
+                                        <div class="worker-profile-docs-list" data-ng-repeat="document in edit.WorkerDocuments" data-ng-if="!edit.currentProfile.IsDraft && edit.isWorkerProfile && edit.block.isDocuments">
+                                            <a class="worker-link-view" data-ng-class="{'view-mode-link' : edit.commissionId>0 && !document.Description}" href="javascript:void(0);"
+                                               type="button" data-ng-href="{{edit.getPdfStreamByPublicId(document.PdfDocumentPublicId)}}"
+                                               target="_blank" data-ng-if="document.PdfDocumentPublicId" title="View">{{document.Name}}</a>
+                                            <a class="worker-link-delete" href="javascript:void(0);" data-ng-click="edit.documentDelete(document)" title="Delete">
+                                                <i class="fontello-icon-trash"></i>
+                                            </a>
+                                            <span class="worker-link-text" data-ng-if="document.Description && document.Description.length>0">{{document.Description}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="documentUpload-worker" class="panel-collapse collapse" data-ng-if="edit.currentProfile.ProfileStatusId === ApplicationConstants.ProfileStatus.Active && edit.isWorkerProfile && edit.block.isDocuments">
+                                    <div data-pt-document-upload="" data-holder-id="documentUpload-worker" data-entity-type-id="ApplicationConstants.EntityType.UserProfile"
+                                         data-entity-id="edit.currentProfile.Id" data-show-description-input="true" data-enable-image-resize="false"
+                                         data-max-file-size="20971520" data-accept-file-types="" data-limit-multi-file-uploads="15"
+                                         data-func-callback-on-done="edit.documentUploadCallbackOnDone" data-header-text="Upload a supporting document to your commission adjustment"
+                                         data-content-text1="Accepted file types: PNG, JPG, JPEG, BMP, PDF, TIF, DOC, DOCX" data-content-text2="20 MB file size limit">
+                                    </div>
+                                </div>
+                                <div class="contact-form" data-ng-if="edit.isBlockVisible && (edit.currentProfile.ProfileStatusId === ApplicationConstants.ProfileStatus.Active || edit.currentProfile.ProfileStatusId === ApplicationConstants.ProfileStatus.PendingChange)">
+                                    <div class="row profile-collapse-wrapper advance-garnishee-wrapper">
+                                        <div class="profile-collapse col-lg-12 col-xs-12">
+                                            <div class="col-lg-6 col-xs-6">
+                                                <span class="profile-title">Advances</span>
+                                                <span class="badge badge-success count-badge badge-adv" data-ng-if="edit.currentProfile.ActiveAdvancesCount>0">{{edit.currentProfile.ActiveAdvancesCount}}</span>
+                                            </div>
+                                            <div class="col-lg-6 col-xs-6" data-ng-if="edit.showAdvance">
+                                                <button class="btn btn-default btn-material contact-block-expand-btn pull-right" data-ng-click="edit.block.isAdvances=!edit.block.isAdvances"
+                                                        title="Expand to see details">
+                                                    <i class="material-icons">
+                                                        {{edit.block.isAdvances ? 'remove' : 'add'}}
+                                                    </i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="contact-form contact-advance-search" data-ng-if="edit.block.isAdvances && edit.isBlockVisible && (edit.currentProfile.ProfileStatusId === ApplicationConstants.ProfileStatus.Active || edit.currentProfile.ProfileStatusId === ApplicationConstants.ProfileStatus.PendingChange) && edit.showAdvance">
+                                    <div class="">
+                                        <div class="col-lg-12 advance-search-table">
+                                            <div ui-view="ContactAdvances" class="col-lg-12"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="contact-form" data-ng-if="edit.isBlockVisible && (edit.currentProfile.ProfileStatusId === ApplicationConstants.ProfileStatus.Active || edit.currentProfile.ProfileStatusId === ApplicationConstants.ProfileStatus.PendingChange)">
+                                    <div class="row profile-collapse-wrapper advance-garnishee-wrapper">
+                                        <div class="profile-collapse col-lg-12 col-xs-12">
+                                            <div class="col-lg-6 col-xs-6">
+                                                <span class="profile-title">Garnishees</span>
+                                                <span class="badge badge-success count-badge" data-ng-if="edit.currentProfile.ActiveGarnisheesCount>0">{{edit.currentProfile.ActiveGarnisheesCount}}</span>
+                                            </div>
+                                            <div class="col-lg-6 col-xs-6" data-ng-if="edit.showGarnishee">
+                                                <button class="btn btn-default btn-material contact-block-expand-btn pull-right" data-ng-click="edit.block.isGarnishees=!edit.block.isGarnishees"
+                                                        title="Expand to see details">
+                                                    <i class="material-icons">
+                                                        {{edit.block.isGarnishees ? 'remove' : 'add'}}
+                                                    </i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="contact-form contact-garnishee-search" data-ng-if="edit.block.isGarnishees && edit.isBlockVisible && (edit.currentProfile.ProfileStatusId === ApplicationConstants.ProfileStatus.Active || edit.currentProfile.ProfileStatusId === ApplicationConstants.ProfileStatus.PendingChange) && edit.showGarnishee">
+                                    <div class="">
+                                        <div class="col-lg-12 garnishee-search-table">
+                                            <div ui-view="ContactGarnishees" class="col-lg-12"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div data-ng-if="edit.currentProfile.ProfileTypeId===ApplicationConstants.UserProfileType.Internal && edit.currentProfile.ProfileStatusId === ApplicationConstants.ProfileStatus.Active">
+                                    <div ui-view="InternalSubscriptions"></div>
+                                </div>
+                            </div>
+                            <div class="panel-body" data-ui-view="WorkOrders" data-autoscroll="false"></div>
+                            <div class="panel-body" data-ui-view="ContactNotes" data-autoscroll="false"></div>
+                            <div class="panel-body" data-ui-view="History" data-autoscroll="false"></div>
+                            <div class="panel-body" data-pt-validation-messages="edit.ValidationMessages" data-ng-if="edit.ValidationMessages.length>0"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-2">
+            <div class="version-panel notes-panel" style="margin-bottom: 30px;padding-left: 0;" data-ng-if="edit.currentContact.Id > 0 && edit.currentProfile.Id > 0 && !edit.currentContact.SourceId">
+                <div class="panel-group">
+                    <div class="panel panel-default">
+                        <div>
+                            <a data-toggle="collapse" data-target="#notes-panel" class="panel-header panel-header-link col-lg-6 notes-panel">
+                                NOTES
+                                <span class="badge " data-ng-if="edit.contactUnreadNoteCount>0" style="padding: 2px 5px;background-color:#FE9701">{{edit.contactUnreadNoteCount}}</span>
+                            </a>
+                            <button type="button" class="btn btn-material pull-right" data-toggle="collapse" data-ng-click="edit.NavigateToContactNotes()">
+                                <i class="material-icons md-dark">launch</i>
+                            </button>
+                        </div>
+                        <div id="notes-panel" class="panel-collapse collapse" data-ng-if="edit.contactTotalNoteCount>0">
+                            <div class="panel-body form-horizontal">
+                                <div class="row">
+                                    <div data-pt-notes-list="" 
+                                         data-entity-type-id="ApplicationConstants.EntityType.Contact" 
+                                         data-entity-id="$state.params.contactId" 
+                                         data-profile-type-id="edit.currentProfile.ProfileTypeId">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="contact-versions">
+                <div class="contact-version-group">
+                    <div class="contact-version-item" data-ng-class="{ 'active' : $state.params.profileId == edit.currentProfile.Id  && !edit.currentProfile.SourceId }"
+                         data-ng-click="edit.onVersionClick(edit.currentProfile, true)">
+                        <div>
+                            <div>
+                                <span class="small-text">Current Profile</span>
+                            </div>
+                            <span data-ng-if="!edit.currentProfile.SourceId && !edit.currentProfile.ChildId" data-ng-class="edit.currentProfile.ProfileStatusId === ApplicationConstants.ProfileStatus.Active ? 'text-warning' : ''">
+                                <span class="small-text">Status:&nbsp;&nbsp;&nbsp;</span>{{edit.currentProfile.ProfileStatusId |lookup:edit.profileStatuses}}
+                            </span>
+                            <span data-ng-if="edit.currentProfile.SourceId || edit.currentProfile.ChildId">
+                                <span class="small-text">Status:&nbsp;&nbsp;&nbsp;</span>Pending Change
+                            </span>
+                        </div>
+                    </div>
+                    <div data-ng-if="edit.currentProfile.SourceId" class="contact-version-item" data-ng-class="{ 'active' : $state.params.profileId == edit.currentProfile.Id && edit.currentProfile.SourceId }"
+                         data-ng-click="edit.onVersionClick(edit.currentProfile, false)">
+                        <div>
+                            <div>
+                                <span class="small-text">Proposed Change</span>
+                            </div>
+                            <span>
+                                <span class="small-text">Status:&nbsp;&nbsp;&nbsp;</span>{{edit.currentProfile.ProfileStatusId |lookup:edit.profileStatuses}}
+                            </span>
+                        </div>
+                    </div>
+                    <div data-ng-if="edit.currentProfile.ChildId" class="contact-version-item" data-ng-class="{ 'active' : $state.params.profileId == edit.currentProfile.Id && !edit.currentProfile.ChildId }"
+                         data-ng-click="edit.onVersionClick(edit.currentProfile, false)">
+                        <div>
+                            <div>
+                                <span class="small-text">Proposed Change</span>
+                            </div>
+                            <span>
+                                <span class="small-text">Status:&nbsp;&nbsp;&nbsp;</span>{{edit.currentProfile.ChildProfileStatusId |lookup:edit.profileStatuses}}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

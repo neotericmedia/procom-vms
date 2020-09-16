@@ -1,0 +1,67 @@
+<div class="panel-default adp-batch-main">
+  <div class="panel-body">
+    <div class="row form-group">
+      <div class="btn-group batch-sub-header-drp" *ngIf="model.WorkflowAvailableActions && model.WorkflowAvailableActions.length>0">
+        <button type="button" class="btn btn-clouds dropdown-toggle" data-toggle="dropdown">Actions...
+          <span class="caret ml"></span>
+        </button>
+        <ul class="dropdown-menu bordered">
+          <li style="cursor: pointer;" *ngFor="let action of model.WorkflowAvailableActions" (click)="onActionSelect(action)">
+            <a>{{action.Name}}</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="row adp-batch-header headstone">
+      <div class="row form-group">
+        <div class="col-lg-1 col-md-1" *ngIf="paymentType != commonService.ApplicationConstants.PaymentMethodType.ADP">
+          <label class="text-gray col-xs-12">Batch Number</label>
+          <span class="col-xs-12">{{model.BatchNumber}}</span>
+        </div>
+        <div class="col-lg-4 col-md-4">
+          <label class="text-gray col-xs-12">Internal Organization</label>
+          <span class="col-xs-12">{{model.InternalOrganizationLegalName}}</span>
+        </div>
+        <div class="col-lg-2 col-md-2" *ngIf="paymentType != commonService.ApplicationConstants.PaymentMethodType.ADP">
+          <label class="text-gray col-xs-12">Bank Account</label>
+          <span class="col-xs-12">{{model.InternalOrganizationBankAccountBankName}}</span>
+        </div>
+        <div class="col-lg-2 col-md-2">
+          <label class="text-gray col-xs-12">Create Date</label>
+          <span class="col-xs-12" *ngIf="model.CreateDate">{{model.CreateDate | date:formatDate}}</span>
+        </div>
+        <div class="col-lg-2 col-md-2">
+          <label class="text-gray col-xs-12">Deposit Date</label>
+          <span class="col-xs-12" *ngIf="model.DepositDate">{{model.DepositDate | date:formatDate}}</span>
+        </div>
+        <div class="col-lg-1 col-md-1">
+          <label class="text-gray col-xs-12">Status</label>
+          <span class="col-xs-12">{{model.BatchStatusId | CodeValue:commonService.CodeValueGroups.PaymentReleaseBatchStatus:'text'}}</span>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="row">
+      <div class="col-xs-12 ">
+        <app-phx-data-table #grid [columns]="columns" [configuration]="dataTableConfiguration" [dataSourceUrl]="dataSourceUrl" [dataSourceParams]="oDataParams"
+          [exportFileName]="'transactions'" [componentName]="componentName" (responseReceived)="dataReceived($event)">
+          <div *dxTemplate="let item of 'detail'">
+            <div class="col col-xs-12">
+              <app-phx-data-table #gridDetail [configuration]="detailDataTableConfiguration" [dataSource]="item.data.PaymentTransactions" [columns]="detailColumns">
+                <div *dxTemplate="let d of 'currencyTemplate'">
+                  <span>{{d.value | number:'1.2-2'}} {{d.data.CurrencyId | CodeValue: commonService.CodeValueGroups.Currency:'code'}}</span>
+                </div>
+              </app-phx-data-table>
+            </div>
+          </div>
+          <div *dxTemplate="let d of 'ActionTemplate'">
+            <div class="btn-group">
+              <button type="button" class="btn btn-xs btn-warning" *ngIf="d.data.WorkflowAvailableActions.length" (click)="recallPayment(d)">Recall</button>
+            </div>
+          </div>
+        </app-phx-data-table>
+      </div>
+    </div>
+  </div>
+</div>

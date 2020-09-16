@@ -1,0 +1,28 @@
+
+ <div>
+    <a data-target="#note-list" data-toggle="collapse" (click)="showNote()" class="panel-header panel-header-link col-lg-6 notes-panel notes-side-header">
+        NOTES
+        <span class="badge" *ngIf="readCount > 0"  style="padding: 2px 5px;background-color:#FE9701">{{readCount}}</span>
+    </a>
+    <button type="button" class="btn btn-material pull-right" data-toggle="collapse" (click)="NavigateToContactNotes()">
+        <i class="material-icons md-dark">launch</i>
+    </button>
+</div>
+
+<div class="note-list" *ngIf="showPreview" id="note-list">
+  <div id="noteList" class="note-list-container">
+      <div *ngFor ="let note of notes| slice:0:2; let i=index" style="padding:5px 0;text-align:left;border-bottom:2px solid #eee;">
+          <div>
+              <div>
+                  <label class="label-summary" style="padding-left:0;font-weight:400">{{note.CreatedDatetime| date:dateColumnFormat}}<br/>by {{note.CommentOwnerName}}</label>
+              </div>
+              <div>
+                  <span style="padding-left:10px;font-weight:600">{{note.Comment}}</span>
+              </div>
+          </div>
+      </div>
+  </div>
+  <div *ngIf="notes?.length > 2" style="text-align: center">
+      <a (click)="NavigateToContactNotes()" type="button" data-toggle="collapse" style="cursor:pointer;">More...</a>
+  </div>
+</div>

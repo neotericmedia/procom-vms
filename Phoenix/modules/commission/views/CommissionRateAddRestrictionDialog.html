@@ -1,0 +1,98 @@
+﻿<div class="modal-content paymentBatchWindow" data-ng-form="formPaymentBatchDialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <span class="modal-title">{{data.title}} -  {{data.commissionRateRestrictionTypeName}}</span>
+            <div class="btn pull-right  btn-default btn-material btn-borderless add-restriction-close" data-ng-click="cancel()"><i class="material-icons">close</i></div>
+        </div>
+        <div class="modal-body" data-ng-if="data.viewType=='Checkbox'">
+            <div class="content-group form-horizontal">
+                <div class="form-group" data-ng-if="data.commissionRateRestrictionTypeId==ApplicationConstants.CommissionRateRestrictionType.InternalOrganization||data.commissionRateRestrictionTypeId==ApplicationConstants.CommissionRateRestrictionType.ClientOrganization">
+                    <div class="row restriction-item" data-ng-repeat="item in data.list">
+                        <div class="col-lg-1"></div>
+                        <div class="col-lg-11">
+                            <label class="checkbox pull-left" style="cursor:pointer;">
+                                <input type="checkbox" data-ng-model="item.isApplied">{{item.DisplayName}}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group" data-ng-if="data.commissionRateRestrictionTypeId==ApplicationConstants.CommissionRateRestrictionType.LineOfBusiness||data.commissionRateRestrictionTypeId==ApplicationConstants.CommissionRateRestrictionType.InternalOrganizationDefinition1">
+                    <div class="row restriction-item" data-ng-repeat="item in data.list">
+                        <div class="col-lg-1"></div>
+                        <div class="col-lg-11">
+                            <label class="checkbox pull-left" style="cursor:pointer;">
+                                <input type="checkbox" data-ng-model="item.isApplied">{{item.text}}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-body" data-ng-if="data.viewType=='DropDown'" style="min-height:600px;">
+            <div class="content-group form-horizontal">
+                <div data-ng-if="data.commissionRateRestrictionTypeId==ApplicationConstants.CommissionRateRestrictionType.InternalOrganization||data.commissionRateRestrictionTypeId==ApplicationConstants.CommissionRateRestrictionType.ClientOrganization">
+                    <div class="form-group">
+                        <div class="col-lg-3">
+                            <label for-property="addedItem" for="addedItem" data-model-property="addedItem" class="control-label" data-original-title=""
+                                title="">Add Restriction</label>
+                        </div>
+                        <div class="col-lg-9">
+                            <div class="col-lg-12 input-group select2-bootstrap-append">
+                                <ui-select name="addedItem" ng-disabled="(data.list | filter:{isApplied: false}).length == 0" data-ng-model="addedItem" theme="select2"
+                                    class="form-control" data-ng-change="addCommissionRateRestriction(addedItem)">
+                                    <ui-select-match placeholder="-- Select One --"></ui-select-match>
+                                    <ui-select-choices repeat="item as item in data.list | filter:{isApplied: false} | uiSelectChoicesFilter: $select.search: 'DisplayName'">
+                                        <span data-ng-bind-html="item.DisplayName | highlight: $select.search"></span>
+                                    </ui-select-choices>
+                                </ui-select>
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <hr/>
+                        </div>
+                    </div>
+
+                    <div class="row restriction-item" data-ng-repeat="item in data.list|filter:{isApplied: true}">
+                        <div class="col-lg-12">
+                            <label>{{item.DisplayName}}</label>
+                            <button type="button" class="btn btn-default btn-material btn-borderless" data-ng-click="removeCommissionRateRestriction(item)"><i class="material-icons">delete</i></button>
+                        </div>
+                    </div>
+                </div>
+                <div data-ng-if="data.commissionRateRestrictionTypeId==ApplicationConstants.CommissionRateRestrictionType.LineOfBusiness||data.commissionRateRestrictionTypeId==ApplicationConstants.CommissionRateRestrictionType.InternalOrganizationDefinition1">
+                    <div class="form-group">
+                        <div class="col-lg-3">
+                            <label for-property="addedItem" for="addedItem" data-model-property="addedItem" class="control-label" data-original-title=""
+                                title="">Add Restriction</label>
+                        </div>
+                        <div class="col-lg-7">
+                            <div class="col-lg-12 input-group select2-bootstrap-append">
+                                <ui-select name="addedItem" ng-disabled="(data.list | filter:{isApplied: false}).length == 0" data-ng-model="addedItem" theme="select2"
+                                    class="form-control" data-ng-change="addCommissionRateRestriction(addedItem)">
+                                    <ui-select-match placeholder="-- Select One --"></ui-select-match>
+                                    <ui-select-choices repeat="item as item in data.list | filter:{isApplied: false} | uiSelectChoicesFilter: $select.search: 'text'">
+                                        <span data-ng-bind-html="item.text | highlight: $select.search"></span>
+                                    </ui-select-choices>
+                                </ui-select>
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <hr/>
+                        </div>
+
+                    </div>
+                    <div class="row restriction-item" data-ng-repeat="item in data.list|filter:{isApplied: true}">
+                        <div class="col-lg-3"><button type="button" class="btn btn-clouds fontello-icon-trash pull-right" data-ng-click="removeCommissionRateRestriction(item)"></button></div>
+                        <div class="col-lg-9">
+                            <label class="pull-left">{{item.text}}</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" ng-click="cancel()">Cancel</button>
+            <button type="button" class="btn btn-primary" ng-click="create()" data-ng-disabled="!formPaymentBatchDialog.$valid">Create</button>
+        </div>
+    </div>
+</div>

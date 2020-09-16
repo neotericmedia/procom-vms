@@ -1,0 +1,43 @@
+<div class="form-horizontal" *ngIf="transaction">
+  <div class="form-group">
+    <h4 class="col-lg-12">Billing Documents</h4>
+  </div>
+  <div class="form-group">
+    <label class="col-xs-12 col-sm-2 control-label">Timesheet ID</label>
+
+    <div class="col-xs-8 input-group select2-bootstrap-append" style="float: left; padding-left: 10px">
+      <app-phx-select-box [(ngModel)]="timesheetId" (valueChanged)="changeTimesheet($event)" [items]="html.list.timesheet"
+        textField="Description" valueField="Id" placeholder="Select timesheet to view">
+      </app-phx-select-box>
+    </div>
+    <div class="col-xs-4 col-sm-2">
+      <button type="button" class="btn btn-default btn-material" (click)="viewTimesheet()">
+        <i class="material-icons">remove_red_eye</i>
+      </button>
+      <button type="button" class="btn btn-default btn-material" (click)="uploadDocument()">
+        <i class="material-icons">add</i>
+      </button>
+    </div>
+  </div>
+  <div class="row" *ngIf="transaction?.Id">
+    <div class="form-group">
+      <h4 class="col-lg-12">Uploaded Documents</h4>
+    </div>
+    <!-- <phx-entity-documents-list #docuentList 
+      [entityId]="transaction.Id" 
+      [entityTypeId]="this.html.phxConstants.EntityType.TransactionHeader"
+      [documentTypesList]="html.documentTypeUnfilteredSubList">
+
+    </phx-entity-documents-list> -->
+    <phx-entity-documents-list2 #docuentList 
+    [entityId]="transaction.Id" 
+    [entityTypeId]="this.html.phxConstants.EntityType.TransactionHeader"
+    [documentTypesList]="html.documentTypeUnfilteredSubList">
+
+    </phx-entity-documents-list2>
+  </div>
+
+  <app-phx-document-file-upload #fileUpload [(configuration)]="html.documentFileUploadConfiguration" (onSuccessItem)="onSuccessItem($event)"
+    [editable]="true" [docTypeList]="html.documentTypeSubList" [showAddButton]="false" [fileUploaderOptions]="html.fileUploaderOptions_DocumentMain"
+    (onCompleteAll)="documentUploadCallbackOnDone()"></app-phx-document-file-upload>
+</div>

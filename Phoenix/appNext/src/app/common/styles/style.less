@@ -1,0 +1,268 @@
+@import "../../../../../../Content/less/variables.less";
+.padding-left-10 {
+    padding-left: 10px;
+}
+
+.padding-l-0, .padding-lr-0 {
+    padding-left: 0 !important;
+}
+
+.padding-r-0, .padding-lr-0 {
+    padding-right: 0 !important;
+}
+
+.dx-button,
+.dx-texteditor,
+.dx-datagrid-column-chooser .dx-overlay-content,
+.dx-checkbox-icon,
+.dx-dropdowneditor-icon,
+.dx-popup-wrapper>.dx-overlay-content,
+.dx-loadpanel-content,
+.dropdown-menu,
+.phx-accordion-group,
+.modal-content,
+.btn,
+.alert {
+    -webkit-border-radius: 0px !important;
+    -moz-border-radius: 0px !important;
+    border-radius: 0px !important;
+}
+
+.dx-texteditor {
+    padding: 1px;
+
+    .dx-texteditor-input {
+        min-height: 100%;
+    }
+}
+
+.dx-header-row .dx-datagrid-text-content {
+    font-weight: 600;
+    color: #333333;
+}
+
+.dx-datagrid-headers .dx-datagrid-table .dx-row>td[role=columnheader],
+.dx-datagrid-headers .dx-datagrid-table .dx-row.dx-header-row>td.dx-command-select,
+.dx-datagrid-headers .dx-datagrid-table .dx-row.dx-header-row>td.dx-command-expand,
+.dx-datagrid-headers .dx-datagrid-table .dx-row.dx-header-row>td.dx-command-adaptive {
+    border-bottom: 2px solid #999999;
+}
+
+.dx-datagrid .dx-row>td {
+    padding: 8px;
+    line-height: 1.9;
+}
+
+.dx-datagrid .dx-datagrid-rowsview .dx-datagrid-table tr.dx-row.dx-data-row:hover>td {
+    cursor: pointer;
+    background-color: #dfdfdf !important;
+    color: #000 !important;
+}
+
+.dx-datagrid .dx-datagrid-rowsview .dx-datagrid-table tr.dx-row.dx-data-row.testRowClass>td,
+.dx-datagrid .dx-datagrid-rowsview .dx-datagrid-table tr.dx-row-alt.dx-data-row.testRowClass>td {
+    background-color: @table-test-warning !important;
+}
+
+.dx-datagrid .dx-datagrid-rowsview .dx-datagrid-table tr.dx-row.dx-data-row.testRowClass:hover>td,
+.dx-datagrid .dx-datagrid-rowsview .dx-datagrid-table tr.dx-row-alt.dx-data-row.testRowClass:hover>td,
+.dx-row-alt.dx-data-row.testRowClass.dx-state-hover:not(.dx-selection):not(.dx-row-inserted):not(.dx-row-removed):not(.dx-edit-row)>td:not(.dx-focused),
+.dx-row.dx-data-row.testRowClass.dx-state-hover:not(.dx-selection):not(.dx-row-inserted):not(.dx-row-removed):not(.dx-edit-row)>td:not(.dx-focused),
+.dx-datagrid .dx-datagrid-rowsview .dx-datagrid-table tr.dx-row.dx-data-row.testRowClass.dx-selection>td,
+.dx-datagrid .dx-datagrid-rowsview .dx-datagrid-table tr.dx-row-alt.dx-data-row.testRowClass.dx-selection>td{
+    background-color: @table-test-warning-interact !important;
+    border-color: @table-test-warning-interact !important;
+}
+
+.dx-datagrid .dx-datagrid-rowsview .dx-datagrid-table tr.dx-row.dx-data-row.pendingRowClass>td,
+.dx-datagrid .dx-datagrid-rowsview .dx-datagrid-table tr.dx-row-alt.dx-data-row.pendingRowClass>td {
+    background-color:  #dff0d8 !important;
+}
+
+.dx-datagrid .dx-datagrid-rowsview .dx-datagrid-table tr.dx-row.dx-data-row.pendingRowClass:hover>td,
+.dx-datagrid .dx-datagrid-rowsview .dx-datagrid-table tr.dx-row-alt.dx-data-row.pendingRowClass:hover>td,
+.dx-row-alt.dx-data-row.pendingRowClass.dx-state-hover:not(.dx-selection):not(.dx-row-inserted):not(.dx-row-removed):not(.dx-edit-row)>td:not(.dx-focused),
+.dx-row.dx-data-row.pendingRowClass.dx-state-hover:not(.dx-selection):not(.dx-row-inserted):not(.dx-row-removed):not(.dx-edit-row)>td:not(.dx-focused),
+.dx-datagrid .dx-datagrid-rowsview .dx-datagrid-table tr.dx-row.dx-data-row.pendingRowClass.dx-selection>td,
+.dx-datagrid .dx-datagrid-rowsview .dx-datagrid-table tr.dx-row-alt.dx-data-row.pendingRowClass.dx-selection>td{
+    background-color: #dff0d8 !important;
+    border-color: #dff0d8 !important;
+}
+
+.dx-datagrid .dx-datagrid-rowsview .dx-datagrid-table tr.dx-row.dx-data-row.conflictRowClass>td,
+.dx-datagrid .dx-datagrid-rowsview .dx-datagrid-table tr.dx-row-alt.dx-data-row.conflictRowClass>td {
+    background-color:  #fcf8e3 !important;
+}
+
+.dx-datagrid .dx-datagrid-rowsview .dx-datagrid-table tr.dx-row.dx-data-row.conflictRowClass:hover>td,
+.dx-datagrid .dx-datagrid-rowsview .dx-datagrid-table tr.dx-row-alt.dx-data-row.conflictRowClass:hover>td,
+.dx-row-alt.dx-data-row.conflictRowClass.dx-state-hover:not(.dx-selection):not(.dx-row-inserted):not(.dx-row-removed):not(.dx-edit-row)>td:not(.dx-focused),
+.dx-row.dx-data-row.conflictRowClass.dx-state-hover:not(.dx-selection):not(.dx-row-inserted):not(.dx-row-removed):not(.dx-edit-row)>td:not(.dx-focused),
+.dx-datagrid .dx-datagrid-rowsview .dx-datagrid-table tr.dx-row.dx-data-row.conflictRowClass.dx-selection>td,
+.dx-datagrid .dx-datagrid-rowsview .dx-datagrid-table tr.dx-row-alt.dx-data-row.conflictRowClass.dx-selection>td{
+    background-color: #fcf8e3 !important;
+    border-color: #fcf8e3 !important;
+}
+
+.dx-datagrid .dx-datagrid-rowsview .dx-datagrid-table tr.dx-row.dx-data-row.discardRowClass>td,
+.dx-datagrid .dx-datagrid-rowsview .dx-datagrid-table tr.dx-row-alt.dx-data-row.discardRowClass>td {
+    background-color:  #f2dede !important;
+}
+
+.dx-datagrid .dx-datagrid-rowsview .dx-datagrid-table tr.dx-row.dx-data-row.discardRowClass:hover>td,
+.dx-datagrid .dx-datagrid-rowsview .dx-datagrid-table tr.dx-row-alt.dx-data-row.discardRowClass:hover>td,
+.dx-row-alt.dx-data-row.discardRowClass.dx-state-hover:not(.dx-selection):not(.dx-row-inserted):not(.dx-row-removed):not(.dx-edit-row)>td:not(.dx-focused),
+.dx-row.dx-data-row.discardRowClass.dx-state-hover:not(.dx-selection):not(.dx-row-inserted):not(.dx-row-removed):not(.dx-edit-row)>td:not(.dx-focused),
+.dx-datagrid .dx-datagrid-rowsview .dx-datagrid-table tr.dx-row.dx-data-row.discardRowClass.dx-selection>td,
+.dx-datagrid .dx-datagrid-rowsview .dx-datagrid-table tr.dx-row-alt.dx-data-row.discardRowClass.dx-selection>td{
+    background-color: #f2dede !important;
+    border-color: #f2dede !important;
+}
+
+.dx-datagrid .dx-datagrid-rowsview .dx-datagrid-table tr.dx-row.dx-data-row.completeRowClass>td,
+.dx-datagrid .dx-datagrid-rowsview .dx-datagrid-table tr.dx-row-alt.dx-data-row.completeRowClass>td {
+    background-color:  #d9edf7 !important;
+}
+
+.dx-datagrid .dx-datagrid-rowsview .dx-datagrid-table tr.dx-row.dx-data-row.completeRowClass:hover>td,
+.dx-datagrid .dx-datagrid-rowsview .dx-datagrid-table tr.dx-row-alt.dx-data-row.completeRowClass:hover>td,
+.dx-row-alt.dx-data-row.completeRowClass.dx-state-hover:not(.dx-selection):not(.dx-row-inserted):not(.dx-row-removed):not(.dx-edit-row)>td:not(.dx-focused),
+.dx-row.dx-data-row.completeRowClass.dx-state-hover:not(.dx-selection):not(.dx-row-inserted):not(.dx-row-removed):not(.dx-edit-row)>td:not(.dx-focused),
+.dx-datagrid .dx-datagrid-rowsview .dx-datagrid-table tr.dx-row.dx-data-row.completeRowClass.dx-selection>td,
+.dx-datagrid .dx-datagrid-rowsview .dx-datagrid-table tr.dx-row-alt.dx-data-row.completeRowClass.dx-selection>td{
+    background-color: #d9edf7 !important;
+    border-color: #d9edf7 !important;
+}
+
+.dx-row-alt.dx-data-row.dx-state-hover:not(.dx-selection):not(.dx-row-inserted):not(.dx-row-removed):not(.dx-edit-row)>td:not(.dx-focused),
+.dx-row.dx-data-row.dx-state-hover:not(.dx-selection):not(.dx-row-inserted):not(.dx-row-removed):not(.dx-edit-row)>td:not(.dx-focused) {
+    background-color: #dfdfdf !important;
+}
+
+.dx-datagrid-header-panel {
+    border-bottom: none;
+}
+
+.dx-datagrid-header-panel {
+    overflow: initial !important;
+}
+
+.dx-loadindicator {
+    width: 64px !important;
+}
+
+.dx-datagrid-rowsview .dx-row>.dx-master-detail-cell {
+    padding: 15px 15px 15px 0;
+}
+
+.dx-datagrid-search-panel {
+    margin: 0;
+    @media only screen and (max-width: 768px) {
+        width: 120px !important;
+    }
+}
+
+.dx-datagrid-header-panel .dx-toolbar-menu-container .dx-button {
+    margin: 0;
+}
+
+.dx-field-item-content.dx-adaptive-item-text {
+    white-space: pre-wrap;
+}
+
+app-phx-select-box {
+    .dx-clear-button-area {
+        .dx-icon-clear:before {
+            content: "\F00A"
+        }
+    }
+}
+
+app-phx-select {
+    ng-select {
+        div.ui-select-container {
+            .btn {
+                font-weight: inherit !important;
+            }
+            .btn-link {
+                i.glyphicon-remove {
+                    font-family: 'Material Icons';
+                    font-size: @font-size-large;
+                    color: @btn-default-color;
+                    &:before {
+                        content: 'clear';
+                    }
+                }
+            }
+            .ui-select-choices-row.active a.dropdown-item {
+                color: inherit !important;
+                background-color: #f5f5f5;
+            }
+            .ui-select-choices-row a.dropdown-item:hover {
+                background-color: #f5f5f5;
+            }
+        }
+    }
+}
+
+app-phx-select span.ui-select-placeholder {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    display: block;
+    width: calc(~'100% - 10px');
+}
+
+app-phx-select span.ui-select-match-text {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    display: block;
+    width: calc(~'100% - 30px');
+    color: @gray;
+}
+
+.dx-calendar-body td {
+    padding: 0;
+}
+
+.dx-calendar-cell {
+    border: none;
+    .highlight-day {
+        padding-top: 6px;
+        display: block;
+        height: 100%;
+    }
+    &.dx-calendar-selected-date {
+        color: #333;
+        &.dx-calendar-today {
+            font-weight: bold;
+            color: #333;
+        }
+    }
+    &.dx-calendar-empty-cell {
+        background: none;
+        &.dx-calendar-other-month {
+            opacity: 0;
+        }
+    }
+}
+
+.ui-select-choices-row>a {
+    display: grid !important;
+}
+
+.nowrap {
+    white-space: nowrap;
+}
+
+.flex-row {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+    &__child {
+        flex-grow: 1;
+        flex-basis: 50%;
+    }
+}
+

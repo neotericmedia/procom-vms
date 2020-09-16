@@ -1,0 +1,16 @@
+<div class="modal-content" data-ng-form="formInternalUserDeactivateConfirmDialog">
+    <div class="confirm-dialog">
+        <div class="modal-header">
+            <strong class="modal-title">Deactivate User</strong>
+        </div>
+        <div class="modal-body">
+            Your deactivation request for
+            <strong>{{data.contactName}}</strong> will be submitted for approval.
+        </div>
+        <div class="modal-footer">
+            <button type="button" style="width: auto;" class="btn btn-default pull-left" ng-click="confirmAndReassign()">Yes &amp; Reassign</button>
+            <button type="button" class="btn btn-default" ng-click="cancel()">No</button>
+            <button type="button" class="btn btn-primary" ng-click="confirm()">Yes</button>
+        </div>
+    </div>
+</div>

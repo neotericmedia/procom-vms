@@ -1,0 +1,48 @@
+﻿<div class="app-accordion-container app-accordion-container-28">
+    <div class="app-accordion-level-one" data-ng-repeat="org in vms.internalOrganizations" data-ng-if="vms.internalOrganizations.length > 0">
+        <div class="app-accordion-level-one-item" data-ng-click="vms.showRecords(org)">
+            <i class="app-accordion-chevron" data-ng-class="{'icon-chevron-right': !org.isOpen, 'icon-chevron-down': org.isOpen}"></i>
+            <span>{{org.InternalOrgDisplayName}}</span>
+        </div>
+        <div class="app-accordion-level-three" data-ng-show="org.isOpen">
+            <div class="app-accordion-level-three-item"
+                 ui-sref="ngtwo.m({'p':'transaction/vms-timesheet/org/' + org.OrganizationIdInternal })">
+                Timesheet
+                <span class="badge badge-warning app-badge" ng-if="org.VmsTimesheetPendingBatchCount > 0">{{org.VmsTimesheetPendingBatchCount}}</span>
+            </div>
+
+            <div class="app-accordion-level-three-item"
+                 ui-sref="ngtwo.m({'p':'transaction/vms-discount/org/' + org.OrganizationIdInternal })">
+                Discount
+                <span class="badge badge-warning app-badge" ng-if="org.VmsDiscountPendingBatchCount > 0">{{org.VmsDiscountPendingBatchCount}}</span>
+            </div>
+
+            <div class="app-accordion-level-three-item"
+                 ui-sref="ngtwo.m({'p':'transaction/vms-ussourcededuction/org/' + org.OrganizationIdInternal })">
+                United States Source Deduction
+                <span class="badge badge-warning app-badge" ng-if="org.VmsUnitedStatesSourceDeductionPendingBatchCount > 0">{{org.VmsUnitedStatesSourceDeductionPendingBatchCount}}</span>
+            </div>
+
+            <div class="app-accordion-level-three-item"
+                 ui-sref="ngtwo.m({'p':'transaction/vms-expense/org/' + org.OrganizationIdInternal })">
+                Expense
+                <span class="badge badge-warning app-badge" ng-if="org.VmsExpensePendingBatchCount > 0">{{org.VmsExpensePendingBatchCount}}</span>
+            </div>
+
+            <div class="app-accordion-level-three-item"
+                 ui-sref="ngtwo.m({'p':'transaction/vms-commission/org/' + org.OrganizationIdInternal })">
+                Commission
+                <span class="badge badge-warning app-badge" ng-if="org.VmsCommissionPendingBatchCount > 0">{{org.VmsCommissionPendingBatchCount}}</span>
+            </div>
+
+            <div class="app-accordion-level-three-item"
+                 ui-sref="ngtwo.m({'p':'transaction/vms-fixedprice/org/' + org.OrganizationIdInternal })">
+                Fixed Price
+                <span class="badge badge-warning app-badge" ng-if="org.VmsFixedPricePendingBatchCount > 0">{{org.VmsFixedPricePendingBatchCount}}</span>
+            </div>
+        </div>
+    </div>
+    <p data-ng-if="vms.internalOrganizations.length==0" class="text-center" style="font-size:16px;">
+        There are no VMS items to show
+    </p>
+</div>

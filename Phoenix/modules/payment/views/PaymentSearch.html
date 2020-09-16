@@ -1,0 +1,116 @@
+﻿<div class="smart-table-wrapper">
+    <div class="row" data-cg-busy="loadItemsPromise">
+        <table data-st-table-struct='[{"stTableValue" : "items"}, {"stPipeValue" : "callServer"}, {"widthValues" : "[6, 11, 9, 16, 16, 13, 11, 12, 10, 10]"}, {"stPaginationValue" : "pageSize"}]'>
+            <thead data-st-head="2000px">
+                <tr>
+                    <th data-st-sort="Id" data-st-sort-default="reverse">ID</th>
+                    <th data-st-sort="PaymentNumber">Payment Number</th>
+                    <th data-st-sort="TransactionsCount">Num Transactions</th>
+                    <th data-st-sort="PayeeName">Payee</th>
+                    <th data-st-sort="WorkerName">Worker</th>
+                    <th data-st-sort="PaymentTotal">Amount</th>
+                    <th data-st-sort="PaymentMethodId">Payment Method</th>
+                    <th data-st-sort="PaymentDate">Payment Date</th>
+                    <th data-st-pen-name="Action" title="Action">Action</th>
+                </tr>
+                <tr>
+                    <th>
+                        <input data-st-advanced-search="{property: 'Id', ignoreQuotes: true}" placeholder=""
+                               class="input-sm form-control numberType" data-safe-restrict-input="[^0123456789]" />
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="'PaymentNumber'" placeholder=""
+                               class="input-sm form-control" />
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="{property: 'TransactionsCount', ignoreQuotes: true, valueSuffix: 'M'}" placeholder=""
+                               class="input-sm form-control numberType" data-safe-restrict-input="[^0123456789.]" />
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="'PayeeName'" placeholder=""
+                               class="input-sm form-control" type="search" />
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="'WorkerName'" placeholder=""
+                               class="input-sm form-control" type="search" />
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="{property: 'PaymentTotal', ignoreQuotes: true, valueSuffix: 'M'}" placeholder=""
+                               class="input-sm form-control numberType" data-safe-restrict-input="[^0123456789.]" />
+                    </th>
+
+                    <th>
+                        <select data-st-advanced-search="{property: 'PaymentMethodId', ignoreQuotes: true}" class="input-sm form-control"
+                                data-st-as-options-override="list.paymentMethods"></select>
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="'PaymentDate'"
+                               data-st-as-operator-override="'ge'"
+                               close-on-date-selection="false" show-button-bar="false" show-weeks="false" class="input-sm form-control"
+                               data-st-as-lazy-attributes="{'uib-datepicker' : ApplicationConstants.formatDate}"
+                               data-st-as-height-override="400"
+                               data-st-as-width-override="315" />
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr data-ng-repeat-start="item in items" class="documentReleaseRow" data-ng-click="showReport(item)" style="cursor:pointer;">
+                    <td title="{{item.Id}}" ng-bind="::item.Id">
+                        <button class="btn btn-material" data-ng-click="item.isVisible=!item.isVisible"><i class="material-icons">{{item.isVisible ? 'keyboard_arrow_down' : 'keyboard_arrow_right' }}</i></button>
+                    </td>
+                    <td title="{{item.PaymentNumber}}"><span ng-bind="::item.PaymentNumber"></span> - (<span ng-bind="::item.PaymentTransactions.length"></span>)</td>
+                    <td title="{{item.TransactionsCount}}" ng-bind="::item.TransactionsCount"></td>
+                    <td title="{{item.PayeeName}}" ng-bind="::item.PayeeName"></td>
+                    <td title="{{item.WorkerName}}" ng-bind="::item.WorkerName"></td>
+                    <td title="{{item.PaymentTotal | currency: item.CurrencyCode + ' $'}}"><span class="pull-right" ng-bind="::item.PaymentTotal | currency: item.CurrencyCode + ' $'"></span></td>
+                    <td title="{{item.PaymentMethodId | lookup:list.paymentMethods}}" ng-bind="::item.PaymentMethodId | lookup:list.paymentMethods"></td>
+                    <td title="{{item.PaymentDate | date:ApplicationConstants.formatDate}}" ng-bind="::item.PaymentDate | date:ApplicationConstants.formatDate"></td>
+                    <td>
+                        <div class="btn-group payment-search-buttons">
+                            <button class="btn btn-xs btn-clouds btn-row-action payment-search-report" data-action="view" title="View Report"
+                                    data-ng-if="item.PayeeTypeId==ApplicationConstants.PayeeType.SupplierOrganization||item.PayeeTypeId==ApplicationConstants.PayeeType.UserProfileWorker">
+                                <i class="fontello-icon-eye-1"></i>
+                            </button>
+                            <button class="btn btn-xs btn-clouds btn-row-action payment-search-report" data-ng-disabled="true" data-action="view" title="Garnishee does not have a Report"
+                                    data-ng-if="item.PayeeTypeId==ApplicationConstants.PayeeType.GarnisheePayTo">
+                                <i class="fontello-icon-eye-1"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+                <tr data-ng-repeat-end="" class="row documentReleaseRow" data-ng-if="item.isVisible">
+                    <td></td>
+                    <td colspan="7" class="ignore-st-column-width noselect payment-search">
+                        <div class="row bg-gray-light payment-search-div-header col-md-12 to-uppercase">
+                            <div class="col-md-4 text-black">Tr. Number</div>
+                            <!--<div class="col-md-2 text-black">Supplier</div>-->
+                            <div class="col-md-2 text-black">Worker</div>
+                            <div class="col-md-2 text-black"><span class="pull-right" style="margin-right:40px;">Amount</span></div>
+                            <div class="col-md-1 text-black">Work Site</div>
+                            <div class="col-md-3 text-black">Period</div>
+                        </div>
+                        <div class="row payment-search-div-body col-md-12" data-ng-repeat="ptl in item.PaymentTransactions">
+                            <div class="col-md-4 text-black payment-search-cell">{{ptl.PaymentTransactionNumber}}</div>
+                            <!--<div class="col-md-2 text-black payment-search-cell">{{ptl.PaymentTransactionPayeeName}}</div>-->
+                            <div class="col-md-2 text-black payment-search-cell">{{ptl.WorkerName}}</div>
+                            <div class="col-md-2 text-black"><span class="pull-right">{{item.CurrencyId | lookup:list.currencyList:'id':'code'}}{{ptl.Amount>0? ptl.Amount:0|currency:" $"}}</span></div>
+                            <div class="col-md-1 text-black payment-search-cell">{{ptl.WorksiteId | lookup:list.workOrderWorkLocations}}</div>
+                            <div class="col-md-3 text-black payment-search-cell">{{ptl.StartDate | date:ApplicationConstants.formatDate}}-{{ptl.EndDate | date:ApplicationConstants.formatDate}}</div>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="10">
+                        <span>Total Count: {{totalItemCount || 0}}; Items Loaded: {{ items ? items.length : 0}}</span>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>
+<div class="payment-report" data-ng-class="{ out: !$state.is('payment.search.report'), in: $state.is('payment.search.report')}">
+    <div ui-view="reportView"></div>
+</div>

@@ -1,0 +1,36 @@
+<div [ngSwitch]="restrictionSelectorType">
+
+  <div *ngSwitchCase="restrictionSelectorTypeEnum.Dropdown">
+    <div class="row">
+      <phx-form-control name="restrictions" [labelText]="labelText" [editable]="true" viewModeText="">
+        <app-phx-select-box #select [items]="dropdownItems" textField="text" valueField="id"
+          (valueChanged)="dropdownChanged($event.value)" [disabled]="dropdownItems.length === 0">
+        </app-phx-select-box>
+      </phx-form-control>
+    </div>
+    <hr/>
+
+    <div class="row" *ngFor="let selectedItem of selectedItemsWithText">
+      <div class="col-xs-10">
+        <label>{{selectedItem.text}}</label>
+      </div>
+      <div class="col-xs-2">
+        <button type="button" class="btn btn-default btn-material btn-borderless pull-right" (click)="addDeletedItemToItemList(selectedItem.id)">
+          <i class="material-icons">delete</i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div *ngSwitchCase="restrictionSelectorTypeEnum.Checkbox" class="checkbox-container">
+    <div *ngFor="let item of checkboxItems" class="row">
+      <div class="col-xs-12">
+
+        <label class="checkbox checkbox-label pull-left">
+          <input type="checkbox" value="{{item.id}}" [checked]="item.checked === true" (change)="checkboxChanged(item.id, $event)">{{item.text}}
+        </label>
+      </div>
+    </div>
+  </div>
+
+</div>

@@ -1,0 +1,45 @@
+<dx-data-grid 
+    id="gridContainer"
+    [dataSource]="dataSource"
+    [showBorders]="true">    
+    
+    <dxo-scrolling mode="virtual"></dxo-scrolling>
+    <dxo-group-panel [visible]="true"></dxo-group-panel>    
+    
+    <dxi-column dataField="Task_ID" [width]="90"></dxi-column>
+    <dxi-column
+        dataField="Task_Subject"
+        [width]="190"
+        caption="Subject"></dxi-column>
+    <dxi-column
+        dataField="Task_Status"
+        caption="Status"
+        [groupIndex]="0">
+    </dxi-column>
+    <dxi-column
+        dataField="Task_Priority"
+        caption="Priority"
+        [groupIndex]="1">        
+        <dxo-lookup
+            [dataSource]="priority"
+            valueExpr="value" 
+            displayExpr="name">
+        </dxo-lookup>
+    </dxi-column>
+    <dxi-column
+        dataField="ResponsibleEmployee.Employee_Full_Name"
+        caption="Assigned To" [allowGrouping]="false"
+        [allowSorting]="false">
+    </dxi-column>
+    <dxi-column
+        dataField="Task_Start_Date"
+        caption="Start Date"
+        dataType="date">
+    </dxi-column>
+    <dxi-column
+        dataField="Task_Due_Date"
+        caption="Due Date"
+        dataType="date">
+    </dxi-column>
+</dx-data-grid>
+     

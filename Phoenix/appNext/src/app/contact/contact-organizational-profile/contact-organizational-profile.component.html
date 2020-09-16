@@ -1,0 +1,31 @@
+<form *ngIf="inputFormGroup">
+
+    <app-contact-profile-details [readOnlyStorage]="readOnlyStorage"
+    (outputEvent)="onOutputEvent()"
+    [inputFormGroup]="inputFormGroup">
+
+    </app-contact-profile-details>
+
+    <app-contact-organization-info [readOnlyStorage]="readOnlyStorage" [profileDetails]="currentProfile"
+        (outputEvent)="onOutputEvent()"
+        [inputFormGroup]="inputFormGroup">
+
+    </app-contact-organization-info>
+
+    <div class="flex-row">
+        <div class="flex-row__child">
+            <app-contact-phonenumbers [readOnlyStorage]="readOnlyStorage" 
+            [inputFormGroup]="inputFormGroup"
+            (outputEvent)="onOutputEvent()">
+
+            </app-contact-phonenumbers>
+        </div>
+        <div class="flex-row__child">
+            <app-contact-addresses [readOnlyStorage]="readOnlyStorage" 
+            [inputFormGroup]="inputFormGroup"
+            (outputEvent)="onOutputEvent()">
+            </app-contact-addresses>
+        </div>
+    </div>
+
+</form>

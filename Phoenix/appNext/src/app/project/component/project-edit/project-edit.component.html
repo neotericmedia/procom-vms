@@ -1,0 +1,153 @@
+<div *ngIf="activeProject" class="form-horizontal">    
+    <div class="confirm-shroud" [hidden]="!showingConfirmModal" ></div>
+    <div class="modal-header">
+        <div class="row-fluid">
+            <div class="col-xs-12">
+                <h4 *ngIf="activeProject.Id === 0">{{'project.edit.createProjectPageTitle' | phxTranslate}}</h4>
+                <h4 *ngIf="activeProject.Id > 0 && isEditable">{{'project.edit.editProjectPageTitle' | phxTranslate}}</h4>
+                <h4 *ngIf="activeProject.Id > 0 && !isEditable">{{'project.edit.viewProjectPageTitle' | phxTranslate}}</h4>
+            </div>
+        </div>
+    </div>
+    <div class="modal-body" [formGroup]="projectEditForm" *ngIf="projectEditForm">
+        <div class="row" *ngIf="isEditable && isSubmitted && !projectEditForm.valid">            
+            <div  class="col-xs-12">                
+                <div class="alert alert-danger alert-dismissable">
+                    <a class="close" data-dismiss="alert" aria-label="close"><i class="material-icons">clear</i></a>
+                    <strong><i class="material-icons" style="vertical-align: middle; padding-bottom:3px">warning</i></strong> 
+                    {{'project.edit.validationErrorsWarning' | phxTranslate}}
+                </div>
+            </div>
+        </div>
+              
+        <phx-form-control
+            [control]="projectEditForm.controls['projectName']"
+            [forceValidation]="isSubmitted"
+            [labelText]="'project.edit.nameLabel' | phxTranslate"
+            [layoutType]="PhxFormControlLayoutType.Stacked"
+            >
+            <input                                    
+                [ngClass]="{ 'show-error' : isSubmitted && projectEditForm.controls['projectName'].errors }"
+                formControlName="projectName"                          
+                [placeholder]="'project.edit.namePlaceholder' | phxTranslate"
+                type="text"
+                maxlength="50"
+                class="form-control"                             
+                (change)="updateActiveProjectVersion( 'Name', $event.target.value)"
+        />
+        </phx-form-control>
+
+        <phx-form-control 
+            [control]="projectEditForm.controls['code']"
+            [forceValidation]="isSubmitted"
+            [labelText]="'project.edit.codeLabel' | phxTranslate"
+            [layoutType]="PhxFormControlLayoutType.Stacked"
+            >
+            <input                                    
+                [ngClass]="{ 'show-error' : isSubmitted && projectEditForm.controls['code'].errors }"
+                formControlName="code"                          
+                [placeholder]="'project.edit.codePlaceholder' | phxTranslate"
+                type="text"
+                maxlength="50"
+                class="form-control"                          
+                (change)="updateActiveProjectVersion( 'Code', $event.target.value)"
+        />
+        </phx-form-control>
+
+        <phx-form-control 
+            [control]="projectEditForm.controls['description']"
+            [forceValidation]="isSubmitted"
+            [labelText]="'project.edit.descriptionLabel' | phxTranslate"
+            [layoutType]="PhxFormControlLayoutType.Stacked"
+            >
+            <textarea rows="5" maxlength="255"                       
+                [ngClass]="{ 'show-error' : isSubmitted && projectEditForm.controls['description'].errors }"
+                formControlName="description"                          
+                [placeholder]="'project.edit.descriptionPlaceholder' | phxTranslate"
+                type="text"
+                class="form-control"                             
+                (change)="updateActiveProjectVersion( 'Description', $event.target.value)">
+            </textarea>
+        </phx-form-control>
+
+        <div class="form-group clearfix favourite-wrap">                        
+            <div class="col-xs-3">                        
+                <label for="projectFavorite" >{{'project.edit.isFavouriteLabel' | phxTranslate}}</label>
+            </div>
+            <div class="col-xs-9">                        
+                <phx-form-control 
+                    [control]="projectEditForm.controls['favourite']"
+                    [forceValidation]="isSubmitted"
+                    [layoutType]="PhxFormControlLayoutType.Inline"
+                    >
+                    <input class="favourite-star" id="projectFavorite" 
+                        formControlName="favourite"   
+                        [checked]="projectEditForm.controls['favourite'].value === true"                
+                        [ngClass]="{ 'show-error' : isSubmitted && projectEditForm.controls['favourite'].errors }"                
+                        (change)="updateActiveProject( 'IsFavourite', $event.target.checked)" type="checkbox"   />
+                        <label for="projectFavorite" tabindex="0"  (keyup)="isEditable ? updateFavourite($event) : false" ></label>
+                            
+                </phx-form-control>
+            </div>                        
+        </div>
+        <span *ngFor="let value of activeProject.ActiveProjectVersion?.CustomFieldValues; trackBy: identifyCustomFieldValue;">                                 
+            <span [hidden]="!parentHasValue(value)">
+                <app-phx-custom-field-value
+                    [customFieldValue]="value" 
+                    [filterId]="getParentValue(value)"
+                    (valueUpdated)="updateCustomFieldValue($event)" 
+                    [control]="projectEditForm.controls[getName(value.CustomFieldConfigurationId)]"
+                    [forceValidation]="isSubmitted"
+                    [layoutType]="PhxFormControlLayoutType.Stacked"
+                ></app-phx-custom-field-value>      
+            </span>                  
+        </span>           
+        <app-phx-validation-messages [messages]="validationMessages"></app-phx-validation-messages>
+    </div>
+    <div class="confirm-fab" *ngIf="isEditable">
+        <button class="btn btn-link" 
+            (click)="create()" 
+            [disabled]="isEditable !== true"
+            *ngIf="activeProject.Id === 0" >
+            <i class="material-icons">check_circle</i>
+        </button>
+        <button class="btn btn-link" 
+            (click)="save()" 
+            [disabled]="isEditable !== true"
+            *ngIf="activeProject.Id > 0" >
+            <i class="material-icons">check_circle</i>
+        </button>
+    </div>
+    <div class="modal-footer">
+        <div class="row btn-row ">
+            <div class="text-center">                            
+                <div *ngIf="isEditable">
+                    <button *ngIf="activeProject.Id === 0" 
+                        [disabled]="isEditable !== true"
+                        type="button" class="pull-right btn btn-default btn-link"  
+                        (click)="createAndNew()">
+                        {{'common.generic.saveAndNew' | phxTranslate}} 
+                    </button>
+                    <button *ngIf="activeProject.Id > 0"
+                        [disabled]="isEditable !== true"
+                        type="button" class="pull-right btn btn-default btn-link"  
+                        (click)="saveAndNew()">
+                        {{'common.generic.saveAndNew' | phxTranslate}}
+                    </button>
+                    <button type="button" 
+                        [disabled]="isEditable !== true"
+                        class="pull-left btn btn-link btn-default" 
+                        *ngIf="activeProject.Id > 0"
+                        (click)="deactivateProject(activeProject)">
+                        {{'common.generic.discard' | phxTranslate}}
+                    </button>
+                </div>
+                <button type="button" class="pull-left btn btn-link btn-default" 
+                    (click)="cancel()">
+                    {{'common.generic.cancel' | phxTranslate}}
+                </button>
+
+            </div>
+        </div>
+    </div>
+</div>

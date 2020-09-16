@@ -1,0 +1,22 @@
+<div class="panel panel-default headstone">
+    <div class="row">
+      <div class="col col-lg-1">
+        <div class="form-group">
+          <label class="control-label ">Id</label>
+          <div>{{template?.Id}}</div>
+        </div>
+      </div>
+      <div class="col col-lg-9">
+        <div class="form-group">
+          <label class="control-label ">Document Type Name</label>
+          <div>{{template?.ComplianceDocumentTypeName}}</div>
+        </div>
+      </div>
+      <div class="col col-lg-2">
+        <div class="form-group">
+          <label class="control-label ">Document Type Status</label>
+          <div>{{template?.ComplianceDocumentTypeStatusId | CodeValue:codeValueGroups.UserDefinedCodeComplianceDocumentTypeStatus}}</div>
+        </div>
+      </div>
+    </div>
+  </div>

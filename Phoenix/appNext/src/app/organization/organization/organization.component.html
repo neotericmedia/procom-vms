@@ -1,0 +1,85 @@
+<div class="page-content organization" *ngIf="organization">
+  <div class="organization-wrap">
+    <div class="row organization-workflow-buttons-row-spacer">
+      <app-phx-state-action-buttons [stateActions]="stateActions" [availableStateActions]="organization.AvailableStateActions"
+        [displayType]="'DROPDOWN'">
+      </app-phx-state-action-buttons>
+    </div>
+    <div class="row ">
+
+      <div class="col-xs-10">
+        <app-organization-header [inputFormGroup]="rootFormGroup" [organization]="organization"></app-organization-header>
+        <app-phx-navigation-bar [navigationBarContent]="getNavigationBarContentSetup()" [url]="routerState.url" *ngIf="rootFormGroup"></app-phx-navigation-bar>
+
+        <app-organization-tab-detail *ngIf="routerState.routerPath===html.phxConstants.OrganizationNavigationName.details"
+          [rootModel]="organization" [readOnlyStorage]="readOnlyStorage" [inputFormGroup]="rootFormGroup.controls.TabDetails"
+          (outputEvent)="onOutputEvent($event)">
+        </app-organization-tab-detail>
+
+        <app-organization-tab-roles *ngIf="routerState.routerPath===html.phxConstants.OrganizationNavigationName.roles"
+          [readOnlyStorage]="readOnlyStorage" [rootModel]="organization" [inputFormGroup]="rootFormGroup.controls.TabRoles"
+          [routerState]="routerState" (outputEvent)="onOutputEvent($event)">
+        </app-organization-tab-roles>
+
+        <app-organization-tab-contacts *ngIf="routerState.routerPath===html.phxConstants.OrganizationNavigationName.contacts">
+        </app-organization-tab-contacts>
+
+        <app-organization-collaborators *ngIf="routerState.routerPath===html.phxConstants.OrganizationNavigationName.collaborators"
+          [inputFormGroup]="rootFormGroup.controls.TabCollaborators" [readOnlyStorage]="readOnlyStorage" [isOrgDetails]="isOrgDetails"
+          (outputEvent)="onOutputEvent($event)">
+        </app-organization-collaborators>
+
+        <app-phx-notes [entityId]="organization.Id" (countUpdated)="onNotesCountUpdated($event)" *ngIf="routerState.routerPath === html.phxConstants.OrganizationNavigationName.notes"
+          [entityTypeId]="html.phxConstants.EntityType.Organization">
+
+        </app-phx-notes>
+
+        <app-organization-tab-history *ngIf="routerState.routerPath===html.phxConstants.OrganizationNavigationName.history">
+        </app-organization-tab-history>
+
+        <app-organization-tab-advances *ngIf="routerState.routerPath===html.phxConstants.OrganizationNavigationName.advances"
+          (countRefreshEvent)="onCountRefreshEvent($event)">
+        </app-organization-tab-advances>
+
+        <app-organization-tab-garnishees *ngIf="routerState.routerPath===html.phxConstants.OrganizationNavigationName.garnishees"
+          (countRefreshEvent)="onCountRefreshEvent($event)">
+        </app-organization-tab-garnishees>
+
+        <app-phx-state-action-buttons class="form-group col-md-12 pull-right remove-padding-on-right-side"
+          [stateActions]="stateActions" [availableStateActions]="organization.AvailableStateActions" *ngIf="organization.OrganizationStatusId !== html.phxConstants.OrganizationStatus.Active"></app-phx-state-action-buttons>
+        <app-phx-validation-messages [messages]="html.validationMessages"></app-phx-validation-messages>
+
+      </div>
+
+      <div class="col-xs-2" style="margin-top: 30px;">
+        <div class="row">
+          <app-phx-note-header [entityId]="organization.Id" *ngIf="organization.IsOriginal" (navigateToNote)="onNotesHeaderClicked($event)"
+            [entityTypeId]="html.phxConstants.EntityType.Organization">
+          </app-phx-note-header>
+        </div>
+        <div class="row">
+          <div class="organization-versions-list">
+            <div class="organization-version-group">
+              <div class="version-version-item" *ngFor="let version of html.versionsOrdered" (click)="onVersionClick(version)"
+                type="button" [ngClass]="(version.Id==organization.Id)?'active':''">
+                <div>{{version.IsOriginal?'Current Organization':'Proposed Change'}}</div>
+                <div>
+                  <span [ngClass]="version.OrganizationStatusId==html.phxConstants.OrganizationStatus.Active?'text-warning':''">
+                    <span class="small-text">Status:&nbsp;</span>
+                    {{version?.OrganizationStatusId | CodeValue:'org.CodeOrganizationStatus':'text'}}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="form-group">
+      <div class="col-lg-12">
+        <app-organization-workflow (commandExecuted)="onCommandExecutedSuccessfully($event)" #organizationWorkflow></app-organization-workflow>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,20 @@
+export enum ExpenseClaimStatus {
+    New = 1,
+    Draft,
+    Abandoned,
+    Approved,
+    ApprovedAndAccepted,
+    Declined,
+    Recalled,
+    PendingSupplierReview,
+    PendingInternalReview,
+    PendingClientReview,
+    PendingSupportingDocumentReview,
+    PendingSupportingDocumentUpload,
+    SupportingDocumentApproved,
+    SupplierApproved,
+    InternalApproved,
+    Unsubmitted,
+    Submitted,
+    PendingBackofficeReview
+}

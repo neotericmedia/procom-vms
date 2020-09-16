@@ -1,0 +1,36 @@
+<div class="app-accordion-container app-accordion-container-28">
+    <app-phx-accordion>
+        <app-phx-badged-accordion-group *ngFor="let company of companies; let i = index" [(isOpen)]="company.open" [showToggle]="true">
+            <div accordion-heading (click)="showCompany(company,companies)">{{company.companyName}} ({{company.count}} pending items)</div>
+            <div class="app-accordion-level-two">
+                <app-phx-accordion>
+                    <app-phx-accordion-group panelClass="bankGroup" *ngFor="let currency of company.currencies;" [(isOpen)]="currency.open" [showToggle]="true">
+                        <div accordion-heading class="app-accordion-level-two-item0">
+                            <i class="app-accordion-chevron"></i>
+                            <span>{{currency.currencyCode | CodeValue:codeValueGroups.Currency:'code'}}</span>
+                            <span class="badge badge-warning bankBadge" *ngIf="currency.count > 0">{{currency.count}}</span>
+                        </div>
+                        <app-phx-accordion>
+                            <div class="entityBlock app-accordion-level-three">
+
+                                <div *ngFor="let bankAccount of currency.bankAccounts">
+                                    <div class="app-accordion-column">
+                                        <div *ngFor="let status of bankAccount.statuses">
+                                            <div class="app-accordion-level-three-item" (click)="bankaccountRedirect(bankAccount.bankAccountId,currency.currencyCode)">
+                                                <span>{{bankAccount.bankAccountName}}</span>
+                                                <span class="badge badge-warning app-badge" *ngIf="status.count > 0">{{status.count}}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </app-phx-accordion>
+                    </app-phx-accordion-group>
+                </app-phx-accordion>
+            </div>
+        </app-phx-badged-accordion-group>
+    </app-phx-accordion>
+    <p class="app-no-items" *ngIf="companyCount === 0">
+        There are no wire transfer batches.
+    </p>
+</div>

@@ -1,0 +1,133 @@
+﻿<div data-loading-spinner="processing"></div>
+
+<div class="row" style="margin-right: 10px;">
+    <div class="col-md-3" style="padding-right: 0px;">
+        <table class="app-vms-totals" style="margin-left: 10px; margin-right: 0px;">
+            <tbody>
+                <tr class="bg-success">
+                    <td>Total Pending</td>
+                    <td class="text-right"><strong>&nbsp; {{totalPending}}</strong></td>
+                </tr>
+                <tr class="bg-warning">
+                    <td>Total Conflict</td>
+                    <td class="text-right"><strong>&nbsp; {{totalConflict}}</strong></td>
+                </tr>
+                <tr class="bg-danger">
+                    <td>Total Discarded</td>
+                    <td class="text-right"><strong>&nbsp; {{totalDiscarded}}</strong></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="form-group">
+    <div class="smart-table-wrapper">
+        <div class="row" style="margin-left: 0px; margin-right: 0px">
+            <table data-st-table-struct='[{"stTableValue" : "items"}, {"stPipeValue" : "callServer"}, {"widthValues" : "[5, 5, 5, 5, 5, 5, 5, 8, 5, 10, 6]"}]'>
+                <thead data-st-head="2400px">
+                    <tr>
+                        <th data-st-sort="WorkOrderNumber" data-st-sort-default="">Work Order #</th>
+                        <th data-st-sort="FirstName">First name</th>
+                        <th data-st-sort="LastName">Last Name</th>
+                        <th data-st-sort="Discount">Discount (Before taxes)</th>
+
+                        <th data-st-sort="StartDate">Billing From</th>
+                        <th data-st-sort="EndDate">Billing To</th>
+
+                        <th data-st-sort="BillingTransactionNumber">Transaction #</th>
+
+                        <th data-st-sort="Note">Invoice Note</th>
+                        <th data-st-sort="VmsDiscountImportedRecordTypeIdFinal">Import To</th>
+                        <th data-st-sort="Reason">Reason</th>
+                        <th data-st-pen-name="Action">Action</th>
+                    </tr>
+                    <tr>
+                        <th>
+                            <input data-st-advanced-search="'WorkOrderNumber'" placeholder=""
+                                   class="input-sm form-control" type="search" />
+                        </th>
+                        <th>
+                            <input data-st-advanced-search="'FirstName'" placeholder=""
+                                   class="input-sm form-control" type="search" data-safe-restrict-input="" />
+                        </th>
+                        <th>
+                            <input data-st-advanced-search="'LastName'" placeholder=""
+                                   class="input-sm form-control" data-safe-restrict-input="" />
+                        </th>
+                        <th>
+                            <input data-st-advanced-search="{property: 'Discount', ignoreQuotes: true, valueSuffix: 'M'}" placeholder=""
+                                   class="input-sm form-control numberType" data-safe-restrict-input="[^0123456789.]" />
+                        </th>
+                        <th>
+                            <input data-st-advanced-search="'StartDate'"
+                                   data-st-as-operator-override="'ge'"
+                                   close-on-date-selection="false" show-button-bar="false" show-weeks="false" class="input-sm form-control"
+                                   data-st-as-lazy-attributes="{'uib-datepicker' : ApplicationConstants.formatDate}"
+                                   data-st-as-height-override="400"
+                                   data-st-as-width-override="315" />
+                        </th>
+                        <th>
+                            <input data-st-advanced-search="'EndDate'"
+                                   data-st-as-operator-override="'le'"
+                                   close-on-date-selection="false" show-button-bar="false" show-weeks="false" class="input-sm form-control"
+                                   data-st-as-lazy-attributes="{'uib-datepicker' : ApplicationConstants.formatDate}"
+                                   data-st-as-height-override="400"
+                                   data-st-as-width-override="315" />
+                        </th>
+                        <th>
+                            <input data-st-advanced-search="'BillingTransactionNumber'" placeholder="" class="input-sm form-control" type="search" />
+                        </th>
+                        <th>
+                            <input data-st-advanced-search="'Note'" placeholder=""
+                                   class="input-sm form-control" type="search" />
+                        </th>
+                        <th>
+                            <select data-st-advanced-search="{property: 'VmsDiscountImportedRecordTypeIdFinal', ignoreQuotes: true}" class="input-sm form-control menu-dropdown-wide180">
+                                <option value="1">Import to Processed</option>
+                                <option value="2">Import to Conflict</option>
+                                <option value="3">Discarded</option>
+                            </select>
+                        </th>
+                        <th>
+                            <input data-st-advanced-search="'Reason'" placeholder="" class="input-sm form-control" type="search" />
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr data-ng-repeat="txn in items" style="cursor: pointer" ng-class="{success:txn.VmsDiscountImportedRecordTypeIdFinal==ApplicationConstants.VmsDiscountImportedRecordType.ToProcess,warning:txn.VmsDiscountImportedRecordTypeIdFinal==ApplicationConstants.VmsDiscountImportedRecordType.Conflict,danger:txn.VmsDiscountImportedRecordTypeIdFinal==ApplicationConstants.VmsDiscountImportedRecordType.Discarded}">
+                        <td title="{{::txn.WorkOrderNumber}}">{{::txn.WorkOrderNumber}}</td>
+                        <td title="{{::txn.FirstName}}">{{::txn.FirstName}}</td>
+                        <td title="{{::txn.LastName}}">{{::txn.LastName}}</td>
+                        <td title="{{::txn.Discount}}">{{::txn.Discount | number : 2}}</td>
+                        <td title="{{::txn.StartDate| date: ApplicationConstants.formatDate}}">{{::txn.StartDate| date: ApplicationConstants.formatDate}}</td>
+                        <td title="{{::txn.EndDate| date: ApplicationConstants.formatDate}}">{{::txn.EndDate| date: ApplicationConstants.formatDate}}</td>
+                        <td title="{{::txn.BillingTransactionNumber}}">{{::txn.BillingTransactionNumber}}</td>
+                        <td title="{{::txn.Note}}">{{::txn.Note}}</td>
+                        <td title="{{txn.VmsDiscountImportedRecordTypeIdFinal | lookup:lists.vmsImportedRecordTypeList}}">{{txn.VmsDiscountImportedRecordTypeIdFinal | lookup:lists.vmsImportedRecordTypeList}}</td>
+                        <td title="{{txn.Reason}}" ng-bind-html="txn.Reason"></td>
+                        <td>
+                            <button type="button" class="btn btn-xs btn-default" data-ng-show="txn.VmsDiscountImportedRecordTypeIdFinal!=ApplicationConstants.VmsDiscountImportedRecordType.ToProcess&&txn.VmsDiscountImportedRecordTypeIdInitial==ApplicationConstants.VmsDiscountImportedRecordType.ToProcess" data-ng-click="markAsProcess(txn)" data-ng-disabled="processing" title="Mark as Ready to Process">Mark as Ready to Process</button>
+                            <button type="button" class="btn btn-xs btn-default" data-ng-show="txn.VmsDiscountImportedRecordTypeIdFinal!=ApplicationConstants.VmsDiscountImportedRecordType.Conflict&&txn.VmsDiscountImportedRecordTypeIdInitial!=ApplicationConstants.VmsDiscountImportedRecordType.Error" data-ng-click="markAsConflict(txn)" data-ng-disabled="processing" title="Mark as Conflict">Mark as Conflict</button>
+                            <button type="button" class="btn btn-xs btn-default" data-ng-show="txn.VmsDiscountImportedRecordTypeIdFinal!=ApplicationConstants.VmsDiscountImportedRecordType.Discarded&&txn.VmsDiscountImportedRecordTypeIdInitial!=ApplicationConstants.VmsDiscountImportedRecordType.Error" data-ng-click="markAsDiscarded(txn)" data-ng-disabled="processing" title="Mark as Discarded">Mark as Discarded</button>
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="9">
+                            <span>Total Count: {{totalItemCount || 0}}; Items Loaded: {{items ? items.length : 0}}</span>
+                        </td>
+                        <td>
+                            <div class="pull-right" data-ng-show="documentPublicId">
+                                <button type="button" class="btn" title="Mark as Conflict" data-ng-click="rejectFile(documentPublicId)" data-ng-disabled="!availableActions || processing">Reject File</button>
+                                <button type="button" class="btn btn-primary" title="Mark as Ready to Process" data-ng-click="processFile(documentPublicId)" data-ng-disabled="!availableActions || processing">Process File</button>
+                            </div>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>

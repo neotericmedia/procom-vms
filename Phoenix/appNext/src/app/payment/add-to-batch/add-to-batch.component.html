@@ -1,0 +1,79 @@
+<div class="add-to-batch-content">
+    <ng-container *ngIf="paymentMethodId !== commonService.ApplicationConstants.PaymentMethodType.Cheque">
+        <div class="row">
+            <div class="col-lg-10 col-lg-offset-1">
+                Tentative Batch Number:
+                <strong> {{selectedAccount?.BatchNo || 'N/A' }}</strong>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-10 col-lg-offset-1">
+                Number of Transactions in Batch:
+                <strong> {{paymentBatch?.PaymentTransactionCount || 0}}</strong>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-10 col-lg-offset-1">
+                Current Batch Total:
+                <strong> {{currencyId| CodeValue:codeValueGroups.Currency:'code'}} {{(paymentBatch?.Amount || 0) | number
+                    : '1.2-2'}}</strong>
+            </div>
+        </div>
+    </ng-container>
+    <ng-container *ngIf="paymentMethodId === commonService.ApplicationConstants.PaymentMethodType.Cheque">
+        <div class="row">
+            <div class="col-lg-10 col-lg-offset-1">
+                Tentative Cheque Number:
+                <strong> {{selectedAccount?.chequeNo || 'N/A' }}</strong>
+            </div>
+        </div>
+    </ng-container>
+    <br>
+    <div class="row">
+        <div class="col-lg-10 col-lg-offset-1">
+            <ng-container *ngIf="paymentMethodId !== commonService.ApplicationConstants.PaymentMethodType.Cheque">
+                Total Payment to be Added:
+            </ng-container>
+            <ng-container *ngIf="paymentMethodId === commonService.ApplicationConstants.PaymentMethodType.Cheque">
+                Total Payment Amount:
+            </ng-container>
+            
+            <strong> {{currencyId| CodeValue:codeValueGroups.Currency:'code'}} {{amountSelected | number : '1.2-2'}}</strong>
+        </div>
+    </div>
+    <br>
+    <div class="row" *ngIf="selectedGarnisheePayToCount > 0">
+        <div class="col-lg-10 col-lg-offset-1">
+            Selected Number of Garnishees to Pay:
+            <strong> {{ selectedGarnisheePayToCount || 0 }}</strong>
+        </div>
+    </div>
+    <br>
+    <br>
+    <div class="row">
+        <div class="form-horizontal col-xs-10 col-xs-offset-1">
+            <form [formGroup]="addToBatchForm">
+                <phx-form-control *ngIf="paymentMethodId !== commonService.ApplicationConstants.PaymentMethodType.ADP" [control]="addToBatchForm.controls['PayFrom']" labelText="Pay From" [editable]="true">
+                    <app-phx-select-box formControlName="PayFrom" [items]="bankAccounts" textField="description" valueField="id" placeholder="Select Bank Account"
+                        [value]="formData.selectedBankAccountId" (valueChanged)="onSelectedBankAccountChanged($event)" dropdownWidth="350px">
+                    </app-phx-select-box>
+                </phx-form-control>
+
+                <ng-container *ngIf="paymentMethodId !== commonService.ApplicationConstants.PaymentMethodType.Cheque">
+                    <phx-form-control [control]="addToBatchForm.controls['DepositDate']" labelText="Deposit Date" [editable]="depositDateEditable"
+                        viewModeText="{{formData.depositDate | date:formatDate}}">
+                        <dx-date-box formControlName="DepositDate" type="date" [(value)]="formData.depositDate"></dx-date-box>
+                    </phx-form-control>
+                </ng-container>
+                
+                <phx-form-control [control]="addToBatchForm.controls['PayGarnisheeFrom']" labelText="Pay Garnishees From" [editable]="paymentBatch?.GarnisheeBankAccountId == null"
+                    viewModeText="{{formData.garnisheeBankAccount?.text}}" *ngIf="selectedGarnisheePayToCount > 0 || paymentBatch?.GarnisheeBankAccountId != null">
+                    <app-phx-select-box formControlName="PayGarnisheeFrom" [items]="bankAccounts" textField="description" valueField="id" placeholder="Select Garnishee Bank Account"
+                        [value]="formData.garnisheeBankAccountId" (valueChanged)="onSelectedGarnisheeBankAccountChanged($event)" dropdownWidth="350px">
+                    </app-phx-select-box>
+                </phx-form-control>
+            </form>
+        </div>
+    </div>
+    <br>
+</div>

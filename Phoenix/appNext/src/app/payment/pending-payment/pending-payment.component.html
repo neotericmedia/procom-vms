@@ -1,0 +1,139 @@
+<app-phx-data-table #grid [configuration]="dataTableConfiguration" [dataSourceUrl]="dataSourceUrl" [dataSourceParams]='odataParams'
+    [columns]="columns" [exportFileName]="'cheques'" [componentName]="componentName" (rowClick)="onRowClick($event)"
+    (responseReceived)="dataReceived($event)" (contextMenuPreparing)="onContextMenuPreparing($event)">
+    <div *dxTemplate="let d of 'currencyTemplate'">
+        <span>{{d.value | number:'1.2-2'}} {{d.data.CurrencyId | CodeValue:codeValueGroups.Currency:'code'}}</span>
+    </div>
+</app-phx-data-table>
+<div class="row">
+    <app-phx-validation-messages [messages]="ValidationMessages"></app-phx-validation-messages>
+</div>
+<div>
+    <div *ngIf="!isPaymentStopped" class="btn-toolbar" style="position: relative; float:right; display: inline-flex;">
+        <button type="button" [disabled]="(selectedItemCount() == 0)" class="btn btn-default btnDirectDeposit"
+            (click)="transactionPaymentChangePaymentMethodShowDialog()" title="Change Payment Method">
+            Change Payment Method
+        </button>
+        <button type="button" [disabled]="(selectedItemCount() == 0) || allSelectedItemsAreCreditTransactions()"
+            class="btn btn-default btnDirectDeposit" (click)="transactionPaymentChangeReleaseDateOrPutOnHoldShowDialog()"
+            title="Change Release Date">
+            Change Release Date
+        </button>
+        <button type="button" [disabled]="(selectedItemCount() == 0)" class="btn btnDirectDeposit"
+            [ngClass]="isDue?'btn-default':'btn-primary'" (click)="transactionPaymentSuppressRelease()" title="Suppress Release">
+            Suppress Release
+        </button>
+        <button type="button" *ngIf="(methodId === commonService.ApplicationConstants.PaymentMethodType.DirectDeposit || methodId === commonService.ApplicationConstants.PaymentMethodType.ADP || methodId === commonService.ApplicationConstants.PaymentMethodType.WireTransfer) && isDue"
+            [disabled]="(selectedItemCount() == 0)" class="btn btn-primary btnDirectDeposit" (click)="transactionPaymentAddToBatch()"
+            title="Add to Payment Batch">
+            Add to Batch
+        </button>
+        <button type="button" *ngIf="methodId === commonService.ApplicationConstants.PaymentMethodType.Cheque && isDue"
+            [disabled]="(selectedItemCount() == 0)" class="btn btn-primary btnDirectDeposit" (click)="transactionPaymentChequesToPrint()"
+            title="Create Cheques">
+            Create Cheques
+        </button>
+    </div>
+    <div *ngIf="isPaymentStopped" class="btn-toolbar" style="position: relative; float:right; display: inline-flex;">
+        <button type="button" [disabled]="selectedItemCount() == 0" class="btn btn-primary btnDirectDeposit" (click)="transactionPaymentResume()"
+            title="Resume">
+            Resume
+        </button>
+    </div>
+</div>
+
+<app-phx-modal #addToBatchModal [buttons]="addToBatchModalButtons">
+    <app-add-to-batch #addToBatch [paymentMethodId]="paymentMethodId" [currencyId]="currencyId" [amountSelected]="amountSelected"
+        [bankAccounts]="bankAccounts" [formData]="addToBatchModalForm" [selectedGarnisheePayToCount]="selectedGarnisheePayToCount"></app-add-to-batch>
+</app-phx-modal>
+
+<app-phx-modal #batchGroupedByPayeeDialog [buttons]="batchGroupedByPayeeDialogButtons" title="The following payments will not be released">
+    <app-batch-grouped-by-payee-dialog [dataItems]="batchGroupedByPayeeDialogData" [bankAccounts]="bankAccounts"></app-batch-grouped-by-payee-dialog>
+</app-phx-modal>
+
+<app-phx-modal #changePaymentMethodModal [buttons]="changePaymentMethodModalButtons" title="Change Payment Method">
+    <div class="add-to-batch-content">
+        <div class="row">
+            <div class="form-horizontal">
+                <form [formGroup]="changePaymentMethodForm">
+                    <phx-form-control [control]="changePaymentMethodForm.controls['paymentMethodId']" labelText="Payment Method"
+                        [editable]="true">
+                        <app-phx-select-box-code-value #paymentMethod [groupName]="codeValueGroups.PaymentMethodType"
+                            sortByFieldName="text" formControlName="paymentMethodId" [filter]="excludeCurrentPaymentMethodCallback">
+                        </app-phx-select-box-code-value>
+                    </phx-form-control>
+                </form>
+            </div>
+        </div>
+        <br>
+    </div>
+</app-phx-modal>
+
+<app-phx-modal #changePaymentReleaseDateModal [buttons]="changePaymentReleaseDateModalButtons" title="">
+    <div class="change-payment-release-date-form">
+        <div *ngIf="!isHiddenPaymentReleaseDateModalInfoBox" class="alert alert-info alert-dismissable error-box" style="display: inline-block;">
+            <a class="close" data-dismiss="alert" aria-label="close" (click)="isHiddenPaymentReleaseDateModalInfoBox = true">
+                <i class="material-icons">clear</i>
+            </a>
+            <div style="padding-right: 25px;">
+                <div>
+                    You cannot change a payment’s release date or put it on hold if it has a credit transaction.
+                </div>
+            </div>
+        </div>
+        <div class="changePaymentReleaseDateForm">
+            <div class="form-horizontal">
+                <form [formGroup]="changePaymentReleaseDateForm">
+
+                    <label class="radio-inline">
+                        <input class="form-check-input" type="radio" formControlName="statusId" value="releasedate">
+                        <span>Change Release Date</span>
+                    </label>
+                    <phx-form-control [control]="changePaymentReleaseDateForm.controls['releaseDate']" labelText="New Release Date"
+                        [editable]="true">
+                        <app-phx-date-box formControlName="releaseDate" type="date"></app-phx-date-box>
+                    </phx-form-control>
+                    <label class="radio-inline">
+                        <input class="form-check-input" type="radio" formControlName="statusId" value="onhold">
+                        <span>Put on Hold</span>
+                    </label>
+                </form>
+            </div>
+        </div>
+        <br>
+    </div>
+</app-phx-modal>
+
+<app-phx-modal #paymentMethodBatchGroupedByPayeeModal [buttons]="paymentMethodBatchGroupedByPayeeModalButtons" title="Transaction Payment Methods not changed">
+    <div class="row trn-method" *ngIf="batchPreExecutionOnReleasedPaymentMethodChangedData">
+        <div class="row trn-t">
+            <div class="col-lg-1"></div>
+            <div class="col-lg-10">
+                The following transaction payment methods have not been changed as 
+                <i class="text-danger">{{changePaymentMethod}}</i> details have not been entered.
+            </div>
+            <div class="col-lg-1"></div>
+        </div>
+        <div class="col-lg-12 trn-h">
+            <div class="col-lg-12">
+                <div class="col-lg-1"></div>
+                <div class="col-lg-6 text-uppercase">Transaction Number</div>
+                <div class="col-lg-5 text-uppercase">Worker Name</div>
+            </div>
+        </div>
+        <div class="col-lg-12"></div>
+        <div class="row col-lg-12" *ngFor="let groupedPaymentTransaction of batchPreExecutionOnReleasedPaymentMethodChangedData.GroupedPaymentTransactionsList">                                   
+            <div class="col-lg-12 text-danger" *ngFor="let pw of groupedPaymentTransaction.PaymentTransactionWorkers">
+                <div class="col-lg-1"></div>
+                <div class="col-lg-6">{{pw.PaymentTransactionNumber}}</div>
+                <div class="col-lg-5">{{pw.WorkerName}}</div>
+                <div class="col-lg-12"></div> 
+            </div>                   
+        </div>
+    </div>
+</app-phx-modal>
+
+<app-phx-modal #createChequesModal [buttons]="createChequesModalButtons" title="Create Cheques Batch">
+    <app-add-to-batch #createCheques [paymentMethodId]="paymentMethodId" [currencyId]="currencyId" [amountSelected]="amountSelected"
+        [bankAccounts]="bankAccounts" [formData]="createChequesForm" [selectedGarnisheePayToCount]="selectedGarnisheePayToCount"></app-add-to-batch>>
+</app-phx-modal>

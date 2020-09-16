@@ -1,0 +1,45 @@
+.block {
+    width: 100px;
+    height: 100px;
+    cursor: pointer;
+    margin: 0;
+    margin: 0 auto 20px auto;
+    position: relative;
+}
+
+.add-image {
+    background-image: url('/assets/gallery/Camera.png');
+    background-size: 100%;
+    background-repeat: no-repeat;
+    position: relative;
+}
+
+.loading {
+    background: url("./../../../../assets/loading.gif") center center no-repeat;
+    background-size: 64px 32px;
+}
+
+.img-container {
+    img {
+        width: 100px;
+        height: 100px;
+    }
+    .btn-delete {
+        position: absolute;
+        top: 0px;
+        right: 0;
+        z-index: 10;
+        border-radius: 24px !important;
+        background-color: rgba(255, 255, 255, .7);
+        padding: 1px 1px 0px 1px;
+        margin: 4px;
+    }
+}
+
+img.fade {
+    opacity: 0;
+    -moz-transition: opacity 2s;
+    -webkit-transition: opacity 2s;
+    -o-transition: opacity 2s;
+    transition: opacity 2s;
+}

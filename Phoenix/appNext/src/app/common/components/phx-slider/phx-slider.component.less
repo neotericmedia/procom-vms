@@ -1,0 +1,27 @@
+:host {
+    .phx-slider {
+        border: 1px solid #ccc;
+        background-color: #fff;
+        top: 0px;
+        width: 1000px;
+        height: 100vh;
+        display: block;
+        z-index: 1001;
+        overflow-x: hidden;
+        overflow-y: auto;
+        right: -3000px;
+        opacity: 1;
+        position: fixed;
+        &.out {
+            -webkit-transition: all 600ms cubic-bezier(0.455, 0.03, 0.515, 0.955);
+            transition: all 600ms cubic-bezier(0.455, 0.03, 0.515, 0.955);
+            right: -3000px;
+        }
+        &.in {
+            -webkit-transition: all 1000ms cubic-bezier(0.455, 0.03, 0.515, 0.955);
+            transition: all 1000ms cubic-bezier(0.455, 0.03, 0.515, 0.955);
+            right: 0px;
+            opacity: 1;
+        }
+    }
+}

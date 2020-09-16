@@ -1,0 +1,36 @@
+﻿<div class="form-horizontal" data-ng-form="formVmsPreprocessing">
+    <div class="form-group">
+        <label for-property="OrganizationIdInternal" for="OrganizationIdInternal" data-model-property="model.OrganizationIdInternal" class="col-lg-3 control-label" data-original-title="" title="">Select Internal Company</label>
+        <div class="col-lg-9">
+            <div class="input-group select2-bootstrap-append">
+                <ui-select name="OrganizationIdInternal" data-ng-model="model.OrganizationIdInternal" theme="select2" class="form-control" required data-ng-change="selectClient()">
+                    <ui-select-match placeholder="-- Select One --">{{$select.selected.DisplayName}} - {{$select.selected.Id}}</ui-select-match>
+                    <ui-select-choices repeat="item.Id as item in lists.listOrganizationInternal">
+                        <span data-ng-bind-html="item.DisplayName | highlight: $select.search"></span>
+                        <span data-ng-bind-html="' - ' + item.Id  | highlight: $select.search"></span>
+                    </ui-select-choices>
+                </ui-select>
+                <span class="input-group-btn">
+                    <button tabindex="-1" data-ng-click="model.OrganizationIdInternal=undefined;uploadDocument()" class="btn btn-default"><i class="material-icons md-18">clear</i></button>
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for-property="OrganizationIdClient" for="OrganizationIdClient" data-model-property="model.OrganizationIdClient" class="col-lg-3 control-label" data-original-title="" title="">Select Parent Company</label>
+        <div class="col-lg-9">
+            <div class="input-group select2-bootstrap-append">
+                <ui-select name="OrganizationIdClient" data-ng-model="model.OrganizationIdClient" theme="select2" class="form-control" required data-ng-change="selectClient()">
+                    <ui-select-match placeholder="-- Select One --">{{$select.selected.DisplayName}} - {{$select.selected.Id}}</ui-select-match>
+                    <ui-select-choices repeat="item.Id as item in lists.listOrganizationClient">
+                        <span data-ng-bind-html="item.DisplayName | highlight: $select.search"></span>
+                        <span data-ng-bind-html="' - ' + item.Id  | highlight: $select.search"></span>
+                    </ui-select-choices>
+                </ui-select>
+                <span class="input-group-btn">
+                    <button tabindex="-1" data-ng-click="model.OrganizationIdClient=undefined;uploadDocument()" class="btn btn-default"><i class="material-icons md-18">clear</i></button>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>

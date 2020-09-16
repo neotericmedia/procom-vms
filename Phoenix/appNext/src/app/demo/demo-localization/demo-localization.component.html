@@ -1,0 +1,97 @@
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    <h4>{{heading}}</h4>
+    <button class="btn btn-primary" (click)="selectLang('en')">EN</button>
+    <button class="btn btn-primary" (click)="selectLang('fr')">FR</button>
+  </div>
+  <div class="panel-body">
+
+    <div class="row">
+      <div class="col-md-12">
+
+        <p>
+          Translate With Pipe:
+          <strong>{{ 'demo.local.helloWorld' | phxTranslate }}</strong>
+        </p>
+        <pre>
+        {{'{'}}{{'{'}} 'demo.local.helloWorld' | phxTranslate {{'}'}}{{'}'}}
+        </pre>
+
+        <p>
+          Translate Missing French Key defaults to EN text:
+          <strong>{{ 'demo.local.enOnly' | phxTranslate }}</strong>
+        </p>
+
+        <pre>
+        {{'{'}}{{'{'}} 'demo.local.enOnly' | phxTranslate {{'}'}}{{'}'}}
+        </pre>
+
+        <p>
+          Translate with Service:
+          <strong>{{ translatedText }}</strong>
+        </p>
+        <pre>
+        {{'{'}}{{'{'}} translatedText  {{'}'}}{{'}'}} // no pipe, this is a varible 
+        </pre>
+
+        <p>
+          Translate with Service which is listening to changes:
+          <strong>{{ translatedTextListeningToChanges }}</strong>
+        </p>
+        <pre>
+        {{'{'}}{{'{'}} translatedTextListeningToChanges  {{'}'}}{{'}'}} // no pipe, this is a varible 
+        </pre>
+
+        <p>
+          Substitution with inline number :
+          <strong> {{ 'demo.local.atc' | phxTranslate:2 }}</strong>
+        </p>
+        <pre>
+        {{'{'}}{{'{'}} 'demo.local.atc' | phxTranslate:2   {{'}'}}{{'}'}} // hardcoded 2 
+        </pre>
+
+        <p>
+          Substitution with multiple variables, numbers and strigs :
+          <strong>{{ 'demo.local.weather' | phxTranslate: precipitation: humididty: wind }}</strong>
+        </p>
+
+        <pre>
+        {{'{'}}{{'{'}} 'demo.local.weather' | phxTranslate: precipitation : humididty : wind    {{'}'}}{{'}'}} // mixed string and number type variables from component
+        // the translation file looks like this : 
+        "weather" : "Precipitation : {{'{'}}0{{'}'}}, Humidity {{'{'}}1{{'}'}}, Wind {{'{'}}2{{'}'}} km/h", 
+        </pre>
+
+      </div>
+    </div>
+    
+    <div class="row">
+      <div class="col-md-12">
+        <p>DevExtreme:</p>
+        <label>Date Box: </label>
+        <dx-date-box [(value)]="demoDate"></dx-date-box>
+        <br/>
+        <label>Select Box</label>
+        <dx-select-box [items]="[]" [acceptCustomValue]="true" [searchEnabled]="true" required
+        maxlength="128" minlength="3" id="name" name="name"></dx-select-box>
+        <br/>
+        <label>Calendar: </label>
+        <dx-calendar></dx-calendar>
+        <br/>
+        <app-phx-data-table #dataTable [configuration]="dataTableConfiguration" [columns]="columns" 
+        [exportFileName]="'demo'" [height]="200" [dataSource]="demoGridData">
+        </app-phx-data-table>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12">
+        <p>Angular Dialog Service:</p>
+        <button class="btn btn-danger" (click)="dialogService.error()">Error</button>
+        <button class="btn btn-warning" (click)="comment()">Comment</button>
+        <button class="btn btn-primary" (click)="dialogService.wait()">Wait</button>
+        <button class="btn btn-default" (click)="dialogService.notify()">Notify</button>
+        <button class="btn btn-success" (click)="confirm()">Confirm</button>
+      </div>
+    </div>
+  </div>
+</div>

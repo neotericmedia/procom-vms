@@ -1,0 +1,61 @@
+<style>
+    div.smart-table-wrapper td {
+        padding-left: 20px !important;
+        padding-right: 20px !important;
+    }
+</style>
+
+<div>
+    <button class="btn" ng-if="canCreate" ui-sref="org.branch({ branchId: 0 })">New</button>
+</div>
+
+<div class="smart-table-wrapper">
+    <div class="row" data-cg-busy="loadItemsPromise">
+        <table data-st-table-struct='[{"stTableValue" : "items"}, {"stPipeValue" : "callServer"}, {"widthValues" : "[5, 15, 15, 60, 5]"}, {"stPaginationValue" : "pageSize"}]'>
+            <thead data-st-head="1000px">
+                <tr>
+                    <th data-st-sort="Id" title="Id" data-st-sort-default="reverse">ID</th>
+                    <th data-st-sort="Code" title="Code">Branch Code</th>
+                    <th data-st-sort="Name">Branch Name</th>
+                    <th data-st-sort="Description">Description</th>
+                    <th data-st-pen-name="Action">Action</th>
+                </tr>
+                <tr>
+                    <th>
+                        <input data-st-advanced-search="{property: 'Id', ignoreQuotes: true}" class="input-sm form-control numberType" data-safe-restrict-input="[^0123456789]" />
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="'Code'" class="input-sm form-control" type="search" />
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="'Name'" class="input-sm form-control" type="search" />
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="'Description'" class="input-sm form-control" type="search" />
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr data-ng-repeat="item in items" data-ui-sref-tr="org.branch({ branchId: item.Id })" style="cursor:pointer">
+                    <td title="{{item.Id}}" ng-bind="::item.Id"></td>
+                    <td title="{{item.Code}}" ng-bind="::item.Code"></td>
+                    <td>{{item.Name}}</td>
+                    <td>{{item.Description}}</td>
+                    <td>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-xs btn-clouds" title="View"><i class="fontello-icon-eye-1"></i>&nbsp;</button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="5">
+                        <span>Total Count: {{totalItemCount || 0}}; Items Loaded: {{ items ? items.length : 0}}</span>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>

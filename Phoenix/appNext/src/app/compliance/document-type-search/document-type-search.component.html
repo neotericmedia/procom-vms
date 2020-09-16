@@ -1,0 +1,12 @@
+<div class="row">
+  <div class="col-xs-12">
+    <div class="btn-toolbar">
+      <button class="btn btn-default" (click)="createDocumentType()">New</button>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <app-phx-data-table [columns]="columns" [configuration]="dataTableConfiguration" [dataSourceUrl]="'ComplianceDocumentType/complianceDocumentTypes'"
+    [dataSourceParams]='oDataParams' componentName="DocumentTypeSetup" (rowClick)="onRowClick($event)" (contextMenuOpenTab)="onContextMenuOpenTab($event)">
+  </app-phx-data-table>
+</div>

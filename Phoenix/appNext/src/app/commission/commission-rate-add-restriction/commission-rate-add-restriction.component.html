@@ -1,0 +1,39 @@
+<div *ngIf="commissionRateAddRestrictionConfig.ViewType == 'Dropdown'">
+    <phx-form-control name="Add Restriction" labelText="Add Restriction" editable="true">
+        <app-phx-select-box #phxSelectBox [items]="commissionRateAddRestrictionConfig.RestrictionList" textField="Name" [valueField]="ValueField"
+            (valueChanged)="valueChanged($event)">
+        </app-phx-select-box>
+    </phx-form-control>
+
+    <div class="row sales-tax-provinces-body ng-scope" *ngFor="let item of selectedValues; let i = index;">
+        <div class="col-lg-12">
+            <label class="ng-binding">{{item.Name}}</label>
+            <button type="button" class="btn btn-default btn-material btn-borderless" (click)="removeCommissionRateRestriction(i)">
+                <i class="material-icons">delete</i>
+            </button>
+        </div>
+    </div>
+</div>
+<div class="content-group form-horizontal">
+    <div class="form-group" *ngIf="commissionRateAddRestrictionConfig.ViewType === 'Checkbox'" [formGroup]="restrictionTypeForm">
+        <div class="row sales-tax-provinces-body" formArrayName="ContentRestrictionId" *ngFor="let item of restrictionTypeForm.controls.ContentRestrictionId.controls; let i = index">
+            <div class="col-lg-12">
+                <phx-form-control [control]="item" [editable]="true" viewModeText="commissionRateAddRestrictionConfig.RestrictionList[i].Name">
+                    <label class="checkbox-inline">
+                        <input type="checkbox" [formControlName]="i"> {{commissionRateAddRestrictionConfig.RestrictionList[i].Name}}
+                    </label>
+                </phx-form-control>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="panel-footer">
+    <div class="row">
+        <div class="col-md-offset-6 col-lg-6">
+            <div class="pull-right">
+                <button class="btn btn-default" (click)="cancel()">Cancel</button>
+                <button class="btn btn-primary" (click)="create()">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,24 @@
+﻿@* Builds side dashboard based on $rootScope.navigationItems *@
+
+
+<ul id="mainSideMenu" class="nav nav-list nav-side">
+
+    <!-- // item accordionMenu Dashboard -->
+    <li class="accordion-group" data-ng-repeat="module in currentWorkspace.Dashboard">!!!!!!
+        <div class="accordion-heading" data-ng-class="activeClass(module, currentModule)">
+            <a href="javascript:void(0)" data-module-code="{{module.Code}}" data-parent="#mainSideMenu" class="accordion-toggle">
+                <span class="item-icon"></span><i class="chevron fontello-icon-right-open-3"></i> {{module.Name}}
+            </a> 
+        </div>
+        <ul id="{{module.Code}}" class="accordion-content nav nav-list collapse" data-ng-class="inClass(module, currentModule)">
+            <li data-ng-repeat="item in module.SubItems" data-ng-class="activeClass(item, currentNavItem)">
+                <a href="#{{item.RouteString}}"> <i class="fontello-icon-right-dir"></i> {{item.Name}} </a> 
+            </li>
+        </ul>
+    </li>
+</ul>
+<!-- // sidebar menu -->
+            
+<div class="sidebar-item"></div>
+<!-- // sidebar item --> 
+

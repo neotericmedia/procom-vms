@@ -1,0 +1,29 @@
+<div class="tab-pane active" *ngIf="profile && sourceContact">
+  <div class="panel">
+    <div class="panel-heading headstone">
+      <div class="row">
+        <div class="col-xs-12 col-md-3">
+          <label class="control-label col-xs-12">Contact Id</label>
+          <span class="col-xs-12">{{sourceContact.Id || '0'}}</span>
+        </div>
+        <div class="col-xs-12 col-md-3">
+          <label class="control-label col-xs-12 ">Legal Name</label>
+          <span class=" col-xs-12 ">{{profile.Contact.FirstName}} {{profile.Contact.LastName}}</span>
+          <span class=" col-xs-12 " *ngIf="!profile.Contact.FirstName && !profile.Contact.LastName">N/A</span>          
+        </div>
+        <div class="col-xs-12 col-md-3">
+          <label class="control-label col-xs-12 ">Login</label>
+          <div class="col-xs-12">
+            {{loginName}}
+          </div>
+        </div>
+        <div class="col-xs-12 col-md-3">
+          <label class="control-label col-xs-12 ">Contact Status</label>
+          <div class="col-xs-12 ">
+            {{(sourceContact.UserStatusId | lookup:contactStatuses) || 'Draft'}}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

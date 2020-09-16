@@ -1,0 +1,325 @@
+﻿<div class="row commission-adjustment-edit" data-ng-form="formCommissionAdjustment">
+    <div class="adjustment-edit-wrapper col-lg-12">
+        <div class="panel">
+            <div class="panel-heading headstone">
+                <div data-ng-if="edit.commissionHeader.Id != 0" class="row adjustment-edit-header">
+                    <div class="col-lg-4">
+                        <div class="text-gray">Adjustment Id</div>
+                        <span ng-bind="::edit.commissionHeader.Id"></span>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="text-gray">Create Date</div>
+                        <span ng-bind="::edit.commissionHeader.CreatedDatetime| date: ApplicationConstants.formatDate"></span>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="text-gray">Created By</div>
+                        <span ng-bind="::edit.commissionHeader.CreatedByProfileFullName"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel-body adjustment-body" style="padding: 0">
+            <div class="form-group col-lg-12">
+                <label for-property="CommissionAdjustmentHeaderTypeId" for="CommissionAdjustmentHeaderTypeId" data-model-property="edit.commissionHeader.CommissionAdjustmentHeaderTypeId"
+                       class="col-lg-3 control-label label-to-right req-lab-right" data-original-title="" title=""><span class="adj-lbl-text">Adjustment Type</span></label>
+                <div class="col-lg-7">
+                    <div class="input-group select2-bootstrap-append">
+                        <ui-select name="CommissionAdjustmentHeaderTypeId" data-ng-model="edit.commissionHeader.CommissionAdjustmentHeaderTypeId"
+                                   theme="select2" class="form-control" data-pt-field-view="edit.ptFieldViewConfigOnChangeStatusId"
+                                   required data-ng-change="edit.adjustmentTypeChanged($select.selected.id)">
+                            <ui-select-match placeholder="-- Select One --">{{$select.selected.text}}</ui-select-match>
+                            <ui-select-choices repeat="item.id as item in edit.commissionAdjustmentHeaderTypes | uiSelectChoicesFilter: $select.search: 'text'">
+                                <span data-ng-bind-html="item.text | highlight: $select.search"></span>
+                            </ui-select-choices>
+                        </ui-select>
+                        <span class="input-group-btn">
+                            <button tabindex="-1" data-ng-click="edit.commissionHeader.CommissionAdjustmentHeaderTypeId=undefined" class="btn btn-default btn-adj-drp"><i class="material-icons md-18">clear</i></button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-lg-12">
+                <label for-property="OrganizationIdInternal" for="OrganizationIdInternal" data-model-property="edit.commissionHeader.OrganizationIdInternal"
+                       class="col-lg-3 control-label label-to-right req-lab-right" data-original-title="" title=""><span class="adj-lbl-text">Internal Company</span></label>
+                <div class="col-lg-7">
+                    <div class="input-group select2-bootstrap-append">
+                        <ui-select name="OrganizationIdInternal" data-ng-model="edit.commissionHeader.OrganizationIdInternal"
+                                   theme="select2" class="form-control" data-pt-field-view="edit.ptFieldViewConfigOnChangeStatusId"
+                                   data-pt-field-view-custom="{{edit.commissionHeader.OrganizationIdInternal|lookupnocache:edit.internalOrganizations:'Id':'DisplayName'}}"
+                                   required data-ng-change="edit.internalOrganizationChanged(edit.commissionHeader.CommissionAdjustmentHeaderTypeId)">
+                            <ui-select-match placeholder="-- Select One --">{{$select.selected.DisplayName}}</ui-select-match>
+                            <ui-select-choices repeat="item.Id as item in edit.internalOrganizations | uiSelectChoicesFilter : $select.search : 'DisplayName': 'Id'">
+                                <span data-ng-bind-html="item.DisplayName | highlight: $select.search"></span>
+                                <span data-ng-bind-html="' - ' + item.Id | highlight: $select.search"></span>
+                            </ui-select-choices>
+                        </ui-select>
+                        <span class="input-group-btn" style="vertical-align:middle;">
+                            <button tabindex="-1" data-ng-click="edit.commissionHeader.OrganizationIdInternal=undefined" class="btn btn-default btn-adj-drp"><i class="material-icons md-18">clear</i></button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-lg-12" data-ng-if="edit.commissionHeader.CommissionAdjustmentHeaderTypeId == ApplicationConstants.CommissionAdjustmentHeaderType.ManualAdjustment">
+                <label for-property="CommissionUserProfileId" for="CommissionUserProfileId" data-model-property="edit.CommissionJobOwners[0].CommissionUserProfileId"
+                       class="col-lg-3 control-label label-to-right req-lab-right" data-original-title="" title=""><span class="adj-lbl-text">Person to Adjust</span></label>
+                <div class="col-lg-7">
+                    <div class="input-group select2-bootstrap-append">
+                        <ui-select name="CommissionUserProfileId" data-ng-model="edit.CommissionJobOwners[0].CommissionUserProfileId" theme="select2"
+                                   class="form-control" data-ng-required="true" data-pt-field-view="edit.ptFieldViewConfigOnChangeStatusId"
+                                   data-pt-field-view-custom="{{edit.CommissionJobOwners[0].CommissionUserProfileId|lookupnocache:edit.internalUsers:'CommissionUserProfileId':'Name'}}">
+                            <ui-select-match placeholder="-- Select One --">{{$select.selected.Name}}</ui-select-match>
+                            <ui-select-choices repeat="item.CommissionUserProfileId as item in edit.internalUsers | uiSelectChoicesFilter: $select.search: 'Name': 'CommissionUserProfileId'">
+                                <span data-ng-bind-html="item.Name | highlight: $select.search"></span>
+                            </ui-select-choices>
+                        </ui-select>
+                        <span class="input-group-btn">
+                            <button tabindex="-1" data-ng-click="edit.CommissionJobOwners[0].CommissionUserProfileId=undefined;" class="btn btn-default btn-sales-pattern-drp"><i class="material-icons md-18">clear</i></button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-lg-12" data-ng-if="edit.commissionId==0">
+                <label for-property="ClientOrganizationId" for="ClientOrganizationId" data-model-property="edit.commissionHeader.ClientOrganizationId"
+                       class="col-lg-3 control-label label-to-right" data-original-title="" title=""><span class="adj-lbl-text">Client Organization</span></label>
+                <div class="col-lg-7">
+                    <div class="input-group select2-bootstrap-append">
+                        <ui-select name="ClientOrganizationId" data-ng-model="edit.commissionHeader.ClientOrganizationId" theme="select2" class="form-control">
+                            <ui-select-match placeholder="-- Select One --">{{$select.selected.DisplayName}}</ui-select-match>
+                            <ui-select-choices repeat="item.Id as item in edit.clientOrganizations | uiSelectChoicesFilter : $select.search : 'DisplayName'">
+                                <span data-ng-bind-html="item.DisplayName | highlight: $select.search"></span>
+                            </ui-select-choices>
+                        </ui-select>
+                        <span class="input-group-btn" style="vertical-align:middle;">
+                            <button tabindex="-1" data-ng-click="edit.commissionHeader.ClientOrganizationId=undefined" class="btn btn-default btn-adj-drp" data-ng-disabled="$stateParams.orgId"><i class="material-icons md-18">clear</i></button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-lg-12" data-ng-if="edit.commissionId>0">
+                <label for-property="ClientOrganizationId" for="ClientOrganizationId" data-model-property="edit.commissionHeader.ClientOrganizationId"
+                       class="col-lg-3 control-label label-to-right" data-original-title="" title=""><span class="adj-lbl-text">Client Organization</span></label>
+                <div class="col-lg-7">
+                    <span class="adj-commission-company">{{edit.commissionHeader.ClientCompany || 'N/A'}}</span>
+                </div>
+            </div>
+            <div class="form-group col-lg-12 adjustment-radio" data-ng-if="edit.commissionHeader.CommissionAdjustmentHeaderTypeId == ApplicationConstants.CommissionAdjustmentHeaderType.ManualAdjustment">
+                <label for-property="CommissionRecurrency" for="CommissionRecurrency" data-model-property="edit.commissionHeader.CommissionRecurrency"
+                       class="col-lg-3 control-label label-to-right req-lab-right adj-lbl-ext" data-original-title="" title=""><span class="adj-lbl-text" data-ng-if="edit.commissionId>0">Commission Recurrency</span></label>
+                <div class="col-lg-7">
+                    <pt-input-radio name="CommissionRecurrency" data-ng-click="edit.recurrencyChanged()" data-ng-required="false" data-template-type="input-radio"
+                                    data-ng-model="edit.commissionHeader.CommissionRecurrency" data-options="[{ key: false, value: 'One Time Adjustment' },{ key: true, value: 'Recurring Adjustment' }]"
+                                    data-pt-field-view="edit.ptFieldViewConfigOnChangeStatusId" />
+                </div>
+            </div>
+            <div class="form-group col-lg-12">
+                <label for-property="Description" for="Description" data-model-property="edit.commissionHeader.Description" class="col-lg-3 control-label label-to-right req-lab-right"
+                       data-original-title="" title=""><span class="adj-lbl-text">Description</span></label>
+                <div class="col-lg-7">
+                    <input type="text" placeholder="Description" data-ng-model="edit.commissionHeader.Description" name="Description" data-required-message="Required"
+                           data-pt-field-view="edit.ptFieldViewConfigOnChangeStatusId" data-ng-required="true" data-ng-maxlength="100"
+                           input-text-limit-to-max-length="100" class="form-control form-control ng-scope" required="required">
+                </div>
+            </div>
+            <div class="form-group col-lg-12 adjustment-radio adjustment-amount-type">
+                <label for-property="isAdjustmentAmountAdd" for="isAdjustmentAmountAdd" data-model-property="edit.commissionHeader.isAdjustmentAmountAdd"
+                        class="col-lg-3 control-label label-to-right req-lab-right adj-lbl-ext" data-original-title="" title=""><span class="adj-lbl-text">Adjustment Amount Type</span></label>
+                <div class="col-lg-7">
+                    <pt-input-radio name="isAdjustmentAmountAdd" data-ng-required="true" data-template-type="input-radio"
+                                    data-ng-model="edit.commissionHeader.isAdjustmentAmountAdd" data-options="[{ key: true, value: 'Add Amount' },{ key: false, value: 'Deduct Amount' }]"
+                                    data-pt-field-view="edit.ptFieldViewConfigOnChangeStatusId" />
+                </div>
+            </div>
+            <div class="form-group col-lg-12">
+                <label data-for-property="Amount" for="Amount" data-model-property="edit.commissionHeader.AdjustmentAmountNet" class="col-lg-3 control-label label-to-right req-lab-right"
+                       data-original-title="" title=""><span class="adj-lbl-text">Adjustment Amount</span></label>
+                <div class="col-lg-3 col-xxl-2 adj-input-amount-net">
+                    <span class="adj-amont-net-lbl" data-ng-if="edit.commissionId>0">$</span>
+                    <div class="input-group">
+                        <input type="text" name="Amount" class="form-control form-control ng-scope" data-float-between-input="{from:0, to:9999999999999.99, decimalplaces:2, doesemptytozero:'false'}"
+                                placeholder="Adjustment Amount" data-ng-model="edit.commissionHeader.AdjustmentAmountNet"
+                                data-required-message="Required" data-pt-field-view="edit.ptFieldViewConfigOnChangeStatusId"
+                                data-ng-change="edit.amountNetChanged()" data-ng-required="true">
+                        <span class="input-group-addon" data-ng-if="edit.commissionId===0">$</span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-lg-12">
+                    <label data-for-property="AdjustmentDate" for="AdjustmentDate" data-model-property="edit.commissionHeader.AdjustmentDate" class="col-lg-3 control-label label-to-right req-lab-right"
+                           data-original-title="" title=""><span class="adj-lbl-text">Adjustment Date</span></label>
+                    <div class="col-lg-3 col-xxl-2">
+                        <pt-date-picker data-ng-model="edit.commissionHeader.AdjustmentDate" data-pt-field-view="edit.ptFieldViewConfigOnChangeStatusId" data-ng-required="true" data-required-message="Required" />
+                    </div>
+                </div>
+            <div class="col-lg-12" data-ng-if="edit.commissionId>0">
+                <label class="col-lg-3 control-label label-to-right" data-original-title="" title="">Source File(s)</label>
+                <div class="col-lg-9 source-files-container" style="padding: 0">
+                    <div data-ng-repeat="document in edit.commissionHeader.CommissionDocuments" data-ng-if="edit.commissionId>0" class="col-lg-12" style="padding: 0">
+                        <div class="col-xs-12 col-md-5" style="padding-bottom: 5px">
+                            <a class="commission-link-view" data-ng-class="{'view-mode-link' : edit.commissionId>0 && !document.Description}" href="javascript:void(0);"
+                               type="button" data-ng-href="{{edit.getPdfStreamByPublicId(document.PdfDocumentPublicId)}}" target="_blank"
+                               data-ng-if="document.PdfDocumentPublicId" title="View">{{document.Name}}</a>
+                        </div>
+                        <div class="col-xs-12 col-md-6" style="padding-bottom: 5px">
+                            <span class="commission-link-text" data-ng-if="document.Description && document.Description.length>0">{{document.Description}}</span>
+                        </div>
+                        <div class="col-xs-12 col-md-1 pull-right" style="padding-bottom: 5px">
+                            <a class="btn btn-default btn-material pull-right" href="javascript:void(0);" data-ng-click="edit.documentDelete(document)" title="Delete"><i class="material-icons">delete</i></a>
+                        </div>
+                        <div class="col-xs-12  visible-xs visible-sm">
+                            <hr />
+                        </div>
+                    </div>
+                    <div>
+                        <div class="col-xs-12 pull-right" style="padding-bottom: 5px">
+                            <button class="btn btn-default btn-material pull-right" data-toggle="collapse" data-target="#documentUpload-adjustment" title="Add a Document"><i class="material-icons">add</i></button>
+                        </div>
+                    </div>
+
+
+
+                </div>
+            </div>
+            <div id="documentUpload-adjustment" class="panel-collapse collapse" data-ng-if="edit.commissionId>0">
+                <div data-pt-document-upload="" data-holder-id="documentUpload-adjustment" data-entity-type-id="ApplicationConstants.EntityType.CommissionAdjustmentHeader"
+                     data-entity-id="$stateParams.commissionId" data-show-description-input="true" data-enable-image-resize="false"
+                     data-max-file-size="20971520" data-accept-file-types="" data-limit-multi-file-uploads="15" data-func-callback-on-done="edit.documentUploadCallbackOnDone"
+                     data-header-text="Upload a supporting document to your commission adjustment" data-content-text1="Accepted file types: PNG, JPG, JPEG, BMP, PDF, TIF, DOC, DOCX"
+                     data-content-text2="20 MB file size limit">
+                </div>
+            </div>
+            <div class="adjustment-edit-background-check"
+                 data-ng-if="edit.commissionHeader.CommissionAdjustmentHeaderTypeId == ApplicationConstants.CommissionAdjustmentHeaderType.BackgroundCheck && edit.commissionHeader.OrganizationIdInternal && edit.commissionHeader.OrganizationIdInternal > 0">
+                <div class="adjustment-edit-workorder col-lg-6">
+                    <div class="form-group col-lg-12">
+                        <span class="col-lg-6 alloc-header">Work Order Allocation</span>
+                        <button class="btn btn-default fontello-icon-plus btn-adj-alloc-add btn-alloc-wo" data-ng-if="edit.commissionId===0" data-ng-click="edit.addWorkOrder()"
+                                title="Add a Work Order"></button>
+                    </div>
+                    <div class="form-group col-lg-12" data-ng-if="edit.CommissionWorkorders.length>0">
+                        <h5 class="col-lg-5"><span class="adj-amount-h">Allocated Amount</span></h5>
+                        <div class="col-lg-5">
+                            <span>{{(edit.AllocatedAmount | currency: '$ ') || 'N/A'}}</span>
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-12" data-ng-repeat="wo in edit.CommissionWorkorders">
+                        <div class="col-lg-5">
+                            <label class="control-label adj-wo-lbl">{{wo.WorkOrderFullNumber}} - {{wo.WorkerName}}</label>
+                        </div>
+                        <div class="col-lg-5 adj-input-amount">
+                            <span class="adj-amont-net-lbl" data-ng-if="edit.commissionId>0">$</span>
+                            <div class="input-group">
+                                <input type="text" name="AmountWo" class="form-control form-control ng-scope" data-float-between-input="{from:0, to:9999999999999.99, decimalplaces:2, doesemptytozero:'false'}"
+                                       placeholder="Amount" data-ng-model="wo.AdjustmentAmount" data-required-message="Required"
+                                       data-pt-field-view="edit.ptFieldViewConfigOnChangeStatusId" data-ng-change="edit.woAmountChanged(wo)"
+                                       data-ng-required="true">
+                                <span class="input-group-addon" data-ng-if="edit.commissionId===0">$</span>
+                            </div>
+                        </div>
+                        <div class="col-lg-2">
+                            <div data-ng-if="edit.commissionId==0">
+                                <div>
+                                    <button type="button" class="btn btn-clouds fontello-icon-trash btn-adj-del" data-ng-click="edit.removeWorkorder(wo)" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div data-ng-if="edit.CommissionWorkorders.length===0 && edit.commissionId>0">
+                        <span class="adj-no-alloc">* There are no allocations on work orders.</span>
+                    </div>
+                </div>
+                <div class="adjustment-edit-jobowner col-lg-6">
+                    <div class="form-group col-lg-12">
+                        <span class="col-lg-6 alloc-header">Job Owner Allocation</span>
+                        <button class="btn btn-default fontello-icon-plus btn-adj-alloc-add btn-alloc-jo" data-ng-if="edit.commissionId==0" data-ng-click="edit.addJobOwner()"
+                                data-ng-disabled="edit.CommissionJobOwners.length === edit.commissionUsersAll.length" title="Add a Job Owner"></button>
+                    </div>
+                    <div class="form-group col-lg-12" data-ng-if="edit.CommissionJobOwners.length>0">
+                        <h5 class="col-lg-5"><span class="adj-amount-h">Unallocated Amount</span></h5>
+                        <div class="col-lg-5">
+                            <span>{{(edit.UnallocatedAmount | currency: '$ ') || 'N/A'}}</span>
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-12" data-ng-repeat="jo in edit.CommissionJobOwners">
+                        <div class="form-horizontal" role="form">
+                            <div class="row">
+                                <div class="form-group">
+                                    <label for-property="CommissionUserProfileId" for="CommissionUserProfileId" data-model-property="jo.CommissionUserProfileId"
+                                           class="col-lg-4 control-label req-lab-right" data-original-title="" title=""><span class="lbl-jo">Job Owner</span></label>
+                                    <div class="col-lg-7">
+                                        <div class="input-group select2-bootstrap-append">
+                                            <ui-select name="CommissionUserProfileId" data-ng-model="jo.CommissionUserProfileId" theme="select2" class="form-control"
+                                                       required data-ng-change="edit.jobOwnerChanged(jo)" data-pt-field-view="edit.ptFieldViewConfigOnChangeStatusId"
+                                                       data-pt-field-view-custom="{{jo.CommissionUserProfileId|lookupnocache:edit.commissionUsersAll:'CommissionUserProfileId':'Name'}}">
+                                                <ui-select-match placeholder="-- Select One --">{{$select.selected.Name}}</ui-select-match>
+                                                <ui-select-choices repeat="item.CommissionUserProfileId as item in edit.commissionUsersAll | uiSelectChoicesFilteredByUsage : $select.search : edit.CommissionJobOwners: jo : 'CommissionUserProfileId': 'CommissionUserProfileId' : 'Name'">
+                                                    <span data-ng-bind-html="item.Name | highlight: $select.search"></span>
+                                                </ui-select-choices>
+                                            </ui-select>
+                                            <span class="input-group-btn">
+                                                <button tabindex="-1" data-ng-click="edit.restoreJobOwner(jo);" class="btn btn-default btn-adj-drp"><i class="material-icons md-18">clear</i></button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-1">
+                                        <div data-ng-if="edit.commissionId===0">
+                                            <div>
+                                                <button type="button" class="btn btn-clouds fontello-icon-trash btn-adj-del" data-ng-click="edit.removeJobOwner($index)" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group adj-commission-type">
+                                    <label for-property="CommissionType" for="CommissionType" data-model-property="jo.CommissionRateHeaderId" class="col-lg-4 control-label req-lab-right"
+                                           data-original-title="" title=""><span class="lbl-jo">Commission Type</span></label>
+                                    <div class="col-lg-7">
+                                        <div class="input-group select2-bootstrap-append">
+                                            <ui-select name="CommissionType" data-ng-model="jo.CommissionRateHeaderId" theme="select2" class="form-control" required
+                                                       data-pt-field-view="edit.ptFieldViewConfigOnChangeStatusId" data-pt-field-view-custom="{{jo.CommissionRateHeaderId|lookupnocache:jo.CommissionRoles:'Id':'Description'}}">
+                                                <ui-select-match placeholder="-- Select One --">{{$select.selected.Description}}</ui-select-match>
+                                                <ui-select-choices repeat="item.Id as item in jo.CommissionRoles | uiSelectChoicesFilter: $select.search: 'Description'">
+                                                    <span data-ng-bind-html="item.Description | highlight: $select.search"></span>
+                                                </ui-select-choices>
+                                            </ui-select>
+                                            <span class="input-group-btn">
+                                                <button tabindex="-1" data-ng-click="jo.CommissionRateHeaderId=undefined;" class="btn btn-default btn-adj-drp"><i class="material-icons md-18">clear</i></button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-1"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div data-ng-if="edit.CommissionJobOwners.length===0 && edit.commissionId>0">
+                        <span class="adj-no-alloc">* There are no allocations on job owners.</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel-footer">
+            <div class="row">
+                <div class="col-lg-6"></div>
+                <div class="col-lg-6">
+                    <div class="pull-right">
+                        <button class="btn btn-default" data-ng-if="edit.commissionHeader.Id == 0" data-ng-click="edit.discard(edit.commissionHeader, 'discard')">Cancel and Discard</button>
+                        <button class="btn btn-primary" data-ng-if="edit.commissionHeader.Id == 0" data-ng-click="edit.save(edit.commissionHeader, 'save')"
+                                data-ng-disabled="!formCommissionAdjustment.$valid">
+                            Create
+                        </button>
+                        <button class="btn btn-default" data-ng-if="edit.commissionHeader.Id != 0 && edit.commissionHeader.CommissionAdjustmentHeaderTypeId == ApplicationConstants.CommissionAdjustmentHeaderType.ManualAdjustment && edit.commissionHeader.CommissionRecurrency && edit.commissionHeader.CommissionAdjustmentHeaderStatusId == ApplicationConstants.CommissionAdjustmentHeaderStatus.Active"
+                                data-ng-click="edit.changeRecurring(edit.commissionId, 'changeRecurring', edit.commissionHeader.WorkflowPendingTaskId)">
+                            Cancel Recurring
+                        </button>
+                        <button class="btn btn-default" data-ng-if="edit.commissionHeader.Id != 0 && edit.commissionHeader.CommissionAdjustmentHeaderTypeId == ApplicationConstants.CommissionAdjustmentHeaderType.ManualAdjustment && edit.commissionHeader.CommissionRecurrency && edit.commissionHeader.CommissionAdjustmentHeaderStatusId == ApplicationConstants.CommissionAdjustmentHeaderStatus.InActive"
+                                data-ng-click="edit.changeRecurring(edit.commissionId, 'changeRecurring', edit.commissionHeader.WorkflowPendingTaskId)">
+                            Apply Recurring
+                        </button>
+                        <button class="btn btn-primary" data-ng-if="edit.commissionHeader.Id != 0" data-ng-click="edit.back('back')">Back</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="col-lg-12 panel-body" data-pt-validation-messages="edit.ValidationMessages" data-ng-if="edit.ValidationMessages"></div>
+</div>

@@ -1,0 +1,164 @@
+.panel {
+    padding-bottom: none;
+}
+
+.panel-body {
+    padding: 15px 15px 0 15px;
+}
+
+.display-inline {
+    display: inline;
+}
+
+.margin-top-5 {
+    margin-top: 5px;
+}
+
+.margin-top-10 {
+    margin-top: 10px;
+}
+
+.margin-left-10 {
+    margin-left: 10px;
+}
+
+.orange {
+    color: #FE9701;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.font-16 {
+    font-size: 16px;
+}
+
+.font-18 {
+    font-size: 18px;
+}
+
+.verticalseperator {
+    border-right: 1px solid #ddd;
+    height: 20px;
+    width: 1px;
+}
+
+.horizontalseperator {
+    border-bottom: 1px solid #ddd;
+}
+
+.totalamouontsection {
+    border-bottom: solid 5px #FE9701;
+}
+
+.totalamouontsection .text-center h4 {
+    color: #fff;
+    background-color: #FE9701;
+    display: inline;
+    margin: 0;
+    padding: 5px 5px 5px 5px;
+    border-radius: 4px;
+}
+
+.totalamouontsection .text-center h4 a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.totalamouontsection .text-center h4 a:hover {
+    color: #fff;
+}
+
+.totalamouontsection .text-center h4 .fa-stack {
+    color: #845B1E;
+    font-size: 50%;
+}
+
+.totalamouontsection .text-center h4 .fa-stack-1x {
+    padding-top: 3px;
+}
+
+.totalamouontsection .pull-right {
+    color: #FE9701;
+    font-weight: bold;
+}
+
+.marginall {
+    margin: 20px;
+}
+
+.center-text {
+    text-align: center;
+}
+
+@import "../../../../styles.less";
+
+@profile-w: 64px;
+
+.profile-container{
+    margin-left: auto;
+    margin-right: auto;
+    width: @profile-w;
+    height: @profile-w;
+    
+    .profile-picture-container {
+        float: left;
+        width: @profile-w;
+        height: @profile-w;
+        margin-right: 15px;
+        font-size: @profile-w;
+    }
+}
+
+.head-description{
+    padding:15px 0px;
+
+    .control-label{
+        width: 12%;
+        float:left;
+    }
+
+    .control-value{
+        width: 88%;
+        float: left;
+    }
+}
+
+// mobile phone
+@media (max-width: @screen-sm){
+    @profile-w:80px;
+
+    .control-label{
+        width: 30%;
+        float:left;
+    }
+
+    .control-value{
+        width: 70%;
+        float: left;
+    }
+
+    .head-description{
+        padding:0px 0px 20px 0px;
+    
+        .control-label{
+            width: 100%;
+        }
+    
+        .control-value{
+            width: 100%;
+        }
+    }
+
+    .profile-container{
+        width: @profile-w;
+        height: @profile-w;
+        
+        .profile-picture-container {
+            width: @profile-w;
+            height: @profile-w;
+            font-size: @profile-w;
+        }
+    }
+}

@@ -1,0 +1,34 @@
+<!-- <dx-date-box *ngIf="pickerType;else noPickerType" [(value)]="value" [type]="type" [disabled]="disabled" [min]="min" [max]="max"
+  <!-- [readOnly]="readOnly" [showClearButton]="showClearButton" (onValueChanged)="onValueChangedHandler($event)" (onClosed)="closedHandler($event)"
+  (onOpened)="openedHandler($event)" [width]="width" [displayFormat]="displayFormat" [maxZoomLevel]="maxZoomLevel" [minZoomLevel]="minZoomLevel"
+  [interval]="interval" [pickerType]="pickerType" (isValidChange)="isValidChangeHandler($event)">
+</dx-date-box>
+
+<ng-template #noPickerType>
+  <dx-date-box [(value)]="value" [type]="type" [disabled]="disabled" [min]="min" [max]="max" [readOnly]="readOnly" [showClearButton]="showClearButton"
+    (onValueChanged)="onValueChangedHandler($event)" (onClosed)="closedHandler($event)" (onOpened)="openedHandler($event)"
+    [width]="width" [displayFormat]="displayFormat" [maxZoomLevel]="maxZoomLevel" [minZoomLevel]="minZoomLevel" [interval]="interval"
+    (isValidChange)="isValidChangeHandler($event)">
+  </dx-date-box>
+</ng-template> -->
+<!-- <ng-template>
+  <dx-calendar
+    [min]="minDate"
+    [max]="maxDate"
+    [firstDayOfWeek]="1"
+    [(value)]="currentDate">
+</dx-calendar>
+<dx-calendar></dx-calendar>
+</ng-template> -->
+
+
+<!-- <dx-date-box [(value)]="value"></dx-date-box> -->
+<dx-calendar #PhxCalendarComponent [(value)]="value" [disabled]="disabled" [min]="min" [max]="max" [rtlEnabled]="rtlEnabled"
+  [readOnly]="readOnly" [showTodayButton]="showTodayButton" (onValueChanged)="onValueChangedHandler($event)"
+  [width]="width" [maxZoomLevel]="maxZoomLevel" [minZoomLevel]="minZoomLevel"
+  (isValidChange)="isValidChangeHandler($event)" [cellTemplate]="cellTemplate">
+  
+  <span *dxTemplate="let cell of 'custom'" [ngClass]="getCellCssClass(cell.date)">
+    {{cell.text}}
+</span>
+</dx-calendar>

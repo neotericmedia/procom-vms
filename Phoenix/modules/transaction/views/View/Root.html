@@ -1,0 +1,121 @@
+﻿<div data-cg-busy="loadItemsPromise">
+    <div class="btn-group" data-ng-if="model.transactionHeader.TransactionHeaderStatusId == ApplicationConstants.TransactionHeaderStatus.Active">
+        <button type="button" class="btn btn-clouds dropdown-toggle" data-toggle="dropdown">
+                                Actions...<span class="caret ml"></span>
+                            </button>
+
+        <ul class="dropdown-menu bordered">
+            <li style="cursor: pointer;" data-ng-click="actionReverseTransaction(ApplicationConstants.StateAction.TransactionHeaderActionReverseAction)"><a>{{ApplicationConstants.StateAction.TransactionHeaderActionReverseAction | lookup:lists.stateActionList}}</a></li>
+            <li style="cursor: pointer;" data-ng-click="actionReverseTransaction(ApplicationConstants.StateAction.TransactionHeaderActionReverseTimeSheetUnsubmitAction)" data-ng-if="model.transactionHeader.TransactionTypeId == ApplicationConstants.TransactionType.Timesheet"><a>{{ApplicationConstants.StateAction.TransactionHeaderActionReverseTimeSheetUnsubmitAction | lookup:lists.stateActionList}}</a></li>
+            <li style="cursor: pointer;" data-ng-click="actionReverseTransaction(ApplicationConstants.StateAction.TransactionHeaderActionReverseTimeSheetReturnToExceptionAction)" data-ng-if="model.transactionHeader.TransactionTypeId == ApplicationConstants.TransactionType.Timesheet"><a>{{ApplicationConstants.StateAction.TransactionHeaderActionReverseTimeSheetReturnToExceptionAction | lookup:lists.stateActionList}}</a></li>
+            <li style="cursor: pointer;" data-ng-click="actionReverseTransaction(ApplicationConstants.StateAction.TransactionHeaderActionReverseAndUnsubmitExpenseClaimAction)" data-ng-if="model.transactionHeader.TransactionTypeId == ApplicationConstants.TransactionType.Expense"><a>{{ApplicationConstants.StateAction.TransactionHeaderActionReverseAndUnsubmitExpenseClaimAction | lookup:lists.stateActionList}}</a></li>
+            <li style="cursor: pointer;" data-ng-click="actionReverseTransaction(ApplicationConstants.StateAction.TransactionHeaderActionReverseAndReturnExpenseClaimToExceptionAction)" data-ng-if="model.transactionHeader.TransactionTypeId == ApplicationConstants.TransactionType.Expense"><a>{{ApplicationConstants.StateAction.TransactionHeaderActionReverseAndReturnExpenseClaimToExceptionAction | lookup:lists.stateActionList}}</a></li>
+            <li style="cursor: pointer;" data-ng-click="actionReverseTransaction(ApplicationConstants.StateAction.TransactionHeaderActionReverseAdvanceAction)" data-ng-if="model.transactionHeader.TransactionTypeId == ApplicationConstants.TransactionType.Advance"><a>{{ApplicationConstants.StateAction.TransactionHeaderActionReverseAdvanceAction | lookup:lists.stateActionList}}</a></li>
+            <li style="cursor: pointer;" data-ng-click="actionReverseTransaction(ApplicationConstants.StateAction.TransactionHeaderActionReverseAdjustmentAction)" data-ng-if="model.transactionHeader.TransactionTypeId == ApplicationConstants.TransactionType.Adjustment"><a>{{ApplicationConstants.StateAction.TransactionHeaderActionReverseAdjustmentAction | lookup:lists.stateActionList}}</a></li>
+        </ul>
+    </div>
+    <div class="row">
+        <div class="tabbable panel panel-tabbable">
+            <div class="tab-content">
+                <div class="tab-pane active">
+                    <div class="panel">
+                        <div class="panel-heading headstone" ng-class="{'test-headstone': model.transactionHeader.IsTest, 'header-red': model.transactionCalculation.AmountSummary.Amount_GrossProfit < 0}" style="margin-top: 15px;">
+                            <div class="row">
+                                <div class="col-lg-2">
+                                    <label class="control-label">Transaction Number</label>
+                                    <p>{{model.transactionHeader.OrganizationInternalCode}}{{model.transactionHeader.TransactionReference}}</p>
+                                </div>
+                                <div class="col-lg-2">
+                                    <label class="control-label">Transaction Type</label>
+                                    <p>{{model.transactionHeader.transactionType}}</p>
+                                </div>
+                                <div class="col-lg-2" data-ng-if="model.transactionHeader.TransactionTypeId===ApplicationConstants.TransactionType.Manual">
+                                    <label class="control-label">Transaction Category</label>
+                                    <p>{{model.transactionHeader.TransactionCategoryId | lookup:lists.transactionCategoryList}}</p>
+                                </div>
+                                <div class="col-lg-2">
+                                    <label class="control-label">Transaction Date</label>
+                                    <p>{{model.transactionHeader.TransactionDate|date:ApplicationConstants.formatDate}}</p>
+                                </div>
+                                <div class="col-lg-2">
+                                    <label class="control-label">Transaction Period</label>
+                                    <p>{{model.transactionHeader.StartDate|date:ApplicationConstants.formatDate}} - {{model.transactionHeader.EndDate|date:ApplicationConstants.formatDate}}</p>
+                                </div>
+                                <div class="col-lg-2">
+                                    <label class="control-label">Billing Document</label>
+                                    <p>
+                                        <a ng-if="model.transactionHeader.TransactionTypeId === ApplicationConstants.TransactionType.Timesheet" href="/#/next/timesheet/{{model.transactionHeader.TimeSheetId}}">{{model.transactionHeader.TimeSheetId}}</a>
+                                        <a ng-if="model.transactionHeader.TransactionTypeId !== ApplicationConstants.TransactionType.Timesheet" data-ui-sref="timesheet.details({workOrderId: model.transactionHeader.WorkOrderId, timesheetId: model.transactionHeader.TimeSheetId})">{{model.transactionHeader.TimeSheetId}}</a>
+                                    </p>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-lg-2">
+                                    <label class="control-label">Work Order</label>
+                                    <p><a data-ng-if="!!model.transactionHeader.WorkOrderId" data-ui-sref="workorder.edit.core({ assignmentId: model.transactionHeader.AssignmentId, workOrderId:model.transactionHeader.WorkOrderId, workOrderVersionId: 0 })">{{model.transactionHeader.AssignmentId}}.{{model.transactionHeader.WorkOrderNumber}}.x</a></p>
+                                </div>
+                                <div class="col-lg-2">
+                                    <label class="control-label">Worker</label>
+                                    <p>
+                                        <a data-ng-if="model.worker.ProfileTypeId==ApplicationConstants.UserProfileType.Organizational" data-ui-sref="EditOrganizationalProfile({ contactId:model.worker.ContactId, profileId: model.worker.Id})">{{model.worker.Contact.PreferredFirstName}} {{model.worker.Contact.PreferredLastName}} - {{model.worker.ContactId}} (Organizational - {{model.worker.Id}})</a>
+                                        <a data-ng-if="model.worker.ProfileTypeId==ApplicationConstants.UserProfileType.Internal" data-ui-sref="EditInternalProfile({ contactId:model.worker.ContactId, profileId: model.worker.Id })">{{model.worker.Contact.PreferredFirstName}} {{model.worker.Contact.PreferredLastName}} - {{model.worker.ContactId}} (Internal - {{model.worker.Id}})</a>
+                                        <a data-ng-if="model.worker.ProfileTypeId==ApplicationConstants.UserProfileType.WorkerTemp" data-ui-sref="EditWorkerTempProfile({ contactId:model.worker.ContactId, profileId: model.worker.Id })">{{model.worker.Contact.PreferredFirstName}} {{model.worker.Contact.PreferredLastName}} - {{model.worker.ContactId}} (Worker Temp - {{model.worker.Id}})</a>
+                                        <a data-ng-if="model.worker.ProfileTypeId==ApplicationConstants.UserProfileType.WorkerCanadianSp" data-ui-sref="EditWorkerCanadianSPProfile({ contactId:model.worker.ContactId, profileId: model.worker.Id })">{{model.worker.Contact.PreferredFirstName}} {{model.worker.Contact.PreferredLastName}} - {{model.worker.ContactId}} (Worker Canadian SP - {{model.worker.Id}})</a>
+                                        <a data-ng-if="model.worker.ProfileTypeId==ApplicationConstants.UserProfileType.WorkerCanadianInc" data-ui-sref="EditWorkerCanadianIncProfile({ contactId:model.worker.ContactId, profileId: model.worker.Id })">{{model.worker.Contact.PreferredFirstName}} {{model.worker.Contact.PreferredLastName}} - {{model.worker.ContactId}} (Worker Canadian Inc - {{model.worker.Id}})</a>
+                                        <a data-ng-if="model.worker.ProfileTypeId==ApplicationConstants.UserProfileType.WorkerSubVendor" data-ui-sref="EditWorkerSubVendorProfile({ contactId:model.worker.ContactId, profileId: model.worker.Id })">{{model.worker.Contact.PreferredFirstName}} {{model.worker.Contact.PreferredLastName}} - {{model.worker.ContactId}} (Worker Sub-Vendor - {{model.worker.Id}})</a>
+                                        <a data-ng-if="model.worker.ProfileTypeId==ApplicationConstants.UserProfileType.WorkerUnitedStatesW2" data-ui-sref="EditWorkerUnitedStatesW2Profile({ contactId:model.worker.ContactId, profileId: model.worker.Id })">{{model.worker.Contact.PreferredFirstName}} {{model.worker.Contact.PreferredLastName}} - {{model.worker.ContactId}} (Worker W2 - {{model.worker.Id}})</a>
+                                        <a data-ng-if="model.worker.ProfileTypeId==ApplicationConstants.UserProfileType.WorkerUnitedStatesLLC" data-ui-sref="EditWorkerUnitedStatesLLCProfile({ contactId:model.worker.ContactId, profileId: model.worker.Id })">{{model.worker.Contact.PreferredFirstName}} {{model.worker.Contact.PreferredLastName}} - {{model.worker.ContactId}} (Worker LLC - {{model.worker.Id}})</a>
+                                    </p>
+                                </div>
+                                <div class="col-lg-2" data-ng-if="model.transactionHeader.BillingTransactions[0].OrganizationIdClient>0">
+                                    <label class="control-label">Client</label>
+                                    <p><a data-ui-sref="org.edit.details({organizationId: model.transactionHeader.BillingTransactions[0].OrganizationIdClient })">{{model.transactionHeader.BillingTransactions[0].OrganizationClientDisplayName}} - {{model.transactionHeader.BillingTransactions[0].OrganizationIdClient}}</a></p>
+                                </div>
+                                <div class="col-lg-2" data-ng-if="model.transactionHeader.PaymentTransactions[0]">
+                                    <label class="control-label">Supplier(s)</label>
+                                    <p class="form-control-static" data-ng-if="model.transactionHeader.PaymentTransactions[0].PayeeOrganizationIdSupplier>0">
+                                        <a data-ui-sref="org.edit.details({organizationId: model.transactionHeader.PaymentTransactions[0].PayeeOrganizationIdSupplier })">{{model.transactionHeader.PaymentTransactions[0].PayeeName}} - {{model.transactionHeader.PaymentTransactions[0].PayeeOrganizationIdSupplier}}</a>
+                                    </p>
+                                    <p data-ng-if="model.transactionHeader.PaymentTransactions[0].PayeeOrganizationIdSupplier==null">
+                                        <a data-ng-if="model.worker.ProfileTypeId==ApplicationConstants.UserProfileType.WorkerTemp" data-ui-sref="EditWorkerTempProfile({ contactId:model.worker.ContactId, profileId: model.worker.Id })">{{model.worker.Contact.PreferredFirstName}} {{model.worker.Contact.PreferredLastName}}</a>
+                                        <a data-ng-if="model.worker.ProfileTypeId==ApplicationConstants.UserProfileType.WorkerCanadianSp" data-ui-sref="EditWorkerCanadianSPProfile({ contactId:model.worker.ContactId, profileId: model.worker.Id })">{{model.worker.Contact.PreferredFirstName}} {{model.worker.Contact.PreferredLastName}}</a>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="bottom-center-header">
+                                <span class="bottom-center-text">
+                                    <span>Gross Profit</span>&nbsp;
+                                    <span>
+                                        {{model.transactionCalculation.AmountSummary.Amount_GrossProfit|currency:" $"}} {{model.transactionHeader.CurrencyCode}}
+                                    </span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tabbable">
+                <ul class="nav nav-tabs">
+                    <li data-ng-class="{ active : $state.includes('transaction.view.summary') } "><a data-ui-sref="transaction.view.summary">Summary</a></li>
+                    <li data-ng-class="{ active : $state.includes('transaction.view.detail') } "><a data-ui-sref="transaction.view.detail">Detail</a></li>
+                    <li data-ng-class="{ active : $state.includes('transaction.view.notes') } "><a data-ui-sref="transaction.view.notes">Notes</a></li>
+                    <li data-ng-class="{ active : $state.includes('transaction.view.billingdocuments') } "><a data-ui-sref="transaction.view.billingdocuments">Billing Documents</a></li>
+                    <li data-ng-class="{ active : $state.includes('transaction.view.vmsrecord') } " data-ng-show="model.transactionHeader.TransactionTypeId==ApplicationConstants.TransactionType.VmsTimesheet"><a data-ui-sref="transaction.view.vmsrecord">VMS Record</a></li>
+                    <li data-ng-class="{ active : $state.includes('transaction.view.workflow') } "><a data-ui-sref="transaction.view.workflow">Workflow</a></li>
+                    <li data-ng-class="{ active : $state.includes('transaction.view.invoices') } "><a data-ui-sref="transaction.view.invoices">Invoices</a></li>
+                    <li data-ng-class="{ active : $state.includes('transaction.view.payments') } "><a data-ui-sref="transaction.view.payments">Payments</a></li>
+                </ul>
+            </div>
+            <div class="tab-content">
+                <div class="tab-pane active">
+                    <div class="panel">
+                        <div class="panel-body" data-ui-view="transactionActiveTabs" data-autoscroll="false"></div>
+                        <div class="panel-body" data-ng-if="model.ValidationMessages.length>0" data-pt-validation-messages="model.ValidationMessages"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

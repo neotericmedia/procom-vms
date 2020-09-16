@@ -1,0 +1,12 @@
+<div *ngIf="item" [hidden]="item.ExpenseCategoryId != null" >
+  <app-expense-item-category-selector [item]="item" (onCategorySelected)="onCategorySelected($event)"></app-expense-item-category-selector>
+</div>
+<div *ngIf="item && item.ExpenseCategoryId != null && item.Id == 0">
+  {{expenseModuleResourceKeys.itemAdd.itemSaving | phxTranslate}}
+</div>
+<div *ngIf="item && item.ExpenseCategoryId != null && item.Id > 0">
+  <div class="row">
+    <app-expense-item-detail #itemDetail [item]="item" [editable]="editable" (onAddItemAttachment)="emitAddItemAttachment($event)"
+      (onPreviewAttachment)="previewAttachment($event)"></app-expense-item-detail>
+  </div>
+</div>

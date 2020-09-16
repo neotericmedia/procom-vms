@@ -1,0 +1,129 @@
+﻿<div class="form-group">
+    <div class="col-lg-12">
+        <h4>Address</h4>
+    </div>
+</div>
+<div class=" panel-organization-address"
+     data-ng-repeat="address in scopeOrg.entity.OrganizationAddresses"
+     data-ng-form="addressForm">
+    <div class="form-group">
+        <label for="AddressDescription" class="col-lg-4 control-label label-to-right req-lab-right" title=""
+               data-for-property="AddressDescription"
+               data-model-property="address.AddressDescription"
+               data-original-title="">Description</label>
+        <div class="col-lg-8">
+            <input type="text" name="AddressDescription" class="form-control ng-scope" required="required" maxlength="256"
+                   data-ng-disabled="$first"
+                   data-ng-model="address.AddressDescription"
+                   data-required-message="Required"
+                   data-pt-field-view="scopeOrg.ptFieldViewConfigOnChangeStatusId"
+                   data-ng-required="true" />
+        </div>        
+    </div>
+    <div class="form-group">
+        <label data-for-property="AddressLine1" for="AddressLine1" data-model-property="address.AddressLine1" class="col-lg-4 control-label label-to-right req-lab-right" data-original-title="" title="">Address 1</label>
+        <div class="col-lg-8">
+            <input type="text" name="AddressLine1" class="form-control ng-scope" required="required" maxlength="64"
+                   data-ng-model="address.AddressLine1"
+                   data-pt-field-view="scopeOrg.ptFieldViewConfigOnChangeStatusId"
+                   data-ng-required="true"
+                   data-required-message="Required"
+                   data-ng-minlength="3"
+                   data-ng-maxlength="64" />
+            <div class="text-danger" ng-show="addressForm.AddressLine1.$error.maxlength">
+                Maximum 64 characters
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label data-for-property="AddressLine2" for="AddressLine2" data-model-property="address.AddressLine2" class="col-lg-4 control-label label-to-right lab-right" data-original-title="" title="">Address 2</label>
+        <div class="col-lg-8">
+            <input type="text" name="AddressLine2" class="form-control ng-scope" maxlength="64"
+                   data-ng-model="address.AddressLine2"
+                   data-pt-field-view="scopeOrg.ptFieldViewConfigOnChangeStatusId"
+                   data-ng-minlength="3"
+                   data-ng-maxlength="64" />
+            <div class="text-danger" ng-show="addressForm.AddressLine2.$error.maxlength">
+                Maximum 64 characters
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label data-for-property="CityName" for="CityName" data-model-property="address.CityName" class="col-lg-4 control-label label-to-right req-lab-right" data-original-title="" title="">City</label>
+        <div class="col-lg-8">
+            <input type="text" name="CityName" class="form-control ng-scope" required="required" maxlength="64"
+                   data-ng-model="address.CityName"
+                   data-pt-field-view="scopeOrg.ptFieldViewConfigOnChangeStatusId"
+                   data-ng-required="true"
+                   data-required-message="Required"
+                   data-ng-minlength="3"
+                   data-ng-maxlength="64" />
+        </div>
+    </div>
+    <div class="form-group">
+        <label data-for-property="CountryId" for="CountryId" data-model-property="address.CountryId" class="col-lg-4 control-label label-to-right req-lab-right" data-original-title="" title="">Country</label>
+        <div class="col-lg-8">
+            <div class="input-group select2-bootstrap-append">
+                <ui-select name="CountryId" theme="select2" class="form-control" required
+                           data-ng-model="address.CountryId"
+                           data-pt-field-view="scopeOrg.ptFieldViewConfigOnChangeStatusId"
+                           data-ng-change="scopeOrg.actionScope.event.address.countryChanged(address)">
+                    <ui-select-match placeholder="-- Select One --">{{$select.selected.text}}</ui-select-match>
+                    <ui-select-choices repeat="item.id as item in scopeOrg.lists.countryList  | uiSelectChoicesFilter: $select.search: 'text'"><span data-ng-bind-html="item.text | highlight: $select.search"></span></ui-select-choices>
+                </ui-select>
+                <span class="input-group-btn">
+                    <button tabindex="-1" data-ng-click="scopeOrg.actionScope.event.address.onRemoveAddressCountryId(address)" class="btn btn-default"><i class="material-icons md-18">clear</i></button>
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label data-for-property="SubdivisionId" for="SubdivisionId" data-model-property="address.SubdivisionId" class="col-lg-4 control-label label-to-right req-lab-right" data-original-title="" title="" required="required">
+            Province/State
+        </label>
+        <div class="col-lg-8">
+            <div class="input-group select2-bootstrap-append">
+                <ui-select name="SubdivisionId" theme="select2" class="form-control" required="required"
+                           data-ng-model="address.SubdivisionId"
+                           data-pt-field-view="scopeOrg.ptFieldViewConfigOnChangeStatusId"
+                           data-ng-change="scopeOrg.actionScope.event.address.onSubdivisionChanged(address)">
+                    <ui-select-match placeholder="-- Select One --">{{$select.selected.text}}</ui-select-match>
+                    <ui-select-choices repeat="item.id as item in address.lists.subdivisionList  | uiSelectChoicesFilter: $select.search: 'text'"><span data-ng-bind-html="item.text | highlight: $select.search"></span></ui-select-choices>
+                </ui-select>
+                <span class="input-group-btn">
+                    <button tabindex="-1" data-ng-click="address.SubdivisionId=undefined" class="btn btn-default"><i class="material-icons md-18">clear</i></button>
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label data-for-property="PostalCode" for="PostalCode" data-model-property="address.PostalCode" class="col-lg-4 control-label label-to-right req-lab-right" data-original-title="" title="" required="required">
+            Postal Code
+        </label>
+        <div class="col-lg-4">
+            <input type="text" name="PostalCode" data-placeholder="Postal Code" required="required" class="form-control ng-scope"
+                   data-ng-model="address.PostalCode"
+                   data-pt-field-view="scopeOrg.ptFieldViewConfigOnChangeStatusId"
+                   data-postal-zip-code-valid="{countryId: address.CountryId, isRequired: false}"
+                   data-postal-zip-code-mask="address.CountryId">
+        </div>
+    </div>
+	<div class="col-lg-12" data-ng-if="!$first && scopeOrg.actionScope.show.modifyAddress">
+		<button type="button" class="btn btn-default btn-material pull-right"
+				
+				data-ng-click="scopeOrg.actionScope.event.address.remove(address)">
+			<i class="material-icons">delete</i>
+		</button>
+	</div>
+    <div class="form-group" data-pt-error-box="address.BrokenRules"></div>
+	
+</div>
+<div class="padding-10 pull-right" data-ng-if="scopeOrg.actionScope.show.modifyAddress">
+		<div class="btn-toolbar">
+			<button type="button" class="btn btn-material btn-default right"
+					
+					data-ng-click="scopeOrg.actionScope.event.address.add()">
+				<i class="material-icons">add</i>
+			</button>
+		</div>
+</div>

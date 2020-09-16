@@ -1,0 +1,139 @@
+<!--
+  This file is being used in the angular app and IIS container
+-->
+
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>FlexBackOffice</title>
+  <base href="/">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <style type="text/css">
+
+    * {
+      box-sizing: border-box;
+      box-shadow: none !important;
+    }
+    .row::after {
+      content: "";
+      clear: both;
+      display: table;
+    }	
+    [class*="col-"] {
+      float: left;
+      padding: 10px;
+    }
+    @media only screen and (max-width: 768px) {
+      /* For mobile phones: */
+      [class*="col-"] {
+        width: 100% !important;
+      }
+    }
+    .col-1 {width: 8.33%;}
+    .col-2 {width: 16.66%;}
+    .col-3 {width: 25%;}
+    .col-4 {width: 33.33%;}
+    .col-5 {width: 41.66%;}
+    .col-6 {width: 50%;}
+    .col-7 {width: 58.33%;}
+    .col-8 {width: 66.66%;}
+    .col-9 {width: 75%;}
+    .col-10 {width: 83.33%;}
+    .col-11 {width: 91.66%;}
+    .col-12 {width: 100%;}
+    
+    html {
+      font-family: 'Open Sans', sans-serif;
+      line-height: 1.5;
+      font-size: 13px;
+      color: #333333;
+    }
+    html, body, div, .main-content {
+      height: 100%;
+      overflow: hidden;
+      margin: 0 !important;
+    }
+    .vertical-center {
+      text-align: center;  /* align the inline(-block) elements horizontally */
+      overflow: auto;
+    }
+    .vertical-center:before {    /* create a full-height inline block pseudo=element */
+      content: " ";
+      display: inline-block;
+      vertical-align: middle;    /* vertical alignment of the inline element */
+      height: 100%;
+    }
+    .vertical-center > .container {
+      display: inline-block;
+      vertical-align: middle;  /* vertical alignment of the inline element */
+      background-color: #F2F4F8;
+      width: 90%;
+      max-width: 700px;
+      height: auto;
+      padding: 30px 15px;
+    }
+    .header-icon {
+      padding-bottom: 15px;
+    }
+    .header {
+      color: #000;
+      font-weight: 600;
+      font-size: 20px;
+    }
+    .sub-header {
+      font-weight: normal;
+      color: #727272;
+      padding-top: 10px;
+    }
+    hr {
+      height: 0;
+      box-sizing: content-box;
+      margin-top: 20px;
+      margin-bottom: 20px;
+      border: 0;
+      border-top: 1px solid #eee;
+      border-color: #727272;
+      border-width: 2px;
+      width: 50%;
+    }
+    .text-left {
+      text-align: left;
+    }
+    .text-center {
+      text-align: middle;
+    }
+  </style>
+</head>
+<body>
+    <div class="vertical-center">
+      <div class="container center-block">
+        <div class="row">
+          <div class="col-2 text-centre header-icon">
+            <img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAEwAAAA/CAYAAABKIS5EAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyBpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNSBXaW5kb3dzIiB4bXBNTTpJbnN0YW5jZUlEPSJ4bXAuaWlkOkE1RTYxMUE5QkYxNzExRTdCMjE0RTk0MkYwNjVEMkQ1IiB4bXBNTTpEb2N1bWVudElEPSJ4bXAuZGlkOkE1RTYxMUFBQkYxNzExRTdCMjE0RTk0MkYwNjVEMkQ1Ij4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6QTVFNjExQTdCRjE3MTFFN0IyMTRFOTQyRjA2NUQyRDUiIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6QTVFNjExQThCRjE3MTFFN0IyMTRFOTQyRjA2NUQyRDUiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz7JjwyMAAAHFElEQVR42uxcW2wUZRQ+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">
+          </div>
+          <div class="col-9 text-left">
+            <div class="message">
+              <div class="header">
+                We are sorry, the page you are requested cannot be found.
+              </div>
+              <div class="sub-header">            
+                The URL may be misspelled or the page you are looking for is no longer available.
+              </div>
+            </div>
+            <hr/>
+            <div class="message">
+              <div class="header">
+                Nous sommes désolés, mais la page que vous essayez d'accéder n'existe pas.
+              </div>
+              <div class="sub-header">            
+                L'URL peut être mal orthographiée ou la page que vous cherchez n'est plus disponible.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</body>
+</html>

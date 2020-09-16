@@ -1,0 +1,10 @@
+<div class="row">
+  <div class="col-xs-12">
+    <app-phx-data-table #grid [configuration]="dataTableConfiguration" [dataSource]="dataItems" [columns]="columns" [exportFileName]="exportFileName"
+      [componentName]="componentName" (rowClick)="onRowClick($event)" (contextMenuPreparing)="onContextMenuPreparing($event)">
+      <div *dxTemplate="let d of 'commissionPercentageCellTemplate'">
+        <span>{{(d.value/100) | percent: '1.4-4' }}</span>
+      </div>
+    </app-phx-data-table>
+  </div>
+</div>

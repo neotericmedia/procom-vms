@@ -1,0 +1,109 @@
+<dx-data-grid #grid [dataSource]="phxDataSource" class="gridContainer" [columns]="columns" [summary]="{totalItems:summary}"
+  [height]="height" [allowColumnResizing]="true" [columnResizingMode]="configuration.columnHidingEnabled === true ? 'column' : 'widget'"
+  [allowColumnReordering]="true" [columnHidingEnabled]="configuration.columnHidingEnabled" [columnChooser]="columnChooserConfig"
+  [columnAutoWidth]="true" [showBorders]="configuration.showBorders" [showColumnLines]="true" [rowAlternationEnabled]="configuration.rowAlternationEnabled"
+  [hoverStateEnabled]="true" [stateStoring]="stateStoringConfig" [masterDetail]="masterDetailConfig" [selectedRowKeys]="[]"
+  [export]="exportConfig" [noDataText]="configuration.noDataText" [loadPanel]="loadPanelConfig" (onSelectionChanged)="onSelectionChanged($event)"
+  (onCellClick)="onCellClick($event)" (onRowClick)="onRowClick($event)" (onRowExpanding)="onMasterRowExpanding($event)"
+  (onToolbarPreparing)="onToolbarPreparing($event)" (onRowPrepared)="onRowPrepared($event)" (onCellPrepared)="onCellPrepared($event)"
+  (onContextMenuPreparing)="onContextMenuPreparing($event)" (onEditorPreparing)="onEditorPreparing($event)"
+  (onEditorPrepared)="onEditorPrepared($event)" (onContentReady)="onContentReady($event)" (onExporting)="onExporting($event)"
+  (onExported)="onExported($event)" (onFileSaving)="onFileSaving($event)">
+  <dxo-selection [mode]="configuration.selectionMode" [selectAllMode]="configuration.selectAllMode" [allowSelectAll]="configuration.allowSelectAll"
+    [showCheckBoxesMode]="configuration.showCheckBoxesMode"></dxo-selection>
+  <dxo-filter-row [visible]="configuration.showFilter"></dxo-filter-row>
+  <dxo-header-filter [visible]="false"></dxo-header-filter>
+  <dxo-search-panel [visible]="configuration.showSearch" [width]="200" placeholder="{{'common.generic.search' | phxTranslate}}..."></dxo-search-panel>
+  <dxo-group-panel [visible]="configuration.showGrouping" [emptyPanelText]="'common.phxDataTable.groupByDescription' | phxTranslate"></dxo-group-panel>
+  <dxo-grouping [autoExpandAll]="true" [expandMode]="'buttonClick'" [contextMenuEnabled]="true" [allowCollapsing]="false"></dxo-grouping>
+  <dxo-sorting mode="multiple"></dxo-sorting>
+  <dxo-scrolling mode="virtual" showScrollbar="always" [useNative]="true"></dxo-scrolling>
+  <dxo-paging [pageSize]="configuration.pageSize"></dxo-paging>
+  <dxo-pager [showPageSizeSelector]="false"></dxo-pager>
+  <dxo-remote-operations [sorting]="true" [paging]="true" [filtering]="true" [summary]="true"></dxo-remote-operations>
+  <div class="custom-toolbar-content btn-toolbar" *dxTemplate="let data of 'toolbarContent'">
+    <span *ngIf="configuration.stateSavingMode !== PhxDataTableStateSavingMode.None">
+      <button id="resetButton" class="btn btn-default template-reset-button" (click)="resetState()" [title]="'common.generic.reset' | phxTranslate">
+        <i class="material-icons custom-tool-button" aria-hidden="true">replay</i>
+      </button>
+      <button id="saveAsButton" *ngIf="configuration.stateSavingMode === PhxDataTableStateSavingMode.Customizable"
+        class="btn btn-default template-save-button" (click)="saveAsState()" [title]="'common.phxDataTable.saveViewBtn' | phxTranslate">
+        <i class="material-icons custom-tool-button" aria-hidden="true">save</i>
+      </button>
+      <div *ngIf="configuration.stateSavingMode === PhxDataTableStateSavingMode.Customizable" class="btn-group templates-dropdown pull-right"
+        dropdown>
+        <button dropdownToggle type="button" class="btn btn-default dropdown-toggle" [title]="'common.phxDataTable.applyViewBtn' | phxTranslate">
+          <span class="apply-view-dropdown-label">{{'common.phxDataTable.applyViewLabel' | phxTranslate}} ... </span>
+          <span class="caret"></span>
+        </button>
+        <ul *dropdownMenu class="dropdown-menu" role="menu">
+          <li role="menuitem">
+            <a class="dropdown-item" (click)="resetState()">{{'common.generic.reset' | phxTranslate}}</a>
+            <i class="material-icons" aria-hidden="true" (click)="resetState()">replay</i>
+          </li>
+          <li class="divider dropdown-divider" *ngIf="states && states.length > 1"></li>
+
+          <li role="menuitem" *ngIf="states && states.length <= 1">
+            <a class="dropdown-item" (click)="saveAsState()">{{'common.phxDataTable.saveFirstViewBtn' | phxTranslate}}</a>
+            <i class="material-icons" aria-hidden="true" (click)="saveAsState()">save</i>
+          </li>
+
+          <li role="menuitem" *ngFor="let state of states">
+            <a class="dropdown-item" *ngIf="state.StateName !== ''" (click)="applyState(state)">{{state.StateName}}</a>
+            <i *ngIf="state.StateName !== ''" class="material-icons" aria-hidden="true" (click)="removeState(state)">clear</i>
+          </li>
+        </ul>
+      </div>
+    </span>
+    <button *ngIf="hasFilter && configuration.showFilter && configuration.showClearFilterButton" class="btn template-clear-filter-button"
+      (click)="resetFilters($event)">
+      {{'common.phxDataTable.resetFilterBtn' | phxTranslate}}
+      <i class="material-icons custom-tool-button" aria-hidden="true">filter_list</i>
+    </button>
+  </div>
+  <div *dxTemplate="let d of 'defaulDateCellTemplate'">
+    <span>{{d.value | date:dateColumnFormat}}</span>
+  </div>
+</dx-data-grid>
+
+<div class="bottom-spacer"></div>
+
+<div class="record-count-panel" *ngIf="configuration.showTotalCount && (totalCount || currentCount)">
+  <span>
+    <span class="record-count-value">{{currentCount}}</span> {{'common.phxDataTable.countOfTotalCountMessagePart1' |
+    phxTranslate}}
+    <span class="record-count-value">{{totalCount}}</span> {{'common.phxDataTable.countOfTotalCountMessagePart2' |
+    phxTranslate}}</span>
+</div>
+
+<pre *ngIf="debug">configuration: {{ configuration | json }}</pre>
+<pre *ngIf="debug">{{defaultState.Id}} defaultState.StateName:{{defaultState.StateName}} isSavingDefaultState:{{isSavingDefaultState}} anyPendingSaveDefaultState:{{anyPendingSaveDefaultState}}</pre>
+<pre *ngIf="debug">default state: {{ defaultState | json }}</pre>
+
+<app-phx-modal #saveModal [buttons]="saveStateModalButtons" [fullScreen]="false" [title]="'common.phxDataTable.saveViewDialogTitle' | phxTranslate">
+  <form #addStateForm="ngForm" novalidate>
+    <div class="form-group">
+      <label for="name">{{'common.phxDataTable.viewNameLabel' | phxTranslate}} *</label>
+      <dx-select-box [items]="stateDetails" displayExpr="Name" [acceptCustomValue]="true" [searchEnabled]="true"
+        required [(ngModel)]="selectedState" #name="ngModel" maxlength="128" minlength="3" id="name" name="name"
+        [placeholder]="'common.phxDataTable.viewNamePlaceholder' | phxTranslate" (onValueChanged)="nameIsChanged = true; newStateDescription = selectedState.Description"
+        (onCustomItemCreating)="addCustomItem($event)"></dx-select-box>
+    </div>
+    <div class="form-group">
+      <label for="description">{{'common.phxDataTable.viewDescriptionLabel' | phxTranslate}}</label>
+      <textarea rows="3" class="form-control" id="description" name="description" [(ngModel)]="newStateDescription"
+        maxlength="512"></textarea>
+    </div>
+    <div *ngIf="name.errors && name.dirty && nameIsChanged" class="validation-error">
+      <div *ngIf="name.errors && name?.errors.required">
+        {{'common.phxDataTable.viewNameRequired' | phxTranslate}}
+      </div>
+      <div *ngIf="name.errors && name?.errors.maxlength">
+        {{'common.phxDataTable.viewNameMaxLength' | phxTranslate}}
+      </div>
+      <div *ngIf="name.errors && name?.errors.minlength">
+        {{'common.phxDataTable.viewNameMinLength' | phxTranslate}}
+      </div>
+    </div>
+  </form>
+</app-phx-modal>

@@ -1,0 +1,22 @@
+﻿<div class="row btn-toolbar ">
+	<div class="btn-group">
+		<div class="rebate-fee-btn-wrapper">
+			<button type="button" class="btn btn-clouds dropdown-toggle" data-toggle="dropdown">
+				<span class="rebate-fee-btn-name">New</span> <span class="caret ml rebate-fee-btn-caret"></span>
+			</button>
+			<ul class="dropdown-menu bordered">
+				<li><a (click)="newRebate()">Create New Rebate</a></li>
+				<li><a (click)="newVmsFee()">Create New VMS Fee</a></li>
+			</ul>
+		</div>
+	</div>
+</div>
+<app-phx-data-table [columns]="columns" [configuration]="dataTableConfiguration" [dataSourceUrl]="'org/getListOrganizationsWithRabatesAndFees'"
+	[dataSourceParams]='odataParams' [exportFileName]="'RebatesAndFees'" [componentName]="'RebatesAndFeesSearch'" (selectionChanged)="onRowSelected($event)"
+	(contextMenuOpenTab)="onContextMenuOpenTab($event)">
+    <div *dxTemplate="let item of 'viewRebatesAndFeesCellTemplate'">
+        <div class="btn-group">
+            <button type="button" class="btn btn-xs btn-clouds btn-row-action no-padding-bottom-right" title="View" (click)="viewItem(item)"><i class="fontello-icon-eye-1"></i>&nbsp;</button>
+        </div>
+    </div>
+</app-phx-data-table>

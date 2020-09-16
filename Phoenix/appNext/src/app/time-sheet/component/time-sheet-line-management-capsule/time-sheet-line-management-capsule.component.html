@@ -1,0 +1,151 @@
+<div class="capsuleListItemWrap" *ngIf="capsule?.timeSheetDetail && visible">
+
+  <div *ngIf="editable" fxLayout="row" fxLayoutAlign="space-between stretch" fxFill class="capsuleListItem">
+    <div class="capsule-details">
+      <div class="slide-wrap" fxLayout="row">
+        <div class="text-nowrap" [ngClass]="{'active': capsule.infoSlideState === 'show'}">
+          <div class="slide" [@infoSlide]="capsule.infoSlideState">
+            <div class="row capsule-info" (click)="onClick()">
+              <div class="col-xl-6 lm-project-rate-col" dnd-draggable [dragData]="capsule.timeSheetDetail" [ngStyle]="{cursor: 'move !important;'}">
+                <div *ngIf="timeSheet.IsTimeSheetUsesProjects">
+                  <div class="project-name" *ngIf="capsule.timeSheetDetail.Project" [title]="projectName" style="font-weight: 600;">
+                    {{ projectName }}
+                  </div>
+                  <div class="project-name" *ngIf="!capsule.timeSheetDetail.Project">
+                    <i>{{'common.generic.notApplicable' | phxTranslate}}</i>
+                  </div>
+                </div>
+                <div class="rate">{{ capsule.timeSheetDetail.RateTypeId | CodeValue:commonService.CodeValueGroups.RateType }}
+                </div>
+              </div>
+              <div class="col-xl-6 lm-total-col">
+                <div>
+                  <span class="capsule-total">{{ totalUnits | number : '1.2-2' }} </span>
+                  <strong class="capsule-unit">{{ capsule.timeSheetDetail.RateUnitId | CodeValue: commonService.CodeValueGroups.RateUnit:'text' | slice:0:1
+                    }}</strong>
+                </div>
+              </div>
+            </div>
+            <div class="row capsule-buttons">
+              <div class="col-xl-12 col-xxl-10 capsule-prefill">
+                <button class="btn btn-link btn-svg text-right " [tooltip]="'common.generic.prefill' | phxTranslate"
+                  triggers="hover" placement="top" container="body" [disabled]="disabled" (click)="goToPrefill()">
+                  <svg class="img-svg" xmlns="http://www.w3.org/2000/svg" width="70" height="51.64" viewBox="0 0 70 51.64">
+                    <polygon points="23.82 37.04 26.99 41.31 47.75 25.86 27.02 9.94 23.78 14.16 35.52 23.16 0 23.16 0 28.48 35.32 28.48 23.82 37.04"
+                    />
+                    <path d="M61.81,0H8.19A8.2,8.2,0,0,0,0,8.19v7.38H5.32V8.19A2.88,2.88,0,0,1,8.19,5.32H61.81a2.88,2.88,0,0,1,2.87,2.87V43.45a2.88,2.88,0,0,1-2.87,2.87H8.19a2.88,2.88,0,0,1-2.87-2.87V36.07H0v7.38a8.19,8.19,0,0,0,8.19,8.19H61.81A8.19,8.19,0,0,0,70,43.45V8.19A8.2,8.2,0,0,0,61.81,0Z"
+                    />
+                  </svg>
+                </button>
+                <button class="btn btn-link btn-svg center capsule-clear" [tooltip]="clearBtnTooltip"
+                  triggers="hover" placement="top" container="body" [disabled]="disabled" (click)="onClear()">
+                  <svg class="img-svg" xmlns="http://www.w3.org/2000/svg" width="70" height="51.64" viewBox="0 0 70 51.64">
+                    <path d="M61.81,0H8.19A8.2,8.2,0,0,0,0,8.19V43.45a8.19,8.19,0,0,0,8.19,8.19H61.81A8.19,8.19,0,0,0,70,43.45V8.19A8.2,8.2,0,0,0,61.81,0Zm2.87,43.45a2.88,2.88,0,0,1-2.87,2.87H8.19a2.88,2.88,0,0,1-2.87-2.87V8.19A2.88,2.88,0,0,1,8.19,5.32H61.81a2.88,2.88,0,0,1,2.87,2.87Z"
+                      transform="translate(0 0)" />
+                    <polygon points="43.15 13.28 35 21.43 26.85 13.28 22.46 17.67 30.61 25.82 22.46 33.97 26.85 38.36 35 30.21 43.15 38.36 47.53 33.97 39.38 25.82 47.53 17.67 43.15 13.28"
+                    />
+                  </svg>
+                </button>
+                <button [hidden]="totalUnits === 0" class="btn btn-link btn-svg capsule-spotlight" [tooltip]="'common.generic.highlight' | phxTranslate"
+                  triggers="hover" placement="top" container="body" (click)="onSpotlight()">
+                  <svg class="img-svg" xmlns="http://www.w3.org/2000/svg" width="70" height="40.4" viewBox="0 0 70 40.4">
+                    <path d="M27.34,17.24H0V34.4H27.34A22.3,22.3,0,0,0,47.31,46V5.62A22.3,22.3,0,0,0,27.34,17.24Z" transform="translate(0 -5.62)"
+                    />
+                    <polygon points="64.44 7.79 62.29 4.21 53.43 9.55 55.58 13.13 64.44 7.79" />
+                    <polygon points="53.41 33.94 63.45 36.42 64.46 32.37 54.42 29.88 53.41 33.94" />
+                    <rect x="60.04" y="18.11" width="9.96" height="4.18" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="text-nowrap" [ngClass]="{'active': capsule.preFillSlideState === 'show'}">
+          <div class="slide" [@preFillSlide]="capsule.preFillSlideState">
+            <div class="row">
+              <div class="col-xs-12 lm-qf-title">
+                <button class="btn btn-link btn-material pre-fill-cancel" (click)="toggleQuickFill()">
+                  <i class="material-icons">navigate_before</i>
+                </button>
+                <div class="project-name">{{'timesheet.lineManagement.prefillHeader' | phxTranslate}}</div>
+              </div>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="space-around center" class="pre-fill">
+              <div>
+                <button (click)="decrementCapsuleQuickFillUnits()" [disabled]="disabled" class="btn btn-link btn-material">
+                  <i class="material-icons">remove_circle</i>
+                </button>
+              </div>
+              <div>
+                <input timeSheetUnit [min]="unitInputProperties.min" [max]="unitInputProperties.max" #preFill [ngModel]="capsule.preFill | number : '1.2-2'" (change)="setCapsuleQuickFillUnits($event.target.value)"
+                  type="number" class="form-control text-right quick-fill-input" [disabled]="disabled"/>
+              </div>
+              <div>
+                <button (click)="incrementCapsuleQuickFillUnits()" class="btn btn-link btn-material" [disabled]="disabled">
+                  <i class="material-icons">add_circle</i>
+                </button>
+              </div>
+              <div class="quick-fill-inline">
+                <button class="btn btn-link btn-badge" [disabled]="disabled ||  capsule.preFill < .01" (click)="onPrefill();">
+                  <span class="badge">{{'common.generic.prefill' | phxTranslate}}</span>
+                </button>
+              </div>
+            </div>
+            <div class="row quick-fill-block">
+              <div class="col-xs-12 text-center">
+                <button class="btn btn-link btn-badge" [disabled]="disabled || capsule.preFill < .01" (click)="onPrefill();">
+                  <span class="badge prefill-badge">{{'common.generic.prefill' | phxTranslate}}</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="stripe" fxLayout="column" fxLayoutAlign="center center" [ngStyle]="style"></div>
+  </div>
+
+  <div *ngIf="!editable" fxLayout="row" fxLayoutAlign="space-between stretch" fxFill class="capsuleListItem">
+    <div class="summary-details">
+      <div class="row wrap-row" *ngIf="timeSheet.IsTimeSheetUsesProjects">
+        <div class="col-xs-12">
+          <div class="project-name" *ngIf="capsule.timeSheetDetail.Project" [title]="projectName">
+            {{ projectName }}
+          </div>
+          <div class="project-name" *ngIf="!capsule.timeSheetDetail.Project">
+            <i>{{'common.generic.notApplicable' | phxTranslate}}</i>
+          </div>
+        </div>
+      </div>
+      <div class="row wrap-row">
+        <div class="col-xxxl-4">
+          <div class="rate">{{ capsule.timeSheetDetail.RateTypeId | CodeValue:commonService.CodeValueGroups.RateType }}</div>
+        </div>
+        <div class="col-xxxl-2 col-xl-5 text-center">
+          <button class="btn btn-link btn-svg capsule-spotlight" [tooltip]="'common.generic.highlight' | phxTranslate" 
+            triggers="hover" placement="top" container="body" (click)="onSpotlight()">
+            <svg class="img-svg" xmlns="http://www.w3.org/2000/svg" width="70" height="40.4" viewBox="0 0 70 40.4">
+              <title>icon-focus</title>
+              <path d="M27.34,17.24H0V34.4H27.34A22.3,22.3,0,0,0,47.31,46V5.62A22.3,22.3,0,0,0,27.34,17.24Z" transform="translate(0 -5.62)"
+              />
+              <polygon points="64.44 7.79 62.29 4.21 53.43 9.55 55.58 13.13 64.44 7.79" />
+              <polygon points="53.41 33.94 63.45 36.42 64.46 32.37 54.42 29.88 53.41 33.94" />
+              <rect x="60.04" y="18.11" width="9.96" height="4.18" />
+            </svg>
+          </button>
+        </div>
+        <div class="col-xxxl-6 col-xl-7 col-total">
+          <div class="total-wrap text-right">
+            <span class="capsule-total" *ngIf="totalUnits">{{ totalUnits | number : '1.2-2' }} </span>
+            <strong>{{ capsule.timeSheetDetail.RateUnitId | CodeValue: commonService.CodeValueGroups.RateUnit:'text' | slice:0:1
+              }}
+            </strong>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="stripe" fxLayout="column" fxLayoutAlign="center center" [ngStyle]="style"></div>
+  </div>
+</div>

@@ -1,0 +1,11 @@
+<div class="app-accordion-container app-accordion-container-28">
+    <div class="app-accordion-level-one">
+        <div *ngFor="let company of companies" class="app-accordion-level-one-item" (click)="onSelect(company)" [ngClass]="{ 'app-no-link': company.RecordCount===0 }">
+            <span *ngIf="company.RecordCount >= 0">
+                <i class="app-accordion-chevron  icon-chevron-right" *ngIf="company.RecordCount!==0"></i>
+            </span>
+            <span>{{company.OrganizationLegalName}}</span>
+            <!--<span class="badge badge-positive-gray journal-badge">{{company.RecordCount}}</span-->
+        </div>
+    </div>
+</div>

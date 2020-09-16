@@ -1,0 +1,10 @@
+<div class="content-group form-horizontal" *ngIf="inputFormGroup">
+    <div class="col-xs-12 col-lg-12">
+        <div class="panel-internal no-margin col-lg-12">
+            <app-purchase-order-details [inputFormGroup]="inputFormGroup.controls.TabDetailsDetail"
+                [readOnlyStorage]="readOnlyStorage" [activeInEditMode]="activeInEditMode"
+                [showAddLine]="showAddLine" [showDeleteLine]="showDeleteLine" (outputEvent)="onOutputEvent($event)">
+            </app-purchase-order-details>
+        </div>
+    </div>
+</div>

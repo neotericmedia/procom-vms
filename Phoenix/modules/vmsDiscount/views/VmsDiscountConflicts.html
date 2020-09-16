@@ -1,0 +1,218 @@
+﻿<div class="row vms-conflict-main-div">
+    <div data-loading-spinner="conflict.viewLoading"></div>
+    <div class="panel-body" data-pt-validation-messages="conflict.ValidationMessages" data-ng-if="conflict.ValidationMessages.length>0"></div>
+    <div class="vms-conflict-header row" data-ng-if="conflict.clientOrganizations.length>0">
+        <div class="vms-conflict-client-main col-lg-4" data-ng-disabled="conflict.viewLoading">
+            <div class="input-group select2-bootstrap-append vms-conflict-client-wrapper" id="vms-client-wrapper">
+                <ui-select name="SelectedClient" data-ng-model="conflict.SelectedClient" data-ng-change="conflict.clientChanged($select.selected)" theme="select2" class="form-control">
+                    <ui-select-match placeholder="Selectable Conflict Transaction">{{$select.selected.ClientOrgDisplayName}}</ui-select-match>
+                    <ui-select-choices repeat="client in conflict.clientOrganizations | uiSelectChoicesFilter: $select.search: 'ClientOrgDisplayName'">
+                        <div id="vmsDiscountClientOrg{{client.OrganizationIdClient}}" class="vms-client-orgs" data-ng-class="{'vms-client-selected': client.OrganizationIdClient == conflict.OrganizationIdClient }">
+                            <span data-ng-bind-html="client.ClientOrgDisplayName | highlight: $select.search"></span>
+                            <div style="display: inline-block;">
+                                <span class="badge badge-warning badge-conflict">{{client.DiscountConflictCount}}</span>
+                                <i class="pull-right icon-chevron-right" style="padding-top: 4px;"></i>
+                            </div>
+                        </div>
+                    </ui-select-choices>
+                </ui-select>
+                <span class="input-group-btn">
+                    <button tabindex="-1" data-ng-click="conflict.clearClient()" class="btn btn-default btn-contact-drp"><i class="material-icons md-18">clear</i></button>
+                </span>
+            </div>
+        </div>
+        <div class="col-lg-4 vms-conflict-actions" data-ng-show="conflict.OrganizationIdClient && conflict.totalItemCount">
+            <div class="input-group select2-bootstrap-append">
+                <ui-select name="ActionId" data-ng-model="conflict.actionId" theme="select2" class="form-control" data-ng-change="conflict.actionChanged($select.selected)">
+                    <ui-select-match placeholder="Actions">{{$select.selected.DisplayName}}</ui-select-match>
+                    <ui-select-choices repeat="item.Id as item in conflict.actions | uiSelectChoicesFilter: $select.search: 'DisplayName'">
+                        <span data-ng-bind-html="item.DisplayName | highlight: $select.search"></span>
+                    </ui-select-choices>
+                </ui-select>
+                <span class="input-group-btn">
+                    <button tabindex="-1" data-ng-click="conflict.restoreActions();" class="btn btn-default btn-contact-drp"><i class="material-icons md-18">clear</i></button>
+                </span>
+            </div>
+        </div>
+        <div class="col-lg-2"></div>
+    </div>
+    <div data-ng-if="conflict.clientOrganizations.length==0" class="emptyVms">
+        <span>There are no VMS Conflict items to show</span>
+    </div>
+    <show-busy-controlled associate="conflict.viewLoadingMixin"></show-busy-controlled>
+    <div class="row">
+        <div class="col-lg-12 vms-conflict-table-div">
+            <div class="smart-table-wrapper vms-conflict-table" data-ng-show="conflict.isUserSelected" id="vmsDiscountConflictTable">
+                <div class="row">
+                    <table data-st-table-struct='[{"stTableValue" : "conflict.items"}, {"stPipeValue" : "conflict.callServer"}, {"widthValues" : "[10, 10, 10, 10, 10, 10, 10, 10, 10, 10]"}, {"stPaginationValue" : "conflict.pageSize"}, {"dontMakeServerCallOnStartup" : "true"}]'>
+                        <thead data-st-head="2000px">
+                            <tr>
+                                <th data-st-sort="ImportDate" data-st-sort-default="">Import Date</th>
+                                <th data-st-sort="WorkOrderNumber">VMS Work Order Number</th>
+                                <th data-st-sort="FirstName">First Name</th>
+                                <th data-st-sort="LastName">Last Name</th>
+                                <th data-st-sort="Discount">Discount</th>
+                                <th data-st-sort="StartDate">Start Date</th>
+                                <th data-st-sort="EndDate">End Date</th>                                
+                                <th data-st-sort="BillingTransactionNumber">Transaction Number</th>
+                                <th data-st-sort="Note">Note</th>
+                                <th data-st-sort="ValidationMessages">Reason</th>
+                            </tr>
+                            <tr>
+                                <th>
+                                    <input data-st-advanced-search="'ImportDate'"
+                                           data-st-as-operator-override="'le'"
+                                           close-on-date-selection="false" show-button-bar="false" show-weeks="false" class="input-sm form-control"
+                                           data-st-as-lazy-attributes="{'uib-datepicker' : ApplicationConstants.formatDate}"
+                                           data-st-as-height-override="400"
+                                           data-st-as-width-override="315" />
+                                </th>
+                                <th>
+                                    <input data-st-advanced-search="'WorkOrderNumber'" placeholder=""
+                                           class="input-sm form-control" type="search" />
+                                </th>
+                                <th>
+                                    <input data-st-advanced-search="'FirstName'" placeholder=""
+                                           class="input-sm form-control" type="search" />
+                                </th>
+                                <th>
+                                    <input data-st-advanced-search="'LastName'" placeholder=""
+                                           class="input-sm form-control" type="search" />
+                                </th>                                
+                                <th>
+                                    <input data-st-advanced-search="{property: 'Discount', ignoreQuotes: true, valueSuffix: 'M'}" placeholder=""
+                                           class="input-sm form-control numberType" data-safe-restrict-input="[^0123456789.]" />
+                                </th>
+                                <th>
+                                    <input data-st-advanced-search="'StartDate'"
+                                           data-st-as-operator-override="'le'"
+                                           close-on-date-selection="false" show-button-bar="false" show-weeks="false" class="input-sm form-control"
+                                           data-st-as-lazy-attributes="{'uib-datepicker' : ApplicationConstants.formatDate}"
+                                           data-st-as-height-override="400"
+                                           data-st-as-width-override="315" />
+                                </th>
+                                <th>
+                                    <input data-st-advanced-search="'EndDate'"
+                                           data-st-as-operator-override="'le'"
+                                           close-on-date-selection="false" show-button-bar="false" show-weeks="false" class="input-sm form-control"
+                                           data-st-as-lazy-attributes="{'uib-datepicker' : ApplicationConstants.formatDate}"
+                                           data-st-as-height-override="400"
+                                           data-st-as-width-override="315" />
+                                </th>
+                                <th>
+                                    <input data-st-advanced-search="'BillingTransactionNumber'" placeholder=""
+                                           class="input-sm form-control" />
+                                </th>
+                                <th>
+                                    <input data-st-advanced-search="'Note'" placeholder=""
+                                           class="input-sm form-control" />
+                                </th>
+                                <th>
+                                    <input data-st-advanced-search="'ValidationMessages'" placeholder=""
+                                           class="input-sm form-control" type="search" />
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody class="vms-conflict-table-body vmsConflictBody" id="vms-discount-table-body">
+                            <tr id="{{item.Id}}" class="vmsConflictTr" data-ng-repeat="item in conflict.items" style="cursor:pointer" data-ng-click="conflict.rowSelected(item)">
+                                <td class="vms-conflict-item" title="{{::item.ImportDate | date:ApplicationConstants.formatDate}}"><span class="vms-conflict-item-in">{{::item.ImportDate| date:ApplicationConstants.formatDate}}</span></td>
+                                <td class="vms-conflict-item" title="{{::item.WorkOrderNumber}}"><span class="vms-conflict-item-in">{{::item.WorkOrderNumber}}</span></td>
+                                <td class="vms-conflict-item" title="{{::item.FirstName}}"><span class="vms-conflict-item-in">{{::item.FirstName}}</span></td>
+                                <td class="vms-conflict-item" title="{{::item.LastName}}"><span class="vms-conflict-item-in">{{::item.LastName}}</span></td>
+                                <td class="vms-conflict-item" title="{{::item.Discount | number : 2}}"><span class="vms-conflict-item-in">{{::item.Discount | vmsRate}}</span></td>
+                                <td class="vms-conflict-item" title="{{::item.StartDate | date:ApplicationConstants.formatDate}}"><span class="vms-conflict-item-in">{{item.StartDate ? (item.StartDate| date:ApplicationConstants.formatDate) : 'N/A'}}</span></td>
+                                <td class="vms-conflict-item" title="{{::item.EndDate | date:ApplicationConstants.formatDate}}"><span class="vms-conflict-item-in">{{item.EndDate ? (item.EndDate| date:ApplicationConstants.formatDate) : 'N/A'}}</span></td>
+                                <td class="vms-conflict-item" title="{{::item.BillingTransactionNumber}}"><span class="vms-conflict-description">{{::item.BillingTransactionNumber}}</span></td>
+                                <td class="vms-conflict-item" title="{{::item.Note}}"><sp><span class="vms-conflict-item-in">{{::item.Note}}</span></td>
+                                <td class="vms-conflict-item" title="{{::item.ValidationMessages}}"><span class="vms-conflict-item-in" ng-bind-html="::item.ValidationMessages"></span></td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="14" class="vms-conflict-footer">
+                                    <span data-ng-class="{vmsConflictsTotal : conflict.items.length>0}">Total Count: {{conflict.totalItemCount || 0}}; Items Loaded: {{ conflict.items ? conflict.items.length : 0}}</span>
+                                    <button class="btn btn-primary pull-right btnVmsExportAll" data-ng-click="conflict.getExcelAll()" data-ng-disabled="!conflict.isLoaded || conflict.viewLoading" data-ng-show="conflict.items.length>0">Export All Records to Excel</button>
+                                    <!--<button class="btn btn-primary pull-right btnVmsExport" data-ng-click="conflict.getExcel()" data-ng-disabled="!conflict.isLoaded || conflict.viewLoading" data-ng-show="conflict.items.length>0">Export to Excel</button>-->
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12 vms-conflict-resolve-table-wrapper">
+            <div class="vms-conflict-resolving-table" data-ng-show="conflict.billingTransactions.length>0 && !conflict.actionId" data-ng-form="formCoflicts">
+                <h4>Billing Transaction Mapping</h4>
+                <div class="vms-child-table">
+                    <div class="vms-child-table-header bg-gray-strong">
+                        <div class="vms-cell-discount vms-cell-chk">Select</div>
+                        <div class="vms-cell-discount vms-cell-name">Work Order Number</div>
+                        <div class="vms-cell-discount vms-cell-name">First Name</div>
+                        <div class="vms-cell-discount vms-cell-name">Last Name</div>
+                        <div class="vms-cell-discount vms-cell-name">Transaction No</div>
+                        <div class="vms-cell-discount vms-cell-date">Start Date</div>
+                        <div class="vms-cell-discount vms-cell-date">End Date</div>
+                        <div class="vms-cell-discount vms-cell-total">Pre-Tax Total</div>
+                    </div>
+                    <div class="vms-child-table-body" data-ng-repeat="bt in conflict.billingTransactions">
+                        <div class="vms-cell-discount vms-cell-chk"><input type="checkbox" class="bt-chk" data-ng-model="bt.IsSelected" data-ng-change="conflict.rowChecked(bt, $index)" /></div>
+                        <div class="vms-cell-discount vms-cell-name" title="{{::bt.WorkOrderNumber}}"><span>{{::bt.WorkOrderNumber || 'N/A'}}</span></div>
+                        <div class="vms-cell-discount vms-cell-name" title="{{::bt.FirstName || 'N/A'}}"><span>{{::bt.FirstName || 'N/A'}}</span></div>
+                        <div class="vms-cell-discount vms-cell-name" title="{{::bt.LastName || 'N/A'}}"><span>{{::bt.LastName || 'N/A'}}</span></div>
+                        <div class="vms-cell-discount vms-cell-name" title="{{::bt.BillingTransactionNumber}}"><span>{{::bt.BillingTransactionNumber}}</span></div>
+                        <div class="vms-cell-discount vms-cell-date" title="{{::bt.StartDate | date:ApplicationConstants.formatDateComma}}">{{::bt.StartDate | date:ApplicationConstants.formatDateComma}}</div>
+                        <div class="vms-cell-discount vms-cell-date" title="{{::bt.EndDate | date:ApplicationConstants.formatDateComma}}">{{::bt.EndDate | date:ApplicationConstants.formatDateComma}}</div>
+                        <div class="vms-cell-discount vms-cell-total" title="{{::bt.PreTaxTotal | vmsRate}}">{{::bt.PreTaxTotal | vmsRate}}</div>
+                    </div>
+                </div>
+                <div class="vms-child-table-footer">
+                    <button class="btn btn-primary pull-right btnResolve" data-ng-click="conflict.resolveConflict()" data-ng-disabled="!formCoflicts.$valid || !conflict.conflictingRow || conflict.viewLoading">Resolve</button>
+                </div>
+            </div>
+            <div class="vms-conflict-no-wovs" data-ng-show="conflict.selectedParentRow.Id && conflict.billingTransactions.length==0 && !conflict.actionId">
+                There are no Billing Transactions associated with selected Vms Discount item.
+            </div>
+        </div>
+    </div>
+    <div class="vms-action-buttons" data-ng-show="conflict.actionId>0" data-ng-form="btnCoflicts">
+        <div class="row" data-ng-show="conflict.actionId == 1">
+            <div class="form-group vms-conflict-btns-wrapper">
+                <div class="col-lg-5"></div>
+                <div class="col-lg-5">
+                    <div class="vms-conflict-internal-org row" data-ng-show="conflict.actionId == 1">
+                        <label class="vms-org-lbl control-label req-lab-right col-md-3" for-property="OrganizationIdInternalChange" for="OrganizationIdInternalChange" data-model-property="conflict.OrganizationIdInternalChange" data-original-title="" title="" style="text-align:right">Transfer To</label>
+                        <div class="vms-org-drp input-group select2-bootstrap-append col-md-9">
+                            <ui-select name="OrganizationIdInternalChange" data-ng-model="conflict.OrganizationIdInternalChange" theme="select2" class="form-control" required>
+                                <ui-select-match placeholder="-- Select Organization --">{{$select.selected.DisplayName}} - {{$select.selected.Id}}</ui-select-match>
+                                <ui-select-choices repeat="item.Id as item in conflict.internalOrganizations">
+                                    <span data-ng-bind-html="item.DisplayName | highlight: $select.search"></span>
+                                    <span data-ng-bind-html="' - ' + item.Id  | highlight: $select.search"></span>
+                                </ui-select-choices>
+                            </ui-select>
+                            <span class="input-group-btn">
+                                <button tabindex="-1" data-ng-click="conflict.OrganizationIdInternalChange=undefined;" class="btn btn-default btn-contact-drp"><i class="material-icons md-18">clear</i></button>
+                            </span>
+                        </div>                        
+                    </div>
+                </div>
+                <div class="col-lg-2 vms-conflict-btns-wrapper-1" style="text-align: right; margin-left: -15px;">
+                    <button type="button" class="btn btn-primary" data-ng-show="conflict.actionId == 1" data-ng-click="conflict.actionButtonsHandler('Change')" data-ng-disabled="conflict.vmsBatchArray.length == 0 || !btnCoflicts.$valid || conflict.viewLoading">Send</button>
+                    <button type="button" class="btn btn-default" data-ng-click="conflict.actionButtonsHandler('Cancel')" data-ng-disabled="conflict.viewLoading">Cancel</button>
+                </div>
+            </div>
+        </div>
+        <div class="row" data-ng-show="conflict.actionId == 2">
+            <div class="form-group">                
+                <div class="col-lg-12">
+                    <div class="vms-conflict-btns-wrapper-2 pull-right">
+                        <button type="button" class="btn btn-primary" data-ng-click="conflict.actionButtonsHandler('Discard')" data-ng-disabled="conflict.vmsBatchArray.length == 0  || conflict.viewLoading">Discard</button>
+                        <button type="button" class="btn btn-default" data-ng-click="conflict.actionButtonsHandler('Cancel')" data-ng-disabled="conflict.viewLoading">Cancel</button>
+                    </div>
+                </div>
+                <div class="col-lg-1"></div>              
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,58 @@
+<section class="notification" [formGroup]="form" *ngIf="form && model">
+  <div class="settings-wrap">
+    <div class="form-group material">
+      <phx-form-control labelText="Freqency" [control]="isImmediateControl" [layoutType]="layoutType" [showValidationMessages]="true">
+        <label class="radio-inline">
+          <input class="form-check-input" type="radio" [value]="true" formControlName="IsImmediate" required>
+          <i class="material-icons">
+            {{model.IsImmediate ? 'radio_button_checked' : 'radio_button_unchecked' }}
+          </i>
+          {{'account.notificationSettings.immediateLabel' | phxTranslate}}
+        </label>
+        <label class="radio-inline">
+          <input class="form-check-input" type="radio" [value]="false" formControlName="IsImmediate" required>
+          <i class="material-icons">
+            {{!model.IsImmediate ? 'radio_button_checked' : 'radio_button_unchecked' }}
+          </i>
+          {{'account.notificationSettings.digestLabel' | phxTranslate}}
+        </label>
+      </phx-form-control>
+    </div>
+
+    <ng-container *ngIf="model.IsImmediate === false">
+      <div class="form-group material">
+        <p>{{'account.notificationSettings.selectedDaysDescription' | phxTranslate}}:</p>
+        <phx-form-control labelText="Days" [control]="daysMaskControl" [layoutType]="layoutType" [showValidationMessages]="true">
+          <label *ngFor="let day of weekDayList">
+            <input type="checkbox" [value]="day.id" />
+            <i class="material-icons" (click)="checkDay(day)">
+              <!--check_box_outline_blank-->
+              {{day.isChecked ? 'check_box' : 'check_box_outline_blank' }}
+            </i>
+            {{day.code | phxTranslate}}
+          </label>
+        </phx-form-control>
+      </div>
+
+      <div class="form-group">
+        <!-- need new phx control? -->
+        <phx-form-control labelText="Time" [control]="timeControl" [layoutType]="layoutType" [showValidationMessages]="true">
+          <app-phx-date-box type="time" formControlName="NotificationTime" displayFormat="hh:mm" width="100px" interval="60" pickerType="list"></app-phx-date-box>
+          <div class="btn-group toggle" role="group" data-toggle="buttons">
+            <label class="btn btn-default left" data-toggle="tab" [class.active]="model.NotificationTime && model.NotificationTime.getHours() < 12"
+              (click)="toggleAMPM()">
+              <input type="radio">AM
+            </label>
+            <label class="btn btn-default right" data-toggle="tab" [class.active]="model.NotificationTime && model.NotificationTime.getHours() >= 12"
+              (click)="toggleAMPM()">
+              <input type="radio">PM
+            </label>
+          </div>
+          <div class="time-zone">
+            <p>{{'account.notificationSettings.easternStandardTime' | phxTranslate}}</p>
+          </div>
+        </phx-form-control>
+      </div>
+    </ng-container>
+  </div>
+</section>

@@ -1,0 +1,8 @@
+<app-activity-centre-search [cardList]="cardList" [cardTotals]="cardTotals" [batchOperations]="batchOperations" [hideBackButton]="hideBackButton"
+    [entityTypeId]="entityTypeId$|async" (activityScroll)="onScroll()" (drillDown)="onDrillDown($event)" (executeBatchOperation)="onExecuteBatchOperation($event)">
+</app-activity-centre-search>
+<div *ngIf="startLoader">
+    <div *ngIf="startLoaderOverlay" id="overlay"></div>
+    <span class="spinner"></span>
+</div>
+<router-outlet></router-outlet>

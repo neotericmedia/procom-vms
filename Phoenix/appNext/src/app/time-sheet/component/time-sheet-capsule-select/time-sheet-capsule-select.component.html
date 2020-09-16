@@ -1,0 +1,59 @@
+<div class="responsiveModal" *ngIf="timeSheet">
+  <div bsModal [config]="{ show: false, backdrop: 'static' }" #capsuleModal="bs-modal" class="modal" tabindex="-1" role="dialog"
+      aria-labelledby="capsuleModal" aria-hidden="true">
+      <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div *ngIf="!showCapsuleCreate">
+                    <div class="modal-header">
+                        <button class="btn btn-link pull-left" (click)="cancel()">
+                            <i class="material-icons">arrow_back</i>
+                        </button>
+                        <h4>
+                            {{'timesheet.calendar.capsuleListHeader' | phxTranslate}}
+                        </h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-xs-12 caption">
+                                {{'timesheet.calendar.capsuleListDescription' | phxTranslate}}
+                            </div>
+                        </div>
+
+                            <app-time-sheet-line-management-search [sortMode]="lineManagement?.sortMode" [sortAsc]="lineManagement?.sortAsc" [filter]="lineManagement?.filterText" [showSort]="timeSheet.IsTimeSheetUsesProjects"></app-time-sheet-line-management-search>
+
+                            <app-time-sheet-line-management-capsule-list [timeSheet]="timeSheet" [capsuleList]="lineManagement?.capsuleList" [sortMode]="lineManagement?.sortMode" [sortAsc]="lineManagement?.sortAsc" [filter]="lineManagement?.filterText"
+                                [editable]="timeSheet.IsEditable" [disabled]="isTimeSheetSaving"
+                                (capsulePrefill)="onCapsulePrefill($event)" (capsuleClear)="onCapsuleClear($event)" (capsuleRemove)="onRemoveCapsule($event)" (capsuleSpotlight)="onCapsuleSpotlight($event)"
+                                (capsuleClick)="selectCapsule($event)"
+                                ></app-time-sheet-line-management-capsule-list>
+
+                    </div>
+                    <app-phx-fab [fabButtons]="fabButtons" >
+                    </app-phx-fab>
+                </div>
+                <div *ngIf="showCapsuleCreate">
+                    <div class="modal-header">
+                        <button class="btn btn-link pull-left" (click)="goToCapsuleSelect()">
+                            <i class="material-icons">arrow_back</i>
+                        </button>
+                        <h4>
+                            {{'timesheet.capsuleSelect.createNewTimesheetBlock' | phxTranslate}}
+                        </h4>
+                    </div>
+                    <div class="modal-body">
+                        <app-time-sheet-line-management-capsule-edit [timeSheet]="timeSheet" [lineManagement]="lineManagement" (create)="onCreateCapsule($event)"></app-time-sheet-line-management-capsule-edit>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="row btn-row ">
+                            <div class="col-md-12 text-center">
+                                <button type="button" class="btn btn-link btn-default" (click)="cancel()">
+                                    {{'common.generic.cancel' | phxTranslate}}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>                
+            </div>
+      </div>
+  </div>
+</div>

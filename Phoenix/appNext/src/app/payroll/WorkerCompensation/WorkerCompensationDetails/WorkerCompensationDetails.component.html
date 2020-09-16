@@ -1,0 +1,22 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="form-group">
+      <label class="col-sm-4 control-label " title="">Worker Classification</label>
+      <div class="col-sm-7">
+        <div class="fieldViewMode form-control-static">{{wc.Name}}</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-4 control-label " title="">Code</label>
+      <div class="col-sm-7">
+        <div class="fieldViewMode form-control-static">{{wc.Code}}</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-4 control-label" title="">Province/State</label>
+      <div class="col-sm-7">
+        <div class="fieldViewMode form-control-static">{{wc.SubdivisionId | CodeValue:'geo.CodeSubdivision'}}</div>
+      </div>
+    </div>
+  </div>
+</div>

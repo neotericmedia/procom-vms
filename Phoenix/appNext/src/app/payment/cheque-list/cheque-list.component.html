@@ -1,0 +1,25 @@
+<div class="row">
+  <app-phx-data-table #grid [configuration]="dataTableConfiguration" [dataSourceUrl]="'payment/cheque'" [dataSourceParams]='odataParams'
+    [columns]="columns" [exportFileName]="'cheques'" [componentName]="'cheque-list'" (responseReceived)="dataReceived($event)"
+    (masterRowExpanding)="onRowExpanding($event)">
+    <div *dxTemplate="let d of 'actionCellTemplate'">
+      <div class="btn-group">
+        <app-phx-state-action-buttons  [stateActions]="tableStateActions" [availableStateActions]="d.data.AvailableStateActions" [refData]="d"></app-phx-state-action-buttons>
+      </div>
+    </div>
+    <div *dxTemplate="let item of 'detail'">
+      <div class="col col-xs-12" *ngIf="item.data.PayeeTypeId !== commonService.ApplicationConstants.PayeeType.GarnisheePayTo">
+        <app-payment-transaction (rowClick)="onPaymentTransactionRowClick($event)" [paymentId]="paymentId"> </app-payment-transaction>
+      </div>
+      <div class="col col-xs-12" *ngIf="item.data.PayeeTypeId === commonService.ApplicationConstants.PayeeType.GarnisheePayTo">
+        <app-payment-transaction-garnishee [paymentId]="paymentId"> </app-payment-transaction-garnishee>
+      </div>
+    </div>
+  </app-phx-data-table>
+</div>
+<app-cheque-workflow-comment-dialog #workflowDialog [subTitle]="dialogSubTitle" [action]="actionToExecute" (save)="dialogSaved($event)">
+</app-cheque-workflow-comment-dialog>
+<app-phx-slider [showSlider]="showSlider">
+  <app-payment-document [paymentTransactionId]="paymentTransactionId" (onClose)="showSlider = false">
+  </app-payment-document>
+</app-phx-slider>

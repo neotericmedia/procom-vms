@@ -1,0 +1,49 @@
+<div *ngIf="entityId>0">
+
+  <div class="content-group form-horizontal">
+    <div class="panel">
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-xs-12">
+            <h4>Change History</h4>
+          </div>
+          <div class="col-xs-12">
+            <app-changeHistory [entityTypeId]="entityTypeId" [entityId]="entityId" [blackList]="changeHistoryBlackList"></app-changeHistory>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="content-group form-horizontal">
+    <div class="panel">
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-xs-12">
+            <h4>Template File History</h4>
+          </div>
+          <div class="col-xs-12">
+            <app-phx-entity-documents [entityTypeId]="entityTypeId" [entityId]="entityId" [documentTypeId]="templateDocumentType" [activePublicId]="template.TemplateDocumentPublicId" [showStatusColumn]="true"></app-phx-entity-documents>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="content-group form-horizontal">
+    <div class="panel">
+      <div class="panel-body">
+
+        <div class="row">
+          <div class="col-xs-12">
+            <h4>Sample File History</h4>
+          </div>
+          <div class="col-xs-12">
+            <app-phx-entity-documents [entityTypeId]="entityTypeId" [entityId]="entityId" [documentTypeId]="sampleDocumentType" [activePublicId]="template.SampleDocumentPublicId" [showStatusColumn]="true"></app-phx-entity-documents>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

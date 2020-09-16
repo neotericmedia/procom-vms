@@ -1,0 +1,15 @@
+<form [formGroup]="form" *ngIf="form && model">
+  <div class="settings-wrap">
+    <div class="form-group material">
+      <phx-form-control [control]="form.controls['CultureId']" [enableLabelAsterisk]="false" [layoutType]="layoutType" [labelText]="'account.manage.preferredCultureLabel' | phxTranslate" [editable]="!disabled">
+        <label *ngFor="let culture of cultureList" class="radio-inline">
+          <input class="form-check-input" type="radio" formControlName="CultureId" [value]="culture.id"  required>
+            <i class="material-icons">
+              {{model.CultureId === culture.id ? 'radio_button_checked' : 'radio_button_unchecked' }}
+            </i>
+            {{culture.description}}
+          </label>
+      </phx-form-control>
+    </div>
+  </div>
+</form>

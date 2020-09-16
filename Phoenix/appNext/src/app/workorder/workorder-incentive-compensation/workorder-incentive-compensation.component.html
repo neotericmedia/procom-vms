@@ -1,0 +1,55 @@
+<form [formGroup]="inputFormGroup">
+    <div class="panel-internal form-horizontal row">
+        <div class="form-group">
+            <div class="col-lg-12">
+                <h4>Incentive Compensation</h4>
+            </div>
+        </div>
+        <div class="form-group">
+            <phx-form-control [control]="inputFormGroup.controls.IsEligibleForCommission" labelText="Eligible for Incentive Compensation"
+                [editable]="readOnlyStorage.IsEditable && checkPtFiledAccessibility('WorkOrderVersion','IsEligibleForCommission')"
+                viewModeText="{{inputFormGroup.controls.IsEligibleForCommission.value? 'Yes' : 'No'}}">
+                <label class="radio-inline">
+                    <input class="form-check-input" name="IsEligibleForCommission" type="radio" [value]="true" [checked]="inputFormGroup.controls.IsEligibleForCommission.value == true"
+                        formControlName="IsEligibleForCommission">Yes</label>
+                <label class="radio-inline">
+                    <input class="form-check-input" name="IsEligibleForCommission" type="radio" [value]="false" [checked]="inputFormGroup.controls.IsEligibleForCommission.value == false"
+                        formControlName="IsEligibleForCommission">No</label>
+            </phx-form-control>
+        </div>
+        <div *ngIf="inputFormGroup.controls.IsEligibleForCommission.value">
+            <div class="form-group">
+                <phx-form-control [control]="inputFormGroup.controls.IsThirdPartyImport" labelText="Is Third Party Import"
+                    [editable]="readOnlyStorage.IsEditable && checkPtFiledAccessibility('WorkOrderVersion','IsThirdPartyImport')" 
+                    viewModeText="{{inputFormGroup.controls.IsThirdPartyImport.value? 'Yes' : 'No'}}">
+                    <label class="radio-inline">
+                        <input class="form-check-input" name="IsThirdPartyImport" type="radio" [value]="true" [checked]="inputFormGroup.controls.IsThirdPartyImport.value == true"
+                            formControlName="IsThirdPartyImport">Yes</label>
+                    <label class="radio-inline">
+                        <input class="form-check-input" name="IsThirdPartyImport" type="radio" [value]="false" [checked]="inputFormGroup.controls.IsThirdPartyImport.value == false"
+                            formControlName="IsThirdPartyImport">No</label>
+                </phx-form-control>
+            </div>
+        </div>
+        <div *ngIf="inputFormGroup.controls.IsThirdPartyImport.value && inputFormGroup.controls.IsEligibleForCommission.value">
+            <div class="form-group">
+                <phx-form-control [control]="inputFormGroup.controls.CommissionThirdPartyWorkerReference"labelText="Third Party Worker ID"
+                    [editable]="readOnlyStorage.IsEditable && checkPtFiledAccessibility('WorkOrderVersion','CommissionThirdPartyWorkerReference')" viewModeText="{{inputFormGroup.controls.CommissionThirdPartyWorkerReference.value}}">
+                    <input formControlName="CommissionThirdPartyWorkerReference" type="text" class="form-control" />
+                </phx-form-control>
+            </div>
+        </div>
+        <div *ngIf="inputFormGroup.controls.IsThirdPartyImport.value">
+            <div class="form-group" *ngIf="OrganizationIdSupplier == null && workerProfileTypeId === phxConstants.UserProfileType.WorkerTemp">
+                <phx-form-control [control]="inputFormGroup.controls.IsCommissionVacation" labelText="Pay Vacation for Incentive Compensation"
+                    [editable]="readOnlyStorage.IsEditable && checkPtFiledAccessibility('WorkOrderVersion.PaymentInfoes','IsCommissionVacation')"
+                    viewModeText="{{inputFormGroup.controls.IsCommissionVacation.value? 'Yes' : 'No'}}">
+                    <label class="radio-inline">
+                        <input class="form-check-input" name="IsCommissionVacation" type="radio" [value]="true" [checked]="inputFormGroup.controls.IsCommissionVacation.value == true"
+                            formControlName="IsCommissionVacation">Yes</label>
+                    <label class="radio-inline">
+                        <input class="form-check-input" name="IsCommissionVacation" type="radio" [value]="false" [checked]="inputFormGroup.controls.IsCommissionVacation.value == false"
+                            formControlName="IsCommissionVacation">No</label>
+                </phx-form-control>
+            </div>
+        </div>

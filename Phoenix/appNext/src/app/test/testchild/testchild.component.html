@@ -1,0 +1,11 @@
+
+<ng-select [allowClear]="true"
+    [items]="items"
+
+    [multiple]="true"
+    
+    (selected)="selected($event)"
+    (removed)="removed($event)"
+    (typed)="typed($event)"
+    placeholder="No city selected">
+</ng-select>

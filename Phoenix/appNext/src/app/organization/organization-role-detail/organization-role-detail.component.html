@@ -1,0 +1,61 @@
+<app-phx-panel headerTitle="{{isQuickAdd ? '' : 'Role Details'}}">
+  <form [formGroup]="inputFormGroup" *ngIf="readOnlyStorage&&inputFormGroup">
+
+  <div *ngIf="readOnlyStorage.IsEditable" formArrayName="NotificationEmails">
+    <div *ngFor="let email of formArrayNotificationEmails().controls; let i = index; let last = last; trackBy: trackByFn">
+      <div [formGroup]="email" [class]="i == 0 && !isQuickAdd ? 'margin-bottom-18' : ''" *ngIf="readOnlyStorage.IsEditable">
+        <phx-form-control labelText="{{ i === 0 ? 'Payment Notification Email(s)' : ''}}" [editable]="readOnlyStorage.IsEditable"
+          [control]="formArrayNotificationEmails()">
+          <span class="input-table-cell">
+            <input type="text" class="form-control" formControlName="Email" />
+          </span>
+          <span class="input-group-action" *ngIf="formArrayNotificationEmails().value?.length > 1">
+            <button class="btn btn-material btn-default pull-right" (click)="onClickDeleteNotificationEmail(i)">
+              <i class="material-icons">delete</i>
+            </button>
+          </span>
+          <span class="input-group-action">
+            <button type="button" class="btn btn-default btn-material right pull-right" (click)="onClickAddNotificationEmail()"
+              [style.visibility]="!last ? 'hidden' : 'visible'">
+              <i class="material-icons">add</i>
+            </button>
+          </span>
+        </phx-form-control>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="!readOnlyStorage.IsEditable" class="form-group">
+      <div class="col-lg-4">
+        <div class="text-right">
+          <div>
+            <label class="control-label req-lab-right-valid" for="BusinessNumber">
+                Payment Notification Email(s)
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-8">
+        <div  formArrayName="NotificationEmails" class="fieldViewMode form-control-static">
+          <div *ngFor="let email of formArrayNotificationEmails().controls; let i = index; let last = last; trackBy: trackByFn">
+            <span>{{ email.value.Email }}</span><span *ngIf="i !== (formArrayNotificationEmails().controls.length -1)" >,</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <phx-form-control [control]="inputFormGroup.controls.BusinessNumber" [editable]="readOnlyStorage.IsEditable"
+      labelText="Business Number" viewModeText="{{inputFormGroup.controls.BusinessNumber.value}}">
+      <input formControlName="BusinessNumber" type="text" class="form-control" />
+    </phx-form-control>
+
+    <phx-form-control [control]="inputFormGroup.controls.IsNonResident" [editable]="readOnlyStorage.IsEditable"
+      labelText="Residency status" viewModeText="{{inputFormGroup.controls.IsNonResident.value ? 'Non Resident' : 'Resident'}}">
+      <label class="radio-inline">
+        <input class="form-check-input" type="radio" [value]="false" formControlName="IsNonResident">Resident</label>
+      <label class="radio-inline">
+        <input class="form-check-input" type="radio" [value]="true" formControlName="IsNonResident">Non Resident</label>
+    </phx-form-control>
+    
+  </form>
+</app-phx-panel>

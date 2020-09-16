@@ -1,0 +1,26 @@
+﻿<div class="draft-list-page">
+    <div class="row">
+        <div class="tabbable col-lg-12 draft-tabs">
+            <ul class="nav nav-tabs">
+                <li data-ng-class="{ active : $state.includes('drafts.workorders') }">
+                    <a data-ui-sref=".workorders"><i class="fontello-icon-th-4"></i>WorkOrders</a>
+                </li>
+                <li data-ng-class="{ active : $state.includes('drafts.organizations') }">
+                    <a data-ui-sref=".organizations"><i class="fontello-icon-list"></i>Organizations</a>
+                </li>
+                <li data-ng-class="{ active : $state.includes('drafts.contacts') }">
+                    <a data-ui-sref=".contacts"><i class="fontello-icon-contacts"></i>Contacts</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="row">
+        <div class="tab-content col-lg-12">
+            <div class="tab-pane active">
+                <div class="panel">
+                    <div class="panel-body" data-ui-view="draftListTab" data-autoscroll="false"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

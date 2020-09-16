@@ -1,0 +1,81 @@
+﻿<div class="modal-content" data-ng-form="formPaymentBatchDialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <span class="modal-title" ng-if="data.showIsInclusive">Add/Edit Parameter</span>
+            <span class="modal-title" ng-if="!data.showIsInclusive">Add/Edit Restriction</span>
+            <div class="btn pull-right  btn-default btn-material btn-borderless add-restriction-close" data-ng-click="cancel()">
+                <i class="material-icons">close</i>
+            </div>
+        </div>
+
+        <div class="modal-body" ng-style="modalStyle">
+            <div class="content-group no-padding-v-t">
+                <label class="modal-title">{{ data.restrictionTypeName }}</label>
+
+                <div ng-if="data.showIsInclusive">
+                    <div>
+                        <div class="radio">
+                            <label>
+                                <input name="isInclusive" type="radio" ng-model="model.isInclusive" ng-value="true" />
+                                <strong>Included:</strong> Select any items to which this document rule should be applied.
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                <input name="isInclusive" type="radio" ng-model="model.isInclusive" ng-value="false" />
+                                <strong>Excluded:</strong> Select any items to which this document rule should not be applied.
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div data-ng-if="viewType=='Checkbox'">
+                <div class="content-group form-horizontal">
+                    <hr class="col-xs-12 no-margin">
+                    <div class="row restriction-item col-md-12" data-ng-repeat="item in data.optionsOfRestrictionTypeList_Content">
+                        <div class="col-lg-1"></div>
+                        <div class="col-lg-11">
+                            <label class="checkbox pull-left" style="cursor:pointer;">
+                                <input type="checkbox" data-ng-model="item.isApplied">{{item[data.optionsOfRestrictionTypeList_FieldName_Display]}}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div data-ng-if="viewType=='DropDown'">
+                <div class="content-group form-horizontal">
+                    <div class="form-group" data-ng-disabled="(data.optionsOfRestrictionTypeList_Content | filter:{isApplied: false}).length===0">
+                        <label for-property="addedItem" for="addedItem" data-model-property="addedItem" class="col-lg-4 control-label label-to-right"
+                            data-original-title="" title="">{{data.restrictionTypeName}}</label>
+                        <div class="col-lg-8">
+                            <div class="col-lg-12 input-group select2-bootstrap-append">
+                                <ui-select name="addedItem" data-ng-disabled="(data.optionsOfRestrictionTypeList_Content | filter:{isApplied: false}).length===0"
+                                    data-ng-model="addedItem" theme="select2" class="form-control" data-ng-change="addRestriction(addedItem)">
+                                    <ui-select-match placeholder="-- Select One --"></ui-select-match>
+                                    <ui-select-choices repeat="item as item in data.optionsOfRestrictionTypeList_Content | filter:{isApplied: false} | uiSelectChoicesFilter: $select.search: data.optionsOfRestrictionTypeList_FieldName_Display">
+                                        <span data-ng-bind-html="item[data.optionsOfRestrictionTypeList_FieldName_Display] | highlight: $select.search"></span>
+                                    </ui-select-choices>
+                                </ui-select>
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="col-xs-12">
+                    <div class="row restriction-item col-md-12" data-ng-repeat="item in data.optionsOfRestrictionTypeList_Content|filter:{isApplied: true}">
+                        <div class="col-lg-10">
+                            <label class="pull-left">{{item[data.optionsOfRestrictionTypeList_FieldName_Display]}}</label>
+                        </div>
+                        <div class="col-lg-2">
+                            <button type="button" class="btn btn-material pull-right" data-ng-click="removeRestriction(item)">
+                                <i class="material-icons">delete</i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" ng-click="cancel()" style="min-width:80px">Cancel</button>
+            <button type="button" class="btn btn-primary" ng-click="create()" data-ng-disabled="!formPaymentBatchDialog.$valid" style="min-width:80px">OK</button>
+        </div>
+    </div>
+</div>

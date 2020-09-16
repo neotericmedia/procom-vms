@@ -1,0 +1,32 @@
+<div class="card-action-chamber">
+  <div class="row">
+    <ng-container *ngIf="card.EntityTypeId == phxConstants.EntityType.TimeSheet"
+      [ngTemplateOutlet]="ActionButtonsTemplate"></ng-container>
+    <ng-container *ngIf="card.EntityTypeId === phxConstants.EntityType.WorkOrderVersion"
+      [ngTemplateOutlet]="CheckListTemplate"></ng-container>
+  </div>
+</div>
+
+<ng-template #ActionButtonsTemplate>
+  <div class="col button-container">
+    <button type="button" (click)="executeCommand(phxConstants.StateAction.TimesheetApprove)"
+      class="btn btn-primary pull-left"><i class="material-icons button-approve">done</i>&nbsp;{{'activityCentre2.actionBar.approve' | phxTranslate}}</button>
+    <div class="sep"></div>
+    <button type="button" (click)="executeCommand(phxConstants.StateAction.TimesheetDecline)"
+      class="btn btn-primary pull-right"><i
+        class="material-icons button-decline">close</i>&nbsp;{{'activityCentre2.actionBar.decline' | phxTranslate}}</button>
+  </div>
+</ng-template>
+
+<ng-template #CheckListTemplate>
+  <div class="col button-container">
+    <div class="checkbox">
+      <label>
+        <input type="checkbox" value="">
+        <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+        Check List Item 1
+      </label>
+      <a href="javascript:void(0)" class="pull-right">{{'activityCentre2.card.ChecklistMore' | phxTranslate}}</a>
+    </div>
+  </div>
+</ng-template>

@@ -1,0 +1,17 @@
+<app-phx-modal [title]="action?.displayText" [buttons]="buttons">
+    <h4>Are you sure you want to {{ action?.displayText | lowercase }}?</h4>
+    <div [formGroup]="form" *ngIf="form">
+        <div class="row">
+            <phx-form-control [control]="form.controls.ExpiryDate" [labelText]="expiryDateLabel" [showValidationMessages]="true">
+                <app-phx-date-box [formControl]="form.controls.ExpiryDate" [max]="maxExpiryDate"></app-phx-date-box>
+            </phx-form-control>
+        </div>
+        <div class="row">
+            <phx-form-control [control]="form.controls.Comment" [labelText]="commentLabel" *ngIf="form.controls.Comment.enabled" [showValidationMessages]="true">
+                <textarea [formControl]="form.controls.Comment" class="form-control"></textarea>
+            </phx-form-control>
+        </div>
+    </div>
+
+    <app-phx-validation-messages [messages]="validationMessages"></app-phx-validation-messages>
+</app-phx-modal>

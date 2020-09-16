@@ -1,0 +1,82 @@
+.content-single{
+    border: solid 1px #c5c5c5;
+}
+.nopadding{
+    padding:0;
+}
+.btnAdd{
+    float:right;
+    position: relative;
+    margin-top:-38px;
+    margin-right:18px;
+}
+.dx-field-label{
+    width:234px !important; 
+}
+.dx-field-value{
+    width:300px !important;
+    float: left;
+}
+
+.dx-field input{
+    width:50%;
+}
+.btnRemove{
+    position: relative;
+    margin-top:-36px;
+    margin-right:2px;
+    float:right;
+}
+.percentSpan:before{
+    content:'%';
+}
+
+.form-invalid:after{
+    content:'*';
+    color:red; 
+}
+ .bold{
+     font-weight: 600;
+ } 
+div.version-item.active {
+    background-color: #ebebeb;
+}
+div.version-item {
+    cursor: pointer;
+    padding: 5px;
+    margin: 5px 0;
+}
+.margin10 {
+    margin:10px;
+}
+.wcb-sub{
+    padding-left:10px;
+    margin-bottom:10px;
+}
+.wcb-sub-tabs{
+    padding-left:10px;
+    margin-right:10px;
+}
+.wcb-sub-header{
+    margin:0 0 0 20px;
+}
+.wcb-sub-actions{
+    margin-top:10px;
+}
+.wcb-sub-version{
+    position:relative;
+    bottom:10px;
+}
+.action-drp{
+    margin:5px 0 20px 20px;
+}
+.wcb-sub-tab-content{
+    margin-bottom:-28px;
+}
+.add-wcb-btn{
+    margin-right:12px;
+}
+.wcb-wf-btn{
+    margin-right:22px;
+}
+ 

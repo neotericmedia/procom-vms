@@ -1,0 +1,118 @@
+@import "../../../../../../../Content/less/variables.less";
+
+@report-font-family: 'IBM Plex Sans';
+@report-name-color: #333;
+
+@card-font-family: 'IBM Plex Sans';
+@card-border-color: rgba(51, 122, 183, 0.28);
+@card-shadow-color: rgba(73, 72, 72, 0.08);
+@card-bg-color: #FFF;
+@card-bg-color-hover: #ECF4FB;
+@card-bg-color-click: #E5EEF5;
+@card-name-color: #1E2430;
+@card-link-color: #337AB7;
+@card-desc-color: #1E2430;
+
+.report {
+    padding: 21px;
+    margin: 16px 0px;
+
+    .report-name {
+        padding-bottom: 11px;
+        color: @report-name-color;
+        font-family: @report-font-family;
+        font-size: 25px;
+        font-weight: 600;
+        line-height: normal;
+        white-space: nowrap; 
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .report-view {
+        padding: 28px 15px;
+        margin-top: 21px;
+        background: @card-bg-color;
+
+        border: 1px solid @card-border-color;
+        box-sizing: border-box;
+        box-shadow: 2px 2px 5px @card-shadow-color !important;
+
+        &:hover {
+            cursor: pointer;
+            background: @card-bg-color-hover;
+            .report-view-description .description {
+                &:after {
+                    background: @card-bg-color-hover;
+                }
+            }
+        }
+
+        &:active {
+            background: @card-bg-color-click;
+            .report-view-description .description {
+                &:after {
+                    background: @card-bg-color-click;
+                }
+            }
+        }
+
+        .row {
+            margin: 0px;
+        }
+
+        .report-view-header {
+            color: @card-name-color;
+            font-family: @card-font-family;
+            font-size: 16px;
+            font-weight: 500;
+            line-height: normal;
+            white-space: nowrap; 
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .report-view-link {
+            color: @card-link-color;
+            font-family: @card-font-family;
+            font-size: 14px;
+            font-weight: 500;
+            line-height: normal;
+            text-align: right;
+            white-space: nowrap;
+        }
+
+        .report-view-description {
+            margin-top: 10px;
+            .description {
+                color: @card-desc-color;
+                font-family: @card-font-family;
+                font-size: 12px;
+                overflow: hidden;
+                position: relative;
+                line-height: 1.5em;
+                max-height: 3em; 
+                text-align: justify;
+                margin-right: -1em;
+                padding-right: 2em;
+                &:before {
+                    content: '...';
+                    font-family: @card-font-family;
+                    font-size: 12px;
+                    position: absolute;
+                    right: 1em;
+                    bottom: 0;
+                }
+                &:after {
+                    content: '';
+                    position: absolute;
+                    right: 1em;
+                    width: 1em;
+                    height: 1em;
+                    margin-top: 0.2em;
+                    background: @card-bg-color;
+                }
+            }
+        }
+    }
+}

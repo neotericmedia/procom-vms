@@ -1,0 +1,39 @@
+<div class="nav-container">
+  <div class="row">
+    <div class="col-xs-12 col-sm-6 pull-right">
+      <a *ngIf="entityTypeId > 0" [href]="listScreenUrl">
+        <i class="material-icons launch pull-right">launch</i>
+      </a>
+      <nav>
+        <ul class='nav-top'>
+          <li class="top-nav">{{ 'activityCentre.navbar.myPersonalDesk' | phxTranslate }}
+            <!-- <ul class="nav-list-view">
+              <li>
+                <i class="fa fa-star-o"></i>
+                Save View
+                <i class="fa fa-pencil"></i>
+              </li>
+            </ul> -->
+          </li>
+        </ul>
+      </nav>
+    </div>
+    <div class="col-xs-12 col-sm-6">
+      <a class="summaryView" *ngIf="entityTypeId > 0 && !hideBackButton" (click)="goBack()">
+        <i class="material-icons arrow_back">arrow_back</i>
+      </a>
+      <ul class="nav nav-tabs responsive-tabs">
+        <li class="text-center">
+          <a [ngClass]="{'active' : getTaskType == taskTypeEnum.myTask}" (click)="goTo('my-tasks')">
+            {{'activityCentre.navbar.tasksToDoLabel' | phxTranslate}}
+          </a>
+        </li>
+        <li class="text-center">
+          <a [ngClass]="{'active' : getTaskType == taskTypeEnum.allTask}" (click)="goTo('all-tasks')">
+            {{'activityCentre.navbar.tasksInProgressLabel' | phxTranslate}}
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

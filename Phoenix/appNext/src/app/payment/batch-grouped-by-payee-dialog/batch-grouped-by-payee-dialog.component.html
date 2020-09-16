@@ -1,0 +1,50 @@
+<div>
+    <div class="content-group form-horizontal">
+        <div class="row rem-row">
+            <div class="form-group col-lg-12">
+                <label class="col-lg-4 control-label label-to-right">Total Payment Amount:</label>
+                <label class="control-label">{{dataItems?.AmountTotal}}</label>
+            </div>
+        </div>
+        <div class="row rem-row" *ngIf="dataItems?.BankId">
+            <div class="form-group col-lg-12">
+                <label class="col-lg-4 control-label label-to-right">Pay From:</label>
+                <label class="control-label">{{bankName}}</label>
+            </div>
+        </div>
+        <div class="row rem-row">
+            <div class="form-group col-lg-12">
+                <label class="col-lg-4 control-label label-to-right">Tentative Batch Number:</label>
+                <label class="control-label">{{dataItems?.batchNo}}</label>
+            </div>
+        </div>
+        <div class="row rem-row" *ngIf="isDepositdate">
+            <div class="form-group col-lg-12">
+                <label class="col-lg-4 control-label label-to-right">Deposit Date:</label>
+                <label class="control-label">{{dataItems?.DepositDate  | date: formatDateFull}}</label>
+            </div>
+        </div>
+        <br/>
+        <app-phx-data-table #grid [configuration]="detailDataTableConfiguration" [dataSource]="dataItems?.GroupedPaymentTransactionsList" [columns]="columns"
+            [exportFileName]="exportFileName" [componentName]="componentName">
+        </app-phx-data-table>
+        <br/>
+        <div *ngIf="hasCreditTransactions">
+        <div class="sub-header">
+            <h5><label>Payment transactions for the following payee's will not be added as there are credit transactions that are not selected:</label></h5>
+        </div>
+        <br/>
+        <div class="row rem-row"  *ngFor="let payee of payeeList">
+            <div class="form-group col-lg-12">
+            <label class="col-lg-6">{{payee.PayeeName}}</label>
+            </div>
+        </div>
+        </div>
+
+
+    </div>  
+</div>
+
+      
+      
+      

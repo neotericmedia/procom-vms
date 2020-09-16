@@ -1,0 +1,11 @@
+<div class="sale3s-taxes-search">
+    <app-phx-data-table [configuration]="dataTableConfiguration" [dataSourceUrl]="'payroll/getAllSalesTaxes'" [dataSourceParams]='odataParams'
+                        [columns]="columns" [exportFileName]="'SalesTaxes'" [componentName]="'SalesTaxesSearch'" (rowClick)="onRowClick($event)"
+                        (contextMenuOpenTab)="onContextMenuOpenTab($event)">
+        
+    </app-phx-data-table>
+    
+    <div class="sales-taxes-report" [ngClass]="{ out: !salesTaxId, in: salesTaxId}">
+     
+    </div>
+</div>

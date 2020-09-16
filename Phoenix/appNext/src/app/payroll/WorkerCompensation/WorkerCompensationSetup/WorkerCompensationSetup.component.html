@@ -1,0 +1,46 @@
+<div class="headstone col-sm-10">
+  <div>
+    <app-WorkerCompensationHeader [wc]="wc"></app-WorkerCompensationHeader>
+  </div>
+</div>
+
+<div class="row  padding-10">
+  <div class="col-sm-12 col-sm-10">
+    <form novalidate class="form-horizontal" [formGroup]="form" role="form">
+      <div class="row padding-10" *ngIf="viewMode!='details'">
+        <div class="container-fluid">
+          <phx-form-control [control]="form.controls['name']" labelText="Worker Classification" [editable]="true" viewModeText="{{form.controls['name']}}">
+            <input type="text" class="form-control" maxlength="255" formControlName="name" />
+          </phx-form-control>
+          <phx-form-control [control]="form.controls['code']" labelText="Code" [editable]="true" viewModeText="{{form.controls['code']}}">
+            <input type="text" class="form-control" maxlength="16" formControlName="code" />
+          </phx-form-control>
+          <phx-form-control [control]="form.controls['subdivisionid']" labelText="Province/State" [editable]="true" viewModeText="{{form.controls['subdivisionid']}}">
+            <app-phx-select-box *ngIf="viewMode=='new'" [items]="subdivisions" textField="text" valueField="id" formControlName="subdivisionid"></app-phx-select-box>
+            <div *ngIf="viewMode!='new'">
+              <div class="fieldViewMode form-control-static">{{wc.SubdivisionId | CodeValue:'geo.CodeSubdivision'}}</div>
+            </div>
+          </phx-form-control>
+        </div>
+      </div>
+      <div class="row padding-10" *ngIf="viewMode=='details'">
+        <app-WorkerCompensationDetails [wc]="wc"></app-WorkerCompensationDetails>
+      </div>
+      <app-phx-validation-messages [messages]="validationMessages"></app-phx-validation-messages>
+      <div class="panel-footer">
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="pull-right">
+              <button *ngIf="viewMode=='new'" type="button" class="btn btn-default" (click)="onCancel()">Cancel</button>
+              <button *ngIf="viewMode=='edit' && wc.StatusId!=2" type="button" class="btn btn-default" (click)="onDiscard()">Cancel and Discard</button>
+              <button *ngIf="viewMode=='details' && wc.StatusId==1" type="button" class="btn btn-default" (click)="onDeactivate()">Deactivate</button>
+              <button *ngIf="viewMode=='details' && wc.StatusId!=2" type="button" (click)="onEdit()" class="btn btn-primary">Edit</button>
+              <button *ngIf="viewMode!='details'" type="button" [disabled]="!form.valid" (click)="onSubmit()" class="btn btn-primary">Submit</button>
+              <button *ngIf="viewMode=='details' && wc.StatusId==2" type="button" class="btn btn-primary" (click)="onActivate()">Activate</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

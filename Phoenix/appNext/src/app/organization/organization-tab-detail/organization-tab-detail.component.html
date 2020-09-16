@@ -1,0 +1,17 @@
+<div class="content-group form-horizontal" *ngIf="inputFormGroup">
+    <div class="col-xs-12 col-lg-6">
+        <div class="panel-internal no-margin col-lg-12">
+            <app-organization-details [readOnlyStorage]="readOnlyStorage"
+            [rootModel]="rootModel"
+            (ready)="onReady()"
+            [inputFormGroup]="inputFormGroup.controls.TabDetailsDetail"
+                (outputEvent)="onOutputEvent($event)"></app-organization-details>
+        </div>
+    </div>
+    <div class="col-xs-12 col-lg-6">
+        <div class="panel panel-internal no-margin col-lg-12">
+            <app-organization-addresses [readOnlyStorage]="readOnlyStorage" [inputFormGroup]="inputFormGroup.controls.TabDetailsAddresses"
+                (outputEvent)="onOutputEvent($event)"></app-organization-addresses>
+        </div>
+    </div>
+</div>

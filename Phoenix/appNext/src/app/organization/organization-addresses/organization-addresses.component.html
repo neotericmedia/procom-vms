@@ -1,0 +1,19 @@
+<app-phx-panel headerTitle="Address">
+    <form [formGroup]="inputFormGroup" *ngIf="readOnlyStorage && inputFormGroup">
+        <div formArrayName="OrganizationAddresses">
+            <div *ngFor="let instanceOfFormGroupAddress of formArrayOrganizationAddresses().controls; let i = index; trackBy: trackByFn">
+                <div [formGroupName]="i">
+                    <div class="form-group organization-panel-of-array">
+                        <app-organization-address [inputFormGroup]="instanceOfFormGroupAddress" [addressIndex]="i" [readOnlyStorage]="readOnlyStorage"
+                            [isQuickAdd]="isQuickAdd" (outputEvent)="onOutputEvent($event,i)"></app-organization-address>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <phx-form-control *ngIf="readOnlyStorage.IsEditable" class="padding-10">
+            <button type="button" class="btn btn-default btn-material right pull-right" (click)="onClickAddAddress()">
+                <i class="material-icons">add</i>
+            </button>
+        </phx-form-control>
+    </form>
+</app-phx-panel>

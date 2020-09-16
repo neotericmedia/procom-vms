@@ -1,0 +1,38 @@
+<div class="account-container stacked">
+    <div class="content clearfix margin-10-v-t">
+        <form>
+			
+			
+            <div class="login-fields">
+				<div class="field text-center">
+					<img class="margin-10-v" src="/assets/logo-flex-backoffice.png" alt="logo" />
+				</div>
+                <div class="field">
+                    <label name="UserEmail" class="text-gray control-label">{{localization.usernameEmailLabel}}</label>
+                    <input type="text" name="UserEmail" ng-model="user.UserEmail" class="form-control input-lg"  />
+                </div>
+                <div class="field">
+                    <label name="Password" class="text-gray control-label">{{localization.pwdLabel}}</label>
+                    <input type="password" name="Password" ng-model="user.Password" class="form-control input-lg "  />
+                </div>
+            </div>
+            <div class="login-actions">
+                        <span class="login-checkbox" style="display: none">
+                            <label class="checkbox">
+                                <input type="checkbox" value="true" class="field login-checkbox" data-ng-model="user.RememberMe" name="RememberMe" id="RememberMe">
+                                {{localization.rememberMeLabel}}
+                            </label>
+                        </span>
+                <span id="loading" style="display: none;">{{localization.loadingMessage}}</span>
+                <button class="login-action btn btn-primary" ng-click="login()">{{localization.signInLabel}}</button>
+            </div>
+
+            <div class="login-recover">
+                <a ui-sref="accountforgot">{{localization.pwdRecoverMessage}}</a>
+            </div>
+            <div class="login-recover alert alert-danger margin-top-20 margin-left-10">
+                <strong>{{localization.errorLabel}} </strong>{{ localization.loginFailedMessage }}
+            </div>
+</form>
+    </div>
+</div>

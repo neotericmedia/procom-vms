@@ -1,0 +1,165 @@
+<div *ngIf="transaction">
+  <div>
+    <div class="row organization-workflow-buttons-row-spacer" *ngIf="!transaction.IsDraft">
+      <app-phx-workflow-buttons (callWorkflowCommand)="onClickStateAction($event)" [workflowAvailableActions]="transaction.AvailableStateActions"
+        [isButtonBar]="false"></app-phx-workflow-buttons>
+      <app-phx-state-action-buttons displayType="DROPDOWN" [stateActions]="stateActions" [availableStateActions]="transaction.AvailableStateActions"></app-phx-state-action-buttons>
+    </div>
+
+    <div class="row">
+      <div class="tabbable panel panel-tabbable">
+        <app-transaction-header *ngIf="rootFormGroup" (outputEvent)="onOutputEvent($event)" [inputFormGroup]="rootFormGroup.controls.Header"></app-transaction-header>
+        <div class="tabbable" style="margin-top: 20px;">
+          <app-phx-navigation-bar [navigationBarContent]="html.navigationBarContent" [url]="routerState.Url" *ngIf="this.html.navigationBarContent"></app-phx-navigation-bar>
+        </div>
+        <div class="tab-content">
+          <div class="tab-pane active">
+            <div class="panel">
+              <div class="panel-body">
+                <div class="form-horizontal">
+                  <div class="form-group" *ngIf="canShowTransaction()">
+                    <div class="panel panel-heading">
+                      <div class="col-lg-5">
+                        <div class="col-sm-4 control-label form-group">
+                          <div class="text-gray text-center">Billing(s)</div>
+                          <div class="text-gray text-center">Pre Tax</div>
+                          <p class="h4 text-center">
+                            {{transaction.TransactionCalculation.AmountSummary.Amount_BillsTotalPreTax
+                            | currency: transaction.CurrencyCode + ' $'}}
+                          </p>
+                        </div>
+                        <div class="col-sm-4 control-label form-group">
+                          <div class="text-gray text-center">Billing(s)</div>
+                          <div class="text-gray text-center">Sales Tax</div>
+                          <p class="h4 text-center">
+                            {{transaction.TransactionCalculation.AmountSummary.Amount_BillsTotalSalesTax
+                            | currency: transaction.CurrencyCode + ' $'}}
+                          </p>
+                        </div>
+                        <div class="col-sm-4 control-label form-group">
+                          <div class="text-gray text-center">Billing(s)</div>
+                          <div class="text-gray text-center">Total</div>
+                          <p class="h4 text-center">
+                            {{transaction.TransactionCalculation.AmountSummary.Amount_BillsTotalAll
+                            | currency: transaction.CurrencyCode + ' $'}}
+                          </p>
+                        </div>
+                      </div>
+                      <div class="col-lg-7">
+                        <div class="col-sm-3 control-label form-group">
+                          <div class="text-gray text-center">Payment(s)</div>
+                          <div class="text-gray text-center">Pre Tax</div>
+                          <p class="h4 text-center">
+                            {{transaction.TransactionCalculation.AmountSummary.Amount_PayeesTotalPreTax
+                            | currency: transaction.CurrencyCode + ' $'}}
+                          </p>
+                        </div>
+                        <div class="col-sm-3 control-label form-group">
+                          <div class="text-gray text-center">Payment(s)</div>
+                          <div class="text-gray text-center">Sales Tax</div>
+                          <p class="h4 text-center">
+                            {{transaction.TransactionCalculation.AmountSummary.Amount_PayeesTotalSalesTax
+                            | currency: transaction.CurrencyCode + ' $'}}
+                          </p>
+
+                        </div>
+                        <div class="col-sm-3 control-label form-group">
+                          <div class="text-gray text-center">Payment(s)</div>
+                          <div class="text-gray text-center">Deductions</div>
+                          <p class="h4 text-center">
+                            {{transaction.TransactionCalculation.AmountSummary.Amount_PayeesTotalDeductionsAndAdvancesAndGarneshees
+                            | currency: transaction.CurrencyCode + ' $'}}
+                          </p>
+                        </div>
+                        <div class="col-sm-3 control-label form-group">
+                          <div class="text-gray text-center">Payment(s)</div>
+                          <div class="text-gray text-center">Total</div>
+                          <p class="h4 text-center">
+                            {{transaction.TransactionCalculation.AmountSummary.Amount_PayeesTotalAll
+                            | currency: transaction.CurrencyCode + ' $'}}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <app-phx-notes [entityTypeId]="html.phxConstants.EntityType.TransactionHeader" [entityId]="transaction.Id"
+                    *ngIf="routerState.RouterPath === html.phxConstants.TransactionNavigationName.notes">
+                  </app-phx-notes>
+
+                  <app-transaction-summary [transaction]="transaction" *ngIf="routerState.RouterPath===html.phxConstants.TransactionNavigationName.summary
+                                    && transaction?.TransactionCalculation">
+                  </app-transaction-summary>
+
+                  <app-transaction-details-view *ngIf="routerState.RouterPath === html.phxConstants.TransactionNavigationName.detail && transaction?.TransactionCalculation && !transaction.IsDraft">
+                  </app-transaction-details-view>
+
+                  <app-transaction-detail [inputFormGroup]="rootFormGroup.controls.Details" [transaction]="transaction"
+                    *ngIf="routerState.RouterPath === html.phxConstants.TransactionNavigationName.detail && rootFormGroup && transaction.IsDraft"
+                    (outputEvent)="onOutputEvent($event)" (recalculate)="transactionHeaderManualCalculation(true)"
+                    (addOrRemoveTransactionLine)="addOrRemoveTransactionLines($event)"></app-transaction-detail>
+
+                  <app-transaction-invoices [transactionHeaderId]="transaction.Id" *ngIf="routerState.RouterPath===html.phxConstants.TransactionNavigationName.invoices">
+                  </app-transaction-invoices>
+
+                  <app-transaction-payments [transactionHeaderId]="transaction.Id" *ngIf="routerState.RouterPath===html.phxConstants.TransactionNavigationName.payments">
+                  </app-transaction-payments>
+
+                  <app-transaction-billing-documents *ngIf="routerState.RouterPath===html.phxConstants.TransactionNavigationName.billingdocuments"
+                    (outputEvent)="onOutputEvent($event)">
+                  </app-transaction-billing-documents>
+
+                  <app-transaction-workflow-history *ngIf="routerState.RouterPath===html.phxConstants.TransactionNavigationName.workflow">
+                  </app-transaction-workflow-history>
+
+                  <app-transaction-vms-record *ngIf="routerState.RouterPath===html.phxConstants.TransactionNavigationName.vmsrecord">
+                  </app-transaction-vms-record>
+                </div>
+
+                <div *ngIf="html.validationMessages">
+                  <div *ngIf="html.validationMessages.length > 0" class="alert alert-danger alert-dismissable error-box">
+                    <div *ngFor="let message of html.validationMessages">
+                      <div>
+                        {{message}}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <ng-container *ngIf="transaction.IsDraft && rootFormGroup && !transaction.IsDebounce">
+    <div class="minheight50">
+      <div style="float: right; margin-right: 24px;">
+        <button type="button" class="btn btn-default" *ngIf="actionButton.show.TransactionHeaderManualDiscard" (click)="manualActionClick(html.phxConstants.StateAction.TransactionHeaderDiscard)">
+          Discard</button>
+        <button type="button" class="btn btn-default" *ngIf="actionButton.show.transactionSave" (click)="manualActionClick(html.phxConstants.StateAction.TransactionHeaderSave)">
+          Save
+        </button>
+        <button type="button" class="btn btn-primary" *ngIf="actionButton.show.transactionSubmit" [disabled]="!rootFormGroup.valid"
+          (click)="manualActionClick(html.phxConstants.StateAction.TransactionHeaderSubmit)">
+          Submit
+        </button>
+      </div>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="transaction.IsDebounce">
+    <div class="minheight50">
+      <div style="float: right; margin-right: 24px;">
+        <button type="button" class="btn btn-primary" (click)="transactionHeaderManualCalculation(true)"
+          title="Recalculate">
+          Recalculate
+        </button>
+      </div>
+    </div>
+  </ng-container>
+</div>
+<app-phx-workflow-buttons *ngIf="transaction" (callWorkflowCommand)="onClickStateAction($event)"
+  [workflowAvailableActions]="transaction.AvailableStateActions" isButtonBar="true">
+</app-phx-workflow-buttons>
+<app-transaction-workflow (commandExecuted)="onCommandExecutedSuccessfully($event)" (commandValidation)="getValidationMessages($event)"
+  #transactionWorkflow></app-transaction-workflow>

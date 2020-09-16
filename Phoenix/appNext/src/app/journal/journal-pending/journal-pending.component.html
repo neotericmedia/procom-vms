@@ -1,0 +1,20 @@
+<div class="app-accordion-container app-accordion-container-28">
+  <div class="journal-pending0 app-accordion-level-one" *ngIf="companies && companies.length > 0">
+    <div *ngFor="let company of companies">
+      <div *ngIf="company.Count">
+        <div class="app-accordion-level-one-item" (click)="exportLine(company)">
+          <i class="app-accordion-chevron" [ngClass]="{'icon-chevron-up': company.IsOpen, 'icon-chevron-down': !company.IsOpen}"></i>
+          <span>{{company.Name}}</span>&nbsp;
+          <span class="badge badge-warning app-badge">{{company.Count}}</span>
+        </div>
+        <div class="app-accordion-level-two text-right" style="padding:10px 40px;" *ngIf="company.IsOpen">
+          <button class="btn btn-primary journal-button" (click)="generateFinancialBatch(company.Id)" title="Export to Excel">Create
+            Export File</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <p class="app-no-items" *ngIf="companyCount == 0">
+    There are no transactions to export
+  </p>
+</div>

@@ -1,0 +1,63 @@
+﻿  <app-purchase-order-work-orders [purchaseOrderId]="purchaseOrder.id"></app-purchase-order-work-orders>
+<!-- <div class="content-group form-horizontal" data-ng-form="formPurchaseOrderWorkOrder">
+    <div class="content-left">
+        <div class="panel-internal">
+            <div class="form-group">
+                <div class="col-lg-12">
+                    <h4>Work Orders</h4>
+                    {{purchaseOrder.id}}
+                  
+                       <div class="row" data-cg-busy="loadItemsPromise"> 
+                        <table data-st-table-struct='[{"stTableValue" : "items"}, {"stPipeValue" : "callServer"}, {"widthValues" : "[20, 20, 30, 30]"}, {"stPaginationValue" : "pageSize"}]'>
+                            <thead data-st-head="600px">
+                                <tr>
+                                    <th data-st-sort="PurchaseOrderLineNumber">PO LINE</th>
+                                    <th data-st-sort="WorkOrderFullNumber">WORK ORDER</th>
+                                    <th data-st-sort="AmountCommited">FUNDS COMMITTED</th>
+                                    <th data-st-sort="AmountSpent">FUNDS SPENT</th>
+                                </tr>
+                                <tr>
+                                    <th>
+                                        <input data-st-advanced-search="{property: 'PurchaseOrderLineNumber', ignoreQuotes: true}" class="input-sm form-control numberType" data-safe-restrict-input="[^0123456789]" />
+                                    </th>
+                                    <th>
+                                        <input data-st-advanced-search="'WorkOrderFullNumber'" class="input-sm form-control" data-safe-restrict-input="[^0123456789.]" />
+                                    </th>
+                                    <th>
+                                        <input data-st-advanced-search="{property: 'AmountCommited', ignoreQuotes: true, valueSuffix: 'M'}" 
+                                               class="input-sm form-control numberType" data-safe-restrict-input="[^0123456789.]" />
+                                    </th>
+                                    <th>
+                                        <input data-st-advanced-search="{property: 'AmountSpent', ignoreQuotes: true, valueSuffix: 'M'}" 
+                                               class="input-sm form-control numberType" data-safe-restrict-input="[^0123456789.]" />
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody class="my-main-table-body">
+                                <tr data-ng-repeat="item in items" data-ui-sref-tr="workorder.edit.core({assignmentId:item.AssignmentId, workOrderId:item.WorkOrderId, workOrderVersionId:0 })" style="cursor:pointer">
+                                    <td ng-bind="::item.PurchaseOrderLineNumber"></td>
+                                    <td><a data-ui-sref="workorder.edit.core({assignmentId:item.AssignmentId, workOrderId:item.WorkOrderId, workOrderVersionId:0 })">{{item.WorkOrderFullNumber}}</a></td>
+                                    <td>
+                                        <span ng-bind="::item.AmountCommited > 0 ? item.AmountCommited : 0 | currency:' '"></span>
+                                        <span ng-bind="::item.PurchaseOrderLineCurrencyId | lookup:lists.currencyList:'id':'code'"></span>
+                                    </td>
+                                    <td>
+                                        <span ng-bind="::item.AmountSpent > 0 ? item.AmountSpent : 0 | currency:' '"></span>
+                                        <span ng-bind="::item.PurchaseOrderLineCurrencyId | lookup:lists.currencyList:'id':'code'"></span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="4">
+                                        <span>Total Count: {{totalItemCount || 0}}; Items Loaded: {{ items ? items.length : 0}}</span>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>  
+                </div>
+            </div>
+        </div>
+    </div>
+</div> -->

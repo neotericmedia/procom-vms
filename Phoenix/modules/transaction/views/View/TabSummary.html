@@ -1,0 +1,180 @@
+﻿<style>
+    .padding-10px {
+        padding: 10px;
+    }
+</style>
+<div class="form-horizontal">
+    <div class="form-group">
+        <div class="panel panel-heading">
+            <div class="col-lg-5">
+                <div class="col-sm-4 control-label form-group">
+                    <div class="text-gray text-center">Billing(s)</div>
+                    <div class="text-gray text-center">Pre Tax</div>
+                    <p class="h4 text-center">
+                        {{model.transactionCalculation.AmountSummary.Amount_BillsTotalPreTax|currency:model.transactionHeader.CurrencyCode + " $"}}
+                    </p>
+                </div>
+                <div class="col-sm-4 control-label form-group">
+                    <div class="text-gray text-center">Billing(s)</div>
+                    <div class="text-gray text-center">Sales Tax</div>
+                    <p class="h4 text-center">
+                        {{model.transactionCalculation.AmountSummary.Amount_BillsTotalSalesTax|currency:model.transactionHeader.CurrencyCode + " $"}}
+                    </p>
+                </div>
+                <div class="col-sm-4 control-label form-group">
+                    <div class="text-gray text-center">Billing(s)</div>
+                    <div class="text-gray text-center">Total</div>
+                    <p class="h4 text-center">
+                        {{model.transactionCalculation.AmountSummary.Amount_BillsTotalAll|currency:model.transactionHeader.CurrencyCode + " $"}}
+                    </p>
+                </div>
+            </div>
+            <div class="col-lg-7">
+                <div class="col-sm-3 control-label form-group">
+                    <div class="text-gray text-center">Payment(s)</div>
+                    <div class="text-gray text-center">Pre Tax</div>
+                    <p class="h4 text-center">
+                        {{model.transactionCalculation.AmountSummary.Amount_PayeesTotalPreTax|currency:model.transactionHeader.CurrencyCode + " $"}}
+                    </p>
+                </div>
+                <div class="col-sm-3 control-label form-group">
+                    <div class="text-gray text-center">Payment(s)</div>
+                    <div class="text-gray text-center">Sales Tax</div>
+                    <p class="h4 text-center">
+                        {{model.transactionCalculation.AmountSummary.Amount_PayeesTotalSalesTax|currency:model.transactionHeader.CurrencyCode + " $"}}
+                    </p>
+                </div>
+                <div class="col-sm-3 control-label form-group">
+                    <div class="text-gray text-center">Payment(s)</div>
+                    <div class="text-gray text-center">Deductions</div>
+                    <p class="h4 text-center">
+                        {{model.transactionCalculation.AmountSummary.Amount_PayeesTotalDeductionsAndAdvancesAndGarneshees|currency:model.transactionHeader.CurrencyCode + " $"}}
+                    </p>
+                </div>
+                <div class="col-sm-3 control-label form-group">
+                    <div class="text-gray text-center">Payment(s)</div>
+                    <div class="text-gray text-center">Total</div>
+                    <p class="h4 text-center">
+                        {{model.transactionCalculation.AmountSummary.Amount_PayeesTotalAll|currency:model.transactionHeader.CurrencyCode + " $"}}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="content-group">
+        <div class="content-left">
+            <div class="panel-internal" data-ng-repeat="bill in model.transactionCalculation.AmountSummary.AmountSummaryBills">
+                <div class="form-group">
+                    <div class="col-xs-12 padding-10px">
+                        <a data-ui-sref="org.edit.details({organizationId: bill.OrganizationIdClient })">{{bill.OrganizationClientLegalName}} - {{bill.OrganizationIdClient}}</a>
+                    </div>  
+                </div>
+                <div class="form-group"> 
+                    <div class="col-xs-12">
+                        <p class="h4">Billing Transaction Payment Status: {{bill.BillingTransactionPaymentStatus| lookup:model.ARStatuses}}</p>
+                    </div>
+                </div>
+                <div class="form-group"> 
+                    <div class="col-xs-6">
+                        <p class="h4">Pre-tax Billing</p>
+                    </div>
+                    <div class="col-xs-6">
+                        <p class="h4 pull-right">{{bill.Amount_BillTotalPreTax|currency:model.transactionHeader.CurrencyCode + " $"}}</p>
+                    </div>
+                </div>
+                <div class="form-group"> 
+                    <div class="col-xs-6">
+                        <p class="h4">Sales Tax</p>
+                    </div>
+                    <div class="col-xs-6">
+                        <p class="h4 pull-right">{{bill.Amount_BillTotalSalesTax|currency:model.transactionHeader.CurrencyCode + " $"}}</p>
+                    </div>
+                </div>
+                <div class="form-group"> 
+                    <div class="col-xs-12">
+                        <p class="h4">&nbsp;</p>
+                    </div>
+                </div>
+                <div class="form-group"> 
+                    <div class="col-xs-12">
+                        <hr />
+                    </div>
+                </div>
+                <div class="form-group"> 
+                    <div class="col-xs-6">
+                        <p class="h4">Total</p>
+                    </div>
+                    <div class="col-xs-6">
+                        <p class="h4 pull-right">{{bill.Amount_BillTotalAll|currency:model.transactionHeader.CurrencyCode + " $"}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="content-right">
+            <div class="panel-internal" data-ng-repeat="payee in model.transactionCalculation.AmountSummary.AmountSummaryPayees">
+                <div class="form-group">
+                    <div class="col-xs-12 padding-10px">
+                        <a data-ng-if="payee.PayeeOrganizationIdSupplier>0" data-ui-sref="org.edit.details({organizationId: payee.PayeeOrganizationIdSupplier })">{{payee.PayeeName}} - {{payee.PayeeOrganizationIdSupplier}}</a>
+                        <span data-ng-if="payee.PayeeUserProfileWorkerId>0">
+                            <a data-ng-if="model.worker.ProfileTypeId==ApplicationConstants.UserProfileType.Organizational" data-ui-sref="EditOrganizationalProfile({ contactId:model.worker.ContactId, profileId: model.worker.Id})">{{model.worker.Contact.PreferredFirstName}} {{model.worker.Contact.PreferredLastName}} - {{model.worker.ContactId}} (Organizational - {{model.worker.Id}})</a>
+                            <a data-ng-if="model.worker.ProfileTypeId==ApplicationConstants.UserProfileType.Internal" data-ui-sref="EditInternalProfile({ contactId:model.worker.ContactId, profileId: model.worker.Id })">{{model.worker.Contact.PreferredFirstName}} {{model.worker.Contact.PreferredLastName}} - {{model.worker.ContactId}} (Internal - {{model.worker.Id}})</a>
+                            <a data-ng-if="model.worker.ProfileTypeId==ApplicationConstants.UserProfileType.WorkerTemp" data-ui-sref="EditWorkerTempProfile({ contactId:model.worker.ContactId, profileId: model.worker.Id })">{{model.worker.Contact.PreferredFirstName}} {{model.worker.Contact.PreferredLastName}} - {{model.worker.ContactId}} (Worker Temp - {{model.worker.Id}})</a>
+                            <a data-ng-if="model.worker.ProfileTypeId==ApplicationConstants.UserProfileType.WorkerCanadianSp" data-ui-sref="EditWorkerCanadianSPProfile({ contactId:model.worker.ContactId, profileId: model.worker.Id })">{{model.worker.Contact.PreferredFirstName}} {{model.worker.Contact.PreferredLastName}} - {{model.worker.ContactId}} (Worker Canadian SP - {{model.worker.Id}})</a>
+                            <a data-ng-if="model.worker.ProfileTypeId==ApplicationConstants.UserProfileType.WorkerCanadianInc" data-ui-sref="EditWorkerCanadianIncProfile({ contactId:model.worker.ContactId, profileId: model.worker.Id })">{{model.worker.Contact.PreferredFirstName}} {{model.worker.Contact.PreferredLastName}} - {{model.worker.ContactId}} (Worker Canadian Inc - {{model.worker.Id}})</a>
+                            <a data-ng-if="model.worker.ProfileTypeId==ApplicationConstants.UserProfileType.WorkerSubVendor" data-ui-sref="EditWorkerSubVendorProfile({ contactId:model.worker.ContactId, profileId: model.worker.Id })">{{model.worker.Contact.PreferredFirstName}} {{model.worker.Contact.PreferredLastName}} - {{model.worker.ContactId}} (Worker Sub-Vendor - {{model.worker.Id}})</a>
+                            <a data-ng-if="model.worker.ProfileTypeId==ApplicationConstants.UserProfileType.WorkerUnitedStatesW2" data-ui-sref="EditWorkerUnitedStatesW2Profile({ contactId:model.worker.ContactId, profileId: model.worker.Id })">{{model.worker.Contact.PreferredFirstName}} {{model.worker.Contact.PreferredLastName}} - {{model.worker.ContactId}} (Worker W2 - {{model.worker.Id}})</a>
+                            <a data-ng-if="model.worker.ProfileTypeId==ApplicationConstants.UserProfileType.WorkerUnitedStatesLLC" data-ui-sref="EditWorkerUnitedStatesLLCProfile({ contactId:model.worker.ContactId, profileId: model.worker.Id })">{{model.worker.Contact.PreferredFirstName}} {{model.worker.Contact.PreferredLastName}} - {{model.worker.ContactId}} (Worker LLC - {{model.worker.Id}})</a>
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group"> 
+                        <div class="col-xs-12">
+                            <p class="h4">
+                                Planned Release Date: 
+                                <span data-ng-if="payee.PlannedReleaseDate">{{payee.PlannedReleaseDate| date:ApplicationConstants.formatDate}}</span>
+                                <span data-ng-if="!payee.PlannedReleaseDate">N/A</span>
+                                <span data-ng-if="model.transactionHeader.IsPaymentStopped" class="warning-visual-cue"><i class="material-icons md-18">warning</i>Stop Payment</span>
+                            </p>
+                        </div>
+                    </div>
+                <div class="form-group">
+                    <div class="col-xs-6">
+                        <p class="h4">Pre-tax Payment</p>
+                    </div>
+                    <div class="col-xs-6">
+                        <p class="h4 pull-right">{{payee.Amount_TotalPaymentPreTax|currency:model.transactionHeader.CurrencyCode + " $"}}</p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-xs-6">
+                        <p class="h4">Sales Tax</p>
+                    </div>
+                    <div class="col-xs-6">
+                        <p class="h4 pull-right">{{payee.Amount_TotalPaymentSalesTax|currency:model.transactionHeader.CurrencyCode + " $"}}</p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-xs-6">
+                        <p class="h4">Deductions</p>
+                    </div>
+                    <div class="col-xs-6">
+                        <p class="h4 pull-right">{{payee.Amount_TotalDeductionsAndAdvancesAndGarneshees|currency:model.transactionHeader.CurrencyCode + " $"}}</p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-xs-12">
+                        <hr />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-xs-6">
+                        <p class="h4">Total</p>
+                    </div>
+                    <div class="col-xs-6">
+                        <p class="h4 pull-right">{{payee.Amount_PayeeTotalAll|currency:model.transactionHeader.CurrencyCode + " $"}}</p>
+                    </div>
+                </div>
+            </div>                                                  
+        </div>
+    </div>
+</div>

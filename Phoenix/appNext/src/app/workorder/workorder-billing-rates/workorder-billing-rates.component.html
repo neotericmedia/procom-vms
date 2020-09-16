@@ -1,0 +1,31 @@
+<form [formGroup]="inputFormGroup">
+  <div class="panel-internal">
+    <div class="form-group" style="margin-top:30px">
+      <div class="col-lg-10">
+        <h4>Rates</h4>
+      </div>
+    </div>
+  </div>
+  <div formArrayName="BillingRates">
+    <div *ngFor="let billingRate of inputFormGroup.controls.BillingRates.controls; let i = index;let last=last; trackBy: trackByFn"
+      style="border: none;">
+      <div>
+        <app-workorder-billing-rate [inputFormGroup]="billingRate" [rateIndex]="i" [readOnlyStorage]="readOnlyStorage"
+          [workOrderRateTypes]="workOrderRateTypes" [selectedRateType]="inputFormGroup.controls.selectedRateType"
+          (outputEvent)="onOutputEvent($event,i)" (removeBillingPartyRate)="onRemoveBillingPartyRate($event)" (addPaymentPartyRate)="onAddPaymentPartyRate($event)"></app-workorder-billing-rate>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-lg-10"></div>
+      <div class="col-lg-2">
+        <div class="btn-toolbar" *ngIf="workOrderDetails">
+          <button type="button" class="btn btn-default btn-material pull-right" [disabled]="!ValidToAddBillingRate() || (inputFormGroup.controls.BillingRates.length === workOrderRateTypes.length)"
+            *ngIf="billingInfoIndex==0 && workOrderDetails.readOnlyStorage.IsEditable" (click)="onAddBillingPartyRate() "
+            title="used {{inputFormGroup.controls.BillingRates.length}} from {{workOrderRateTypes.length}} available rates">
+            <i class="material-icons ">add</i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

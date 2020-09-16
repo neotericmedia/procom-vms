@@ -1,0 +1,250 @@
+﻿<div class="advance-new">
+    <div class="content-group form-horizontal" data-ng-form="formOrganizationAdvancesNew" style="height:100%;">
+        <!--Advance Info-->
+        <div class="col-lg-12 advance-info" data-ng-init="scopeAdvanceNew.init(edit.currentProfile);">
+            <!--Advance Details-->
+            <div class="col-lg-12 advance-details">
+                <div>
+                    <div class="panel-heading advance-new-header">
+                        <div class="row">
+                            <h3 class="panel-title">Advance Details</h3>
+                        </div>
+                    </div>
+                    <div class="panel-body advance-new-body">
+                        <div class="row">
+                            <div class="form-horizontal" role="form">
+                                <div class="form-group">
+                                    <label class="col-lg-4 control-label req-lab-right" watch-property="scopeAdvanceNew.AdvanceHeader.OrganizationIdInternal" for-property="OrganizationIdInternal" for="OrganizationIdInternal" data-model-property="scopeAdvanceNew.AdvanceHeader.OrganizationIdInternal" data-original-title="" title="">Internal Company</label>
+                                    <div class="col-lg-5">
+                                        <div class="input-group select2-bootstrap-append">
+                                            <ui-select name="OrganizationIdInternal" data-ng-model="scopeAdvanceNew.AdvanceHeader.OrganizationIdInternal" theme="select2" class="form-control" data-ng-required="true">
+                                                <ui-select-match placeholder="-- Select One --">{{$select.selected.DisplayName}}</ui-select-match>
+                                                <ui-select-choices repeat="item.Id as item in scopeAdvanceNew.internalOrgs | uiSelectChoicesFilter: $select.search: 'DisplayName': 'Id'">
+                                                    <span data-ng-bind-html="item.DisplayName | highlight: $select.search"></span>
+                                                    <span data-ng-bind-html="' - ' + item.Id | highlight: $select.search"></span>
+                                                </ui-select-choices>
+                                            </ui-select>
+                                            <span class="input-group-btn">
+                                                <button tabindex="-1" data-ng-click="scopeAdvanceNew.AdvanceHeader.OrganizationIdInternal=undefined;" class="btn btn-default btn-advance-drp"><i class="material-icons md-18">clear</i></button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3"></div>
+                                </div>
+                                <div class="form-group advance-issue-date">
+                                    <label class="col-lg-4 control-label req-lab-right" for-property="IssueDate" for="IssueDate" data-model-property="scopeAdvanceNew.AdvanceHeader.IssueDate" data-original-title="" title="">Issue Date</label>
+                                    <div class="col-lg-5">
+                                        <pt-date-picker name="IssueDate" placeholder="Issue Date" data-ng-model="scopeAdvanceNew.AdvanceHeader.IssueDate" data-ng-required="true" />
+                                    </div>
+                                    <div class="col-lg-3"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-lg-4 control-label req-lab-right" for-property="AmountInitial" for="AmountInitial" data-model-property="scopeAdvanceNew.AdvanceHeader.AmountInitial" data-original-title="" title="">Amount</label>
+                                    <div class="col-lg-5">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" name="AmountInitial" placeholder="Advance Initial Amount" ng-model="scopeAdvanceNew.AdvanceHeader.AmountInitial" data-ng-change="scopeAdvanceNew.amountChanged()" data-ng-required="true" data-float-between-input="{from:0, to:99999999999999999.99, decimalplaces:2, doesemptytozero:'false'}">
+                                            <span class="input-group-addon"><b>$</b></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3"></div>
+                                </div>
+                                <div class="form-group advance-new-radio">
+                                    <label class="col-lg-4 control-label req-lab-right" for-property="PaybackType" for="PaybackType" data-model-property="scopeAdvanceNew.AdvanceHeader.PaybackType" data-original-title="" title="">Payback Type</label>
+                                    <div class="col-lg-5">
+                                        <pt-input-radio name="PaybackType"
+                                                        data-ng-click="scopeAdvanceNew.paybackTypeChanged()"
+                                                        data-ng-required="false"
+                                                        data-template-type="input-radio"
+                                                        data-ng-model="scopeAdvanceNew.AdvanceHeader.PaybackType"
+                                                        data-options="[{ key: true, value: 'Amount' },{ key: false, value: 'Percentage' }]" />
+                                    </div>
+                                    <div class="col-lg-3"></div>
+                                </div>
+                                <div class="form-group" data-ng-if="scopeAdvanceNew.AdvanceHeader.PaybackType">
+                                    <label class="col-lg-4 control-label req-lab-right" for-property="PaybackAmount" for="PaybackAmount" data-model-property="scopeAdvanceNew.AdvanceHeader.PaybackAmount" data-original-title="" title="">Payback Amount</label>
+                                    <div class="col-lg-5">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" name="PaybackAmount"  ng-model="scopeAdvanceNew.AdvanceHeader.PaybackAmount" data-ng-change="scopeAdvanceNew.amountChanged()" data-ng-required="true" data-float-between-input="{from:0, to:99999999999999999.99, decimalplaces:2, doesemptytozero:'false'}">
+                                            <span class="input-group-addon"><b>$</b></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3"></div>
+                                </div>
+                                <div class="form-group" data-ng-if="!scopeAdvanceNew.AdvanceHeader.PaybackType">
+                                    <label class="col-lg-4 control-label req-lab-right" for-property="PaybackPercentage" for="PaybackPercentage" data-model-property="scopeAdvanceNew.AdvanceHeader.PaybackPercentage" data-original-title="" title="">Payback Percentage</label>
+                                    <div class="col-lg-5">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" name="PaybackPercentage" ng-model="scopeAdvanceNew.AdvanceHeader.PaybackPercentage" data-ng-required="true" data-pt-field-view-custom="{ { scopeAdvanceNew.AdvanceHeader.PaybackPercentage | displayPercentageView:4 } }" data-float-between-input="{from:0.00, to:100.00, decimalplaces:4 }">
+                                            <span class="input-group-addon advance-payback-percentage"><b>%</b></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-lg-4 control-label req-lab-right" for-property="Description" for="Description" data-model-property="scopeAdvanceNew.AdvanceHeader.Description" data-original-title="" title="">Description</label>
+                                    <div class="col-lg-5">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" name="Description" ng-model="scopeAdvanceNew.AdvanceHeader.Description" data-ng-minlength="3" data-ng-maxlength="64" data-ng-required="true">
+                                            <span class="input-group-addon"><b>T</b></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!---->
+            <!--Payee Details-->
+            <div class="col-lg-12 row">
+                <div class="col-lg-6 advance-payee-details">
+                    <div>
+                        <div class="panel-heading panel-info-title">
+                            <div class="row">
+                                <h3 class="col-lg-10 panel-title">Payee Details</h3>
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <div class="form-horizontal" role="form" data-ng-init="scopeAdvanceNew.initAddresses(edit.currentProfile.UserProfileAddresses[0]);">
+                                <div class="row">
+                                    <div class="form-group">
+                                        <label class="col-lg-4 control-label req-lab-right" for-property="PayeeName" for="PayeeName" data-model-property="scopeAdvanceNew.AdvanceHeader.PayeeName" data-original-title="" title="">Payee Name</label>
+                                        <div class="col-lg-8">
+                                            <input class="form-control" type="text" name="PayeeName" ng-model="scopeAdvanceNew.AdvanceHeader.PayeeName" data-ng-init="scopeAdvanceNew.AdvanceHeader.PayeeName = edit.currentProfile.PayeeName;" data-ng-disabled="true" required>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-lg-4 control-label req-lab-right" for-property="AddressLine1" for="AddressLine1" data-model-property="scopeAdvanceNew.AdvanceHeader.AddressLine1" data-original-title="" title="">Address 1</label>
+                                        <div class="col-lg-8">
+                                            <input type="text" class="form-control" name="AddressLine1" ng-model="scopeAdvanceNew.AdvanceHeader.AddressLine1" data-ng-required="true" data-ng-minlength="3" data-ng-maxlength="64" maxlength="64" data-length-message="LengthRange">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-lg-4 control-label" for-property="AddressLine2" for="AddressLine2" data-model-property="scopeAdvanceNew.AdvanceHeader.AddressLine2" data-original-title="" title="">Address 2</label>
+                                        <div class="col-lg-8">
+                                            <input type="text" class="form-control" name="AddressLine2" ng-model="scopeAdvanceNew.AdvanceHeader.AddressLine2" data-ng-minlength="3" data-ng-maxlength="64" maxlength="64" data-length-message="LengthRange">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-lg-4 control-label req-lab-right" for-property="CityName" for="CityName" data-model-property="scopeAdvanceNew.AdvanceHeader.CityName" data-original-title="" title="">City</label>
+                                        <div class="col-lg-8">
+                                            <input class="form-control" type="text" name="CityName" ng-model="scopeAdvanceNew.AdvanceHeader.CityName" data-ng-required="true" data-ng-minlength="3" data-ng-maxlength="64" maxlength="64" data-length-message="LengthRange">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-lg-4 control-label req-lab-right" for-property="CountryId" for="CountryId" data-model-property="scopeAdvanceNew.AdvanceHeader.CountryId" data-original-title="" title="">Country</label>
+                                        <div class="col-lg-8">
+                                            <div class="input-group select2-bootstrap-append">
+                                                <ui-select class="form-control" name="CountryId" data-ng-model="scopeAdvanceNew.AdvanceHeader.CountryId" theme="select2" data-ng-change="scopeAdvanceNew.countryChanged({{$select.selected}})" data-ng-required="true">
+                                                    <ui-select-match placeholder="-- Select One --">{{$select.selected.text}}</ui-select-match>
+                                                    <ui-select-choices repeat="item.id as item in scopeAdvanceNew.countries | uiSelectChoicesFilter: $select.search: 'text'">
+                                                        <span data-ng-bind-html="item.text | highlight: $select.search"></span>
+                                                    </ui-select-choices>
+                                                </ui-select>
+                                                <span class="input-group-btn">
+                                                    <button tabindex="-1" data-ng-click="scopeAdvanceNew.restoreCountries()" class="btn btn-default btn-advance-drp"><i class="material-icons md-18">clear</i></button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-lg-4 control-label req-lab-right" watch-property="scopeAdvanceNew.AdvanceHeader.CountryId" for-property="SubdivisionId" for="SubdivisionId" data-model-property="scopeAdvanceNew.AdvanceHeader.SubdivisionId" data-original-title="" title="">Province/State</label>
+                                        <div class="col-lg-8">
+                                            <div class="input-group select2-bootstrap-append">
+                                                <ui-select name="SubdivisionId" data-ng-model="scopeAdvanceNew.AdvanceHeader.SubdivisionId" theme="select2" class="form-control" data-ng-change="scopeAdvanceNew.subdivisionChanged({{$select.selected}})" data-ng-required="true">
+                                                    <ui-select-match placeholder="-- Select One --">{{$select.selected.text}}</ui-select-match>
+                                                    <ui-select-choices repeat="item.id as item in scopeAdvanceNew.subdivisions | uiSelectChoicesFilter: $select.search: 'text'">
+                                                        <span data-ng-bind-html="item.text | highlight: $select.search"></span>
+                                                    </ui-select-choices>
+                                                </ui-select>
+                                                <span class="input-group-btn">
+                                                    <button tabindex="-1" data-ng-click="scopeAdvanceNew.restoreSubdivisions()" class="btn btn-default btn-advance-drp"><i class="material-icons md-18">clear</i></button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-lg-4 control-label req-lab-right" watch-property="scopeAdvanceNew.AdvanceHeader.CountryId" for-property="PostalCode" for="PostalCode" data-model-property="scopeAdvanceNew.AdvanceHeader.PostalCode" data-original-title="" title="">Postal/Zip</label>
+                                        <div class="col-lg-8">
+                                            <input type="text"
+                                                   postal-zip-code-valid="{countryId: scopeAdvanceNew.AdvanceHeader.CountryId, isRequired: false}" data-ng-required="true"
+                                                   postal-zip-code-mask="scopeAdvanceNew.AdvanceHeader.CountryId"
+                                                   ng-model="scopeAdvanceNew.AdvanceHeader.PostalCode" name="PostalCode" class="form-control ng-pristine ng-invalid" maxlength="12">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <!---->
+                <!--Advance Payment Details-->
+                <div class="col-lg-6 advance-payment-details">
+                    <div>
+                        <div class="panel-heading panel-info-title">
+                            <div class="row">
+                                <h3 class="col-lg-10 panel-title">Advance Payment</h3>
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <label class="col-lg-4 control-label req-lab-right" for-property="PaymentMethodId" for="PaymentMethodId" data-model-property="scopeAdvanceNew.AdvanceHeader.PaymentMethodId" data-original-title="" title="">Payment Method</label>
+                                <div class="col-lg-8">
+                                    <div class="input-group select2-bootstrap-append">
+                                        <ui-select name="PaymentMethodId" data-ng-model="scopeAdvanceNew.AdvanceHeader.PaymentMethodId" theme="select2" class="form-control" required>
+                                            <ui-select-match placeholder="-- Select One --">{{$select.selected.text}}</ui-select-match>
+                                            <ui-select-choices repeat="item.id as item in scopeAdvanceNew.paymentMethods | uiSelectChoicesFilter: $select.search: 'text'">
+                                                <span data-ng-bind-html="item.text | highlight: $select.search"></span>
+                                            </ui-select-choices>
+                                        </ui-select>
+                                        <span class="input-group-btn">
+                                            <button tabindex="-1" data-ng-click="scopeAdvanceNew.AdvanceHeader.PaymentMethodId = undefined" class="btn btn-default btn-advance-drp"><i class="material-icons md-18">clear</i></button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-lg-4 control-label req-lab-right" for-property="CurrencyId" for="CurrencyId" data-model-property="scopeAdvanceNew.AdvanceHeader.CurrencyId" data-original-title="" title="">Currency</label>
+                                <div class="col-lg-8">
+                                    <div class="input-group select2-bootstrap-append">
+                                        <ui-select name="CurrencyId" data-ng-model="scopeAdvanceNew.AdvanceHeader.CurrencyId" theme="select2" class="form-control" required>
+                                            <ui-select-match placeholder="-- Select One --">{{$select.selected.text}}</ui-select-match>
+                                            <ui-select-choices repeat="item.id as item in scopeAdvanceNew.currencies | uiSelectChoicesFilter: $select.search: 'text'">
+                                                <span data-ng-bind-html="item.text | highlight: $select.search"></span>
+                                            </ui-select-choices>
+                                        </ui-select>
+                                        <span class="input-group-btn">
+                                            <button tabindex="-1" data-ng-click="scopeAdvanceNew.AdvanceHeader.CurrencyId = undefined" class="btn btn-default btn-advance-drp"><i class="material-icons md-18">clear</i></button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!---->
+            <div class="row" data-ng-if="scopeAdvanceNew.ValidationMessages.length>0">
+                <div class="col-xs-12"></div>
+                    <div class="panel-body" data-pt-validation-messages="scopeAdvanceNew.ValidationMessages"></div>
+                </div>
+            </div>
+            <!--Advance Buttons-->
+            <div class="col-lg-12 panel-footer advance-new-footer">
+                <div class="row">
+                    <div class="col-lg-6"></div>
+                    <div class="col-lg-6">
+                        <div class="pull-right">
+                            <button type="button" data-ng-if="scopeAdvanceNew.allowToCreateAdvance" class="btn btn-primary" data-ng-click="scopeAdvanceNew.advanceNew(scopeAdvance, edit.refreshActiveAdvancesAndActiveGarnisheesCount)" data-ng-disabled="!formOrganizationAdvancesNew.$valid || !scopeAdvanceNew.isPaybackValid || scopeAdvanceNew.submitIsRunning">Submit</button>
+                            <button type="button" class="btn btn-default" data-ng-click="scopeAdvanceNew.close()">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!---->
+        </div>
+        <!---->        
+    </div>
+</div>

@@ -1,0 +1,162 @@
+﻿<div class="row commission-report">
+    <div class="col-lg-10 col-lg-offset-1" style="padding: 0">
+        <label for-property="OrganizationIdInternal" for="CommissionUserProfileId" data-model-property="rateSetupScope.OrganizationIdInternal" class="col-lg-3 control-label label-to-right" data-original-title="" title="">Internal Company:</label>
+        <div class="col-lg-3" style="margin-bottom: 5px;">
+            <div class="input-group select2-bootstrap-append">
+                <ui-select name="OrganizationIdInternal" data-ng-model="report.OrganizationIdInternal" theme="select2" class="form-control" data-ng-required="true">
+                    <ui-select-match placeholder="-- Select One --">{{$select.selected.DisplayName}}</ui-select-match>
+                    <ui-select-choices repeat="item.Id as item in report.internalOrgs | uiSelectChoicesFilter: $select.search: 'DisplayName': 'Id'">
+                        <span data-ng-bind-html="item.DisplayName | highlight: $select.search"></span>
+                        <span data-ng-bind-html="' - ' + item.Id | highlight: $select.search"></span>
+                    </ui-select-choices>
+                </ui-select>
+                <span class="input-group-btn">
+                    <button tabindex="-1" data-ng-click="report.OrganizationIdInternal=undefined" class="btn btn-default"><i class="material-icons md-18">clear</i></button>
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="form-group col-lg-10 col-lg-offset-1" style="padding: 0">
+        <label for-property="CommissionUserProfileId" for="CommissionUserProfileId" data-model-property="rateSetupScope.CommissionUserProfileId" class="col-lg-3 control-label label-to-right" data-original-title="" title="">Commission report for:</label>
+        <div class="col-lg-3" style="margin-bottom: 5px;">
+            <div class="input-group select2-bootstrap-append" data-ng-if="report.HasAdministratorView">
+                <ui-select name="CommissionUserProfileId" data-ng-model="report.CommissionUserProfileId" theme="select2" class="form-control">
+                    <ui-select-match placeholder="-- Select One --">{{$select.selected.CommissionUserProfileFirstName}} {{$select.selected.CommissionUserProfileLastName}}</ui-select-match>
+                    <ui-select-choices repeat="item.CommissionUserProfileId as item in report.commissionUsers| orderBy:'CommissionUserProfileFirstName'| uiSelectChoicesFilter: $select.search:'CommissionUserProfileId':'CommissionUserProfileFirstName':'CommissionUserProfileLastName'">
+                        <span data-ng-bind-html="item.CommissionUserProfileFirstName | highlight: $select.search"></span>
+                        <span data-ng-bind-html="item.CommissionUserProfileLastName | highlight: $select.search"></span>
+                    </ui-select-choices>
+                </ui-select>
+                <span class="input-group-btn">
+                    <button tabindex="-1" data-ng-click="report.CommissionUserProfileId=undefined" class="btn btn-default"><i class="material-icons md-18">clear</i></button>
+                </span>
+            </div>
+            <div data-ng-if="!report.HasAdministratorView" class="form-control-static">
+                {{report.DisplayOwnName}}
+            </div>
+        </div>
+        <div class="col-lg-3" style="margin-bottom: 5px;">
+            <pt-month-picker data-ng-model="report.reportDate" />
+        </div>
+        <div class="col-lg-3 hidden-xs hidden-sm hidden-md">
+            <button class="btn btn-primary" data-ng-disabled="!(report.CommissionUserProfileId && report.reportDate && report.OrganizationIdInternal)" data-ui-sref="commission.report({reportUserProfileId:report.CommissionUserProfileId,reportYear:report.reportDate.getFullYear(),reportMonth:report.reportDate.getMonth()+1,reportOrganizationIdInternal:report.OrganizationIdInternal})" data-ui-sref-opts="{reload: true}">Get report</button>
+        </div>
+        <div class="col-lg-3 text-right hidden-lg hidden-xl hidden-xxl hidden-xxxl ">
+            <button class="btn btn-primary" data-ng-disabled="!(report.CommissionUserProfileId && report.reportDate && report.OrganizationIdInternal)" data-ui-sref="commission.report({reportUserProfileId:report.CommissionUserProfileId,reportYear:report.reportDate.getFullYear(),reportMonth:report.reportDate.getMonth()+1,reportOrganizationIdInternal:report.OrganizationIdInternal})" data-ui-sref-opts="{reload: true}">Get report</button>
+        </div>
+    </div>
+    <div class="col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2 report" data-ng-if="report.reportData">
+        <h3>Commission report for {{report.reportData.CommissionUserName}} - {{report.reportData.CommissionReportDate}}</h3>
+        <table class="table table-striped">
+            <tr>
+                <td colspan="2"><span class="bold">Internal Company:</span> {{report.reportData.InternalCompanyDisplayName}}</td>
+            </tr>
+            <tr>
+                <td colspan="2"><span class="bold">Status:</span> {{report.reportData.Status}}</td>
+            </tr>
+            <tr>
+                <td colspan="2"></td>
+            </tr>
+            <tr>
+                <td>Opening balance / Payments previously on hold</td>
+                <td class="bold text-right">{{report.reportData.AmountOpeningBalance|currency}}</td>
+            </tr>
+            <tr>
+                <td colspan="2"></td>
+            </tr>
+            <tr>
+                <td>Gross margin for invoices issued and reversed in month</td>
+                <td class="text-right">{{report.reportData.AmountGrossMarginInvoicesIssuedAndReversed|currency}}</td>
+            </tr>
+            <tr>
+                <td colspan="2" class="bold underline">Earnings</td>
+            </tr>
+            <tr>
+                <td>Commission for invoices issued in month</td>
+                <td class="text-right"><a data-ng-click="report.modalInvoicesIssued()" style="cursor: pointer;">{{report.reportData.AmountInvoicesIssued|currency}}</a></td>
+            </tr>
+            <tr>
+                <td>Amount for invoices reversed in month</td>
+                <td class="text-right"><a data-ng-click="report.modalInvoicesReversed()" style="cursor: pointer;">{{report.reportData.AmountInvoicesReversed|currency}}</a></td>
+            </tr>
+            <tr>
+                <td>Total commission earned in month</td>
+                <td class="bold text-right">{{report.reportData.AmountTotalCommissionEarned|currency}}</td>
+            </tr>
+            <tr>
+                <td colspan="2" class="bold underline">Adjustments</td>
+            </tr>
+            <tr>
+                <td>Interest</td>
+                <td class="text-right"><a data-ng-click="report.modalInterest()" style="cursor: pointer;">{{report.reportData.AmountInterest|currency}}</a></td>
+            </tr>
+            <tr>
+                <td>Direct charges</td>
+                <td class="text-right"><a data-ng-click="report.modalDirectCharges()" style="cursor: pointer;">{{report.reportData.AmountDirectCharges|currency}}</a></td>
+            </tr>
+            <tr>
+                <td>Recurring charges</td>
+                <td class="text-right"><a data-ng-click="report.modalRecurringCharges()" style="cursor: pointer;">{{report.reportData.AmountRecurringCharges|currency}}</a></td>
+            </tr>
+            <tr>
+                <td>Corrections / reversals</td>
+                <td class="text-right"><a data-ng-click="report.modalCorrections()" style="cursor: pointer;">{{report.reportData.AmountCorrections|currency}}</a></td>
+            </tr>
+            <tr>
+                <td>Rebooked transactions</td>
+                <td class="text-right"><a data-ng-click="report.modalRebooked()" style="cursor: pointer;">{{report.reportData.AmountRebooked|currency}}</a></td>
+            </tr>
+            <tr>
+                <td>Total adjustments</td>
+                <td class="bold text-right">{{report.reportData.AmountTotalAdjustments|currency}}</td>
+            </tr>
+            <tr>
+                <td colspan="2" class="bold underline">Payment</td>
+            </tr>
+            <tr>
+                <td>Commission calculation for month</td>
+                <td class="bold text-right">{{report.reportData.AmountCurrentMonthCommissions|currency}}</td>
+            </tr>
+            <tr>
+                <td>LESS Payments scheduled for future months</td>
+                <td class="text-right"><a data-ng-click="report.modalScheduledFutureMonth()" style="cursor: pointer;">{{report.reportData.AmountScheduledFutureMonth|currency}}</a></td>
+            </tr>
+            <tr>
+                <td>PLUS Previous payment carry forward</td>
+                <td class="text-right">{{report.reportData.AmountPriorPaymentCarryForward|currency}}</td>
+            </tr>
+            <tr>
+                <td>Ready to release for month</td>
+                <td class="bold text-right">{{report.reportData.AmountReadyToRelease|currency}}</td>
+            </tr>
+            <tr>
+                <td>PLUS Ready to release transactions from prior periods</td>
+                <td class="text-right"><a data-ng-click="report.modalReadyToReleasePriorMonthTransactions()" style="cursor: pointer;">{{report.reportData.AmountReadyToReleasePriorMonthTransactions|currency}}</a></td>
+            </tr>
+            <tr>
+                <td>PLUS Ready to release adjustments from prior periods</td>
+                <td class="text-right"><a data-ng-click="report.modalReadyToReleasePriorMonthAdjustments()" style="cursor: pointer;">{{report.reportData.AmountReadyToReleasePriorMonthAdjustments|currency}}</a></td>
+            </tr>
+            <tr>
+                <td>LESS Balance owing from prior periods</td>
+                <td class="text-right">{{report.reportData.AmountPreviousBalanceOwing|currency}}</td>
+            </tr>
+            <tr>
+                <td>Total expected payment</td>
+                <td class="bold text-right">{{report.reportData.AmountPaymentTotal|currency}}</td>
+            </tr>
+            <tr>
+                <td colspan="2"></td>
+            </tr>
+            <tr>
+                <td>Balance owing on future payment(s)</td>
+                <td class="bold text-right">{{report.reportData.AmountBalanceOwing|currency}}</td>
+            </tr>
+            <tr>
+                <td>Closing balance / Payments on hold</td>
+                <td class="bold text-right">{{report.reportData.AmountClosingBalance|currency}}</td>
+            </tr>
+        </table>
+        <button id="FinalizeButton" class="btn btn-primary pull-right" data-ng-if="report.reportData && report.reportData.CanFinalize" data-ng-click="report.finalize()">Finalize</button>
+    </div>
+</div>

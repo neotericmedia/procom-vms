@@ -1,0 +1,30 @@
+﻿<div class="document-list">
+    <table class="table table-striped table-content table-hover" style="background-color: white;">
+        <thead style="background-color: #EAEAEA;">
+            <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Type</th>
+                <th scope="col">Uploaded By</th>
+                <th scope="col">Uploaded On<span class="column-sorter"></span></th>
+                <th scope="col">Action</th>
+            </tr>
+        </thead>
+        <tr data-ng-repeat="document in documents" data-ng-click="setDocumentIdToPreview(document.PdfDocumentPublicId)">
+            <td>
+                <span>{{document.Name}}</span>
+            </td>
+            <td>
+                <span>{{getDocumentTypeName(document.DocumentTypeId)}}</span>
+            </td>
+            <td>
+                <span>{{document.UploadedByContactFirstName}} {{document.UploadedByContactLastName}}</span>
+            </td>
+            <td>
+                <span>{{document.UploadedDatetime | date:ApplicationConstants.formatDateTimeHM}}</span>
+            </td>
+            <td>
+                <a type="button" href="javascript:void(0);" class="btn btn-clouds" data-ng-href="{{getPdfStreamByPublicId(document.PdfDocumentPublicId)}}" target="_blank" data-ng-if="document.PdfDocumentPublicId" title="View"><i class="fontello-icon-eye"></i></a>
+            </td>
+        </tr>
+    </table>
+</div>

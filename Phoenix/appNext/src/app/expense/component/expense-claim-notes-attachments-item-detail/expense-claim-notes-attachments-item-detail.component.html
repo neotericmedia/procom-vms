@@ -1,0 +1,15 @@
+<div *ngIf="expenseItems && expenseItems.length > 0">
+    <div class="accordion-toggle borderbottom" data-toggle="collapse" [attr.data-target]="dataTargetId" aria-expanded="false">
+        <strong> {{expenseItems[0]?.ExpenseCategory?.DisplayName}} ({{expenseItems.length}}) </strong>
+
+    </div>
+    <div class="collapse in paddingtop10" [id]="categoryId">
+        <div class="card card-block borderleftwithpadding" *ngFor="let expenseItem of expenseItems">
+            <p>
+                <span *ngIf="expenseItem.DateIncurred"> {{expenseItem?.DateIncurred | date:formatDate }}, 
+                </span> <span *ngIf="expenseItem.ProjectName"> {{expenseItem?.ProjectName}}, </span>
+                {{expenseItem?.Total | number : '1.2-2'}}&nbsp;{{expenseItem?.CurrencyId| CodeValue:codeValueGroups.Currency:'code'}} </p>
+            <p> {{expenseItem?.Note}} </p>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,47 @@
+.search {
+    .btn-link.sortOrder{
+        padding:0;
+        color: #333;
+        border: 1px solid #ccc;
+        border-radius: 1px !important;
+        &:hover {
+            background-color: #eee;
+        }
+        .material-icons {
+            color: #666;
+            padding: 6px 3px;
+            font-size: 20px;
+        }
+    }
+
+    & > #searchCapsules, & > #sortCapsules  {
+
+        padding-left: 0;
+        padding-right: 0;
+        margin-bottom: 15px;
+    
+        input {
+            border-radius: 0;
+        }
+    }
+
+    #sortCapsules .sortModes {
+        padding-right: 35px;
+    }
+}
+
+.inner-addon {
+    position: relative;
+}
+.inner-addon .glyphicon {
+    position: absolute;
+    padding: 10px;
+    pointer-events: none;
+    input {
+        border-radius: 0;
+    }
+}
+.left-addon .glyphicon  { left:  10px;}
+.right-addon .glyphicon { right: 10px;}
+.left-addon input  { padding-left:  30px; }
+.right-addon input { padding-right: 30px; }

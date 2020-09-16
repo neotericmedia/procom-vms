@@ -1,0 +1,34 @@
+.borderbottom {
+    border-bottom: 1px solid #ccc;
+}
+
+.margintop10 {
+    margin-top: 10px;
+}
+
+.paddingtop10 {
+    padding-top: 10px;
+}
+
+.borderleftwithpadding {
+    border-left: 2px solid #ccc;
+    padding: 0 5px;
+}
+
+.accordion-toggle:after {
+    /* symbol for "opening" panels */
+    font-family: 'Glyphicons Halflings';
+    /* essential for enabling glyphicon */
+    content: "\e114";
+    /* adjust as needed, taken from bootstrap.css */
+    float: right;
+    /* adjust as needed */
+    color: grey;
+    /* adjust as needed */
+}
+
+.accordion-toggle.collapsed:after {
+    /* symbol for "collapsed" panels */
+    content: "\e080";
+    /* adjust as needed, taken from bootstrap.css */
+}

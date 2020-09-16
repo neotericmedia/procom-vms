@@ -1,0 +1,70 @@
+﻿<div class="row" data-ng-init="vmsBatchDiscountDetails.initialize(vmsBatchDiscount)">
+    <div class="col-lg-12">
+        <div class="panel panel-internal panel-contact">
+            <div class="contact-name">
+                <h4>VMS Processed Record</h4>
+                <table class="table">
+                    <thead class="my-thead">
+                        <tr>
+                            <th>ID</th>
+                            <th>Work Order #</th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th class="text-right">Discount (Before taxes)</th>
+                            <th>Billing From</th>
+                            <th>Billing To</th>
+                            <th>Transaction #</th>
+                            <th>Invoice Note</th>
+                            <th>Reason</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style="cursor:pointer" data-ui-sref-tr="vms-discount.document.details({internalOrganizationId: vmsBatchDiscountDetails.vmsBatchDiscount.processedRecordDetails.OrganizationIdInternal, documentId: vmsBatchDiscountDetails.vmsBatchDiscount.processedRecordDetails.DocumentId})">
+                            <td>{{::vmsBatchDiscountDetails.vmsBatchDiscount.processedRecordDetails.Id}}</td>
+                            <td>{{::vmsBatchDiscountDetails.vmsBatchDiscount.processedRecordDetails.WorkOrderNumber}}</td>
+                            <td>{{::vmsBatchDiscountDetails.vmsBatchDiscount.processedRecordDetails.FirstName}}</td>
+                            <td>{{::vmsBatchDiscountDetails.vmsBatchDiscount.processedRecordDetails.LastName}}</td>
+                            <td class="text-right">${{::vmsBatchDiscountDetails.vmsBatchDiscount.processedRecordDetails.Discount  | number: 2}}</td>
+                            <td>{{::vmsBatchDiscountDetails.vmsBatchDiscount.processedRecordDetails.StartDate | date:ApplicationConstants.formatDateComma}}</td>
+                            <td>{{::vmsBatchDiscountDetails.vmsBatchDiscount.processedRecordDetails.EndDate | date:ApplicationConstants.formatDateComma}}</td>
+                            <td>{{::vmsBatchDiscountDetails.vmsBatchDiscount.processedRecordDetails.BillingTransactionNumber}}</td>
+                            <td>{{::vmsBatchDiscountDetails.vmsBatchDiscount.processedRecordDetails.Note}}</td>
+                            <td ng-bind-html="::vmsBatchDiscountDetails.vmsBatchDiscount.processedRecordDetails.Reason || 'N/A'"></td>
+                            <td>{{::vmsBatchDiscountDetails.vmsBatchDiscount.processedRecordDetails.VmsDiscountImportedRecordTypeId | lookup : vmsBatchDiscount.vmsRecordStatus}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-12" ng-if="vmsBatchDiscountDetails.vmsBatchDiscount.processedRecordDetails.BillingTransaction">
+        <div class="panel panel-internal panel-contact">
+            <div class="contact-name">
+                <h4>Transaction</h4>
+                <table class="table">
+                    <thead class="my-thead">
+                        <tr>
+                            <th>Work Order</th>
+                            <th>Transaction No</th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style="cursor:pointer" data-ui-sref-tr="transaction.view.summary({transactionHeaderId: vmsBatchDiscountDetails.vmsBatchDiscount.processedRecordDetails.BillingTransaction.TransactionHeaderId})">
+                            <td>{{::vmsBatchDiscountDetails.vmsBatchDiscount.processedRecordDetails.BillingTransaction.WorkOrder}}</td>
+                            <td>{{::vmsBatchDiscountDetails.vmsBatchDiscount.processedRecordDetails.BillingTransaction.BillingTransactionNumber}}</td>
+                            <td>{{::vmsBatchDiscountDetails.vmsBatchDiscount.processedRecordDetails.BillingTransaction.FirstName}}</td>
+                            <td>{{::vmsBatchDiscountDetails.vmsBatchDiscount.processedRecordDetails.BillingTransaction.LastName}}</td>
+                            <td>{{::vmsBatchDiscountDetails.vmsBatchDiscount.processedRecordDetails.BillingTransaction.StartDate| date: ApplicationConstants.formatDate}}</td>
+                            <td>{{::vmsBatchDiscountDetails.vmsBatchDiscount.processedRecordDetails.BillingTransaction.EndDate| date: ApplicationConstants.formatDate}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

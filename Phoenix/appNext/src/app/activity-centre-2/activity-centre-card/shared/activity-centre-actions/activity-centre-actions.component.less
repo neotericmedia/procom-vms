@@ -1,0 +1,136 @@
+@import "../activity-centre-card-style-config.less";
+
+.card-action-chamber {
+    height: 35px;
+    margin-top: 1px;
+    margin-bottom: 4px;
+    border-top: 1px solid #eee;
+
+    button {
+        width: 47%;
+        color: #333333;
+        background-color: transparent;
+        border: none;
+        margin: 3px;
+
+        i {
+            vertical-align: middle;
+        }
+    }
+
+    button:hover {
+        background-color: #F2F3F7;
+    }
+
+    .row {
+        .col.button-container {
+            padding-left: 20px;
+            padding-right: 20px;
+
+            i.button-approve {
+                color: #8ebe8e;
+            }
+
+            i.button-decline {
+                color: #be8e8e;
+            }
+
+            .sep {
+                height: 35px;
+                background-color: #d4d9e1;
+                width: 1px;
+                display: inline-block;
+                margin-top: 4px;
+                margin-left: 0px;
+            }
+
+            .checkbox {
+                label {
+                    padding-left: 10px;
+                    vertical-align: middle;
+                    margin-top: 4px;
+                }
+
+                a {
+                    color: #354051;
+                    text-decoration: none;
+                    margin-right: 12px;
+                    margin-top: 5px;
+                }
+
+                a:hover {
+                    color: unset;
+                }
+            }
+
+            .checkbox label:after {
+                content: '';
+                display: table;
+                clear: both;
+                user-select: none;
+            }
+
+            .checkbox .cr {
+                position: relative;
+                border: 1px solid #a9a9a9;
+                border-radius: .25em;
+                width: 1.3em;
+                height: 1.3em;
+                float: left;
+                margin-right: .5em;
+            }
+
+            .checkbox .cr .cr-icon {
+                position: absolute;
+                font-size: .8em;
+                line-height: 0;
+                top: 50%;
+                left: 15%;
+            }
+
+            .checkbox label input[type="checkbox"] {
+                display: none;
+            }
+
+            .checkbox label input[type="checkbox"]+.cr>.cr-icon {
+                opacity: 0;
+            }
+
+            .checkbox label input[type="checkbox"]:checked+.cr>.cr-icon {
+                opacity: 1;
+            }
+
+            .checkbox label input[type="checkbox"]:disabled+.cr {
+                opacity: .5;
+            }
+
+        }
+    }
+}
+
+/* Medium devices (laptops, 992px and up) */
+@media only screen and (min-width: @screen-md-min) {
+
+    .card-action-chamber {
+        .row {
+            .col.button-container {
+                .sep {
+                    margin-left: 5px;
+                }
+            }
+        }
+    }
+}
+
+/* Large devices (large desktops, 1920px and up) */
+@media only screen and (min-width: @screen-xl-min) {
+    .card-action-chamber {
+        .row {
+            .col.button-container {
+                .sep {
+                    margin-left: 6px;
+                }
+            }
+        }
+    }
+}

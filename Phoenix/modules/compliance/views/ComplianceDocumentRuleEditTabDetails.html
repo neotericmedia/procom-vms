@@ -1,0 +1,136 @@
+﻿<div class="content-group form-horizontal" data-ng-form="formDetails">
+    <div class="panel">
+        <div class="panel-body">
+            <div class="col-lg-8">
+                <div class="form-group" data-ng-if="scopeUiRoot.actionScope.show.showAddDocumentType">
+                    <label class="col-lg-4 control-label"
+                           title=""
+                           data-original-title=""
+                           data-ng-class="scopeUiRoot.entity.ComplianceDocumentRuleUserDefinedDocumentTypes.length>0?'req-lab-right-valid':'req-lab-right'">Document Type</label>
+                    <div class="col-lg-8" style="padding-right: 0px">
+                        <div class="input-group select2-bootstrap-append">
+                            <ui-select class="form-control" theme="select2"
+                                       data-ng-model="scopeUiRoot.actionScope.event.documentType.currentUserDefinedCodeComplianceDocumentTypeId"
+                                       data-on-select="scopeUiRoot.actionScope.event.documentType.select($item)"
+                                       data-reset-search-input="true"
+                                       data-reset-search-model="true">
+                                <ui-select-match placeholder="-- Select One --">{{$select.selected.Name}}</ui-select-match>
+                                <ui-select-choices repeat="item.Id as item in scopeUiRoot.listUserDefinedCodeComplianceDocumentType | uiSelectChoicesFilteredByUsage : $select.search: scopeUiRoot.entity.ComplianceDocumentRuleUserDefinedDocumentTypes :[1]: 'UserDefinedCodeComplianceDocumentTypeId':'Id':'Name' ">
+                                    <span data-ng-bind-html="item.Name | highlight: $select.search"></span>
+                                </ui-select-choices>
+                            </ui-select>
+                            <span class="input-group-btn">
+                                <button tabindex="-1" data-ng-click="scopeUiRoot.actionScope.event.documentType.currentUserDefinedCodeComplianceDocumentTypeId=undefined" class="btn btn-default"><i class="material-icons md-18">clear</i></button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div data-cg-busy="loadItemsPromise" class="table-responsive">
+                    <table ng-if="scopeUiRoot.entity.ComplianceDocumentRuleUserDefinedDocumentTypes && scopeUiRoot.entity.ComplianceDocumentRuleUserDefinedDocumentTypes.length > 0"
+                     class="table table-striped table-content table-hover" style="background-color: white;">
+                        <thead>
+                            <tr>
+                                <th scope="col">ID<span class="column-sorter"></span></th>
+                                <th scope="col">Document Type<span class="column-sorter"></span></th>
+                                <th scope="col">Document Type Status<span class="column-sorter"></span></th>
+                                <th scope="col">Sample File<span class="column-sorter"></span></th>
+                                <th scope="col" class="text-center">Action<span class="column-sorter"></span></th>
+                            </tr>
+                        </thead>
+                        <tr data-ng-repeat="item in scopeUiRoot.entity.ComplianceDocumentRuleUserDefinedDocumentTypes" data-ng-click="scopeUiRoot.onGo(item)">
+                            <td class="col-lg-1" style="vertical-align: middle;">
+                                {{item.Id}}
+                            </td>
+                            <td class="col-lg-2" style="vertical-align: middle;">
+                                {{item.UserDefinedCodeComplianceDocumentTypeId|lookupnocache:scopeUiRoot.listUserDefinedCodeComplianceDocumentType:'Id':'Name'}}
+                            </td>
+                            <td class="col-lg-2" style="vertical-align: middle;">
+                                {{item.UserDefinedCodeComplianceDocumentTypeId|lookupnocache:scopeUiRoot.listUserDefinedCodeComplianceDocumentType:'Id':'StatusId'|lookupnocache:scopeUiRoot.lists.listUserDefinedCodeComplianceDocumentTypeStatus}}
+                            </td>
+                            <td class="col-lg-1" style="vertical-align: middle;">
+                                {{item.SampleFile}}
+                            </td>
+                            <td class="col-lg-1 text-center" style="vertical-align: middle;">
+                                <button type="button" class="btn btn-material"
+                                        data-ng-click="scopeUiRoot.actionScope.event.documentType.remove(item)"
+                                        data-ng-if="scopeUiRoot.actionScope.show.showDeleteDocumentType"><i class="material-icons">delete</i></button>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="form-group sub-user-row-details">
+                    <h1 class="col-lg-11 panel-title">Document Details</h1>
+                </div>
+                <div class="form-group" data-ng-if="scopeUiRoot.entity.ComplianceDocumentRuleAreaTypeId === ApplicationConstants.ComplianceDocumentRuleAreaType.OrganizationClient">
+                    <label class="col-lg-4 control-label req-lab-right"
+                           for="OrganizationIdClient"
+                           title=""
+                           data-original-title=""
+                           data-for-property="OrganizationIdClient"
+                           data-model-property="scopeUiRoot.entity.OrganizationIdClient">Client Organization</label>
+                    <div style="padding-right: 0px;" class="col-lg-8">
+                        <div class="input-group select2-bootstrap-append">
+                            <ui-select class="form-control" theme="select2"
+                                       name="OrganizationIdClient"
+                                       required="required"
+                                       data-ng-model="scopeUiRoot.entity.OrganizationIdClient"
+                                       data-pt-field-view="scopeUiRoot.ptFieldViewConfigOnChangeStatusId"
+                                       data-pt-field-view-custom="{{scopeUiRoot.entity.OrganizationIdClient | lookupnocache: scopeUiRoot.listOrganizationClient:'Id':'DisplayName'}}"
+                                       data-ng-change="scopeUiRoot.actionScope.event.onChangeOrganizationIdClient()">
+                                <ui-select-match placeholder="-- Select One --">{{$select.selected.DisplayName}}</ui-select-match>
+                                <ui-select-choices repeat="item.Id as item in scopeUiRoot.listOrganizationClient | uiSelectChoicesFilter: $select.search: 'DisplayName'">
+                                    <span data-ng-bind-html="item.DisplayName | highlight: $select.search"></span>
+                                </ui-select-choices>
+                            </ui-select>
+                            <span class="input-group-btn">
+                                <button tabindex="-1" data-ng-click="scopeUiRoot.entity.OrganizationIdClient=null;scopeUiRoot.actionScope.event.onChangeOrganizationIdClient()" class="btn btn-default"><i class="material-icons md-18">clear</i></button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-lg-4 control-label req-lab-right"
+                           for="DisplayName"
+                           title=""
+                           data-original-title=""
+                           data-for-property="DisplayName"
+                           data-model-property="scopeUiRoot.entity.DisplayName">
+                        Name
+                    </label>
+                    <div class="col-lg-8 no-padding-h-r">
+                        <input class="form-control ng-scope"
+                               type="text"
+                               name="DisplayName"
+                               required="required" minlength="3" min="3" maxlength="128" max="128"
+                               data-ng-required="true"
+                               data-required-message="Required"
+                               data-ng-model="scopeUiRoot.entity.DisplayName"
+                               data-control-user-input=""
+                               data-pt-field-view="scopeUiRoot.ptFieldViewConfigOnChangeStatusId">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-lg-4 control-label req-lab-right"
+                           for="Description"
+                           title=""
+                           data-original-title=""
+                           data-for-property="Description"
+                           data-model-property="scopeUiRoot.entity.Description">
+                        Description
+                    </label>
+                    <div class="col-lg-8 no-padding-h-r">
+                        <input class="form-control ng-scope"
+                               type="text"
+                               name="Description"
+                               required="required" minlength="3" min="3" maxlength="255" max="255"
+                               data-ng-required="true"
+                               data-required-message="Required"
+                               data-ng-model="scopeUiRoot.entity.Description"
+                               data-control-user-input=""
+                               data-pt-field-view="scopeUiRoot.ptFieldViewConfigOnChangeStatusId">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,877 @@
+﻿<div data-ng-form="formWorkOrderTimeMaterialInvoice" class="form-horizontal">
+    <div class="content-group ">
+        <div class="content-left">
+            <div class="panel-internal">
+                <div class="form-group">
+                    <div class="col-lg-12">
+                        <h4>Timesheet Methodology &amp; Cycle</h4>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for-property="TimeSheetMethodologyId" for="TimeSheetMethodologyId" data-model-property="CurrentWorkOrderVersion.TimeSheetMethodologyId"
+                        class="col-lg-4 control-label label-to-right req-lab-right" data-original-title="" title="">Timesheet Methodology</label>
+                    <div class="col-lg-8">
+                        <div class="input-group select2-bootstrap-append">
+                            <ui-select name="TimeSheetMethodologyId" data-ng-model="CurrentWorkOrderVersion.TimeSheetMethodologyId" theme="select2" class="form-control"
+                                data-pt-field-view="model.ptFieldViewConfigOnChangeStatusId" required>
+                                <ui-select-match placeholder=" -- select one --">{{$select.selected.text}}</ui-select-match>
+                                <ui-select-choices repeat="item.id as item in lists.workOrderTimesheetMethodologies | uiSelectChoicesFilter: $select.search: 'text'">
+                                    <span data-ng-bind-html="item.text | highlight: $select.search"></span>
+                                </ui-select-choices>
+                            </ui-select>
+                            <span class="input-group-btn">
+                                <button tabindex="-1" data-ng-click="CurrentWorkOrderVersion.TimeSheetMethodologyId=undefined" class="btn btn-default">
+                                    <i class="material-icons md-18">clear</i>
+                                </button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group" data-ng-if="actionButton.timecard.timecardCycle">
+                    <label for-property="TimeSheetCycleId" for="TimeSheetCycleId" data-model-property="CurrentWorkOrderVersion.TimeSheetCycleId"
+                        class="col-lg-4 control-label label-to-right req-lab-right" data-original-title="" title="">Timesheet Cycle</label>
+                    <div class="col-lg-8">
+                        <div class="input-group select2-bootstrap-append">
+                            <ui-select name="TimeSheetCycleId" data-ng-model="CurrentWorkOrderVersion.TimeSheetCycleId" theme="select2" class="form-control"
+                                data-pt-field-view="model.ptFieldViewConfigOnChangeStatusId" required>
+                                <ui-select-match placeholder=" -- select one --">{{$select.selected.text}}</ui-select-match>
+                                <ui-select-choices repeat="item.id as item in lists.workOrderTimesheetCycles | uiSelectChoicesFilter: $select.search: 'text'">
+                                    <span data-ng-bind-html="item.text | highlight: $select.search"></span>
+                                </ui-select-choices>
+                            </ui-select>
+                            <span class="input-group-btn">
+                                <button tabindex="-1" data-ng-click="CurrentWorkOrderVersion.TimeSheetCycleId=undefined" class="btn btn-default">
+                                    <i class="material-icons md-18">clear</i>
+                                </button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Timesheet Approval -->
+        <div class="content-right" data-ng-if="actionButton.timecard.timecardApproval">
+            <div class="panel-internal">
+                <div class="form-group">
+                    <div class="col-lg-12">
+                        <h4>Timesheet Approval</h4>
+                    </div>
+                </div>
+                <!-- approver -->
+                <div class="form-group">
+                    <label for-property="TimeSheetApprovers" for="TimeSheetApprovers" class="col-lg-4 control-label label-to-right" data-original-title=""
+                        title="">Timesheet Approver Definition</label>
+                    <div class="col-lg-8">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div data-ng-repeat="timeSheetApprover in CurrentWorkOrderVersion.TimeSheetApprovers | orderBy: 'Sequence' track by $index"
+                        data-ng-form="timeSheetApprovalDefinition">
+                        <div role="form">
+                            <div class="form-group">
+                                <label for-property="TimeSheetApprovers" for="TimeSheetApprovers" data-model-property="timeSheetApprover.UserProfileId" class="col-lg-4 control-label label-to-right req-lab-right"
+                                    data-original-title="" title="">Client Approver</label>
+                                <div class="{{ $index ? 'col-xs-10 col-sm-11 col-lg-6 col-xl-7' : 'col-lg-8' }}">
+                                    <div class="input-group select2-bootstrap-append">
+
+                                        <ui-select name="TimeSheetApprovers" theme="select2" class="form-control" required data-ng-model="timeSheetApprover.UserProfileId"
+                                            data-pt-field-view="model.ptFieldViewConfigOnChangeStatusId" data-pt-field-view-custom="{{timeSheetApprover.UserProfileId | lookupnocache:CurrentWorkOrderVersion.profilesListForApproval.Client:'Id':'Contact.FullName'}} - {{timeSheetApprover.UserProfileId}}">
+
+                                            <ui-select-match placeholder="Approver Name Search">{{$select.selected.Contact.FullName}} - {{$select.selected.Contact.Id}}</ui-select-match>
+                                            <ui-select-choices repeat="item.Id as item in CurrentWorkOrderVersion.profilesListForApproval.Client | uiSelectChoicesFilter: $select.search: 'Contact.FullName': 'Contact.Id'">
+                                                <span data-ng-bind-html="item.Contact.FullName | highlight: $select.search"></span>
+                                                <span data-ng-bind-html="' - ' + item.Contact.Id  | highlight: $select.search"></span>
+                                            </ui-select-choices>
+
+                                        </ui-select>
+
+                                        <span class="input-group-btn">
+                                            <button tabindex="-1" data-ng-click="timeSheetApprover.UserProfileId = null" class="btn btn-default">
+                                                <i class="material-icons md-18">clear</i>
+                                            </button>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-xs-1 pull-right" data-ng-if="$index">
+                                    <button type="button" data-ng-if="actionButton.show.workOrderAddRemoveSubEntities" class="btn btn-default btn-material pull-right"
+                                        data-ng-click="removeTimeSheetApproverDefinition($index)">
+                                        <i class="material-icons">delete</i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="col-lg-2 pull-right" data-ng-if="$last">
+                                <button type="button" class="btn btn-default btn-material pull-right add-btn-group" data-ng-if="actionButton.show.workOrderAddRemoveSubEntities"
+                                    data-ng-click="addTimeSheetApproverDefinition(billingInfo)" title="Add a new Timesheet Approver">
+                                    <i class="material-icons">add</i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- approver flow -->
+                <div class="form-group" data-ng-if="actionButton.timecard.approverFlow">
+                    <label for-property="TimeSheetApprovalFlowId" for="TimeSheetApprovalFlowId" data-model-property="CurrentWorkOrderVersion.TimeSheetApprovalFlowId"
+                        class="col-lg-4 control-label label-to-right req-lab-right" data-original-title="" title="">Timecard Approval Flow Type</label>
+                    <div class="col-lg-8">
+                        <div class="input-group select2-bootstrap-append">
+                            <ui-select name="TimeSheetApprovalFlowId" data-ng-model="CurrentWorkOrderVersion.TimeSheetApprovalFlowId" theme="select2"
+                                class="form-control" data-pt-field-view="model.ptFieldViewConfigOnChangeStatusId" required>
+                                <ui-select-match placeholder=" -- select one --">{{$select.selected.text}}</ui-select-match>
+                                <ui-select-choices repeat="item.id as item in lists.workOrderTimesheetApprovalFlows | uiSelectChoicesFilter: $select.search: 'text'">
+                                    <span data-ng-bind-html="item.text | highlight: $select.search"></span>
+                                </ui-select-choices>
+                            </ui-select>
+                            <span class="input-group-btn">
+                                <button tabindex="-1" data-ng-click="CurrentWorkOrderVersion.TimeSheetApprovalFlowId=undefined" class="btn btn-default">
+                                    <i class="material-icons md-18">clear</i>
+                                </button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="content-group" data-ng-if="actionButton.timecard.projectsAndCoding || actionButton.timecard.configurationAndDescriptors">
+
+        <!-- Projects & Coding -->
+        <div class="content-left" data-ng-if="actionButton.timecard.projectsAndCoding">
+            <div class="panel-internal">
+                <div class="form-group">
+                    <div class="col-lg-12">
+                        <h4>Projects & Coding</h4>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <!-- IsTimeSheetUsesProjects -->
+                    <label for-property="IsTimeSheetUsesProjects" for="IsTimeSheetUsesProjects" data-model-property="CurrentWorkOrderVersion.IsTimeSheetUsesProjects"
+                        class="col-lg-4 control-label label-to-right req-lab-right" data-original-title="" title="">
+                        Timesheet Uses Projects?
+                    </label>
+                    <div class="col-lg-8">
+                        <pt-input-radio name="IsTimeSheetUsesProjects" data-ng-required="true" data-template-type="input-radio" data-ng-model="CurrentWorkOrderVersion.IsTimeSheetUsesProjects"
+                            data-options="[{ key: true, value: 'Yes' },{ key: false, value: 'No' }]" data-pt-field-view="model.ptFieldViewConfigOnChangeStatusId"
+                        />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Configuration & Descriptors -->
+        <div class="content-right" data-ng-if="actionButton.timecard.configurationAndDescriptors">
+            <div class="panel-internal">
+                <div class="form-group">
+                    <div class="col-lg-12">
+                        <h4>Configuration &amp; Descriptors</h4>
+                    </div>
+                </div>
+                <div class="form-group" data-ng-if="actionButton.timecard.thirdPartyWorkerID">
+                    <label for-property="VmsWorkOrderReference" for="VmsWorkOrderReference" data-model-property="CurrentWorkOrderVersion.VmsWorkOrderReference"
+                        class="col-lg-4 control-label label-to-right req-lab-right" data-original-title="" title="">Third Party Worker ID</label>
+                    <div class="col-lg-8">
+                        <div class="input-group">
+                            <input type="text" placeholder="Third Party Worker ID" ng-model="CurrentWorkOrderVersion.VmsWorkOrderReference" name="VmsWorkOrderReference"
+                                data-ng-maxlength="64" maxlength="64" data-pt-field-view="model.ptFieldViewConfigOnChangeStatusId"
+                                class="form-control ng-scope" required data-pt-field-view-custom="{ {CurrentWorkOrderVersion.VmsWorkOrderReference} }&nbsp;"
+                            />
+                            <span class="input-group-addon" style="padding:3px 6px;">
+                                <i class="material-icons">account_box</i>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group" data-ng-if="actionButton.timecard.displayEstimatedInvoiceAmount">
+                    <!-- IsDisplayEstimatedInvoiceAmount -->
+                    <label for-property="IsDisplayEstimatedInvoiceAmount" for="IsDisplayEstimatedInvoiceAmount" data-model-property="CurrentWorkOrderVersion.IsDisplayEstimatedInvoiceAmount"
+                        class="col-lg-4 control-label label-to-right req-lab-right" data-original-title="" title="">
+                        Display Estimated Invoice Amount
+                    </label>
+                    <div class="col-lg-8">
+                        <pt-input-radio name="IsDisplayEstimatedInvoiceAmount" data-ng-required="true" data-template-type="input-radio" data-ng-model="CurrentWorkOrderVersion.IsDisplayEstimatedInvoiceAmount"
+                            data-options="[{ key: true, value: 'Yes' },{ key: false, value: 'No' }]" data-pt-field-view="model.ptFieldViewConfigOnChangeStatusId"
+                        />
+                    </div>
+                </div>
+                <div class="form-group" data-ng-if="actionButton.timecard.displayEstimatedPaymentAmount">
+                    <!-- IsDisplayEstimatedPaymentAmount -->
+                    <label for-property="IsDisplayEstimatedPaymentAmount" for="IsDisplayEstimatedPaymentAmount" data-model-property="CurrentWorkOrderVersion.IsDisplayEstimatedPaymentAmount"
+                        class="col-lg-4 control-label label-to-right req-lab-right" data-original-title="" title="">
+                        Display Estimated Payment Amount
+                    </label>
+                    <div class="col-lg-8">
+                        <pt-input-radio name="IsDisplayEstimatedPaymentAmount" data-ng-required="true" data-template-type="input-radio" data-ng-model="CurrentWorkOrderVersion.IsDisplayEstimatedPaymentAmount"
+                            data-options="[{ key: true, value: 'Yes' },{ key: false, value: 'No' }]" data-pt-field-view="model.ptFieldViewConfigOnChangeStatusId"
+                        />
+                    </div>
+                </div>
+                <div class="form-group" data-ng-if="actionButton.timecard.timecardDescription">
+                    <label for-property="TimeSheetDescription" for="TimeSheetDescription" data-model-property="CurrentWorkOrderVersion.TimeSheetDescription"
+                        class="col-lg-4 label-to-right" data-original-title="" title="">Timecard Description</label>
+                    <div class="col-lg-8">
+                        <input type="text" ng-model="CurrentWorkOrderVersion.TimeSheetDescription" name="TimeSheetDescription" data-pt-field-view="model.ptFieldViewConfigOnChangeStatusId"
+                            class="form-control ng-scope" data-ng-maxlength="200" maxlength="200">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="content-group ">
+        <div class="content-left">
+            <div class="panel-internal" data-ng-form="billingInfosForm">
+                <div class="form-group">
+                    <div class="col-lg-12">
+                        <h4>Billing Invoice</h4>
+                    </div>
+                </div>
+                <div data-ng-repeat="billingInfo in CurrentWorkOrderVersion.BillingInfoes" data-ng-form="billingInfoForm" class="">
+                    <div role="form">
+                        <div class="form-group">
+                            <div class="col-lg-8">
+                                <p class="form-control-static">
+                                    <a data-ui-sref="org.edit.details({organizationId: billingInfo.OrganizationIdClient })">{{billingInfo.OrganizationClientDisplayName}} - {{billingInfo.OrganizationIdClient}}</a>
+                                </p>
+                            </div>
+                        </div>
+                        <div data-ng-repeat="billingInvoice in billingInfo.BillingInvoices | filter: { InvoiceTypeId : 1 }">
+                            <div class="form-group">
+                                <label for-property="BillingInvoicePresentationStyleId" for="BillingInvoicePresentationStyleId" data-model-property="billingInvoice.BillingInvoicePresentationStyleId"
+                                    class="col-lg-4 control-label label-to-right req-lab-right" data-original-title="" title="">Invoicing Type</label>
+                                <div class="col-lg-8">
+                                    <div class="input-group select2-bootstrap-append">
+                                        <ui-select name="BillingInvoicePresentationStyleId" data-ng-model="billingInvoice.BillingInvoicePresentationStyleId" theme="select2"
+                                            class="form-control" data-pt-field-view="model.ptFieldViewConfigOnChangeStatusId"
+                                            ng-required="CurrentWorkOrderVersion.ValidateComplianceDraft">
+                                            <ui-select-match placeholder=" -- select one --">{{$select.selected.text}}</ui-select-match>
+                                            <ui-select-choices repeat="item.id as item in lists.billingInvoicePresentationStyles | uiSelectChoicesFilter: $select.search: 'text'">
+                                                <span data-ng-bind-html="item.text | highlight: $select.search"></span>
+                                            </ui-select-choices>
+                                        </ui-select>
+                                        <span class="input-group-btn">
+                                            <button tabindex="-1" data-ng-click="billingInvoice.BillingInvoicePresentationStyleId=undefined" class="btn btn-default">
+                                                <i class="material-icons md-18">clear</i>
+                                            </button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" ng-if="(billingInvoice.BillingInvoicePresentationStyleId == ApplicationConstants.BillingInvoicePresentationStyles.Consolidated)">
+                                <label for-property="BillingConsolidationTypeId" for="BillingConsolidationTypeId" data-model-property="billingInvoice.BillingConsolidationTypeId"
+                                    class="col-lg-4 control-label label-to-right req-lab-right" data-watch-property="billingInvoice.BillingInvoicePresentationStyleId"
+                                    data-required-condition="CurrentWorkOrderVersion.ValidateComplianceDraft && billingInvoice.BillingInvoicePresentationStyleId == ApplicationConstants.BillingInvoicePresentationStyles.Consolidated"
+                                    data-original-title="" title="">Consolidation Type</label>
+                                <div class="col-lg-8">
+                                    <div class="input-group select2-bootstrap-append">
+                                        <ui-select name="BillingConsolidationTypeId" data-ng-model="billingInvoice.BillingConsolidationTypeId" theme="select2" class="form-control"
+                                            data-pt-field-view="model.ptFieldViewConfigOnChangeStatusId" data-ng-required="CurrentWorkOrderVersion.ValidateComplianceDraft && billingInvoice.BillingInvoicePresentationStyleId==ApplicationConstants.BillingInvoicePresentationStyles.Consolidated">
+                                            <ui-select-match placeholder=" -- select one --">{{$select.selected.text}}</ui-select-match>
+                                            <ui-select-choices repeat="item.id as item in lists.billingConsolidationTypes | uiSelectChoicesFilter: $select.search: 'text'">
+                                                <span data-ng-bind-html="item.text | highlight: $select.search"></span>
+                                            </ui-select-choices>
+                                        </ui-select>
+                                        <span class="input-group-btn">
+                                            <button tabindex="-1" data-ng-click="billingInvoice.BillingConsolidationTypeId=undefined" class="btn btn-default">
+                                                <i class="material-icons md-18">clear</i>
+                                            </button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group" data-ng-if="CurrentWorkOrderVersion.IsTimeSheetUsesProjects === true && (CurrentWorkOrderVersion.TimeSheetMethodologyId == ApplicationConstants.TimesheetMethodology.Online || CurrentWorkOrderVersion.TimeSheetMethodologyId == ApplicationConstants.TimesheetMethodology.Offline)">
+                                <label for-property="BillingTransactionGenerationMethodId" for="BillingTransactionGenerationMethodId" data-model-property="billingInvoice.BillingTransactionGenerationMethodId"
+                                    class="col-lg-4 control-label label-to-right req-lab-right" data-original-title="" title="">Timesheet Billing</label>
+                                <div class="col-lg-8">
+                                    <pt-input-radio name="BillingTransactionGenerationMethodId" data-ng-required="true" data-multiline="true" data-template-type="input-radio"
+                                        data-ng-model="billingInvoice.BillingTransactionGenerationMethodId" data-options="lists.billingTransactionGenerationMethod"
+                                        data-pt-field-view="model.ptFieldViewConfigOnChangeStatusId" />
+                                </div>
+
+                            </div>
+
+                            <div class="form-group">
+                                <label for-property="IsUsesAlternateBilling" for="IsUsesAlternateBilling" data-model-property="billingInvoice.IsUsesAlternateBilling"
+                                    class="col-lg-4 control-label label-to-right req-lab-right" data-original-title="" title="">Have Alternate Bill</label>
+                                <div class="col-lg-8">
+                                    <pt-input-radio name="IsUsesAlternateBilling" data-ng-required="true" data-template-type="input-radio" data-ng-model="billingInvoice.IsUsesAlternateBilling"
+                                        data-options="[{ key: true, value: 'Yes' },{ key: false, value: 'No' }]" data-pt-field-view="model.ptFieldViewConfigOnChangeStatusId"
+                                    />
+                                </div>
+
+                            </div>
+                            <div class="form-group" data-ng-if="billingInvoice.IsUsesAlternateBilling">
+                                <label for-property="OrganizatonClientRoleAlternateBillingId" for="OrganizatonClientRoleAlternateBillingId" data-model-property="billingInvoice.OrganizatonClientRoleAlternateBillingId"
+                                    class="col-lg-4 control-label label-to-right req-lab-right" data-original-title="" title="">Billing Client</label>
+                                <div class="col-lg-8">
+                                    <div class="input-group select2-bootstrap-append">
+                                        <ui-select name="OrganizatonClientRoleAlternateBillingId" data-ng-model="billingInvoice.OrganizatonClientRoleAlternateBillingId"
+                                            theme="select2" class="form-control" data-pt-field-view="model.ptFieldViewConfigOnChangeStatusId"
+                                            required>
+                                            <ui-select-match placeholder=" -- select one --">{{$select.selected.text}}</ui-select-match>
+                                            <ui-select-choices repeat="item.id as item in billingInfo.orgClientAB | uiSelectChoicesFilter: $select.search: 'text'">
+                                                <span data-ng-bind-html="item.text | highlight: $select.search"></span>
+                                            </ui-select-choices>
+                                        </ui-select>
+                                        <span class="input-group-btn">
+                                            <button tabindex="-1" data-ng-click="billingInvoice.OrganizatonClientRoleAlternateBillingId=undefined" class="btn btn-default">
+                                                <i class="material-icons md-18">clear</i>
+                                            </button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for-property="BillingFrequencyId" for="BillingFrequencyId" data-model-property="billingInvoice.BillingFrequencyId"
+                                    class="col-lg-4 control-label label-to-right req-lab-right" data-original-title="" title="">Billing Frequency</label>
+                                <div class="col-lg-8">
+                                    <div class="input-group select2-bootstrap-append">
+                                        <ui-select name="BillingFrequencyId" data-ng-model="billingInvoice.BillingFrequencyId" theme="select2" class="form-control"
+                                            data-pt-field-view="model.ptFieldViewConfigOnChangeStatusId" required>
+                                            <ui-select-match placeholder=" -- select one --">{{$select.selected.text}}</ui-select-match>
+                                            <ui-select-choices repeat="item.id as item in lists.workOrderBillingFrequencies | uiSelectChoicesFilter: $select.search: 'text'">
+                                                <span data-ng-bind-html="item.text | highlight: $select.search"></span>
+                                            </ui-select-choices>
+                                        </ui-select>
+                                        <span class="input-group-btn">
+                                            <button tabindex="-1" data-ng-click="billingInvoice.BillingFrequencyId=undefined" class="btn btn-default">
+                                                <i class="material-icons md-18">clear</i>
+                                            </button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for-property="BillingInvoiceTermsId" for="BillingInvoiceTermsId" data-model-property="billingInvoice.BillingInvoiceTermsId"
+                                    class="col-lg-4 control-label label-to-right req-lab-right" data-original-title="" title="">Payment Terms</label>
+                                <div class="col-lg-8">
+                                    <div class="input-group select2-bootstrap-append">
+                                        <ui-select name="BillingInvoiceTermsId" data-ng-model="billingInvoice.BillingInvoiceTermsId" theme="select2" class="form-control"
+                                            data-pt-field-view="model.ptFieldViewConfigOnChangeStatusId" ng-required="CurrentWorkOrderVersion.ValidateComplianceDraft">
+                                            <ui-select-match placeholder=" -- select one --">{{$select.selected.text}}</ui-select-match>
+                                            <ui-select-choices repeat="item.id as item in lists.workOrderBillingInvoiceTerms | uiSelectChoicesFilter: $select.search: 'text'">
+                                                <span data-ng-bind-html="item.text | highlight: $select.search"></span>
+                                            </ui-select-choices>
+                                        </ui-select>
+                                        <span class="input-group-btn">
+                                            <button tabindex="-1" data-ng-click="billingInvoice.BillingInvoiceTermsId=undefined" class="btn btn-default">
+                                                <i class="material-icons md-18">clear</i>
+                                            </button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for-property="BillingInvoiceTemplateId" for="BillingInvoiceTemplateId" data-model-property="billingInvoice.BillingInvoiceTemplateId"
+                                    class="col-lg-4 control-label label-to-right req-lab-right" data-original-title="" title="">Invoice Template</label>
+                                <div class="col-lg-8">
+                                    <div class="input-group select2-bootstrap-append">
+                                        <ui-select name="BillingInvoiceTemplateId" data-ng-model="billingInvoice.BillingInvoiceTemplateId" theme="select2" class="form-control"
+                                            data-pt-field-view="model.ptFieldViewConfigOnChangeStatusId" ng-required="CurrentWorkOrderVersion.ValidateComplianceDraft">
+                                            <ui-select-match placeholder=" -- select one --">{{$select.selected.text}}</ui-select-match>
+                                            <ui-select-choices repeat="item.id as item in lists.workOrderBillingInvoiceTemplates | uiSelectChoicesFilter: $select.search: 'text'">
+                                                <span data-ng-bind-html="item.text | highlight: $select.search"></span>
+                                            </ui-select-choices>
+                                        </ui-select>
+                                        <span class="input-group-btn">
+                                            <button tabindex="-1" data-ng-click="billingInvoice.BillingInvoiceTemplateId=undefined" class="btn btn-default">
+                                                <i class="material-icons md-18">clear</i>
+                                            </button>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2" data-ng-if="false">
+                                    <button data-ng-click="previewBillingInvoiceTemplate()" class="btn btn-clouds pull-right" data-ng-if="actionButton.show.workOrderAddRemoveSubEntities">Preview</button>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-lg-4 control-label label-to-right" for-property="InvoiceNote1" for="InvoiceNote1" data-model-property="billingInvoice.InvoiceNote1"
+                                    data-original-title="" title="">Invoice Notes</label>
+                                <div class="col-lg-8">
+
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-lg-4 control-label label-to-right" for-property="InvoiceNote1" for="InvoiceNote1" data-model-property="billingInvoice.InvoiceNote1"
+                                    data-original-title="" title="">Invoice Note 1</label>
+                                <div class="col-lg-8">
+                                    <div class="input-group">
+                                        <input class="form-control ng-scope" type="text" name="InvoiceNote1" data-ng-model="billingInvoice.InvoiceNote1" data-pt-field-view="model.ptFieldViewConfigOnChangeStatusId"
+                                            data-ng-maxlength="128" maxlength="128" data-pt-field-view-custom="{ {billingInvoice.InvoiceNote1} }&nbsp;"
+                                        />
+                                        <span class="input-group-addon" style="padding:3px 6px;">
+                                            <i class="material-icons">note</i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-lg-2 pull-right">
+                                    <button data-ng-disabled="actionButton.timecard.billingInfoAddDisable" data-ng-if="!actionButton.timecard.billingInfoNote2 && actionButton.show.workOrderAddRemoveSubEntities"
+                                        type="button" class="btn btn-default btn-material pull-right add-btn-group" data-ng-click="addTimesheetBillingInvoiceNote()"
+                                        style="margin-top: 5px;">
+                                        <i class="material-icons">add</i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="form-group" data-ng-if="actionButton.timecard.billingInfoNote2">
+                                <label class="col-lg-4 control-label label-to-right" for-property="InvoiceNote2" for="InvoiceNote2" data-model-property="billingInvoice.InvoiceNote2"
+                                    data-original-title="" title="">Invoice Note 2</label>
+                                <div class="col-xs-10 col-sm-11 col-lg-6 col-xl-7">
+                                    <input class="form-control ng-scope" type="text" name="InvoiceNote2" data-ng-model="billingInvoice.InvoiceNote2" data-pt-field-view="model.ptFieldViewConfigOnChangeStatusId"
+                                        data-ng-maxlength="128" maxlength="128" />
+                                </div>
+                                <div class="col-xs-1 pull-right">
+                                    <button data-ng-if="actionButton.show.workOrderAddRemoveSubEntities" type="button" class="btn btn-default btn-material pull-right"
+                                        data-ng-click="removeTimesheetBillingInvoiceNote(1)">
+                                        <i class="material-icons">delete</i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="form-group" data-ng-if="actionButton.timecard.billingInfoNote2 && !actionButton.timecard.billingInfoNote3 && actionButton.show.workOrderAddRemoveSubEntities">
+                                <div class="col-lg-2 pull-right">
+                                    <button data-ng-disabled="actionButton.timecard.billingInfoAddDisable" type="button" class="btn btn-default btn-material pull-right add-btn-group"
+                                        data-ng-click="addTimesheetBillingInvoiceNote()">
+                                        <i class="material-icons">add</i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="form-group" data-ng-if="actionButton.timecard.billingInfoNote3">
+                                <label class="col-lg-4 control-label label-to-right" for-property="InvoiceNote3" for="InvoiceNote3" data-model-property="billingInvoice.InvoiceNote3"
+                                    data-original-title="" title="">Invoice Note 3</label>
+                                <div class="col-xs-10 col-sm-11 col-lg-6 col-xl-7">
+                                    <input class="form-control ng-scope" type="text" name="InvoiceNote3" data-ng-model="billingInvoice.InvoiceNote3" data-pt-field-view="model.ptFieldViewConfigOnChangeStatusId"
+                                        data-ng-maxlength="128" maxlength="128" />
+                                </div>
+                                <div class="col-xs-1 pull-right">
+                                    <button data-ng-if="actionButton.show.workOrderAddRemoveSubEntities" type="button" class="btn btn-default btn-material pull-right"
+                                        data-ng-click="removeTimesheetBillingInvoiceNote(2)">
+                                        <i class="material-icons">delete</i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="form-group" data-ng-if="actionButton.timecard.billingInfoNote3 && !actionButton.timecard.billingInfoNote4 && actionButton.show.workOrderAddRemoveSubEntities">
+                                <div class="col-lg-2 pull-right">
+                                    <button data-ng-disabled="actionButton.timecard.billingInfoAddDisable" type="button" class="btn btn-default btn-material pull-right add-btn-group"
+                                        data-ng-click="addTimesheetBillingInvoiceNote()">
+                                        <i class="material-icons">add</i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="form-group" data-ng-if="actionButton.timecard.billingInfoNote4">
+                                <label class="col-lg-4 control-label label-to-right" for-property="InvoiceNote4" for="InvoiceNote4" data-model-property="billingInvoice.InvoiceNote4"
+                                    data-original-title="" title="">Invoice Note 4</label>
+                                <div class="col-xs-10 col-sm-11 col-lg-6 col-xl-7">
+                                    <input class="form-control ng-scope" type="text" name="InvoiceNote4" data-ng-model="billingInvoice.InvoiceNote4" data-pt-field-view="model.ptFieldViewConfigOnChangeStatusId"
+                                        data-ng-maxlength="128" maxlength="128" />
+                                </div>
+                                <div class="col-xs-1 pull-right">
+                                    <button data-ng-if="actionButton.show.workOrderAddRemoveSubEntities" type="button" class="btn btn-default btn-material pull-right"
+                                        data-ng-click="removeTimesheetBillingInvoiceNote(3)">
+                                        <i class="material-icons">delete</i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="panel-internal" data-ng-form="billingRecipientsForm">
+                                <div class="form-group">
+                                    <div class="col-lg-12">
+                                        <h4>Recipients</h4>
+                                    </div>
+                                </div>
+                                <div data-ng-repeat="billingRecipient in billingInvoice.BillingRecipients" data-ng-form="billingRecipientForm">
+                                    <div role="form">
+                                        <div data-ng-if="billingInvoice.BillingRecipients[0]==billingRecipient">
+                                            <div class="form-group">
+                                                <label for-property="UserProfileId" for="UserProfileId" data-model-property="billingRecipient.UserProfileId" class="col-lg-4 control-label label-to-right req-lab-right"
+                                                    data-original-title="" title="">Invoice Recipient</label>
+                                                <div class="col-lg-8">
+                                                    <div class="input-group select2-bootstrap-append">
+                                                        <ui-select name="UserProfileId" data-ng-model="billingRecipient.UserProfileId" theme="select2" class="form-control" required
+                                                            data-pt-field-view="model.ptFieldViewConfigOnChangeStatusId"
+                                                            data-pt-field-view-custom="{{billingRecipient.UserProfileId|lookupnocache:CurrentWorkOrderVersion.profilesListForApproval.Client:'Id':'Contact.FullName'}} - {{billingRecipient.UserProfileId}}">
+
+                                                            <ui-select-match placeholder=" -- select one --">{{$select.selected.Contact.FullName}} - {{$select.selected.Contact.Id}}</ui-select-match>
+                                                            <ui-select-choices repeat="item.Id as item in CurrentWorkOrderVersion.profilesListForApproval.Client | uiSelectChoicesFilter: $select.search: 'Contact.FullName': 'Contact.Id'">
+                                                                <span data-ng-bind-html="item.Contact.FullName | highlight: $select.search"></span>
+                                                                <span data-ng-bind-html="' - ' + item.Contact.Id  | highlight: $select.search"></span>
+                                                            </ui-select-choices>
+                                                        </ui-select>
+                                                        <span class="input-group-btn">
+                                                            <button tabindex="-1" data-ng-click="billingRecipient.UserProfileId=undefined" class="btn btn-default">
+                                                                <i class="material-icons md-18">clear</i>
+                                                            </button>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for-property="DeliveryMethodId" for="DeliveryMethodId" data-model-property="billingRecipient.DeliveryMethodId" class="col-lg-4 control-label label-to-right req-lab-right"
+                                                    data-original-title="" title="">Delivery Strategy</label>
+                                                <div class="col-lg-8">
+                                                    <div class="input-group select2-bootstrap-append">
+                                                        <ui-select name="DeliveryMethodId" data-ng-model="billingRecipient.DeliveryMethodId" theme="select2" class="form-control"
+                                                            data-pt-field-view="model.ptFieldViewConfigOnChangeStatusId"
+                                                            data-ng-change="onDeliveryMethodChange($select, billingRecipient)" required>
+                                                            <ui-select-match placeholder=" -- select one --">{{$select.selected.text}}</ui-select-match>
+                                                            <ui-select-choices repeat="item.id as item in lists.workOrderDeliveryMethods | uiSelectChoicesFilter: $select.search: 'text'">
+                                                                <span data-ng-bind-html="item.text | highlight: $select.search"></span>
+                                                            </ui-select-choices>
+                                                        </ui-select>
+                                                        <span class="input-group-btn">
+                                                            <button tabindex="-1" data-ng-click="billingRecipient.DeliveryMethodId=undefined" class="btn btn-default">
+                                                                <i class="material-icons md-18">clear</i>
+                                                            </button>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group" data-ng-if="billingRecipient.DeliveryMethodId===DeliveryMethod.InternalProfile">
+                                                <label for-property="DeliverToUserProfileId" for="DeliverToUserProfileId" data-model-property="billingRecipient.DeliverToUserProfileId" class="col-lg-4 control-label label-to-right req-lab-right"
+                                                    data-original-title="" title="">CC Delivery To</label>
+                                                <div class="col-lg-8">
+                                                    <div class="input-group select2-bootstrap-append">
+                                                        <ui-select name="DeliverToUserProfileId" data-ng-model="billingRecipient.DeliverToUserProfileId" theme="select2" class="form-control"
+                                                            data-pt-field-view="model.ptFieldViewConfigOnChangeStatusId"
+                                                            data-pt-field-view-custom="{{billingRecipient.DeliverToUserProfileId | lookupnocache:lists.activeUserProfileList:'Id':'Contact.FullName'}} {{ billingRecipient.DeliverToUserProfileId && ' - ' }} {{billingRecipient.DeliverToUserProfileId | lookupnocache:lists.activeUserProfileList:'Id':'Contact.Id'}}"
+                                                            data-ng-change="onDeliveryToChange($select, billingRecipient)" required>
+                                                            <ui-select-match placeholder=" -- select one --">{{$select.selected.Contact.FullName}} - {{$select.selected.Contact.Id}}</ui-select-match>
+                                                            <ui-select-choices repeat="item.Id as item in lists.activeUserProfileList | uiSelectChoicesFilter: $select.search: 'Contact.FullName': 'Contact.Id'">
+                                                                <span data-ng-bind-html="item.Contact.FullName | highlight: $select.search"></span>
+                                                                <span data-ng-bind-html="' - ' + item.Contact.Id  | highlight: $select.search"></span>
+                                                            </ui-select-choices>
+                                                        </ui-select>
+                                                        <span class="input-group-btn">
+                                                            <button tabindex="-1" data-ng-click="billingRecipient.DeliverToUserProfileId=undefined" class="btn btn-default">
+                                                                <i class="material-icons md-18">clear</i>
+                                                            </button>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div data-ng-if="billingInvoice.BillingRecipients[0]!=billingRecipient" style="margin: 20px 0 0;">
+                                            <div class="form-group">
+                                                <div data-ng-if="!billingRecipient.RecipientTypeId||billingRecipient.RecipientTypeId==0">
+                                                    <label for-property="RecipientTypeId" for="RecipientTypeId" data-model-property="billingRecipient.RecipientTypeId" class="col-lg-4 control-label label-to-right req-lab-right"
+                                                        data-original-title="" title="" required>Recipient Type</label>
+                                                    <div class="col-xs-10 col-sm-11 col-lg-6 col-xl-7">
+                                                        <div class="input-group select2-bootstrap-append">
+                                                            <ui-select name="RecipientTypeId" data-ng-model="billingRecipient.RecipientTypeId" theme="select2" class="form-control" required
+                                                                data-pt-field-view="model.ptFieldViewConfigOnChangeStatusId"
+                                                                data-pt-field-view-custom="{{paymentContact.UserProfileId|lookupnocache:paymentInfo.profilesListForPaymentOrganization:'Id':'Contact.FullName':'ContactId'}} ({{paymentContact.UserProfileId|lookupnocache:paymentInfo.profilesListForPaymentOrganization:'Id':'ProfileTypeId'|lookupnocache:lists.profileTypeList}} - {{paymentContact.UserProfileId}})" >
+                                                                <ui-select-match placeholder=" -- select one --">{{$select.selected.text}}</ui-select-match>
+                                                                <ui-select-choices repeat="item.id as item in lists.workOrderBillingInvoiceRecipientTypes | uiSelectChoicesFilteredByUsage : $select.search: [1] : billingRecipient: 'RecipientTypeId': 'id': 'text'">
+                                                                    <span data-ng-bind-html="item.text | highlight: $select.search"></span>
+                                                                </ui-select-choices>
+                                                            </ui-select>
+                                                            <span class="input-group-btn">
+                                                                <button tabindex="-1" data-ng-click="billingRecipient.RecipientTypeId=undefined" class="btn btn-default">
+                                                                    <i class="material-icons md-18">clear</i>
+                                                                </button>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                    <!--<div class="col-xs-1 pull-right" data-ng-if="billingInvoice.BillingRecipients.length>1 && (CurrentWorkOrderVersion.StatusId == 1 || CurrentWorkOrderVersion.StatusId == 3) ">
+                                <button type="button" class="btn btn-default btn-material pull-right" data-ng-click="removeBillingRecipient(billingInvoice,billingRecipient)" ><i class="material-icons">delete</i></button>
+                            </div>-->
+                                                </div>
+                                                <div data-ng-if="billingRecipient.RecipientTypeId>0">
+                                                    <label class="col-lg-4 control-label label-to-right req-lab-right" data-model-property="billingRecipient.UserProfileId" for="UserProfileId"
+                                                        for-property="UserProfileId">{{billingRecipient.RecipientTypeId | lookup:lists.workOrderBillingRecipientTypes}}</label>
+                                                    <div class="col-lg-8">
+                                                        <div class="input-group select2-bootstrap-append">
+                                                            <ui-select name="UserProfileId" data-ng-model="billingRecipient.UserProfileId" theme="select2" class="form-control" required
+                                                                data-pt-field-view="model.ptFieldViewConfigOnChangeStatusId"
+                                                                data-pt-field-view-custom="{{billingRecipient.UserProfileId|lookupnocache:CurrentWorkOrderVersion.profilesListForApproval.Client:'Id':'Contact.FullName':'ContactId'}} ({{billingRecipient.UserProfileId|lookupnocache:CurrentWorkOrderVersion.profilesListForApproval.Client:'Id':'ProfileTypeId'|lookupnocache:lists.profileTypeList}} - {{billingRecipient.UserProfileId}})">
+
+                                                                <ui-select-match placeholder=" -- select one --">{{$select.selected.Contact.FullName}} - {{$select.selected.Contact.Id}}</ui-select-match>
+                                                                <ui-select-choices repeat="item.Id as item in CurrentWorkOrderVersion.profilesListForApproval.Client | uiSelectChoicesFilter: $select.search: 'Contact.FullName': 'Contact.Id'">
+                                                                    <span data-ng-bind-html="item.Contact.FullName | highlight: $select.search"></span>
+                                                                    <span data-ng-bind-html="' - ' + item.Contact.Id  | highlight: $select.search"></span>
+                                                                </ui-select-choices>
+
+                                                            </ui-select>
+                                                            <span class="input-group-btn">
+                                                                <button tabindex="-1" data-ng-click="billingRecipient.UserProfileId=undefined" class="btn btn-default">
+                                                                    <i class="material-icons md-18">clear</i>
+                                                                </button>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                    <!--<div class="col-lg-1" data-ng-if="billingInvoice.BillingRecipients.length>1 && (CurrentWorkOrderVersion.StatusId == 1 || CurrentWorkOrderVersion.StatusId == 3) ">
+                                <button type="button" class="btn btn-default btn-material pull-right" data-ng-click="removeBillingRecipient(billingInvoice,billingRecipient)" ><i class="material-icons">delete</i></button>
+                            </div>-->
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for-property="DeliveryMethodId" for="DeliveryMethodId" data-model-property="billingRecipient.DeliveryMethodId" class="col-lg-4 control-label label-to-right req-lab-right"
+                                                    data-original-title="" title="">Delivery Strategy</label>
+                                                <div class="col-xs-10 col-sm-11 col-lg-6 col-xl-7">
+                                                    <div class="input-group select2-bootstrap-append">
+                                                        <ui-select name="DeliveryMethodId" data-ng-model="billingRecipient.DeliveryMethodId" theme="select2" class="form-control"
+                                                            data-pt-field-view="model.ptFieldViewConfigOnChangeStatusId"
+                                                            data-ng-change="onDeliveryMethodChange($select, billingRecipient)" required>
+                                                            <ui-select-match placeholder=" -- select one --">{{$select.selected.text}}</ui-select-match>
+                                                            <ui-select-choices repeat="item.id as item in getDeliverMethods(billingRecipient) | uiSelectChoicesFilter: $select.search: 'text'">
+                                                                <span data-ng-bind-html="item.text | highlight: $select.search"></span>
+                                                            </ui-select-choices>
+                                                        </ui-select>
+                                                        <span class="input-group-btn">
+                                                            <button tabindex="-1" data-ng-click="billingRecipient.DeliveryMethodId=undefined" class="btn btn-default">
+                                                                <i class="material-icons md-18">clear</i>
+                                                            </button>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xs-1 pull-right" data-ng-if="billingInvoice.BillingRecipients.length>1 && (CurrentWorkOrderVersion.StatusId == 1 || CurrentWorkOrderVersion.StatusId == 3 || CurrentWorkOrderVersion.StatusId == 12 || CurrentWorkOrderVersion.StatusId == 10 || CurrentWorkOrderVersion.StatusId == 13) && actionButton.show.workOrderAddRemoveSubEntities">
+                                                    <button type="button" class="btn btn-default btn-material pull-right" data-ng-click="removeBillingRecipient(billingInvoice,billingRecipient)">
+                                                        <i class="material-icons">delete</i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div class="form-group" data-ng-if="billingRecipient.DeliveryMethodId===DeliveryMethod.InternalProfile">
+                                                <label for-property="DeliverToUserProfileId" for="DeliverToUserProfileId" data-model-property="billingRecipient.DeliverToUserProfileId" 
+                                                    class="col-lg-4 control-label label-to-right req-lab-right"
+                                                    data-original-title="" title="">CC Delivery To</label>
+                                                <div class="col-lg-8">
+                                                    <div class="input-group select2-bootstrap-append">
+                                                        <ui-select name="DeliverToUserProfileId" data-ng-model="billingRecipient.DeliverToUserProfileId" theme="select2" class="form-control"
+                                                            data-pt-field-view="model.ptFieldViewConfigOnChangeStatusId"
+                                                            data-pt-field-view-custom="{{billingRecipient.DeliverToUserProfileId | lookupnocache:lists.activeUserProfileList:'Id':'Contact.FullName'}} {{ billingRecipient.DeliverToUserProfileId && ' - ' }} {{billingRecipient.DeliverToUserProfileId | lookupnocache:lists.activeUserProfileList:'Id':'Contact.Id'}}"
+                                                            data-ng-change="onDeliveryToChange($select, billingRecipient)" required>
+                                                            <ui-select-match placeholder=" -- select one --">{{$select.selected.Contact.FullName}} - {{$select.selected.Contact.Id}}</ui-select-match>
+                                                            <ui-select-choices repeat="item.Id as item in lists.activeUserProfileList | uiSelectChoicesFilter: $select.search: 'Contact.FullName': 'Contact.Id'">
+                                                                <span data-ng-bind-html="item.Contact.FullName | highlight: $select.search"></span>
+                                                                <span data-ng-bind-html="' - ' + item.Contact.Id  | highlight: $select.search"></span>
+                                                            </ui-select-choices>
+                                                        </ui-select>
+                                                        <span class="input-group-btn">
+                                                            <button tabindex="-1" data-ng-click="billingRecipient.DeliverToUserProfileId=undefined" class="btn btn-default">
+                                                                <i class="material-icons md-18">clear</i>
+                                                            </button>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group" data-pt-error-box="billingRecipient.BrokenRules"></div>
+                                    </div>
+
+                                </div>
+                                <!--<hr class="panel-hr">-->
+                                <div class="form-group">
+                                    <div class="col-lg-2 pull-right">
+                                        <div class="btn-toolbar">
+                                            <button type="button" class="btn btn-default btn-material pull-right" data-ng-if="actionButton.show.workOrderAddRemoveSubEntities && billingInvoice.BillingRecipients[0].UserProfileId>0"
+                                                data-ng-click="addBillingRecipient(billingInvoice)" title="used {{billingInvoice.BillingRecipients.length}} from {{CurrentWorkOrderVersion.profilesListForApproval.Client.length}} recipients for selected Client Role Organization">
+                                                <i class="material-icons">add</i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" data-pt-error-box="billingInvoice.BrokenRules"></div>
+
+                        </div>
+                        <!-- billingInvoice-->
+                        <div class="form-group" data-pt-error-box="billingInfo.BrokenRules"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="content-right" data-ng-form="paymentInfosForm">
+            <div data-ng-repeat="paymentInfo in CurrentWorkOrderVersion.PaymentInfoes" data-ng-form="paymentInfoForm" class="">
+                <div role="form">
+                    <div class="panel-internal">
+                        <div class="form-group">
+                            <div class="col-lg-12">
+                                <h4>
+                                    Payment Invoice
+                                    <span data-ng-if="CurrentWorkOrder.IsPaymentStopped" class="warning-visual-cue"><i class="material-icons md-18">warning</i>Stop Payment</span>
+                                </h4>
+                            </div>
+                        </div>
+                        <div data-ng-repeat="paymentInvoice in paymentInfo.PaymentInvoices | filter: { InvoiceTypeId : 1 }">
+                            <div class="form-group">
+                                <div class="col-lg-9">
+                                    <p class="form-control-static" data-ng-if="paymentInfo.OrganizationIdSupplier>0">
+                                        <a data-ui-sref="org.edit.details({organizationId: paymentInfo.OrganizationIdSupplier })">{{paymentInfo.OrganizationSupplierDisplayName}} - {{paymentInfo.OrganizationIdSupplier}}</a>
+                                    </p>
+                                    <p class="form-control-static" data-ng-if="paymentInfo.OrganizationIdSupplier==null &&(model.entity.workerProfileTypeId == ApplicationConstants.UserProfileType.WorkerTemp || model.entity.workerProfileTypeId == ApplicationConstants.UserProfileType.WorkerCanadianSp)">
+                                        <a data-ng-if="model.entity.workerProfileTypeId==ApplicationConstants.UserProfileType.WorkerTemp" data-ui-sref="EditWorkerTempProfile({ contactId:model.entity.workerContactId, profileId: model.entity.UserProfileIdWorker })">{{paymentInfo.OrganizationSupplierDisplayName}}</a>
+                                        <a data-ng-if="model.entity.workerProfileTypeId==ApplicationConstants.UserProfileType.WorkerCanadianSp" data-ui-sref="EditWorkerCanadianSPProfile({ contactId:model.entity.workerContactId, profileId: model.entity.UserProfileIdWorker })">{{paymentInfo.OrganizationSupplierDisplayName}}</a>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for-property="PaymentInvoiceTermsId" for="PaymentInvoiceTermsId" data-model-property="paymentInvoice.PaymentInvoiceTermsId"
+                                    class="col-lg-4 control-label label-to-right req-lab-right" data-original-title="" title="">Payment Terms</label>
+                                <div class="col-lg-8">
+                                    <div class="input-group select2-bootstrap-append">
+                                        <ui-select name="PaymentInvoiceTermsId" data-ng-model="paymentInvoice.PaymentInvoiceTermsId" theme="select2" class="form-control"
+                                            data-pt-field-view="model.ptFieldViewConfigOnChangeStatusId" required>
+                                            <ui-select-match placeholder=" -- select one --">{{$select.selected.text}}</ui-select-match>
+                                            <ui-select-choices repeat="item.id as item in lists.workOrderPaymentInvoiceTerms | uiSelectChoicesFilter: $select.search: 'text'">
+                                                <span data-ng-bind-html="item.text | highlight: $select.search"></span>
+                                            </ui-select-choices>
+                                        </ui-select>
+                                        <span class="input-group-btn">
+                                            <button tabindex="-1" data-ng-click="paymentInvoice.PaymentInvoiceTermsId=undefined" class="btn btn-default">
+                                                <i class="material-icons md-18">clear</i>
+                                            </button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" data-ng-if="paymentInvoice.PaymentInvoiceTermsId==ApplicationConstants.PaymentInvoiceTerms.ScheduledTerms">
+                                <label for-property="PaymentReleaseScheduleId" for="PaymentReleaseScheduleId" data-model-property="paymentInvoice.PaymentReleaseScheduleId"
+                                    class="col-lg-4 control-label label-to-right req-lab-right" data-original-title="" title="">Payment Schedule</label>
+                                <div class="col-lg-6">
+                                    <div class="input-group select2-bootstrap-append">
+                                        <ui-select name="PaymentReleaseScheduleId" data-ng-model="paymentInvoice.PaymentReleaseScheduleId" theme="select2" class="form-control"
+                                            data-pt-field-view="model.ptFieldViewConfigOnChangeStatusId" data-ng-required="paymentInvoice.PaymentInvoiceTermsId==ApplicationConstants.PaymentInvoiceTerms.ScheduledTerms">
+                                            <ui-select-match placeholder=" -- select one --">{{$select.selected.text}}</ui-select-match>
+                                            <ui-select-choices repeat="item.id as item in lists.workOrderPaymentReleaseSchedules | uiSelectChoicesFilter: $select.search: 'text'">
+                                                <span data-ng-bind-html="item.text | highlight: $select.search"></span>
+                                            </ui-select-choices>
+                                        </ui-select>
+                                        <span class="input-group-btn">
+                                            <button tabindex="-1" data-ng-click="paymentInvoice.PaymentReleaseScheduleId=undefined" class="btn btn-default">
+                                                <i class="material-icons md-18">clear</i>
+                                            </button>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2">
+                                    <p class="form-control-static">
+                                        <a data-ng-if="paymentInvoice.PaymentReleaseScheduleId" data-ui-sref="workorder.edit.timematerialinvoice.paymentreleasescheduleview({paymentReleaseScheduleId:paymentInvoice.PaymentReleaseScheduleId })">View</a>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="form-group" data-ng-if="paymentInvoice.PaymentInvoiceTermsId==ApplicationConstants.PaymentInvoiceTerms.Term">
+                                <label for-property="PaymentFrequency" for="PaymentFrequency" data-model-property="paymentInvoice.PaymentFrequency" class="col-lg-4 control-label label-to-right req-lab-right"
+                                    data-original-title="" title="">Payment Frequency</label>
+                                <div class="col-lg-2">
+                                    <div class="input-group select2-bootstrap">
+                                        <input type="text" ng-model="paymentInvoice.PaymentFrequency" name="PaymentFrequency" maxlength-message="Required" data-float-between-input="{from:0, to:32766, decimalplaces:0, doesemptytozero:'true'}"
+                                            data-required-message="Required" data-pt-field-view="model.ptFieldViewConfigOnChangeStatusId"
+                                            data-ng-required="paymentInvoice.PaymentInvoiceTermsId==ApplicationConstants.PaymentInvoiceTerms.Term"
+                                            class="form-control ng-scope input-align-right">
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    Calendar Days after timesheet processed
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for-property="PaymentInvoiceTemplateId" for="PaymentInvoiceTemplateId" data-model-property="paymentInvoice.PaymentInvoiceTemplateId"
+                                    class="col-lg-4 control-label label-to-right req-lab-right" data-original-title="" title="">Invoice Template</label>
+                                <div class="col-lg-8">
+                                    <div class="input-group select2-bootstrap-append">
+                                        <ui-select name="PaymentInvoiceTemplateId" data-ng-model="paymentInvoice.PaymentInvoiceTemplateId" theme="select2" class="form-control"
+                                            data-pt-field-view="model.ptFieldViewConfigOnChangeStatusId" required>
+                                            <ui-select-match placeholder=" -- select one --">{{$select.selected.text}}</ui-select-match>
+                                            <ui-select-choices repeat="item.id as item in lists.workOrderPaymentInvoiceTemplates | uiSelectChoicesFilter: $select.search: 'text'">
+                                                <span data-ng-bind-html="item.text | highlight: $select.search"></span>
+                                            </ui-select-choices>
+                                        </ui-select>
+                                        <span class="input-group-btn">
+                                            <button tabindex="-1" data-ng-click="paymentInvoice.PaymentInvoiceTemplateId=undefined" class="btn btn-default">
+                                                <i class="material-icons md-18">clear</i>
+                                            </button>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2" data-ng-if="false">
+                                    <button data-ng-click="previewPaymentInvoiceTemplate()" class="btn btn-clouds pull-right" data-ng-if="actionButton.show.workOrderAddRemoveSubEntities">Preview</button>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for-property="PaymentMethodId" for="PaymentMethodId" data-model-property="paymentInvoice.PaymentMethodId" class="col-lg-4 control-label label-to-right req-lab-right"
+                                    data-original-title="" title="">Payment Method</label>
+                                <div class="col-lg-8">
+                                    <div class="input-group select2-bootstrap-append">
+                                        <ui-select name="PaymentMethodId" data-ng-model="paymentInvoice.PaymentMethodId" theme="select2" class="form-control" data-pt-field-view="model.ptFieldViewConfigOnChangeStatusId"
+                                            ng-required="CurrentWorkOrderVersion.ValidateComplianceDraft">
+                                            <ui-select-match placeholder=" -- select one --">{{$select.selected.text}}</ui-select-match>
+                                            <ui-select-choices repeat="item.id as item in lists.workOrderPaymentMethods | uiSelectChoicesFilter: $select.search: 'text'">
+                                                <span data-ng-bind-html="item.text | highlight: $select.search"></span>
+                                            </ui-select-choices>
+                                        </ui-select>
+                                        <span class="input-group-btn">
+                                            <button tabindex="-1" data-ng-click="paymentInvoice.PaymentMethodId=undefined" class="btn btn-default">
+                                                <i class="material-icons md-18">clear</i>
+                                            </button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <!--paymentInvoice-->
+                    </div>
+
+                    <div class="panel-internal" data-ng-if="paymentInfo.OrganizationIdSupplier>0">
+                        <div data-ng-form="paymentContactsForm">
+                            <div class="form-group">
+                                <div class="col-lg-12">
+                                    <h4>General Contacts</h4>
+                                </div>
+                            </div>
+                            <div data-ng-repeat="paymentContact in paymentInfo.PaymentContacts" data-ng-form="paymentContactForm">
+                                <div role="form">
+                                    <div>
+                                        <div class="form-group">
+                                            <label for-property="UserProfileId" for="UserProfileId" data-model-property="paymentContact.UserProfileId" class="col-lg-4 control-label req-lab-right"
+                                                data-original-title="" title="">General Contact</label>
+                                            <div class="col-xs-10 col-sm-11 col-lg-6 col-xl-7">
+                                                <div class="input-group select2-bootstrap-append">
+                                                    <ui-select name="UserProfileId" data-ng-model="paymentContact.UserProfileId" theme="select2" class="form-control" required
+                                                        data-pt-field-view="model.ptFieldViewConfigOnChangeStatusId" data-pt-field-view-custom="{{paymentContact.UserProfileId|lookupnocache:paymentInfo.profilesListForPaymentOrganization:'Id':'Contact.FullName':'ContactId'}} ({{paymentContact.UserProfileId|lookupnocache:paymentInfo.profilesListForPaymentOrganization:'Id':'ProfileTypeId'|lookupnocache:lists.profileTypeList}} - {{paymentContact.UserProfileId}})">
+                                                        <ui-select-match placeholder=" -- select one --">{{$select.selected.Contact.FullName}} - {{$select.selected.Contact.Id}}</ui-select-match>
+                                                        <ui-select-choices repeat="item.Id as item in paymentInfo.profilesListForPaymentOrganization  | filter: {ProfileTypeId : '!' + ApplicationConstants.UserProfileType.WorkerSubVendor} | uiSelectChoicesFilteredByUsage : $select.search: paymentInfo.PaymentContacts : paymentContact: 'UserProfileId': 'Id': 'Contact.FullName': 'Contact.Id'">
+                                                            <span data-ng-bind-html="item.Contact.FullName | highlight: $select.search"></span>
+                                                            <span data-ng-bind-html="' - ' + item.Contact.Id  | highlight: $select.search"></span>
+                                                        </ui-select-choices>
+                                                    </ui-select>
+                                                    <span class="input-group-btn">
+                                                        <button tabindex="-1" data-ng-click="paymentContact.UserProfileId=undefined" class="btn btn-default">
+                                                            <i class="material-icons md-18">clear</i>
+                                                        </button>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-1 pull-right">
+                                                <button type="button" class="btn btn-default btn-material pull-right" data-ng-click="removePaymentContact(paymentInfo, paymentContact)"
+                                                    data-ng-if="actionButton.show.workOrderAddRemoveSubEntities">
+                                                    <i class="material-icons">delete</i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-lg-2 pull-right">
+                                    <button type="button" class="btn btn-default btn-material pull-right material-icons" data-ng-if="actionButton.show.workOrderAddRemoveSubEntities"
+                                        data-ng-disabled="paymentInfo.PaymentContacts.length>=paymentInfo.profilesListForPaymentOrganization.length"
+                                        data-ng-click="addPaymentContact(paymentInfo)" title="used {{paymentInfo.PaymentContacts.length}} from {{paymentInfo.profilesListForPaymentOrganization.length}} existing contacts">
+                                        <i class="material-icons">add</i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group" data-pt-error-box="paymentInfo.BrokenRules"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<div class="slider-view-paymentreleaseschedule" data-ng-class="{ out: !$state.is('workorder.edit.timematerialinvoice.paymentreleasescheduleview'), in: $state.is('workorder.edit.timematerialinvoice.paymentreleasescheduleview')}"
+    style="height:100%">
+    <div ui-view="paymentReleaseScheduleView" style="height:100%"></div>
+</div>

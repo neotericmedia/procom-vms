@@ -1,0 +1,27 @@
+{
+  "name": "procom-phoenix-web",
+  "version": "1.0.0",
+  "description": "Procom Phoenix",
+  "main": "",
+  "repository": {
+    "type": "git",
+    "url": "https://example.com"
+  },
+  "author": "",
+  "license": "ISC",
+  "scripts": {
+    "start": "npm run start:ng",
+    "start:ng": "cd Phoenix && cd appNext && node_modules\\.bin\\rimraf dist && node --max-old-space-size=4096 ./node_modules/@angular/cli/bin/ng serve",
+    "postinstall": "cd Phoenix && cd appNext  && npm install || (echo \"npm install failed. trying to clean cahce and install again\" && npm cache clean  && npm install)",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "cd Phoenix && cd appNext && node_modules\\.bin\\rimraf dist && node --max-old-space-size=4096 ./node_modules/@angular/cli/bin/ng build",
+    "buildmac": "cd Phoenix && cd appNext && node --max-old-space-size=4096 ./node_modules/@angular/cli/bin/ng build",
+    "offshore": "npm run start:ng -- --environment=Staging",
+    "startmac:ng": "cd Phoenix && cd appNext && node --max-old-space-size=4096 ./node_modules/@angular/cli/bin/ng serve",
+    "offshoremac": "npm run startmac:ng -- --environment=Staging"
+  },
+  "dependencies": {
+    "hammerjs": "^2.0.8"
+  },
+  "devDependencies": {}
+}

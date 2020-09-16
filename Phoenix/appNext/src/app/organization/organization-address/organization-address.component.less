@@ -1,0 +1,24 @@
+.postal-code {
+    width: 50%;
+}
+
+:host ::ng-deep {
+    .control-label {
+        padding-top: 3px;
+        padding-right: 5px !important;
+        .asterisk {
+            position: absolute;
+            padding-left: 5px;
+        }
+    }
+    @media (min-width: 1200px) {
+        .form-group .col-lg-4 {
+            padding-left: 0;
+            min-width: 43% !important;
+        }
+        .form-group .col-lg-8 {
+            padding-right: 0;
+            max-width: 57% !important;
+        }
+    }
+}

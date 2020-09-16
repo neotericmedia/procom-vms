@@ -1,0 +1,152 @@
+﻿<div ng-if="scopeUiRoot.entity.ComplianceDocumentRuleStatusId === ApplicationConstants.ComplianceDocumentRuleStatus.Draft"
+    class="text-right">
+    <div class="alert alert-info alert-dismissable" style="display: inline-block; margin-bottom: 0;">
+        <a aria-label="close" class="close" data-dismiss="alert">
+            <i class="material-icons">clear</i>
+        </a>
+        <div class="row" style="padding-right: 40px;">
+            <div class="col-xs-12">
+                Please note that any changes to the document rule may affect the work order.
+            </div>
+        </div>
+    </div>
+</div>
+<div class="content-group form-horizontal" data-ng-form="formDocumentType">
+    <div class="panel">
+        <div class="panel-body">
+            <div class="col-lg-8">
+                <div class="form-group sub-user-row-details">
+                    <h1 class="col-lg-11 panel-title">Document Rules</h1>
+                </div>
+                <div class="form-group">
+                    <label class="col-lg-4 control-label req-lab-right" for="ComplianceDocumentRuleEntityTypeId" title="" data-original-title=""
+                        data-for-property="ComplianceDocumentRuleEntityTypeId" data-model-property="scopeUiRoot.entity.ComplianceDocumentRuleEntityTypeId">Document For</label>
+                    <div class="col-lg-8">
+                        <div class="input-group select2-bootstrap-append">
+                            <ui-select class="form-control" theme="select2" name="ComplianceDocumentRuleEntityTypeId" required="required" data-ng-model="scopeUiRoot.entity.ComplianceDocumentRuleEntityTypeId"
+                                data-pt-field-view="scopeUiRoot.ptFieldViewConfigOnChangeStatusId" data-ng-change="scopeUiRoot.actionScope.event.onChangeComplianceDocumentRuleEntityTypeId()">
+                                <ui-select-match placeholder="-- Select One --">{{$select.selected.text}}</ui-select-match>
+                                <ui-select-choices repeat="item.id as item in scopeUiRoot.lists.listComplianceDocumentRuleEntityType | uiSelectChoicesFilter: $select.search: 'text'">
+                                    <span data-ng-bind-html="item.text | highlight: $select.search"></span>
+                                </ui-select-choices>
+                            </ui-select>
+                            <span class="input-group-btn">
+                                <button tabindex="-1" data-ng-click="scopeUiRoot.entity.ComplianceDocumentRuleEntityTypeId=null;scopeUiRoot.actionScope.event.onChangeComplianceDocumentRuleEntityTypeId();"
+                                    class="btn btn-default">
+                                    <i class="material-icons md-18">clear</i>
+                                </button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-lg-4 control-label req-lab-right" for="ComplianceDocumentRuleRequiredTypeId" title="" data-original-title=""
+                        data-for-property="ComplianceDocumentRuleRequiredTypeId" data-model-property="scopeUiRoot.entity.ComplianceDocumentRuleRequiredTypeId">Required Type</label>
+                    <div class="col-lg-8">
+                        <div class="input-group select2-bootstrap-append">
+                            <ui-select class="form-control" theme="select2" name="ComplianceDocumentRuleRequiredTypeId" required="required" data-ng-model="scopeUiRoot.entity.ComplianceDocumentRuleRequiredTypeId"
+                                data-pt-field-view="scopeUiRoot.ptFieldViewConfigOnChangeStatusId">
+                                <ui-select-match placeholder="-- Select One --">{{$select.selected.text}}</ui-select-match>
+                                <ui-select-choices repeat="item.id as item in scopeUiRoot.lists.listComplianceDocumentRuleRequiredType | uiSelectChoicesFilter: $select.search: 'text'">
+                                    <span data-ng-bind-html="item.text | highlight: $select.search"></span>
+                                </ui-select-choices>
+                            </ui-select>
+                            <span class="input-group-btn">
+                                <button tabindex="-1" data-ng-click="scopeUiRoot.entity.ComplianceDocumentRuleRequiredTypeId=undefined" class="btn btn-default">
+                                    <i class="material-icons md-18">clear</i>
+                                </button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-lg-4 control-label req-lab-right" for="ComplianceDocumentRuleExpiryTypeId" title="" data-original-title=""
+                        data-for-property="ComplianceDocumentRuleExpiryTypeId" data-model-property="scopeUiRoot.entity.ComplianceDocumentRuleExpiryTypeId">Document Expiry</label>
+                    <div class="col-lg-8">
+                        <div class="input-group select2-bootstrap-append">
+                            <ui-select class="form-control" theme="select2" name="ComplianceDocumentRuleExpiryTypeId" required="required" data-ng-model="scopeUiRoot.entity.ComplianceDocumentRuleExpiryTypeId"
+                                data-pt-field-view="scopeUiRoot.ptFieldViewConfigOnChangeStatusId">
+                                <ui-select-match placeholder="-- Select One --">{{$select.selected.text}}</ui-select-match>
+                                <ui-select-choices repeat="item.id as item in scopeUiRoot.lists.listComplianceDocumentRuleExpiryType  | uiSelectChoicesFilter: $select.search: 'text'">
+                                    <span data-ng-bind-html="item.text | highlight: $select.search"></span>
+                                </ui-select-choices>
+                            </ui-select>
+                            <span class="input-group-btn">
+                                <button tabindex="-1" data-ng-click="scopeUiRoot.entity.ComplianceDocumentRuleExpiryTypeId=undefined" class="btn btn-default">
+                                    <i class="material-icons md-18">clear</i>
+                                </button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-lg-4 control-label req-lab-right" for-property="IsRequiredReview" for="IsRequiredReview" title="" data-original-title=""
+                        data-for-property="IsRequiredReview" data-model-property="scopeUiRoot.entity.IsRequiredReview">Requires Review</label>
+                    <div class="col-lg-8 wo-uses-supp">
+                        <pt-input-radio name="IsRequiredReview" data-ng-required="true" data-template-type="input-radio" data-ng-model="scopeUiRoot.entity.IsRequiredReview"
+                            data-options="[{ key: true, value: 'Yes' },{ key: false, value: 'No' }]" data-pt-field-view="scopeUiRoot.ptFieldViewConfigOnChangeStatusId"
+                        />
+                    </div>
+                </div>
+                <div class="form-group" data-ng-if="scopeUiRoot.actionScope.show.showComplianceDocumentRuleRequiredSituations">
+                    <label class="col-lg-4 control-label" data-ng-class="scopeUiRoot.validator.isValidComplianceDocumentRuleRequiredSituations()?'req-lab-right-valid':'req-lab-right'">
+                        Required For
+                    </label>
+                    <div class="col-lg-8">
+                        <div data-ng-repeat="item in scopeUiRoot.entity.ComplianceDocumentRuleRequiredSituations">
+                            <input type="checkbox" data-ng-model="item.IsSelected" data-pt-field-view="scopeUiRoot.ptFieldViewConfigOnChangeStatusId"
+                                data-pt-field-view-model-validation="{ { item.ComplianceDocumentRuleRequiredSituationTypeId } }"
+                            />
+                            <span>&nbsp;{{item.ComplianceDocumentRuleRequiredSituationTypeId|lookupnocache:scopeUiRoot.lists.listComplianceDocumentRuleRequiredSituationType:'id':'text'}}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-lg-4 control-label" data-ng-class='req-lab-right'>
+                        Visible For
+                    </label>
+                    <div class="col-lg-8">
+                        <div data-ng-repeat="item in scopeUiRoot.entity.ComplianceDocumentRuleProfileVisibilities">
+                            <input type="checkbox" data-ng-model="item.IsSelected" data-pt-field-view="scopeUiRoot.ptFieldViewConfigOnChangeStatusId"
+                            />
+                            <span>&nbsp;{{item.ComplianceDocumentRuleProfileVisibilityTypeId|lookupnocache:scopeUiRoot.lists.listComplianceDocumentRuleProfileVisibilityType:'id':'text'}}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    &nbsp;
+                </div>
+                <div class="form-group sub-user-row-details">
+                    <h1 class="col-lg-11 panel-title">Document Rule Parameters</h1>
+                </div>
+                <div style="padding-top: 10px;" data-ng-if="scopeUiRoot.actionScope.show.showAddModifyRestrictionType">
+                    <label class="col-lg-4 control-label">Parameters</label>
+                    <div class="col-lg-8" style="margin-bottom: 10px;">
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-clouds dropdown-toggle" data-toggle="dropdown">
+                                <span class="sub-user-crt">Add/Edit Parameter</span>
+                                <span class="caret ml payroll-btn-caret"></span>
+                            </button>
+                            <ul class="dropdown-menu bordered">
+                                <li class="sub-user-restr" style="cursor:pointer;" data-ng-repeat="restrictionType in scopeUiRoot.lists.listComplianceDocumentRuleRestrictionType"
+                                    data-ng-if="scopeUiRoot.actionScope.show.filterRestrictionTypes(restrictionType)">
+                                    <a data-ng-click="scopeUiRoot.actionScope.event.restriction.update(restrictionType.id)">{{restrictionType.text}}</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">&nbsp;</div>
+                </div>
+                <div class="sub-user-restrictions" data-ng-if="scopeUiRoot.entity.ComplianceDocumentRuleRestrictions.length>0">
+                    <div>
+                        <app-restriction-summary [selected-restriction-list]="scopeUiRoot.actionScope.show.selectedRestrictionList" [show-label-as-hyperlink]="scopeUiRoot.actionScope.show.showAddModifyRestrictionType"
+                            (restriction-type-click)="scopeUiRoot.actionScope.event.restriction.update($event.id)"></app-restriction-summary>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

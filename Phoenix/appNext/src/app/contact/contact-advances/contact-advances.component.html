@@ -1,0 +1,15 @@
+<div class="col-lg-12">
+    <app-phx-data-table #grid [columns]="columns" [configuration]="dataTableConfiguration" [dataSourceUrl]="dataSourceUrl" [dataSourceParams]="odataParams"
+      componentName="ContactAdvances" (rowClick)="onRowClick($event)">
+      <div *dxTemplate="let d of 'viewFormattedAmountInitial'">
+        $ {{d.data.AmountInitial | pxCurrency}} {{displayCurrency(d.data.CurrencyId)}}
+      </div>
+      <div *dxTemplate="let d of 'viewFormattedPaidAmount'">
+        $ {{d.data.PaidAmount | pxCurrency}} {{displayCurrency(d.data.CurrencyId)}}
+      </div>
+      <div *dxTemplate="let d of 'viewFormattedPaybackRemainder'">
+        $ {{d.data.PaybackRemainder | pxCurrency}} {{displayCurrency(d.data.CurrencyId)}}
+      </div>
+    </app-phx-data-table>
+  </div>
+  

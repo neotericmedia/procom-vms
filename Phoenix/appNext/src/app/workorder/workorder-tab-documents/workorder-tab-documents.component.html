@@ -1,0 +1,4 @@
+<app-compliance-document *ngIf="html.rootModel" [entityTypeId]="html.phxConstants.EntityType.WorkOrder" [entityName]="html.rootModel.UserProfileIdWorker|lookupNoCache:html.lists.listUserProfileWorker:'Id':'Contact.FullName'"
+  [entityId]="html.rootModel.WorkOrderId" [referenceEntityLink]="documentsRefLink" [maxSnoozeExpiryDate]="html.rootModel.EndDate"
+  (complianceDocumentOutput)="onComplianceDocumentOutput($event)">
+</app-compliance-document>

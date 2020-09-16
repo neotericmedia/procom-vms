@@ -1,0 +1,35 @@
+<form [formGroup]="saveAsTemplateForm">
+  <div class="modal-header">
+    <span class="modal-title">Save New Template</span>
+</div>
+
+<div class="modal-body">
+  <div class="content-group form-horizontal">
+    
+      <div class="form-group">    
+        <phx-form-control [control]="saveAsTemplateForm.controls.templateName" [editable]="true" labelText="Template Name"
+        viewModeText="{{saveAsTemplateForm.controls.templateName}}" >
+        <div>
+          <input formControlName="templateName" type="text" class="form-control" />
+        </div>
+      </phx-form-control>
+      </div>
+
+      <div class="form-group">
+        <phx-form-control [control]="saveAsTemplateForm.controls.templateDescription" [editable]="true" labelText="Template Description"
+        viewModeText="{{saveAsTemplateForm.controls.templateDescription}}" >
+        <div>
+          <input formControlName="templateDescription" type="text" class="form-control" />
+        </div>
+      </phx-form-control>
+      </div>
+
+  </div>
+</div>
+
+<div class="modal-footer">
+  <button type="button" class="btn btn-primary" [disabled]="!saveAsTemplateForm.valid" (click) = "saveTemplate()"  >Ok</button>
+  <button type="button" class="btn btn-default" (click)= "Cancel()" >Cancel</button>
+</div>
+
+</form>

@@ -1,0 +1,187 @@
+<div class="panel-default wire-transfer-batch-main">
+  <div class="panel-body">
+    <div class="row form-group">
+      <div class="btn-group batch-sub-header-drp" *ngIf="model.BatchStatusId === commonService.ApplicationConstants.PaymentReleaseBatchStatus.Draft || model.BatchStatusId === commonService.ApplicationConstants.PaymentReleaseBatchStatus.Finalized || model.BatchStatusId === commonService.ApplicationConstants.PaymentReleaseBatchStatus.Transferred">
+        <button type="button" class="btn btn-clouds dropdown-toggle" data-toggle="dropdown">Actions...
+          <span class="caret ml"></span>
+        </button>
+        <ng-container *ngFor="let availableStateActions of model.AvailableStateActions">
+          <ul class="dropdown-menu bordered" *ngIf="availableStateActions.EntityStatusId === model.BatchStatusId">
+            <ng-container *ngFor="let stateActionId of availableStateActions.AvailableStateActions">
+              <li *ngIf="stateActionId !== commonService.ApplicationConstants.StateAction.PaymentReleaseBatchRemoveAffectedPayments" class="action-link" style="cursor: pointer;" 
+                (click)="onActionClick(stateActionId)"><a>{{stateActionId | CodeValue:commonService.CodeValueGroups.StateAction}}</a></li>
+            </ng-container>
+          </ul>
+        </ng-container>
+      </div>
+    </div>
+    <div class="row wire-transfer-batch-header headstone">
+      <div class="row form-group">
+        <div class="col-lg-1 col-md-1">
+          <label class="text-gray col-xs-12">Batch Number</label>
+          <span class="col-xs-12">{{model.BatchNumber}}</span>
+        </div>
+        <div class="col-lg-4 col-md-4">
+          <label class="text-gray col-xs-12">Internal Organization</label>
+          <span class="col-xs-12">{{model.InternalOrganizationLegalName}}</span>
+        </div>
+        <div class="col-lg-3 col-md-3">
+          <label class="text-gray col-xs-12">Bank Account</label>
+          <span class="col-xs-12">{{model.fullBankName}}</span>
+        </div>
+        <div class="col-lg-1 col-md-1">
+          <label class="text-gray col-xs-12">Create Date</label>
+          <span class="col-xs-12" *ngIf="model.CreateDate">{{model.CreateDate | date:formatDate}}</span>
+        </div>
+        <div class="col-lg-1 col-md-1">
+          <label class="text-gray col-xs-12">Total Amount</label>
+          <span class="col-xs-12" *ngIf="model.CreateDate">{{model.Amount | pxCurrency}}</span>
+        </div>
+        <div class="col-lg-1 col-md-1">
+          <label class="text-gray col-xs-12">Deposit Date</label>
+          <span class="col-xs-12" *ngIf="model.DepositDate">{{model.DepositDate | date:formatDate}}</span>
+        </div>
+        <div class="col-lg-1 col-md-1">
+          <label class="text-gray col-xs-12">Status</label>
+          <span class="col-xs-12">{{model.BatchStatusId | CodeValue:commonService.CodeValueGroups.PaymentReleaseBatchStatus:'text'}}</span>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="model.GarnisheeUniqueCount > 0">
+      <br>
+      <div class="row">
+        <div class="form-group">
+          <label class="col-lg-2">Total garnishee payment(s)</label>
+          <div class="col-lg-10">{{model.GarnisheeUniqueCount}}</div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="form-group">
+          <label class="col-lg-2">Total garnishee amount</label>
+          <div class="col-lg-10">{{model.GarnisheeAmount | number:'1.2-2'}}</div>
+        </div>
+      </div>
+      <br>
+    </div>
+    <div class="row">
+      <div class="payment-batch-nav">
+        <app-phx-navigation-bar #navBar (onTabSelected)="onTabSelected($event)" [navigationBarContent]="tabList"></app-phx-navigation-bar>
+      </div>
+      <div class="payment-batch-body-details" *ngIf="navBar.activeTab?.Name=='details'">
+        <div class="col-md-3 col-xs-12 form-group">
+          <div class="btn-group payment-batch-body-detail-tabs" role="group" aria-label="button group">
+            <a class="btn btn-tab btn-default" (click)="changeGridViewMode('payment')" [ngClass]="{'active': gridViewMode === 'payment'}"
+              role="button">Payment</a>
+            <a class="btn btn-tab btn-default" (click)="changeGridViewMode('transaction')" [ngClass]="{'active': gridViewMode === 'transaction'}"
+              role="button">Transaction</a>
+          </div>
+        </div>
+        <div class="col-xs-12 ">
+          <app-phx-data-table #gridPayment [hidden]="gridViewMode !== 'payment'" [columns]="columnsPayment"
+            [configuration]="dataTableConfigurationPayment" [dataSourceUrl]="dataSourceUrlPayment" [exportFileName]="'transactions'"
+            [componentName]="dataGridComponentNamePayment" (responseReceived)="dataReceivedPayment($event)" (rowPrepared)="onPaymentRowPrepared($event)" (rowPrepared)="onRowPrepared($event)"
+            >            
+            <div *dxTemplate="let item of 'detail'">
+              <div class="col col-xs-12">
+                <app-phx-data-table #gridDetailPayment [configuration]="detailDataTableConfigurationPayment" [dataSource]="item.data.PaymentTransactions"
+                  [columns]="detailColumnsPayment" (contextMenuPreparing)="onContextMenuPreparing($event)" (rowPrepared)="onDetailRowPrepared($event)">
+                  <div *dxTemplate="let d of 'currencyTemplate'">
+                    <span>{{d.value | number:'1.2-2'}} {{d.data.CurrencyId | CodeValue: commonService.CodeValueGroups.Currency:'code'}}</span>
+                  </div>
+                  <div *dxTemplate="let d of 'viewPaymentDetailActionTemplate'">
+                    <div class="btn-group" *ngIf="model.BatchStatusId == commonService.ApplicationConstants.PaymentReleaseBatchStatus.Draft">
+                      <button type="button" class="btn btn-default btn-material" title="Remove transaction" (click)="removeTransaction(d, item.data)">
+                        <i class="material-icons">clear</i>
+                      </button>
+                    </div>
+                  </div>
+                </app-phx-data-table>
+              </div>
+            </div>
+            <div *dxTemplate="let d of 'viewPaymentActionTemplate'">
+              <div class="btn-group">
+                <button type="button" *ngIf="model.BatchStatusId == commonService.ApplicationConstants.PaymentReleaseBatchStatus.Draft"
+                  class="btn btn-default btn-material" title="Remove Payment" (click)="removePayment(d.data)">
+                  <i class="material-icons">clear</i>
+                </button>
+                
+                <button type="button" *ngIf="(model.BatchStatusId == commonService.ApplicationConstants.PaymentReleaseBatchStatus.Transferred || model.BatchStatusId == commonService.ApplicationConstants.PaymentReleaseBatchStatus.Finalized) 
+                && (d?.data?.PaymentStatusId == commonService.ApplicationConstants.PaymentStatus.PendingRelease || d?.data?.PaymentStatusId == commonService.ApplicationConstants.PaymentStatus.Released)"
+                  class="btn btn-xs btn-warning" (click)="recallPayment(d)">Recall</button>
+
+              </div>
+            </div>
+          </app-phx-data-table>
+          <app-phx-data-table #gridTransaction [hidden]="gridViewMode !== 'transaction'" [configuration]="dataTableConfigurationTransaction"
+            [dataSource]="transactions" [columns]="columnsTransaction" [componentName]="dataGridComponentNameTransaction"
+            (contextMenuPreparing)="onContextMenuPreparing($event)" (rowPrepared)="onTransactionRowPrepared($event)">
+            <div *dxTemplate="let item of 'detail'">
+              <div class="col col-xs-12">
+                <app-phx-data-table #gridDetailTransaction [configuration]="detailDataTableConfigurationPayment" [dataSource]="item.data.PaymentTransactionLines"
+                  [columns]="detailColumnsTransaction"></app-phx-data-table>
+              </div>
+            </div>
+            <div *dxTemplate="let d of 'currencyTemplate'">
+              <span>{{d.value | number:'1.2-2'}} {{d.data.CurrencyId | CodeValue: commonService.CodeValueGroups.Currency:'code'}}</span>
+            </div>
+            <div *dxTemplate="let d of 'viewPaymentDetailActionTemplate'">
+              <div class="btn-group" *ngIf="model.BatchStatusId == commonService.ApplicationConstants.PaymentReleaseBatchStatus.Draft">
+                <button type="button" class="btn btn-default btn-material" title="Remove transaction" (click)="removeTransaction(d)">
+                  <i class="material-icons">clear</i>
+                </button>
+              </div>
+            </div>
+          </app-phx-data-table>
+        </div>
+      </div>
+      <div class="payment-batch-body-history" *ngIf="navBar.activeTab?.Name=='history' && batchId">
+        <app-phx-panel headerTitle="Change History">
+          <app-changeHistory [entityTypeId]="entityTypeId" [entityId]="batchId" [blackList]="changeHistoryBlackList"></app-changeHistory>
+        </app-phx-panel>
+
+        <app-phx-panel headerTitle="Workflow History">
+          <app-phx-workflow-event-history [entityTypeId]="entityTypeId" [entityId]="batchId"></app-phx-workflow-event-history>
+        </app-phx-panel>
+      </div>
+    </div>
+
+  </div>
+</div>
+<app-phx-validation-messages [messages]="validationMessages"></app-phx-validation-messages>
+<div>
+  <div class="btn-toolbar">
+    <div class="btn-group btn-group-spacing" style="position: relative; float:right">
+      <button type="button" *ngIf="this.model.BatchStatusId === this.commonService.ApplicationConstants.PaymentReleaseBatchStatus.Draft" class="btn btn-primary" (click)="finalizeBatchWithConfirmation($event)" title="Finalize">
+        Finalize
+      </button>
+    </div>
+  </div>
+</div>
+<app-phx-modal #changeBatchDetailsModal [buttons]="changeBatchDetailsModalButtons" title="Update Batch Details">
+  <div class="row">
+    <div class="form-horizontal col-xs-10 col-xs-offset-1">
+      <form [formGroup]="batchDetailsModalForm">
+        <phx-form-control [control]="batchDetailsModalForm.controls['PayFrom']" labelText="Pay From" [editable]="true">
+          <app-phx-select-box formControlName="PayFrom" [items]="bankAccounts" textField="fullBankName" valueField="id" placeholder="Bank Account"
+            [(ngModel)]="batchDetailsModalFormData.bankId" dropdownWidth="350px">
+          </app-phx-select-box>
+          <span *ngIf="batchDetailsModalForm.controls['PayFrom'].errors?.paymentBatchExist" class="error-inline">This bank account has another draft batch.</span>
+        </phx-form-control>
+
+        <phx-form-control [control]="batchDetailsModalForm.controls['DepositDate']" labelText="Deposit Date" viewModeText="{{batchDetailsModalFormData.depositDate | date:formatDate}}">
+          <dx-date-box formControlName="DepositDate" type="date" [(value)]="batchDetailsModalFormData.depositDate"></dx-date-box>
+        </phx-form-control>
+
+        <phx-form-control [control]="batchDetailsModalForm.controls['PayGarnisheeFrom']" labelText="Pay Garnishees From" [editable]="true" *ngIf="model.GarnisheeBankAccountId > 0 || model.GarnisheeUniqueCount > 0">
+          <app-phx-select-box formControlName="PayGarnisheeFrom" [items]="bankAccounts" textField="fullBankName" valueField="id" placeholder="Garnishees' Bank Account"
+            [(ngModel)]="batchDetailsModalFormData.garnisheeBankAccountId"  dropdownWidth="350px">
+          </app-phx-select-box>
+        </phx-form-control>
+      </form>
+    </div>
+  </div>
+</app-phx-modal>
+
+<app-phx-modal #batchGroupedByPayeeDialog [buttons]="batchGroupedByPayeeDialogButtons" title="The following payments will not be released">
+    <app-batch-grouped-by-payee-dialog [dataItems]="batchGroupedByPayeeDialogData" [bankAccounts]="bankAccounts" ></app-batch-grouped-by-payee-dialog>
+</app-phx-modal>

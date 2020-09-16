@@ -1,0 +1,200 @@
+<div class="row">
+  <div class="col-xs-12">
+    <div class="row">
+      <div class="col-xs-12" style="padding: 0">
+        <div class="img-container cursor-pointer" (click)="capsuleModal.show()">
+          <div class="profile-picture-container">
+            <app-phx-profile-picture [profileId]="timeSheet.WorkerProfileId"></app-phx-profile-picture>
+          </div>
+        </div>
+        <div (click)="capsuleModal.show()" class="col-xs-5 col-xl-4 cursor-pointer">
+          <h4 class="panel-title">
+            {{ timeSheet.WorkerFirstName}} {{ timeSheet.WorkerLastName}}
+          </h4>
+        </div>
+      </div>
+    </div>
+    <div class="row padding-15 hidden-xs" style="padding-bottom: 0" *ngIf="timeSheet.Description?.trim() !== null && timeSheet.Description?.trim() !== ''">
+      <div class="col-xs-12">
+        {{ timeSheet.Description}}
+      </div>
+    </div>
+    <div class="row padding-15">
+      <ng-container *ngFor="let headerField of headerFields; let maxFields = count">
+        <div class="
+        col-xxxl-{{headerField.MaxWidth}} 
+        col-xxl-{{headerField.MaxWidth}} 
+        col-xl-{{headerField.MaxWidth}} 
+        col-lg-{{headerField.MaxWidth}} 
+        col-md-{{headerField.MinWidth}} 
+        col-sm-{{headerField.MinWidth + 1}} 
+        col-xs-{{headerField.MinWidth + 2}}
+        " [ngClass]="{
+            'hidden-xxxl': headerField.Priority > 4 && maxFields > 6,
+            'hidden-xxl': headerField.Priority > 4 && maxFields > 5,
+            'hidden-xl': headerField.Priority > 4 && maxFields > 5,
+            'hidden-lg': headerField.Priority > 4,
+            'hidden-md': headerField.Priority > 3,
+            'hidden-sm': headerField.Priority > 2,
+            'hidden-xs': headerField.Priority > 1
+          }">
+          <div class="text-gray">
+            {{headerField.Label}}
+          </div>
+          <div *ngIf="headerField.Key !== 'poUnitsRemainingLabel' && headerField.Key !== 'statusLabel' && headerField.Key !== 'poUnitsRemainingLabel'"
+            class="ts-brief-header-td">
+            {{ headerField.Value }}
+          </div>
+          <div *ngIf="headerField.Key === 'statusLabel'" class="ts-brief-header-td">
+            <span *ngIf="!timeSheet?.IsWorkflowRunning">
+              {{headerField.Value | CodeValue: commonService.CodeValueGroups.TimeSheetStatus:'text'}}
+            </span>
+            <span *ngIf="timeSheet?.IsWorkflowRunning">{{ 'common.generic.workflowRunningMessage' | phxTranslate }}</span>
+          </div>
+          <div *ngIf="headerField.Key === 'poUnitsRemainingLabel'" class="ts-brief-header-td">
+            {{ headerField.Value | number : '1.2-2' }} {{ timeSheet.PrimaryRateUnitId | CodeValue: commonService.CodeValueGroups.RateUnit:'text'
+            | slice:0:1 }}
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</div>
+<div class="col-sm-12" [hidden]="!!totalsByRateType && totalsByRateType.length == 0">
+  <hr class="hr-sm">
+</div>
+<div class="totals-container-single hidden-sm hidden-md hidden-lg hidden-xl hidden-xxl hidden-xxxl" (click)="showTotals = !showTotals">
+  <div *ngFor="let item of totalsByRateType; let i = index" [class.collapse]="i != 0 && !showTotals">
+    <div class="headstone-rate-fixed headstone-rate-container">{{ item.DisplayName }}</div>
+    <div class="headstone-value-container text-right">
+      <span class="headstone-rate-unit-value">{{ item.UnitAmount | number : '1.2-2'}} </span>
+      <span class="headstone-rate-unit"> {{ item.UnitId | CodeValue: commonService.CodeValueGroups.RateUnit:'text' | slice:0:1 }} </span>
+    </div>
+    <div class="headstone-rate-collapse">
+      <i *ngIf="totalsByRateType.length> 1 && i == 0" class="material-icons">{{ showTotals ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}}</i>
+    </div>
+  </div>
+</div>
+<div class="hidden-xs hidden-lg hidden-xl hidden-xxl hidden-xxxl" [class.totals-container-single]="!!totalsByRateType && totalsByRateType.length == 1"
+  [class.totals-container-double]="!!totalsByRateType && totalsByRateType.length >= 2" (click)="showTotals = !showTotals">
+  <div *ngFor="let item of totalsByRateType; let i = index" [class.expand]="(i < 2 && !showTotals) || showTotals" [class.collapse]="i > 1 && !showTotals">
+    <div class="headstone-rate-fixed headstone-rate-container">{{ item.DisplayName }}</div>
+    <div class="headstone-value-container text-right">
+      <span class="headstone-rate-unit-value">{{ item.UnitAmount | number : '1.2-2'}} </span>
+      <span class="headstone-rate-unit"> {{ item.UnitId | CodeValue: commonService.CodeValueGroups.RateUnit:'text' | slice:0:1 }} </span>
+    </div>
+    <div class="headstone-rate-collapse">
+      <i *ngIf="totalsByRateType.length > 2 && i == 1" class="material-icons">{{ showTotals ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}}</i>
+    </div>
+  </div>
+</div>
+<div class="hidden-xs hidden-sm hidden-md" [class.totals-container-single]="!!totalsByRateType && totalsByRateType.length == 1"
+  [class.totals-container-double]="!!totalsByRateType && (totalsByRateType.length > 3 || totalsByRateType.length == 2)" [class.totals-container-triple]="!!totalsByRateType && totalsByRateType.length == 3"
+  (click)="showTotals = !showTotals">
+  <div *ngFor="let item of totalsByRateType; let i = index" [class.expand]="(((i < 3 && totalsByRateType.length == 3) || (i < 2 && totalsByRateType.length != 3)) && !showTotals) || showTotals"
+    [class.collapse]="i > 1 && totalsByRateType.length > 3 && !showTotals">
+    <div class="headstone-rate-fixed headstone-rate-container">{{ item.DisplayName }}</div>
+    <div class="headstone-value-container text-right">
+      <span class="headstone-rate-unit-value">{{ item.UnitAmount | number : '1.2-2'}} </span>
+      <span class="headstone-rate-unit"> {{ item.UnitId | CodeValue: commonService.CodeValueGroups.RateUnit:'text' | slice:0:1 }} </span>
+    </div>
+    <div class="headstone-rate-collapse">
+      <i *ngIf="totalsByRateType.length > 3 && i == 1" class="material-icons">{{ showTotals ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}}</i>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-12 payperiod">
+    <div class="pull-right">
+      <!-- low PO placeholder -->
+    </div>
+    <div class="text-center">
+      <h4>
+        <a (click)="showDatepicker()" [class.cursor-pointer]="showDatepicker">
+          <span class="hidden-xs period-text">{{ payPeriodDisplay(timeSheet, 'full') }}</span>
+          <span class="visible-xs-inline period-text">{{ payPeriodDisplay(timeSheet, 'compact') }}</span>
+          <!-- MZ TODO: fix ExpressionHasChanged Error -->
+          <!-- <i *ngIf="headerExists" class="material-icons period-icon">keyboard_arrow_down</i> -->
+        </a>
+      </h4>
+    </div>
+
+  </div>
+</div>
+<div class="row" [hidden]="timeSheet.ExpandAllDays" *ngIf="timeSheet">
+  <app-time-sheet-tabs class="navigation-bar" [hideProjectTab]="!timeSheet.IsTimeSheetUsesProjects" [timeSheetType]="timeSheet.TimeSheetTypeId"></app-time-sheet-tabs>
+</div>
+<app-phx-modal-date-picker #modalTimeCardPeriodDatePicker (onDateSelected)="payPeriodChange($event);" [dataModel]="modalDatePickerModel"></app-phx-modal-date-picker>
+
+<div class="responsiveModal">
+  <div class="modal fade" role="dialog" bsModal #capsuleModal="bs-modal">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title"></h4>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="img-container-large text-center">
+              <div class="profile-picture-large-container">
+                <app-phx-profile-picture [profileId]="timeSheet.WorkerProfileId"></app-phx-profile-picture>
+              </div>
+            </div>
+            <div class="text-center">
+              <h4 class="panel-title">
+                {{ timeSheet.WorkerFirstName}} {{ timeSheet.WorkerLastName}}
+              </h4>
+            </div>
+            <div>
+              <hr class="hr-profile">
+            </div>
+            <div class="profile-left-padding">
+              <div class="text-gray">{{ 'timesheet.header.descriptionLabel' | phxTranslate }}</div>
+              <div class="ts-brief-header-lg">
+                {{ timeSheet.Description }}
+              </div>
+            </div>
+            <div class="profile-left-padding">
+              <div class="text-gray">{{ 'timesheet.header.workOrderLabel' | phxTranslate }}</div>
+              <div class="ts-brief-header-lg">
+                {{ timeSheet.WorkOrderNumberFull }}
+              </div>
+            </div>
+            <div class="profile-left-padding">
+              <div class="text-gray">{{ 'timesheet.header.idLabel' | phxTranslate }}</div>
+              <div class="ts-brief-header-lg">
+                {{ timeSheet.Id }}
+              </div>
+            </div>
+            <div class="profile-left-padding">
+              <div class="text-gray">{{ 'timesheet.header.clientNameLabel' | phxTranslate }}</div>
+              <div class="ts-brief-header-lg">
+                {{ timeSheet.ClientName }}
+              </div>
+            </div>
+            <div class="profile-left-padding" *ngIf="timeSheet.PONumber">
+              <div class="text-gray">{{ 'timesheet.header.poNumberLabel' | phxTranslate }}</div>
+              <div class="ts-brief-header-lg">
+                {{ timeSheet.PONumber }}
+              </div>
+            </div>
+            <div class="profile-left-padding" *ngIf="timeSheet.POUnitsRemaining > 0">
+              <div class="text-gray">{{ 'timesheet.header.poUnitsRemainingLabel' | phxTranslate }}</div>
+              <div class="ts-brief-header-lg">
+                {{ timeSheet.POUnitsRemaining | number : '1.2-2' }} {{ timeSheet.PrimaryRateUnitId | CodeValue: commonService.CodeValueGroups.RateUnit:'text'
+                | slice:0:1 }}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <div class="row btn-row">
+            <div class="col-xs-12 text-center">
+              <button type="button" class="btn btn-link btn-default btn-cancel" (click)="capsuleModal.hide()">{{ 'common.generic.cancel' | phxTranslate }}</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,258 @@
+<form [formGroup]="form" class="col-sm-9" *ngIf="form">
+  <div class="panel panel-internal outer-container">
+    <div class="row">
+      <div class="col-sm-12">
+        <h4>Details</h4>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-6">
+        <label>Legal Name</label>
+        <div class="hdr-field-value">{{profileReassignFrom.FullName}}</div>
+      </div>
+      <div class="col-sm-6">
+        <label>Assign Type</label>
+        <ng-template [ngIf]="assignTypes.length<=1" [ngIfElse]="multi_assign_type">
+          <div *ngIf="assignTypes.length===1" class="hdr-field-value">{{assignTypes[0].Description}}</div>
+          <div *ngIf="assignTypes.length===0" class="hdr-field-value">N/A</div>
+        </ng-template>
+        <ng-template #multi_assign_type>
+          <app-phx-select-box [searchable]='false' [showClearButton]='false' [formControl]="form.controls.AssignType" [items]="assignTypes"
+            textField="Description" [valueField]="Id">
+          </app-phx-select-box>
+        </ng-template>
+      </div>
+    </div>
+
+
+    <ng-container *ngIf="getAssignTypeId() === ConstAssignType.Collaborator && isCurrentProfileUnderReassignRole">
+      <ng-container *ngIf="isBranchManager()">
+        <div class="row">
+          <div class="col-sm-12">
+            <h4>Reassign Branch Manager to:</h4>
+          </div>
+        </div>
+        <div class="row">
+          <div class="form-group clearfix">
+            <div class="col-sm-6">
+              <phx-form-control [control]="form.controls.BranchManagerReassignedTo" [layoutType]="layoutType">
+                <app-phx-select-box [formControl]="form.controls.BranchManagerReassignedTo" [items]="internalUserProfileList" textField="FullName"
+                  [valueField]="ProfileId">
+                </app-phx-select-box>
+              </phx-form-control>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+      <div class="row" *ngIf="hasItemsToReassign(ConstAssignType.Collaborator)">
+        <div class="reassign-all-row">
+          <div class="col-sm-6">
+            <label for="ReassignAllItemsTo">
+              Reassign all items to:
+            </label>
+          </div>
+          <div class="col-sm-6">
+            <phx-form-control [control]="form.controls.ReassignAllItemsTo" [layoutType]="layoutType">
+              <app-phx-select-box [formControl]="form.controls.ReassignAllItemsTo" [items]="internalUserProfileList" textField="FullName"
+                [valueField]="ProfileId" (valueChanged)="onReassignAllItemsToChanged($event)">
+              </app-phx-select-box>
+            </phx-form-control>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="horizontal-line">
+          </div>
+        </div>
+      </div>
+
+      <!--WO for collaborator -->
+      <div class="row grp-hdr" *ngIf="form.controls.GroupedWOsByClientList.length>0">
+        <div class="col-sm-6">
+          <span class="grp-hdr-lbl">Work Order</span>
+        </div>
+        <div class="col-sm-6">
+          <span class="grp-hdr-val">Assigned To</span>
+        </div>
+      </div>
+      <div class="row grp-sum-row" *ngIf="form.controls.GroupedWOsByClientList.length>0">
+        <div class="col-sm-6">
+          <div class="grp-hdr-sum-lbl">{{form.controls.GroupedWOsByClientList.length}} Clients ({{totalWOs}})</div>
+          <div class="accordian-arrow">
+            <i class="material-icons" (click)='isWOsListExpanded=!isWOsListExpanded;'>
+              {{isWOsListExpanded?'arrow_drop_up':'arrow_drop_down'}}
+            </i>
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <phx-form-control [control]="form.controls.ReassignAllWOsTo" [layoutType]="layoutType">
+            <app-phx-select-box [formControl]="form.controls.ReassignAllWOsTo" [items]="internalUserProfileList" textField="FullName"
+              [valueField]="ProfileId" (valueChanged)="onReassignAllWOsToChanged($event)">
+            </app-phx-select-box>
+          </phx-form-control>
+        </div>
+      </div>
+      <div class="row grp-detl-row" [ngClass]="{'expand-list':isWOsListExpanded,'collapse-list':!isWOsListExpanded}" *ngFor='let groupedWOsByClient of form.controls.GroupedWOsByClientList.controls;let i = index'>
+        <div class=" col-sm-6 ">
+          <div class="grp-detl-lbl">{{groupedWOsByClient.controls.WOClient.value.ClientDisplayName}} ({{groupedWOsByClient.controls.WOClient.value.WorkorderCount}})</div>
+        </div>
+        <div class="col-sm-6 ">
+          <phx-form-control [control]="groupedWOsByClient.controls.AssignedToUserProfileId" [layoutType]="layoutType">
+            <app-phx-select-box [formControl]="groupedWOsByClient.controls.AssignedToUserProfileId" [items]="internalUserProfileList"
+              textField="FullName" [valueField]="ProfileId" (valueChanged)="onReassignWOsToChanged($event)">
+            </app-phx-select-box>
+          </phx-form-control>
+        </div>
+      </div>
+
+      <!--ORG-->
+      <div class="row grp-hdr" *ngIf="form.controls.OrganizationList.length>0">
+        <div class="col-sm-6 ">
+          <span class="grp-hdr-lbl ">Organization</span>
+        </div>
+        <div class="col-sm-6 ">
+          <span class="grp-hdr-val" *ngIf="form.controls.GroupedWOsByClientList.length===0">Assigned To</span>
+        </div>
+      </div>
+      <div class="row grp-sum-row" *ngIf="form.controls.OrganizationList.length>0">
+        <div class="col-sm-6 ">
+          <div class="grp-hdr-sum-lbl ">{{form.controls.OrganizationList.length}} Organizations</div>
+          <div class="accordian-arrow ">
+            <i class="material-icons" (click)='isOrgsListExpanded=!isOrgsListExpanded;'>
+              {{isOrgsListExpanded?'arrow_drop_up':'arrow_drop_down'}}
+            </i>
+          </div>
+        </div>
+        <div class="col-sm-6 ">
+          <phx-form-control [control]="form.controls.ReassignAllOrgsTo" [layoutType]="layoutType">
+            <app-phx-select-box [formControl]="form.controls.ReassignAllOrgsTo" [items]="internalUserProfileList" textField="FullName"
+              [valueField]="ProfileId" (valueChanged)="onReassignAllOrgsToChanged($event)">
+            </app-phx-select-box>
+          </phx-form-control>
+        </div>
+      </div>
+      <div class="row grp-detl-row" [ngClass]="{'expand-list':isOrgsListExpanded,'collapse-list':!isOrgsListExpanded}" *ngFor='let org of form.controls.OrganizationList.controls'>
+        <div class="col-sm-6 ">
+          <div class="grp-detl-lbl ">{{org.controls.Organization.value.DisplayName}}</div>
+        </div>
+        <div class="col-sm-6 ">
+          <phx-form-control [control]="org.controls.AssignedToUserProfileId" [layoutType]="layoutType">
+            <app-phx-select-box [formControl]="org.controls.AssignedToUserProfileId" [items]="internalUserProfileList" textField="FullName"
+              [valueField]="ProfileId" (valueChanged)="onReassignOrgToChanged($event)">
+            </app-phx-select-box>
+          </phx-form-control>
+        </div>
+      </div>
+
+      <!--PRO-->
+      <div class="row grp-hdr" *ngIf="form.controls.ProfileList.length>0">
+        <div class="col-sm-6 ">
+          <span class="grp-hdr-lbl ">Profiles</span>
+        </div>
+        <div class="col-sm-6">
+          <span class="grp-hdr-val" *ngIf="form.controls.GroupedWOsByClientList.length===0 && form.controls.OrganizationList.length==0">Assigned To</span>
+        </div>
+      </div>
+      <div class="row grp-sum-row" *ngIf="form.controls.ProfileList.length>0">
+        <div class="col-sm-6 ">
+          <div class="grp-hdr-sum-lbl ">{{form.controls.ProfileList.length}} Profiles</div>
+          <div class="accordian-arrow ">
+            <i class="material-icons" (click)='isProfilesListExpanded=!isProfilesListExpanded;'>
+              {{isProfilesListExpanded?'arrow_drop_up':'arrow_drop_down'}}
+            </i>
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <phx-form-control [control]="form.controls.ReassignAllProfilesTo" [layoutType]="layoutType">
+            <app-phx-select-box [formControl]="form.controls.ReassignAllProfilesTo" [items]="internalUserProfileList" textField="FullName"
+              [valueField]="ProfileId" (valueChanged)="onReassignAllProfilesToChanged($event)">
+            </app-phx-select-box>
+          </phx-form-control>
+        </div>
+      </div>
+
+      <div class="row grp-detl-row" [ngClass]="{'expand-list':isProfilesListExpanded,'collapse-list':!isProfilesListExpanded}"
+        *ngFor='let profile of form.controls.ProfileList.controls'>
+        <div class="col-sm-6 ">
+          <div class="grp-detl-lbl ">{{profile.controls.Profile.value.FullName}}</div>
+        </div>
+        <div class="col-sm-6 ">
+          <phx-form-control [control]="profile.controls.AssignedToUserProfileId" [layoutType]="layoutType">
+            <app-phx-select-box [formControl]="profile.controls.AssignedToUserProfileId" [items]="internalUserProfileList" textField="FullName"
+              [valueField]="ProfileId" (valueChanged)="onReassignProfileToChanged($event)">
+            </app-phx-select-box>
+          </phx-form-control>
+        </div>
+      </div>
+
+    </ng-container>
+
+
+
+    <ng-container *ngIf="getAssignTypeId() === ConstAssignType.Recruiter && isCurrentProfileUnderReassignRole">
+      <!--WO for recruiter -->
+      <div class="row grp-hdr" *ngIf="hasItemsToReassign(ConstAssignType.Recruiter)">
+        <div class="col-sm-6">
+          <span class="grp-hdr-lbl">Work Order</span>
+        </div>
+        <div class="col-sm-6">
+          <span class="grp-hdr-val">Assigned To</span>
+        </div>
+      </div>
+      <div class="row grp-sum-row" *ngIf="form.controls.WOsToRecruiterFormArray.length>0">
+        <div class="col-sm-6">
+          <div class="grp-hdr-sum-lbl">{{form.controls.WOsToRecruiterFormArray.length}} Branches ({{totalWOsByBranch}})</div>
+          <div class="accordian-arrow">
+            <i class="material-icons" (click)='isWOsByBranchExpanded=!isWOsByBranchExpanded;'>
+              {{isWOsByBranchExpanded?'arrow_drop_up':'arrow_drop_down'}}
+            </i>
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <phx-form-control [control]="form.controls.AllWOsToRecruiterFormCtrl" [layoutType]="layoutType">
+            <app-phx-select-box [formControl]="form.controls.AllWOsToRecruiterFormCtrl" [items]="recruiterUserProfiles" textField="FullName"
+              [valueField]="ProfileId" (valueChanged)="onReassignAllWOsToChanged($event)">
+            </app-phx-select-box>
+          </phx-form-control>
+        </div>
+      </div>
+
+      <div formArrayName="WOsToRecruiterFormArray">
+        <div class="row grp-detl-row" [ngClass]="{'expand-list':isWOsByBranchExpanded,'collapse-list':!isWOsByBranchExpanded}" *ngFor='let woCtrl of form.controls.WOsToRecruiterFormArray.controls;let i = index'
+          [formGroupName]="i">
+          <div class="col-sm-6">
+            <div class="grp-detl-lbl">{{woCtrl.controls.WorkOrder.value.BranchName}} ({{woCtrl.controls.WorkOrder.value.WorkorderCount}})</div>
+          </div>
+          <div class="col-sm-6">
+            <phx-form-control [control]="woCtrl.controls.AssignedToUserProfileId" [layoutType]="layoutType">
+              <app-phx-select-box [formControl]="woCtrl.controls.AssignedToUserProfileId" [items]="recruiterUserProfiles" textField="FullName"
+                [valueField]="ProfileId" (valueChanged)="onWorkOrderReassignToChanged($event, i)">
+              </app-phx-select-box>
+            </phx-form-control>
+          </div>
+        </div>
+      </div>
+
+    </ng-container>
+
+    <div class="row" *ngIf="assignTypes.length===0 || (assignTypes.length>0 && hasItemsToReassign(getAssignTypeId()))">
+      <div class="col-sm-12">
+        <div class="no-item-to-reassign" *ngIf="assignTypes.length>0 && getAssignTypeId() === ConstAssignType.Recruiter && !hasItemsToReassign(ConstAssignType.Recruiter)">
+          There is no Work Order to reassign!
+        </div>
+        <div class="no-item-to-reassign" *ngIf="assignTypes.length>0 && getAssignTypeId() === ConstAssignType.Collaborator && !hasItemsToReassign(ConstAssignType.Collaborator)">
+          There is no Work Order, Organization or Profile to reassign!
+        </div>
+        <div class="no-item-to-reassign" *ngIf="assignTypes.length===0">
+          <span>There is no Work Order, Organization or Profile to reassign!</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div class="btn-row col-sm-12 ">
+    <button class="btn btn-primary" (click)='confirmSubmit()' [disabled]="!form.valid">Submit</button>
+    <button class="btn btn-default" (click)='cancelReassign()'>Cancel</button>
+  </div>
+</form>

@@ -1,0 +1,101 @@
+<form [formGroup]="contactForm" *ngIf="contactForm">
+  <div>
+    <div class="row">
+      <div class="panel panel-tabbable col-md-6">
+        <div class="panel-heading">
+          <div class="row worker-panel-header">
+            <h3 class="panel-title"></h3>
+          </div>
+        </div>
+        <div class="panel-body">
+          <div class="panel">
+            <div class="row form-horizontal" role="form">
+              <div class="form-group">
+                <phx-form-control [editable]="true" labelText="Email" [control]="contactForm.controls.PrimaryEmail">
+                  <div>
+                    <input type="email" formControlName="PrimaryEmail" class="form-control" name="PrimaryEmail"
+                      placeholder="Primary Email" [email]="true" />
+                  </div>
+                </phx-form-control>
+              </div>
+              <div class="form-group" *ngIf="profileType === html.phxConstants.NewProfile.WizardWorkerProfile">
+                <phx-form-control labelText="Profile Type" [editable]="true" [control]="contactForm.controls.ProfileTypeId"
+                  viewModeText="{{contactForm.controls.ProfileTypeId}}">
+                  <div>
+                    <app-phx-select-box [items]="workerTypesList" textField="description" valueField="id" [formControl]="contactForm.controls.ProfileTypeId"
+                      (valueChanged)="workerTypeChanged($event)" placeholder="Select One">
+                    </app-phx-select-box>
+                  </div>
+                </phx-form-control>
+              </div>
+              <div class="form-group" *ngIf="profileType === html.phxConstants.NewProfile.WizardOrganizationalProfile">
+                <phx-form-control *ngIf="organizationId === null" labelText="Organization" [editable]="true" [control]="contactForm.controls.OrganizationId"
+                  viewModeText="{{contactForm.controls.OrganizationId}}" >
+                  <div>
+                    <app-phx-select-box [items]="organizationList" textField="DisplayName" valueField="Id"
+                      [formControl]="contactForm.controls.OrganizationId" (valueChanged)="organizationChanged($event)"
+                      placeholder="Select One">
+                    </app-phx-select-box>
+                  </div>
+                </phx-form-control>
+
+                <div *ngIf="organizationId !== null">
+                    <label class="col-lg-4 col-xl-4 control-label" title="">Organization</label>
+                    <input type="hidden" [formControl]="contactForm.controls.OrganizationId" class="form-control" name="OrganizationId" />
+                    <div class="col-lg-8 col-xl-8">
+                        <p class="form-control-static">
+                            <a routerLink="/next/organization/{{organizationId}}/details">
+                              {{ contactForm.value.OrganizationId }} - {{(organizationId | lookupNoCache:organizationList:'Id':'Text')}}
+                            </a>
+                        </p>
+                    </div>
+                </div>
+
+              </div>
+              <div class="user-profile-warning" *ngIf="Continue && profilesArray && profilesArray.length > 0">
+                <p>{{message}}</p>
+              </div>
+              <div class="user-profile-warning" *ngIf="Continue && profilesArray && profilesArray.length == 0">
+                <p>{{message}}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="btn-toolbar">
+          <button type="button" class="btn btn-primary pull-right" [disabled]="!contactForm.valid" (click)="continueAction()"
+            *ngIf="showContinue">Continue</button>
+        </div>
+        <div class="pull-right text-right text-primary error-box" *ngIf="checkingDuplicateEmails">
+          <strong>Looking for matching emails...</strong>
+        </div>
+        <div class="panel-footer user-profile-footer" *ngIf="Continue && profilesArray && profilesArray.length > 0">
+          <div class="row">
+            <div class="pull-right user-profile-create-button">
+              <button type="button" class="btn btn-primary" (click)="createAction()" [disabled]="!contactForm.valid">Create New</button>
+            </div>
+            <div class="user-profile-table" *ngIf="profilesArray.length > 0">
+              <div class="row bg-gray-strong col-md-12 user-profile-table-header">
+                <div class="col-md-3 user-profile-cell text-black">Name</div>
+                <div class="col-md-3 user-profile-cell text-black">Organization</div>
+                <div class="col-md-2 user-profile-cell text-black">Profile Type</div>
+                <div class="col-md-2 user-profile-cell text-black">Profile Status</div>
+                <div class="col-md-2 user-profile-cell text-black">Action</div>
+              </div>
+              <div class="row col-md-12" *ngFor="let profile of profilesArray">
+                <div class="col-md-3 text-black user-profile-cell"> {{profile.Contact.FirstName}}
+                  &nbsp;{{profile.Contact.LastName}}</div>
+                <div class="col-md-3 text-black user-profile-cell">{{profile.Organization ?
+                  profile.Organization.DisplayName : 'N/A'}}</div>
+                <div class="col-md-2 text-black user-profile-cell">{{profile.profileTypeText}}</div>
+                <div class="col-md-2 text-black user-profile-cell">{{profile.profileStatus}}</div>
+                <div class="col-md-2 text-black user-profile-cell">
+                  <a class="user-profile-action" (click)="openProfile(profile)">Select</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

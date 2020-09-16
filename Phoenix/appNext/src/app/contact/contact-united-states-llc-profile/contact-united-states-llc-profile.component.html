@@ -1,0 +1,41 @@
+<app-phx-panel>
+  <form *ngIf="inputFormGroup && currentProfile">
+      <app-contact-profile-details [readOnlyStorage]="readOnlyStorage" [inputFormGroup]="inputFormGroup">
+
+      </app-contact-profile-details>
+
+      <app-contact-organization-info [readOnlyStorage]="readOnlyStorage" [isMinimalistic]="true" [profileDetails]="currentProfile"
+          [inputFormGroup]="inputFormGroup">
+
+      </app-contact-organization-info>
+
+      <app-contact-profile-worker-eligibility [readOnlyStorage]="readOnlyStorage" [profile]="currentProfile"
+          [inputFormGroup]="inputFormGroup">
+
+      </app-contact-profile-worker-eligibility>
+
+      <div class="flex-row">
+          <div class="flex-row__child">
+              <app-contact-phonenumbers [readOnlyStorage]="readOnlyStorage" [inputFormGroup]="inputFormGroup"
+                  (outputEvent)="onOutputEvent()">
+
+              </app-contact-phonenumbers>
+          </div>
+          <div class="flex-row__child">
+              <app-contact-addresses [readOnlyStorage]="readOnlyStorage" [inputFormGroup]="inputFormGroup"
+                  (outputEvent)="onOutputEvent()">
+
+              </app-contact-addresses>
+          </div>
+      </div>
+
+      <app-phx-panel headerTitle="User Profile Compliance Documents">
+          <app-compliance-document [entityTypeId]="phxConstants.EntityType.UserProfile" [entityId]="currentProfile.IdOriginal"
+              [entityName]="currentProfile.Contact.FullName" (complianceDocumentOutput)="onComplianceDocumentOutput($event)"
+              [referenceEntityLink]="refLink" [triggerToRefresh]="triggerComplianceDocumentRefresh">
+
+          </app-compliance-document>
+      </app-phx-panel>
+
+  </form>
+</app-phx-panel>

@@ -1,0 +1,27 @@
+<app-invoice-list-table #grid [configuration]="dataTableConfiguration" [dataSourceUrl]="dataSourceUrl" [componentName]="componentName"
+  (selectionChanged)="onSelectionChanged($event)" (contentReady)="onContentReady($event)"></app-invoice-list-table>
+
+<app-phx-validation-messages [messages]="validationMessages">
+</app-phx-validation-messages>
+
+<div class="row toolbar">
+  <div class="col-md-6">
+    <div *ngIf="selectedRowKeys.length > 0">
+      <span class="total-label">Number Of Selected Rows </span>
+      <span class="total-value">{{selectedRowKeys.length}}</span>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="btn-toolbar pull-right">
+<!--       
+      <button type="button" class="btn btn-default" [disabled]="selectedRowKeys.length === 0" (click)="executeBatchCommand(batchActions.SuppressRelease)"
+        title="Suppress Release Selected Invoices">Suppress Release</button>
+      <button type="button" class="btn btn-primary" [disabled]="selectedRowKeys.length === 0" (click)="executeBatchCommand(batchActions.Release)"
+        title="Release Selected Invoices">Release</button>
+-->
+
+      <app-phx-state-action-buttons [stateActions]="stateActions"></app-phx-state-action-buttons>
+      
+    </div>
+  </div>
+</div>

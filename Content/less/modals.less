@@ -1,0 +1,194 @@
+//
+// Modals
+// --------------------------------------------------
+
+
+.slider-content {
+    left: 50%;
+    right: auto;
+    width: 100%;
+    height: calc(~"100% - 40px");
+    padding-bottom: 10px;
+
+    .row {
+        margin-left: 0px;
+        margin-right: 0px;
+    }
+
+    .slider-header {
+        padding: 5px 0;
+    }
+
+
+    .slider-body {
+        height: 100%;
+        padding-bottom: 100px;
+        overflow: auto;
+
+        h4, h5, h6 {
+            margin-bottom: 10px;
+            margin-left: 20px;
+            margin-top: 5px;
+        }
+    }
+
+    .slider-footer {
+        bottom: 20px;
+        margin-top: 5px;
+        padding: 10px 20px;
+        background: none repeat scroll 0 0 #fff;
+        bottom: 32px;
+        height: 50px;
+        width: 100%;
+    }
+
+    .sliderComplianceDocumentBody {
+        padding-top: 40px;
+    }
+
+    .sliderComplianceDocumentFooter {
+        width: 94%;
+        position: relative;
+    }
+}
+
+@modal-header-background: #fff;
+
+.modal {
+    z-index: 1049;
+}
+
+.modal-dialog {
+    /*left: 50%;*/
+    right: auto;
+    padding-top: 5%;
+    padding-bottom: 30px;
+
+   .row {
+        margin-left: 0px;
+        margin-right: 0px;
+    }
+
+    .modal-header {
+        color: #333;
+        font-size: 20px;
+        font-weight: bold;
+        letter-spacing: .005em;
+    }
+
+    .modal-body {
+        max-height: 600px;
+        overflow: auto;
+
+        h4, h5, h6 {
+            margin-bottom: 10px;
+            margin-left: 20px;
+            margin-top: 5px;
+        }
+    }
+
+    .modal-footer {
+        margin-top: 5px;
+        padding: 10px 20px;
+        background: none repeat scroll 0 0 #fff;
+        bottom: 32px;
+        height: 50px;
+        width: 100%;
+    }
+
+    .form-horizontal {
+        .form-group {
+            margin-left: 0;
+            margin-right: 0;
+        }
+    }
+
+    .confirm-dialog, .notify-dialog {
+        .modal-header {
+            padding: 24px;
+            border-bottom: none;
+            text-transform: capitalize;
+        }
+        
+        .dialog-header-error {
+            background-color: @modal-header-background;
+        }
+
+        .dialog-header-wait {
+            background-color: @modal-header-background;
+        }
+
+        .dialog-header-notify {
+
+            background-color: @modal-header-background;
+        }
+
+        .dialog-header-confirm {
+            background-color: @modal-header-background;
+        }
+
+        .dialog-header-error span, .dialog-header-error h4, 
+        .dialog-header-wait span, .dialog-header-wait h4, 
+        .dialog-header-confirm span, .dialog-header-confirm h4, 
+        .dialog-header-notify span, .dialog-header-notify h4 {
+            color: #333;
+            font-size: 20px;
+            font-weight: bold;
+            letter-spacing: .005em;
+        }
+
+        .modal-body {
+            max-height: 600px;
+            overflow: auto;
+            font-size: 1.6rem;
+            font-weight: normal;
+            letter-spacing: 0.010em;
+            line-height: 1.6em;
+            padding-left: 24px;
+            padding-right: 24px;
+            padding-top: 0;
+            word-wrap: break-word;
+        }
+
+            .modal-body:empty {
+                display: none;
+            }
+
+        .modal-footer {
+            border-top: none;
+            margin-top: 5px;
+            padding: 10px 20px;
+            background: none repeat scroll 0 0 #fff;
+            bottom: 32px;
+            height: 50px;
+            width: 100%;
+
+            button {
+                width: 80px;
+            }
+        }
+    }
+}
+
+.domain.organization {
+    .search {
+        .table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
+            background-color: #DDDDDD;
+            cursor: pointer;
+        }
+    }
+
+    .roles {
+        .table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
+            background-color: #DDDDDD;
+            cursor: pointer;
+        }
+    }
+
+    .contacts {
+        .table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
+            background-color: #DDDDDD;
+            cursor: pointer;
+        }
+    }
+}

@@ -1,0 +1,98 @@
+﻿<div class="form-horizontal row" role="form">    
+    <div id="view-toolbar" class="form-group" data-ng-show="_container.mode == 'view'">
+        <label class="col-lg-2 control-label">Effective Date:</label>
+        <div class="col-lg-4">
+            <p class="form-control-static pull-left">
+                <span data-ng-show="_container.isEffectiveDateInfinite">
+                    <i class="text-blue fontello-icon-infinity"></i>to
+                </span>
+                <span data-ng-hide="_container.isEffectiveDateInfinite">{{_container.current.EffectiveDate|date:ApplicationConstants.formatDate}} to
+                </span>
+                <span data-ng-show="_container.isEndDateInfinite">
+                    <i class="text-blue fontello-icon-infinity"></i>
+                </span>
+                <span data-ng-hide="_container.isEndDateInfinite">{{_container.current.EndDate|date:ApplicationConstants.formatDate}}
+                </span>
+            </p>            
+        </div>
+        <div class="col-lg-6">
+            <div class="pull-right prl">
+                <div class="btn-group">
+                    <button type="button" class="btn btn-info" data-ng-click="_container.edit()" data-ng-disabled="!_container.canCorrect"><i class="fontello-icon-edit-1"></i>Edit &nbsp;</button>
+                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu pull-right" role="menu">
+                        <li data-ng-show="_container.canCorrect" style="cursor: pointer">
+                            <a data-ng-click="_container.corrections()"><i class="fontello-icon-edit"></i>corrections</a>
+                        </li>
+                        <li data-ng-show="_container.canSchedule" style="cursor: pointer">
+                            <a data-ng-click="_container.scheduledChanges()"><i class="fontello-icon-calendar"></i>scheduled changes</a>
+                        </li>
+                    </ul>
+                </div>         
+            
+                <div class="btn-group" data-ng-show="_container.cancelViewCallback != null">
+                    <button class="btn btn-warning" data-ng-click="_container.close()" data-ng-show="model.mode.inView"><i class="fontello-icon-off"></i>Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div id="corrections-toolbar" class="form-group" data-ng-show="_container.mode == 'corrections'">
+        <label class="col-lg-2 control-label">Effective Date:</label>
+        <div class="col-lg-4">
+            <p class="form-control-static pull-left">
+                <span data-ng-show="_container.isEffectiveDateInfinite">
+                    <i class="text-blue fontello-icon-infinity"></i>to
+                </span>
+                <span data-ng-hide="_container.isEffectiveDateInfinite">{{_container.current.EffectiveDate|date:ApplicationConstants.formatDate}} to
+                </span>
+                <span data-ng-show="_container.isEndDateInfinite">
+                    <i class="text-blue fontello-icon-infinity"></i>
+                </span>
+                <span data-ng-hide="_container.isEndDateInfinite">{{_container.current.EndDate|date:ApplicationConstants.formatDate}}
+                </span>
+            </p>            
+        </div>
+        <div class="col-lg-6">                
+            <div class="pull-right prl">
+                <button type="button" class="btn btn-success" data-ng-click="_container.save()" data-ng-disabled="!_container.dirty || !_container.valid"><i class="fontello-icon-ok-1"></i>Save</button>
+                <button type="button" class="btn btn-danger" data-ng-click="_container.cancel()"><i class="fontello-icon-cancel-1"></i>Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="scheduled-changes-toolbar" class="form-group" data-ui-if="_container.mode == 'scheduled-changes'">
+        <label class="col-lg-2 control-label">Effective Date:</label>
+        <div class="col-lg-4">
+            <div class='input-group pull-left' style='width: 150px;' data-ng-hide="_container.isEffectiveDateInfinite">
+                        <input type="text" class="form-control  input-medium pull-left"
+                               style="width: 110px"
+                               data-datepicker-popup="{{ApplicationConstants.formatDate}}"
+                               data-min="_container.effectiveDateOptions.minDate"
+                               data-ng-model="_container.current.SelectedEffectiveDate"
+                               data-close-on-date-selection="true"
+                               data-ng-required="true"
+                               data-required-message="Required"
+                               data-show-button-bar="false"
+                               data-show-weeks="false"
+                               id="datepickerPopup"
+                               name="EffectiveDate" />
+                        <label for='datepickerPopup' class='input-group-addon btn'>
+                            <i class='fontello-icon-calendar'></i>
+                        </label>
+                    </div>
+            <p class="form-control-static pull-left" data-ng-show="_container.isEffectiveDateInfinite" ><i class="text-blue fontello-icon-infinity"></i></p>
+            <span class="form-control-static pull-left mls mrs">to</span>            
+            <p class="form-control-static pull-left" data-ng-show="_container.isEndDateInfinite"><i class="text-blue fontello-icon-infinity"></i></p>
+            <p class="form-control-static pull-left" data-ng-hide="_container.isEndDateInfinite">{{_container.current.EndDate|date:ApplicationConstants.formatDate}}</p>
+        </div>
+        <div class="col-lg-6">                
+            <div class="pull-right prl">
+                <button type="button" class="btn btn-success" data-ng-click="_container.submit()" data-ng-disabled="!_container.dirty || !_container.valid"><i class="fontello-icon-ok-circle-1"></i>Submit</button>
+                <button type="button" class="btn btn-danger" data-ng-click="_container.cancel()"><i class="fontello-icon-cancel-1"></i>Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>

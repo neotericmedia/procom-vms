@@ -1,0 +1,171 @@
+<div class="panel-internal">
+    <div class="content-group form-horizontal">
+        <div class="form-group col-lg-12">
+            <label for-property="EffectiveDate" for="EffectiveDate" data-model-property="selfScope.common.currentVersion.EffectiveDate"
+                class="col-lg-3 control-label label-to-right req-lab-right" data-original-title=""
+                title="">Effective Date</label>
+            <div class="col-lg-4">
+                <pt-date-picker data-ng-model="selfScope.common.currentVersion.EffectiveDate" data-pt-field-view="selfScope.common.ptFieldViewConfigOnChangeStatusId"
+                    data-ng-required="true" data-required-message="Required" data-func-callback-on-done="selfScope.common.datePickerCallbackOnDoneEffectiveDate()"
+                />
+            </div>
+        </div>
+        <div class="form-group col-lg-12">
+            <label for-property="Description" for="Description" data-model-property="selfScope.model.Description" class="col-lg-3 control-label label-to-right req-lab-right"
+                data-original-title="" title="">Description</label>
+            <div class="col-lg-6">
+                <input type="text" data-ng-model="selfScope.model.Description" name="Description" data-required-message="Required" data-pt-field-view="selfScope.common.ptFieldViewConfigOnChangeStatusId"
+                    data-ng-required="true" class="form-control form-control ng-scope" required="required"
+                    ng-maxlength="250" maxlength="250">
+            </div>
+        </div>
+        <div class="form-group col-lg-12">
+            <label for-property="ScheduledChangeRateApplicationId" for="ScheduledChangeRateApplicationId" data-model-property="selfScope.common.currentVersion.ScheduledChangeRateApplicationId"
+                class="col-lg-3 control-label label-to-right req-lab-right" data-original-title=""
+                title="">Work Order Applicable</label>
+            <div class="col-lg-6">
+                <div class="input-group select2-bootstrap-append">
+                    <ui-select name="ScheduledChangeRateApplicationId" data-ng-model="selfScope.common.currentVersion.ScheduledChangeRateApplicationId"
+                        theme="select2" class="form-control" data-pt-field-view="selfScope.common.ptFieldViewConfigOnChangeStatusId"
+                        required>
+                        <ui-select-match placeholder="-- Select One --">{{$select.selected.text}}</ui-select-match>
+                        <ui-select-choices repeat="item.id as item in selfScope.common.lists.listScheduledChangeRateApplication | filter:selfScope.common.filterScheduledChangeRateApplication() | uiSelectChoicesFilter: $select.search: 'text'">
+                            <span data-ng-bind-html="item.text | highlight: $select.search"></span>
+                        </ui-select-choices>
+                    </ui-select>
+                    <span class="input-group-btn">
+                        <button tabindex="-1" data-ng-click="selfScope.common.currentVersion.ScheduledChangeRateApplicationId=undefined" class="btn btn-default">
+                            <i class="material-icons md-18">clear</i>
+                        </button>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="form-group col-lg-12">
+            <label for-property="Percentage" for="Percentage" data-model-property="selfScope.common.currentVersion.Percentage" class="col-lg-3 control-label label-to-right req-lab-right"
+                data-original-title="" title="">Commission Rate</label>
+            <div class="col-lg-3">
+                <div class="input-group">
+                    <input type="text" input-by-float-range="{from:0, to:100, decimalplaces:4, doesemptytozero:'true'}" ng-model="selfScope.common.currentVersion.Percentage"
+                        input-display-decimal-places="4" name="Percentage" data-required-message="Required"
+                        data-pt-field-view="selfScope.common.ptFieldViewConfigOnChangeStatusId" data-pt-field-view-custom="{ { selfScope.common.currentVersion.Percentage | displayPercentageView:4 } }"
+                        data-ng-required="true" class="form-control form-control ng-scope" required="required">
+                    <span class="input-group-addon">%</span>
+                </div>
+            </div>
+        </div>
+        <div class="form-group col-lg-12" data-ng-if="selfScope.model.CommissionRateHeaderStatusId==ApplicationConstants.CommissionRateHeaderStatus.New || selfScope.common.customStatusId == selfScope.common.customStatusType.ToManageRestrictions">
+            <label class="col-lg-3 control-label label-to-right" data-original-title="" title="" data-ng-class="(selfScope.model.CommissionRoleId!=ApplicationConstants.CommissionRole.NationalAccountsRole && selfScope.model.CommissionRoleId!=ApplicationConstants.CommissionRole.BranchManagerRole)?'':(selfScope.common.commissionRateRestrictionsValidionMessage.length==0?'req-lab-right-valid':'req-lab-right')">Restrictions</label>
+            <div class="col-lg-3">
+                <div class="btn-group">
+                    <button type="button" class="btn btn-clouds dropdown-toggle" data-toggle="dropdown">
+                        <span class="payroll-btn-name">Add/Edit Restriction</span>
+                        <span class="caret ml payroll-btn-caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li style="cursor: pointer;">
+                            <a data-ng-click="selfScope.common.workflow.customButtonOnClick(selfScope.common.currentVersion,'AddRestriction',ApplicationConstants.CommissionRateRestrictionType.InternalOrganization)">Internal Company</a>
+                        </li>
+                        <li style="cursor: pointer;">
+                            <a data-ng-click="selfScope.common.workflow.customButtonOnClick(selfScope.common.currentVersion,'AddRestriction',ApplicationConstants.CommissionRateRestrictionType.ClientOrganization)">Client Company</a>
+                        </li>
+                        <li style="cursor: pointer;">
+                            <a data-ng-click="selfScope.common.workflow.customButtonOnClick(selfScope.common.currentVersion,'AddRestriction',ApplicationConstants.CommissionRateRestrictionType.LineOfBusiness)">Line Of Business</a>
+                        </li>
+                        <li style="cursor: pointer;">
+                            <a data-ng-click="selfScope.common.workflow.customButtonOnClick(selfScope.common.currentVersion,'AddRestriction',ApplicationConstants.CommissionRateRestrictionType.InternalOrganizationDefinition1)">Branch</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-6 form-control-static text-warning">
+                {{selfScope.common.commissionRateRestrictionsValidionMessage}}
+            </div>
+        </div>
+        <div class="col-lg-12 panel-body" data-pt-validation-messages="selfScope.common.validationMessages" data-ng-if="selfScope.common.validationMessages"></div>
+        <div class="col-lg-12 panel-internal" style="padding: 0" data-ng-if="selfScope.model.CommissionRateRestrictions.length>0">
+            <div class="row panel-heading">
+                <div class="col-xs-4 col-lg-offset-2">
+                    <label>Type</label>
+                </div>
+                <div class="col-xs-8 col-lg-6" style="padding-left: 5px">
+                    <label>Restrictions</label>
+                </div>
+            </div>
+            <div class="panel-body" style="margin-left: -3px">
+                <div class="row panel-row" style="margin-left: -5px; margin-right: 5px" data-ng-repeat="restrictionGroup in selfScope.common.commissionRateRestrictionsGrouped()|filter:selfScope.common.filterGroupByCommissionRateRestrictionTypeId">
+                    <div class="col-xs-4 col-lg-offset-2" data-ng-if="selfScope.model.CommissionRateHeaderStatusId==ApplicationConstants.CommissionRateHeaderStatus.New"
+                        style="cursor:pointer;" data-ng-click="selfScope.common.workflow.customButtonOnClick(selfScope.common.currentVersion,'AddRestriction',restrictionGroup.CommissionRateRestrictionTypeId)">
+                        {{restrictionGroup.CommissionRateRestrictionTypeId|lookup:selfScope.common.lists.listCommissionRateRestrictionType}}
+                    </div>
+                    <div class="col-xs-4 col-lg-offset-2" data-ng-if="selfScope.model.CommissionRateHeaderStatusId!=ApplicationConstants.CommissionRateHeaderStatus.New">
+                        {{restrictionGroup.CommissionRateRestrictionTypeId|lookup:selfScope.common.lists.listCommissionRateRestrictionType}}
+                    </div>
+                    <div class="col-xs-8 col-lg-6">
+                        <span data-ng-repeat="restriction in selfScope.model.CommissionRateRestrictions | filter:{CommissionRateRestrictionTypeId: restrictionGroup.CommissionRateRestrictionTypeId}">
+                            <span data-ng-if="$index>0">, </span>{{restriction.Name}}</span>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-lg-12 panel panel-internal" data-ng-if="selfScope.common.currentVersion.CommissionRateVersionStatusId == ApplicationConstants.CommissionRateVersionStatus.Active||selfScope.common.currentVersion.CommissionRateVersionStatusId == ApplicationConstants.CommissionRateVersionStatus.Replaced">
+            <div class="panel-body">
+                <app-phx-workflow-event-history [entity-type-id]="ApplicationConstants.EntityType.CommissionRateHeader" [entity-id]="$state.params.commissionRateHeaderId"></app-phx-workflow-event-history>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="panel-footer" data-ng-if="selfScope.common.currentVersion.CommissionRateVersionStatusId == ApplicationConstants.CommissionRateVersionStatus.New || selfScope.common.customStatusId == selfScope.common.customStatusType.ToCorrect || selfScope.common.customStatusId == selfScope.common.customStatusType.ToScheduleChange || selfScope.common.customStatusId == selfScope.common.customStatusType.ToManageRestrictions">
+    <div class="row">
+        <div class="col-lg-6">
+        </div>
+        <div class="col-lg-6">
+            <div class="pull-right">
+                <button type="button" class="btn btn-default" data-ng-click="selfScope.common.workflow.customButtonOnClick(selfScope.common.currentVersion,'Cancel')"
+                    data-ng-if="selfScope.common.customStatusId == selfScope.common.customStatusType.ToCorrect || selfScope.common.customStatusId == selfScope.common.customStatusType.ToScheduleChange || selfScope.common.customStatusId == selfScope.common.customStatusType.ToManageRestrictions">
+                    Cancel
+                </button>
+                <button type="button" class="btn btn-default" data-ng-click="selfScope.common.workflow.actionButtonOnClick(selfScope.common.currentVersion,{CommandName: 'CancelUpdateTemplate'})"
+                    data-ng-if="selfScope.common.customStatusId==selfScope.common.customStatusType.TemplateEdit">
+                    Cancel
+                </button>
+                <button type="button" class="btn btn-default" data-ng-click="selfScope.common.workflow.customButtonOnClick(selfScope.common.currentVersion,'NewCancel')"
+                    data-ng-if="selfScope.common.customStatusId!=selfScope.common.customStatusType.TemplateEdit && selfScope.common.currentVersion.CommissionRateVersionStatusId == ApplicationConstants.CommissionRateVersionStatus.New">
+                    Cancel
+                </button>
+                <button type="button" class="btn btn-default" data-ng-click="selfScope.common.workflow.actionButtonOnClick(selfScope.common.currentVersion,{CommandName: 'SaveAsTemplate'})"
+                    data-ng-if="selfScope.common.customStatusId!=selfScope.common.customStatusType.TemplateEdit && selfScope.common.currentVersion.CommissionRateVersionStatusId == ApplicationConstants.CommissionRateVersionStatus.New"
+                    data-ng-disabled="!formCommissionRateHeader.$valid||selfScope.common.commissionRateRestrictionsValidionMessage.length>0">
+                    Create Template
+                </button>
+                <button type="button" class="btn btn-primary" data-ng-click="selfScope.common.workflow.actionButtonOnClick(selfScope.common.currentVersion,{CommandName: 'UpdateTemplate'})"
+                    data-ng-if="selfScope.common.customStatusId==selfScope.common.customStatusType.TemplateEdit"
+                    data-ng-disabled="!formCommissionRateHeader.$valid">
+                    Update Template
+                </button>
+                <button type="button" class="btn btn-primary" data-ng-click="selfScope.common.workflow.customButtonOnClick(selfScope.common.currentVersion,'ToCorrect')"
+                    data-ng-if="selfScope.common.customStatusId == selfScope.common.customStatusType.ToCorrect"
+                    data-ng-disabled="!formCommissionRateHeader.$valid">
+                    Submit
+                </button>
+                <button type="button" class="btn btn-primary" data-ng-click="selfScope.common.workflow.customButtonOnClick(selfScope.common.currentVersion,'ToScheduleChange')"
+                    data-ng-if="selfScope.common.customStatusId == selfScope.common.customStatusType.ToScheduleChange"
+                    data-ng-disabled="!formCommissionRateHeader.$valid">
+                    Schedule Change
+                </button>
+                <button type="button" class="btn btn-primary" data-ng-click="selfScope.common.workflow.customButtonOnClick(selfScope.common.currentVersion,'ToManageRestrictions')"
+                    data-ng-if="selfScope.common.customStatusId == selfScope.common.customStatusType.ToManageRestrictions"
+                    data-ng-disabled="!formCommissionRateHeader.$valid">
+                    Submit
+                </button>
+                <button type="button" class="btn btn-primary" data-ng-click="selfScope.common.workflow.customButtonOnClick(selfScope.common.currentVersion,'NewCreate')"
+                    data-ng-if="selfScope.common.customStatusId!=selfScope.common.customStatusType.TemplateEdit && selfScope.common.currentVersion.CommissionRateVersionStatusId == ApplicationConstants.CommissionRateVersionStatus.New"
+                    data-ng-disabled="!formCommissionRateHeader.$valid||selfScope.common.commissionRateRestrictionsValidionMessage.length>0">
+                    Create
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

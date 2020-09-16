@@ -1,0 +1,51 @@
+<app-phx-panel [formGroup]="inputFormGroup" headerTitle="Restrictions">
+    <app-restriction-dropdown [labelText]="''" #refDropDown [dropdowmitems]="html.restrictionItems"
+    *ngIf="rootModel.OrganizationStatusId === phxConstants.OrganizationStatus.ComplianceDraft"
+    [editable]="readOnlyStorage.IsEditable"
+     [(selectedItems)]="html.selectedItems" [items]="html.items"
+        (restrictionItemClick)="onClickRestrictionItem($event)" 
+        (selectedItemsChanged)="onItemsSelect($event)"></app-restriction-dropdown>
+    <div class="form-group org-payment-chk">
+        <div class="row" *ngIf="inputFormGroup.controls.OrganizationSubVendorRoleRestrictions.value || 
+        inputFormGroup.controls.OrganizationSubVendorRoleRestrictions.value.length > 0">
+            <div class="col-xs-3 label-to-right">
+                <label>Type</label>
+            </div>
+            <div class="col-xs-8 label-to-same-padding">
+                <label>Restrictions</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-3 label-to-right">
+                <div *ngIf="html.showAddModifyRestrictionType && clientCompanyRestrictions.length" style="cursor:pointer;" (click)="onClickLinkRestrictionItem(0)">
+                    <a class="ng-binding">Client Company</a>
+                </div>
+                <div *ngIf="!html.showAddModifyRestrictionType && clientCompanyRestrictions.length" style="cursor:pointer;" >
+                        <span>Client Company</span>
+                </div>
+            </div>
+            <div class="col-xs-8 label-to-same-padding">
+                <span *ngFor="let res of clientCompanyRestrictions; let i = index; let lst = last">
+                    {{ res.Name }}
+                    <span *ngIf="(clientCompanyRestrictions.length - 1) !== i">,&nbsp;</span>
+                </span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-3 label-to-right">
+                <div *ngIf="html.showAddModifyRestrictionType && internalCompanyRestrictions.length" style="cursor:pointer;" (click)="onClickLinkRestrictionItem(1)">
+                    <a class="ng-binding">Internal Company</a>
+                </div>
+                <div *ngIf="!html.showAddModifyRestrictionType && internalCompanyRestrictions.length" style="cursor:pointer;" >
+                        <span class="ng-binding">Internal Company</span>
+                </div>
+            </div>
+            <div class="col-xs-8 label-to-same-padding">
+                <span *ngFor="let res of internalCompanyRestrictions; let i = index; let lst = last">
+                    {{ res.Name }}
+                    <span *ngIf="(internalCompanyRestrictions.length - 1) !== i">,&nbsp;</span>
+                </span>
+            </div>
+        </div>
+    </div>
+</app-phx-panel>

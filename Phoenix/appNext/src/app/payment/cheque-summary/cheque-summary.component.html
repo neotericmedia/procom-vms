@@ -1,0 +1,52 @@
+<div *ngIf="companies?.length == 0" class="empty">
+  There are no payment cheques.
+</div>
+<div class="app-accordion-container app-accordion-container-28">
+  <app-phx-accordion>
+    <app-phx-badged-accordion-group *ngFor="let company of companies; let i = index" [badge]="company.chequesInProgressCount" [(isOpen)]="company.isOpen"
+      [showToggle]="company.hasItems">
+      <span accordion-heading>{{company.companyName}}</span>
+      <div *ngFor="let bank of company.banks">
+        <div class="app-accordion-level-two">
+          <app-phx-accordion>
+            <app-phx-accordion-group panelClass="bankGroup" *ngFor="let currency of bank.currencies;" [(isOpen)]="bank.isOpen" [showToggle]="false">
+              <div accordion-heading class="app-accordion-level-two-item0">
+                <i class="app-accordion-chevron" [ngClass]="{'icon-chevron-up': bank.isOpen, 'icon-chevron-down': !bank.isOpen}"></i>
+                Cheques - {{currency.currencyCode | CodeValue:codeValueGroups.Currency:'code'}} - {{bank.bankName}}<span *ngIf="bank.description">({{bank.description}})</span>
+                <span class="badge badge-warning bankBadge" *ngIf="currency.chequesInProgressCount > 0">{{currency.chequesInProgressCount}}</span>
+              </div>
+              <app-phx-accordion>
+                <div class="entityBlock app-accordion-level-three">
+                  <div (click)="goToChequesInProgress(company.companyId, bank.bankId, currency.currencyCode)">
+                    <div class="divRelease navWithLink app-accordion-level-three-item">
+                      <span>Cheques in progress</span>
+                      <span class="badge badge-warning Badge" *ngIf="currency.chequesInProgressCount > 0">{{currency.chequesInProgressCount}}</span>
+                    </div>
+                  </div>
+                  <div (click)="goToCheques(company.companyId, bank.bankId, currency.currencyCode)">
+                    <div class="divRelease navWithLink app-accordion-level-three-item">
+                      <span>Cheques</span>
+                      <span class="badge badge-default Badge" *ngIf="currency.chequesCount > 0">{{currency.chequesCount}}</span>
+                    </div>
+                  </div>
+                  <div (click)="goToEPPPendingRelease(company.companyId, bank.bankId, currency.currencyCode)">
+                    <div class="divRelease navWithLink app-accordion-level-three-item">
+                      <span>EPP Pending Release</span>
+                      <span class="badge badge-warning Badge" *ngIf="currency?.eppPendingReleaseCount > 0">{{currency.eppPendingReleaseCount}}</span>
+                    </div>
+                  </div>
+                  <div (click)="goToEPPBatches(company.companyId, bank.bankId, currency.currencyCode)">
+                    <div class="divRelease navWithLink app-accordion-level-three-item">
+                      <span>EPP Batches List</span>
+                      <span class="badge badge-default Badge" *ngIf="currency?.eppBatchesCount > 0">{{currency.eppBatchesCount}}</span>
+                    </div>
+                  </div>
+                </div>
+              </app-phx-accordion>
+            </app-phx-accordion-group>
+          </app-phx-accordion>
+        </div>
+      </div>
+    </app-phx-badged-accordion-group>
+  </app-phx-accordion>
+</div>

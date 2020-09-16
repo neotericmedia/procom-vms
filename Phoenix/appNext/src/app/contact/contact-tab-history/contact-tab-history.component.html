@@ -1,0 +1,26 @@
+<div class="content-group form-horizontal" *ngIf="html.entityId>0">
+  <div class="panel">
+      <div class="panel-body">
+          <div class="row">
+              <div class="form-group">
+                  <h4>Change History</h4>
+              </div>
+          </div>
+          <div class="row">
+              <app-changeHistory [entityTypeId]="html.entityTypeId" [entityId]="html.entityId" [blackList]="html.changeHistoryBlackList"></app-changeHistory>
+          </div>
+      </div>
+      <div class="panel-body">
+          <div class="row">
+              <div class="form-group">
+                  <h4>Workflow History</h4>
+              </div>
+          </div>
+          <div class="row">
+              <div class="col-lg-12">
+                  <app-phx-workflow-event-history [entityTypeId]="html.entityTypeId" [entityId]="html.entityId"></app-phx-workflow-event-history>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>

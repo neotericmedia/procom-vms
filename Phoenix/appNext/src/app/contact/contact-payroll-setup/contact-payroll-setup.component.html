@@ -1,0 +1,252 @@
+<app-phx-panel headerTitle="Payroll Setup">
+  <form [formGroup]="inputFormGroup" *ngIf="inputFormGroup">
+    <!-- *ngIf="ProfileTypeId !== html.phxConstants.UserProfileType.WorkerUnitedStatesW2" -->
+    <div>
+      <div class="">
+        <div class="form-group panel-profile-radio" *ngIf="taxExempt && fullTaxExempt">
+          <phx-form-control [control]="inputFormGroup.controls.IsBasicSetup" name="IsBasicSetup" labelText="Is Basic Setup"
+            [editable]="isComplianceFieldEditable" viewModeText="{{inputFormGroup.controls.IsBasicSetup.value? 'Yes' : 'No'}}">
+            <div class="col-lg-7">
+              <label class="radio-inline">
+                <input class="form-check-input" name="IsBasicSetup" type="radio" [value]="true" [checked]="inputFormGroup.controls.IsBasicSetup.value == true"
+                  formControlName="IsBasicSetup" (click)="restoreIsBasicSetup()">Yes</label>
+              <label class="radio-inline">
+                <input class="form-check-input" name="IsBasicSetup" type="radio" [value]="false" [checked]="inputFormGroup.controls.IsBasicSetup.value == false"
+                  formControlName="IsBasicSetup" (click)="restoreIsBasicSetup()">No</label>
+            </div>
+          </phx-form-control>
+        </div>
+      </div>
+      <div name="FederalTD1" *ngIf="taxExempt && fullTaxExempt && !inputFormGroup.controls.IsBasicSetup.value && inputFormGroup.controls.IsBasicSetup.value != null">
+        <div *ngIf="fullTaxExempt">
+          <phx-form-control [control]="inputFormGroup.controls.FederalTD1" labelText="TD1 Federal" [editable]="isComplianceFieldEditable"
+            viewModeText="{{inputFormGroup.controls.FederalTD1.value}}">
+            <div class="col-lg-4 padd-r">
+              <div class="input-group">
+                <input formControlName="FederalTD1" type="text" class="form-control" phxFloatBetweenInput='{"from":0, "to":9999999999999.99, "decimalplaces":2}' />
+                <span class="input-group-addon" *ngIf="isComplianceFieldEditable">$</span>
+              </div>
+            </div>
+          </phx-form-control>
+        </div>
+        <div class="form-group" *ngIf="fullTaxExempt">
+          <phx-form-control [control]="inputFormGroup.controls.ProvincialTD1" name="ProvincialTD1" labelText="TD1 Provincial"
+            [editable]="isComplianceFieldEditable" viewModeText="{{inputFormGroup.controls.ProvincialTD1.value}}">
+            <div class="col-lg-4 padd-r">
+              <div class="input-group">
+                <input formControlName="ProvincialTD1" type="text" class="form-control" phxFloatBetweenInput='{"from":0, "to":9999999999999.99, "decimalplaces":2}' />
+                <span class="input-group-addon" *ngIf="isComplianceFieldEditable">$</span>
+              </div>
+            </div>
+          </phx-form-control>
+        </div>
+        <div class="form-group" name="TD1XTotalRemuneration" *ngIf="fullTaxExempt">
+          <phx-form-control [control]="inputFormGroup.controls.TD1XTotalRemuneration" labelText="TD1X Total Remuneration"
+            [editable]="isComplianceFieldEditable" viewModeText="{{inputFormGroup.controls.TD1XTotalRemuneration.value}}">
+            <div class="col-lg-4 padd-r">
+              <div class="input-group">
+                <input formControlName="TD1XTotalRemuneration" type="text" class="form-control" phxFloatBetweenInput='{"from":0, "to":9999999999999.99, "decimalplaces":2}' />
+                <span class="input-group-addon" *ngIf="isComplianceFieldEditable">$</span>
+              </div>
+            </div>
+          </phx-form-control>
+        </div>
+        <div class="form-group" data-ng-if="fullTaxExempt">
+          <phx-form-control name="TD1XCommissionExpenses" [control]="inputFormGroup.controls.TD1XCommissionExpenses"
+            labelText="TD1X Commission Expenses" [editable]="isComplianceFieldEditable" viewModeText="{{inputFormGroup.controls.TD1XCommissionExpenses.value}}">
+            <div class="col-lg-4 padd-r">
+              <div class="input-group">
+                <input formControlName="TD1XCommissionExpenses" type="text" (blur)="validateTD1X()" class="form-control"
+                  phxFloatBetweenInput='{"from":0, "to":9999999999999.99, "decimalplaces":2}' />
+                <span class="input-group-addon" *ngIf="isComplianceFieldEditable">$</span>
+              </div>
+            </div>
+          </phx-form-control>
+        </div>
+      </div>
+      <div class="" *ngIf="inputFormGroup.controls.UserProfileWorkerSourceDeductions.value.length > 0">
+        <div class="form-group">
+          <phx-form-control name="TaxSubdivisionId" labelText="Tax Province/State" [control]="inputFormGroup.controls.TaxSubdivisionId"
+            [editable]="readOnlyStorage.IsEditable" viewModeText="{{inputFormGroup.controls.TaxSubdivisionId.value | lookupNoCache:html.codeValueLists.subdivisions:'id':'text'}}">
+            <app-phx-select-box [items]="html.codeValueLists.subdivisions" textField="text" valueField="id"
+              [formControl]="inputFormGroup.controls.TaxSubdivisionId">
+            </app-phx-select-box>
+          </phx-form-control>
+        </div>
+        <div class="phx-panel" *ngIf="currentProfile.ProfileTypeId === html.phxConstants.UserProfileType.WorkerCanadianSp">
+          <h4 style="font-weight: 600;margin-left: -11px;">Non-T4A Work Orders</h4>
+        </div>
+        <div class="form-group panel-profile-radio" *ngIf="taxExempt">
+          <form [formGroup]="inputFormGroup.controls.UserProfileWorkerSourceDeductions.controls[0]">
+            <phx-form-control name="IsApplied" [control]="inputFormGroup.controls.UserProfileWorkerSourceDeductions.controls[0].controls.IsApplied"
+              [editable]="isComplianceFieldEditable" labelText="Apply {{inputFormGroup.controls.UserProfileWorkerSourceDeductions.controls[0].controls.SourceDeductionTypeId.value | lookup:html.codeValueLists.sourceDeductionTypeList:'id':'text'}}"
+              viewModeText="{{inputFormGroup.controls.UserProfileWorkerSourceDeductions.controls[0].controls.IsApplied.value? 'Yes' : 'No'}}">
+              <label class="radio-inline">
+                <input class="form-check-input" type="radio" [value]="true" [checked]="inputFormGroup.controls.UserProfileWorkerSourceDeductions.controls[0].controls.IsApplied.value"
+                  formControlName="IsApplied">Yes</label>
+              <label class="radio-inline">
+                <input class="form-check-input" type="radio" [value]="false" [checked]="!inputFormGroup.controls.UserProfileWorkerSourceDeductions.controls[0].controls.IsApplied.value"
+                  formControlName="IsApplied">No</label>
+            </phx-form-control>
+          </form>
+        </div>
+        <div class="form-group panel-profile-radio" *ngIf="taxExempt">
+          <form [formGroup]="inputFormGroup.controls.UserProfileWorkerSourceDeductions.controls[3]">
+            <phx-form-control name="IsApplied" [control]="inputFormGroup.controls.UserProfileWorkerSourceDeductions.controls[3].controls.IsApplied"
+              [editable]="isComplianceFieldEditable" labelText="Apply {{inputFormGroup.controls.UserProfileWorkerSourceDeductions.controls[3].controls.SourceDeductionTypeId.value | lookup:html.codeValueLists.sourceDeductionTypeList:'id':'text'}}"
+              viewModeText="{{inputFormGroup.controls.UserProfileWorkerSourceDeductions.controls[3].controls.IsApplied.value? 'Yes' : 'No'}}">
+              <label class="radio-inline">
+                <input class="form-check-input" type="radio" [value]="true" [checked]="inputFormGroup.controls.UserProfileWorkerSourceDeductions.controls[3].controls.IsApplied.value"
+                  formControlName="IsApplied">Yes</label>
+              <label class="radio-inline">
+                <input class="form-check-input" type="radio" [value]="false" [checked]="!inputFormGroup.controls.UserProfileWorkerSourceDeductions.controls[3].controls.IsApplied.value"
+                  formControlName="IsApplied">No</label>
+            </phx-form-control>
+          </form>
+        </div>
+        <div class="form-group panel-profile-radio" *ngIf="taxExempt">
+          <form [formGroup]="inputFormGroup.controls.UserProfileWorkerSourceDeductions.controls[1]">
+            <phx-form-control name="IsApplied" [control]="inputFormGroup.controls.UserProfileWorkerSourceDeductions.controls[1].controls.IsApplied"
+              [editable]="isComplianceFieldEditable" labelText="Apply {{inputFormGroup.controls.UserProfileWorkerSourceDeductions.controls[1].controls.SourceDeductionTypeId.value | lookup:html.codeValueLists.sourceDeductionTypeList:'id':'text'}}"
+              viewModeText="{{inputFormGroup.controls.UserProfileWorkerSourceDeductions.controls[1].controls.IsApplied.value? 'Yes' : 'No'}}">
+              <label class="radio-inline">
+                <input class="form-check-input" type="radio" [value]="true" [checked]="inputFormGroup.controls.UserProfileWorkerSourceDeductions.controls[1].controls.IsApplied.value"
+                  formControlName="IsApplied">Yes</label>
+              <label class="radio-inline">
+                <input class="form-check-input" type="radio" [value]="false" [checked]="!inputFormGroup.controls.UserProfileWorkerSourceDeductions.controls[1].controls.IsApplied.value"
+                  formControlName="IsApplied">No</label>
+            </phx-form-control>
+          </form>
+        </div>
+        <div class="form-group panel-profile-radio" *ngIf="taxExempt">
+          <form [formGroup]="inputFormGroup.controls.UserProfileWorkerSourceDeductions.controls[2]">
+            <phx-form-control name="IsApplied" [control]="inputFormGroup.controls.UserProfileWorkerSourceDeductions.controls[2].controls.IsApplied"
+              [editable]="isComplianceFieldEditable" labelText="Apply {{inputFormGroup.controls.UserProfileWorkerSourceDeductions.controls[2].controls.SourceDeductionTypeId.value | lookup:html.codeValueLists.sourceDeductionTypeList:'id':'text'}}"
+              viewModeText="{{inputFormGroup.controls.UserProfileWorkerSourceDeductions.controls[2].controls.IsApplied.value? 'Yes' : 'No'}}">
+              <label class="radio-inline">
+                <input class="form-check-input" type="radio" [value]="true" [checked]="inputFormGroup.controls.UserProfileWorkerSourceDeductions.controls[2].controls.IsApplied.value"
+                  formControlName="IsApplied">Yes</label>
+              <label class="radio-inline">
+                <input class="form-check-input" type="radio" [value]="false" [checked]="!inputFormGroup.controls.UserProfileWorkerSourceDeductions.controls[2].controls.IsApplied.value"
+                  formControlName="IsApplied">No</label>
+            </phx-form-control>
+          </form>
+        </div>
+        <div class="form-group panel-profile-radio" *ngIf="taxExempt && fullTaxExempt">
+          <form [formGroup]="inputFormGroup.controls.UserProfileWorkerSourceDeductions.controls[7]">
+            <phx-form-control name="IsApplied" [control]="inputFormGroup.controls.UserProfileWorkerSourceDeductions.controls[7].controls.IsApplied"
+              [editable]="isComplianceFieldEditable" labelText="Apply {{inputFormGroup.controls.UserProfileWorkerSourceDeductions.controls[7].controls.SourceDeductionTypeId.value | lookup:html.codeValueLists.sourceDeductionTypeList:'id':'text'}}"
+              viewModeText="{{inputFormGroup.controls.UserProfileWorkerSourceDeductions.controls[7].controls.IsApplied.value? 'Yes' : 'No'}}">
+              <label class="radio-inline">
+                <input class="form-check-input" type="radio" [value]="true" [checked]="inputFormGroup.controls.UserProfileWorkerSourceDeductions.controls[7].controls.IsApplied.value"
+                  formControlName="IsApplied">Yes</label>
+              <label class="radio-inline">
+                <input class="form-check-input" type="radio" [value]="false" [checked]="!inputFormGroup.controls.UserProfileWorkerSourceDeductions.controls[7].controls.IsApplied.value"
+                  formControlName="IsApplied">No</label>
+            </phx-form-control>
+          </form>
+        </div>
+        <div class="form-group panel-profile-radio" *ngIf="taxExempt && fullTaxExempt">
+          <form [formGroup]="inputFormGroup.controls.UserProfileWorkerSourceDeductions.controls[4]">
+            <phx-form-control name="IsApplied" [control]="inputFormGroup.controls.UserProfileWorkerSourceDeductions.controls[4].controls.IsApplied"
+              [editable]="isComplianceFieldEditable" labelText="Apply {{inputFormGroup.controls.UserProfileWorkerSourceDeductions.controls[4].controls.SourceDeductionTypeId.value | lookup:html.codeValueLists.sourceDeductionTypeList:'id':'text'}}"
+              viewModeText="{{inputFormGroup.controls.UserProfileWorkerSourceDeductions.controls[4].controls.IsApplied.value? 'Yes' : 'No'}}">
+              <label class="radio-inline">
+                <input class="form-check-input" type="radio" [value]="true" [checked]="inputFormGroup.controls.UserProfileWorkerSourceDeductions.controls[4].controls.IsApplied.value"
+                  formControlName="IsApplied">Yes</label>
+              <label class="radio-inline">
+                <input class="form-check-input" type="radio" [value]="false" [checked]="!inputFormGroup.controls.UserProfileWorkerSourceDeductions.controls[4].controls.IsApplied.value"
+                  formControlName="IsApplied">No</label>
+            </phx-form-control>
+          </form>
+        </div>
+        <div class="form-group panel-profile-radio" *ngIf="taxExempt && fullTaxExempt">
+          <form [formGroup]="inputFormGroup.controls.UserProfileWorkerSourceDeductions.controls[5]">
+            <phx-form-control name="IsApplied" [control]="inputFormGroup.controls.UserProfileWorkerSourceDeductions.controls[5].controls.IsApplied"
+              [editable]="isComplianceFieldEditable" labelText="Apply {{inputFormGroup.controls.UserProfileWorkerSourceDeductions.controls[5].controls.SourceDeductionTypeId.value | lookup:html.codeValueLists.sourceDeductionTypeList:'id':'text'}}"
+              viewModeText="{{inputFormGroup.controls.UserProfileWorkerSourceDeductions.controls[5].controls.IsApplied.value? 'Yes' : 'No'}}">
+              <label class="radio-inline">
+                <input class="form-check-input" type="radio" [value]="true" [checked]="inputFormGroup.controls.UserProfileWorkerSourceDeductions.controls[5].controls.IsApplied.value"
+                  formControlName="IsApplied">Yes</label>
+              <label class="radio-inline">
+                <input class="form-check-input" type="radio" [value]="false" [checked]="!inputFormGroup.controls.UserProfileWorkerSourceDeductions.controls[5].controls.IsApplied.value"
+                  formControlName="IsApplied">No</label>
+            </phx-form-control>
+          </form>
+        </div>
+        <div class="form-group panel-profile-radio" *ngIf="taxExempt && fullTaxExempt">
+          <form [formGroup]="inputFormGroup.controls.UserProfileWorkerSourceDeductions.controls[6]">
+            <phx-form-control name="IsApplied" [control]="inputFormGroup.controls.UserProfileWorkerSourceDeductions.controls[6].controls.IsApplied"
+              viewModeText="" [editable]="true" labelText="{{inputFormGroup.controls.UserProfileWorkerSourceDeductions.controls[6].controls.SourceDeductionTypeId.value | lookup:html.codeValueLists.sourceDeductionTypeList:'id':'text'}}">
+              <div class="col-lg-2 profile-label-position" *ngIf="!isComplianceFieldEditable">
+                {{inputFormGroup.controls.UserProfileWorkerSourceDeductions.controls[6].controls.IsApplied.value |
+                boolToYesNo}}
+              </div>
+              <div class="col-md-6 padding-0" *ngIf="isComplianceFieldEditable">
+                <label class="radio-inline">
+                  <input class="form-check-input" type="radio" [value]="true" [checked]="inputFormGroup.controls.UserProfileWorkerSourceDeductions.controls[6].controls.IsApplied.value"
+                    formControlName="IsApplied" (click)="restoreAdditionalTaxAmount(6)">Yes</label>
+                <label class="radio-inline">
+                  <input class="form-check-input" type="radio" [value]="false" [checked]="!inputFormGroup.controls.UserProfileWorkerSourceDeductions.controls[6].controls.IsApplied.value"
+                    formControlName="IsApplied" (click)="restoreAdditionalTaxAmount(6)">No</label>
+              </div>
+              <div class="col-md-6">
+                <div *ngIf="inputFormGroup.controls.UserProfileWorkerSourceDeductions.controls[6].controls.IsApplied.value">
+                    <phx-form-control name="RateAmount" [control]="inputFormGroup.controls.UserProfileWorkerSourceDeductions.controls[6].controls.RateAmount"
+                      [layoutType]="layoutType.Inline" labelText="" [editable]="isComplianceFieldEditable" viewModeText="{{inputFormGroup.controls.UserProfileWorkerSourceDeductions.controls[6].controls.RateAmount.value}}">
+                      <div class="input-group" *ngIf="inputFormGroup.controls.UserProfileWorkerSourceDeductions.controls[6].controls.IsApplied.value">
+                        <input formControlName="RateAmount" type="text" class="form-control" phxFloatBetweenInput='{"from":0, "to":9999999999999.99, "decimalplaces":2}' />
+                        <span class="input-group-addon" *ngIf="isComplianceFieldEditable">$</span>
+                      </div>
+                    </phx-form-control>
+                </div>
+              </div>
+            </phx-form-control>
+          </form>
+        </div>
+        <div class="form-group panel-profile-radio" formArrayName="UserProfileWorkerOtherEarnings">
+          <div *ngFor="let userProfileWorkerOtherEarning of formArrayOtherEarnings().controls; let idx = index; trackBy: trackByFn">
+            <div [formGroupName]="idx">
+              <div class="form-group panel-profile-radio" *ngIf="taxExempt && fullTaxExempt">
+                <phx-form-control name="IsApplied" [control]="userProfileWorkerOtherEarning.controls.IsApplied"
+                  labelText="Apply {{userProfileWorkerOtherEarning.controls.PaymentOtherEarningTypeId.value | lookup:html.codeValueLists.paymentOtherEarningTypeList:'id':'text'}}"
+                  [editable]="true" viewModeText="">
+                  <div class="col-lg-2 profile-label-position" *ngIf="!isComplianceFieldEditable">
+                    {{userProfileWorkerOtherEarning.controls.IsApplied.value | boolToYesNo}}
+                  </div>
+                  <div class="col-md-6 padding-0" *ngIf="isComplianceFieldEditable">
+                    <label class="radio-inline">
+                      <input class="form-check-input" type="radio" formControlName="IsApplied" [value]="true">Yes</label>
+                    <label class="radio-inline">
+                      <input class="form-check-input" type="radio" formControlName="IsApplied" [value]="false">No</label>
+                  </div>
+                  <div class="col-md-6">
+                    <phx-form-control name="RatePercentage" [control]="userProfileWorkerOtherEarning.controls.RatePercentage"
+                      [layoutType]="layoutType.Inline" labelText="" [editable]="isComplianceFieldEditable" viewModeText="{{userProfileWorkerOtherEarning.controls.RatePercentage.value | phxPercentWithDecimals}}">
+                      <div class="input-group" *ngIf="userProfileWorkerOtherEarning.controls.IsApplied.value">
+                        <input formControlName="RatePercentage" type="text" class="form-control" phxFloatBetweenInput='{"from":0.00, "to":100.00, "decimalplaces":4}' />
+                        <span class="input-group-addon">%</span>
+                      </div>
+                    </phx-form-control>
+                  </div>
+                </phx-form-control>
+              </div>
+              <div class="form-group panel-profile-radio" *ngIf="userProfileWorkerOtherEarning.controls.PaymentOtherEarningTypeId.value === phxConstants.PaymentOtherEarningType.VacationPay">
+                <phx-form-control name="IsAccrued" [control]="userProfileWorkerOtherEarning.controls.IsAccrued"
+                  labelText="Accrue {{userProfileWorkerOtherEarning.controls.PaymentOtherEarningTypeId.value | lookup:html.codeValueLists.paymentOtherEarningTypeList:'id':'text'}}"
+                  [editable]="isComplianceFieldEditable" viewModeText="{{userProfileWorkerOtherEarning.controls.IsAccrued.value | boolToYesNo}}">
+                  <div class="col-md-6 padding-0">
+                    <label class="radio-inline">
+                      <input class="form-check-input" type="radio" formControlName="IsAccrued" [value]="true">Yes</label>
+                    <label class="radio-inline">
+                      <input class="form-check-input" type="radio" formControlName="IsAccrued" [value]="false">No</label>
+                  </div>
+                </phx-form-control>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</app-phx-panel>

@@ -1,0 +1,26 @@
+<app-phx-modal [title]="resourceKeys.feedbackLabel | phxTranslate" [buttons]="buttons">
+  <p>
+    {{ resourceKeys.feedbackDescription | phxTranslate }}
+  </p>
+
+  <form [formGroup]="form" *ngIf="form">
+    <div class="form-group material">
+      <phx-form-control [control]="form.controls['Type']" [enableLabelAsterisk]="false" [layoutType]="layoutTypeEnum.InputOnly"
+        [showValidationMessages]="true">
+        <label *ngFor="let feedbackType of feedbackTypes" class="radio-inline" [title]="feedbackType.description | phxTranslate">
+          <input class="form-check-input" type="radio" formControlName="Type" [value]="feedbackType.value">
+          <i class="material-icons">
+            {{model.Type === feedbackType.value ? 'radio_button_checked' : 'radio_button_unchecked' }}
+          </i>
+          {{feedbackType.label | phxTranslate}}
+        </label>
+      </phx-form-control>
+    </div>
+    <div class="form-group material">
+      <phx-form-control [control]="form.controls['Feedback']" [labelText]="resourceKeys.feedbackPlaceholder | phxTranslate" [layoutType]="layoutTypeEnum.Stacked"
+        [showValidationMessages]="true">
+        <textarea class="form-control" type="text" formControlName="Feedback" rows="10"></textarea>
+      </phx-form-control>
+    </div>
+  </form>
+</app-phx-modal>

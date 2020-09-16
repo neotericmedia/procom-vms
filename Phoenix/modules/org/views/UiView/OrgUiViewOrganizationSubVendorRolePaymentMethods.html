@@ -1,0 +1,557 @@
+﻿<div data-ng-form="formPaymentMethod">
+    <div class="form-group">
+        <div class="col-lg-8">
+            <h4>Payment Methods</h4>
+        </div>
+    </div>
+
+
+    <div class="form-group">
+        <label class="col-lg-3 col-md-3 col-sm-3 control-label label-to-right" data-ng-class="scopeOrg.actionScope.event.role.subVendor.hasOrganizationSubVendorRolePaymentMethod  || !scopeOrg.entity.AreComplianceFieldsRequired? 'req-lab-right-valid' : 'req-lab-right'">Payment method</label>
+        <div class="col-sm-9">
+            <div data-ng-repeat="paymentMethodSubVendor in scopeOrg.entity.OrganizationSubVendorRoles[0].PaymentMethods"
+                style="padding-top: 7px">
+
+                <input type="checkbox" name="OrganizationPaymentMethodIsSelected" data-ng-model="paymentMethodSubVendor.IsSelected" data-ng-change="scopeOrg.actionScope.event.role.subVendor.onChangePaymentMethod(paymentMethodSubVendor)"
+                    data-pt-field-view="scopeOrg.ptFieldViewConfigOnChangeStatusId" data-pt-field-view-model-validation="{ { paymentMethodSubVendor.PaymentMethodTypeId } }"
+                    data-ng-required="!scopeOrg.actionScope.event.role.subVendor.hasOrganizationSubVendorRolePaymentMethod && scopeOrg.entity.AreComplianceFieldsRequired"
+                />
+                <span>&nbsp;{{paymentMethodSubVendor.PaymentMethodTypeId|lookupnocache:scopeOrg.lists.paymentMethodList:'id':'text'}}</span>
+
+            </div>
+        </div>
+    </div>
+    <br>
+    <!--<div class="form-group">
+        <label class="col-lg-3  col-md-3 col-sm-3 control-label label-to-right"
+               data-ng-class="scopeOrg.actionScope.event.role.subVendor.hasOrganizationSubVendorRolePaymentReference ? 'req-lab-right-valid' : 'req-lab-right'">Payment preference</label>
+        <div data-ng-repeat="paymentMethodSubVendor in scopeOrg.entity.OrganizationSubVendorRoles[0].PaymentMethods" class="col-lg-2  col-md-3 col-sm-3" style="padding-top: 7px">
+
+            <div data-ng-if="scopeOrg.entity.IsDraftStatus && scopeOrg.ptFieldViewConfigOnChangeStatusId.funcToCheckViewStatus('paymentMethodSubVendor', 'OrganizationPaymentMethodIsPreferred', paymentMethodSubVendor.PaymentMethodTypeId ) == ApplicationConstants.viewStatuses.edit">
+                <input type="radio" name="OrganizationPaymentMethodIsPreferred"
+                       data-ng-value="true" data-ng-model="paymentMethodSubVendor.IsPreferred"
+                       data-ng-change="scopeOrg.actionScope.event.role.subVendor.onChangePaymentPreference(paymentMethodSubVendor)"
+                       data-ng-required="!scopeOrg.actionScope.event.role.subVendor.hasOrganizationSubVendorRolePaymentReference"
+                       data-pt-field-view="scopeOrg.ptFieldViewConfigOnChangeStatusId"
+                       data-pt-field-view-model-validation="{ { paymentMethodSubVendor.PaymentMethodTypeId } }" ng-disabled="!paymentMethodSubVendor.IsSelected" />
+                <span>&nbsp;{{paymentMethodSubVendor.PaymentMethodTypeId|lookupnocache:scopeOrg.lists.paymentMethodList:'id':'text'}}</span>
+            </div>
+            <div class="col-lg-6 col-md-6 col-xs-6" data-ng-if="!scopeOrg.entity.IsDraftStatus || scopeOrg.ptFieldViewConfigOnChangeStatusId.funcToCheckViewStatus('paymentMethodSubVendor', 'OrganizationPaymentMethodIsPreferred', paymentMethodSubVendor.PaymentMethodTypeId ) == ApplicationConstants.viewStatuses.view">
+                <span data-ng-if="paymentMethodSubVendor.IsPreferred">Yes</span>
+                <span data-ng-if="!paymentMethodSubVendor.IsPreferred">No</span>
+            </div>
+        </div>
+    </div>-->
+    <div class="form-group">
+        <label data-ng-class="scopeOrg.actionScope.event.role.subVendor.hasOrganizationSubVendorRolePaymentReference || !scopeOrg.entity.AreComplianceFieldsRequired? 'req-lab-right-valid' : 'req-lab-right'"
+            class="col-lg-3  col-md-3 col-sm-3 control-label label-to-right" data-original-title="" title="">Payment preference</label>
+        <div class="col-lg-7 col-md-7 col-xs-7">
+            <div class="input-group select2-bootstrap-append">
+                <ui-select name="SubvendorPaymentMethodTypeId" data-ng-model="scopeOrg.entity.SubvendorPaymentMethodTypeId" theme="select2"
+                    class="form-control" data-pt-field-view="scopeOrg.ptFieldViewConfigOnChangeStatusId" data-ng-change="$select.selected.IsPreferred=true;scopeOrg.actionScope.event.role.subVendor.onChangePaymentPreference($select.selected)"
+                    data-pt-field-view-custom="{{scopeOrg.entity.SubvendorPaymentMethodTypeId | lookupnocache:scopeOrg.entity.OrganizationSubVendorRoles[0].PaymentMethods:'PaymentMethodTypeId'}}">
+                    <ui-select-match placeholder="-- Select One --">{{$select.selected.text}} </ui-select-match>
+                    <ui-select-choices repeat="item.PaymentMethodTypeId as item in scopeOrg.entity.OrganizationSubVendorRoles[0].PaymentMethods | filter:{IsSelected: true} | uiSelectChoicesFilter: $select.search: 'text'">
+                        <span data-ng-bind-html="item.text | highlight: $select.search"></span>
+                    </ui-select-choices>
+                </ui-select>
+                <span class="input-group-btn">
+                    <button tabindex="-1" data-ng-click="scopeOrg.entity.SubvendorPaymentMethodTypeId=undefined" class="btn btn-default">
+                        <i class="material-icons md-18">clear</i>
+                    </button>
+                </span>
+            </div>
+        </div>
+
+    </div>
+    <!--<div class="form-group">
+        <label class="col-lg-3 col-sm-6 col-xs-6 control-label label-to-right"
+               data-ng-class="scopeOrg.actionScope.event.role.subVendor.hasOrganizationSubVendorRolePaymentMethod ? 'req-lab-right-valid' : 'req-lab-right'">Payment method</label>
+        <label class="col-lg-4  col-sm-6 col-xs-6 control-label label-to-right"
+               data-ng-class="scopeOrg.actionScope.event.role.subVendor.hasOrganizationSubVendorRolePaymentReference ? 'req-lab-right-valid' : 'req-lab-right'">Payment preference</label>
+    </div>
+    <div class="form-group org-payment-chk">
+            <div data-ng-repeat="paymentMethodSubVendor in scopeOrg.entity.OrganizationSubVendorRoles[0].PaymentMethods" class="row">
+                <div class="col-lg-2"></div>
+                <div class="col-lg-4 col-md-6 col-xs-6">
+                    <input type="checkbox" name="OrganizationPaymentMethodIsSelected"
+                           data-ng-model="paymentMethodSubVendor.IsSelected"
+                           data-ng-change="scopeOrg.actionScope.event.role.subVendor.onChangePaymentMethod(paymentMethodSubVendor)"
+                           data-pt-field-view="scopeOrg.ptFieldViewConfigOnChangeStatusId"
+                           data-pt-field-view-model-validation="{ { paymentMethodSubVendor.PaymentMethodTypeId } }"
+                           data-ng-required="!scopeOrg.actionScope.event.role.subVendor.hasOrganizationSubVendorRolePaymentMethod" />
+                    <span>&nbsp;{{paymentMethodSubVendor.PaymentMethodTypeId|lookupnocache:scopeOrg.lists.paymentMethodList:'id':'text'}}</span>
+                </div>
+                <div class="col-lg-6 col-md-6 col-xs-6" data-ng-if="scopeOrg.entity.IsDraftStatus">
+                    <input type="radio" name="OrganizationPaymentMethodIsPreferred"
+                           data-ng-value="true" data-ng-model="paymentMethodSubVendor.IsPreferred"
+                           data-ng-change="scopeOrg.actionScope.event.role.subVendor.onChangePaymentPreference(paymentMethodSubVendor)"
+                           data-ng-required="!scopeOrg.actionScope.event.role.subVendor.hasOrganizationSubVendorRolePaymentReference"
+                           data-pt-field-view="scopeOrg.ptFieldViewConfigOnChangeStatusId"
+                           data-pt-field-view-model-validation="{ { paymentMethodSubVendor.PaymentMethodTypeId } }" />
+                </div>
+                <div class="col-lg-6" data-ng-if="!scopeOrg.entity.IsDraftStatus">
+                    <span data-ng-if="paymentMethodSubVendor.IsPreferred">Yes</span>
+                    <span data-ng-if="!paymentMethodSubVendor.IsPreferred">No</span>
+                </div>
+            </div>
+    </div>-->
+    <div data-ng-repeat="paymentMethodSubVendor in scopeOrg.entity.OrganizationSubVendorRoles[0].PaymentMethods">
+        <div data-ng-if="paymentMethodSubVendor.PaymentMethodTypeId==ApplicationConstants.PaymentMethodType.DirectDeposit && paymentMethodSubVendor.IsSelected">
+            <div class="form-group">
+                <div class="col-lg-12">
+                    <h4>Direct Deposit</h4>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-lg-3 control-label label-to-right req-lab-right" for="PaymentMethodDirectDepositBankCode" data-model-property="paymentMethodSubVendor.BankCode">Bank Code</label>
+                <div class="col-lg-7">
+                    <div>
+                        <input type="text" name="PaymentMethodDirectDepositBankCode" class="form-control ng-pristine ng-valid" maxlength="30" ng-minlength="3"
+                            ng-maxlength="30" data-ng-model="paymentMethodSubVendor.BankCode" data-ng-required="paymentMethodSubVendor.PaymentMethodTypeId==ApplicationConstants.PaymentMethodType.DirectDeposit && scopeOrg.entity.AreComplianceFieldsRequired"
+                            data-pt-field-view="scopeOrg.ptFieldViewConfigOnChangeStatusId" />
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-lg-3 control-label label-to-right req-lab-right" for="PaymentMethodDirectDepositBankBranchCode" data-model-property="paymentMethodSubVendor.BankBranchCode">Bank Branch Code</label>
+                <div class="col-lg-7">
+                    <div>
+                        <input type="text" name="PaymentMethodDirectDepositBankBranchCode" class="form-control ng-pristine ng-valid" maxlength="30"
+                            ng-minlength="3" ng-maxlength="30" data-ng-model="paymentMethodSubVendor.BankBranchCode" data-ng-required="paymentMethodSubVendor.PaymentMethodTypeId==ApplicationConstants.PaymentMethodType.DirectDeposit && scopeOrg.entity.AreComplianceFieldsRequired"
+                            data-pt-field-view="scopeOrg.ptFieldViewConfigOnChangeStatusId" />
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-lg-3 control-label label-to-right req-lab-right" for="PaymentMethodDirectDepositBankAccountNumber" data-model-property="paymentMethodSubVendor.BankAccountNumber">Bank Account Number</label>
+                <div class="col-lg-7">
+                    <div>
+                        <input type="text" name="PaymentMethodDirectDepositBankAccountNumber" class="form-control ng-pristine ng-valid" maxlength="30"
+                            ng-minlength="3" ng-maxlength="30" data-ng-model="paymentMethodSubVendor.BankAccountNumber" data-ng-required="paymentMethodSubVendor.PaymentMethodTypeId==ApplicationConstants.PaymentMethodType.DirectDeposit  && scopeOrg.entity.AreComplianceFieldsRequired"
+                            data-pt-field-view="scopeOrg.ptFieldViewConfigOnChangeStatusId" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group col-lg-12" data-ng-if="paymentMethodSubVendor.PaymentMethodTypeId==ApplicationConstants.PaymentMethodType.WireTransfer && paymentMethodSubVendor.IsSelected">
+            <h4>Wire Transfer</h4>
+            <div class="clearfix">
+                <div class="col-lg-6">
+                    <label>Beneficiary Information</label>
+                    <div class="form-group">
+                        <label for-property="ProfileNameBeneficiary" for="ProfileNameBeneficiary" data-model-property="paymentMethodSubVendor.ProfileNameBeneficiary"
+                            class="col-lg-4 control-label label-to-right req-lab-right">Profile Name</label>
+                        <div class="col-lg-8">
+                            <input type="text" ng-maxlength="35" maxlength="35" ng-model="paymentMethodSubVendor.ProfileNameBeneficiary" class="form-control ng-pristine ng-valid"
+                                name="ProfileNameBeneficiary" id="ProfileNameBeneficiary" data-ng-required="paymentMethodSubVendor.PaymentMethodTypeId==ApplicationConstants.PaymentMethodType.WireTransfer && scopeOrg.entity.AreComplianceFieldsRequired"
+                                data-pt-field-view="scopeOrg.ptFieldViewConfigOnChangeStatusId" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="NameBeneficiary" for-property="NameBeneficiary" data-model-property="paymentMethodSubVendor.NameBeneficiary"
+                            class="col-lg-4 control-label req-lab-right">Name</label>
+                        <div class="col-lg-8">
+                            <input type="text" ng-maxlength="35" maxlength="35" ng-model="paymentMethodSubVendor.NameBeneficiary" class="form-control"
+                                name="NameBeneficiary" id="NameBeneficiary" data-ng-required="paymentMethodSubVendor.PaymentMethodTypeId==ApplicationConstants.PaymentMethodType.WireTransfer && scopeOrg.entity.AreComplianceFieldsRequired"
+                                data-pt-field-view="scopeOrg.ptFieldViewConfigOnChangeStatusId" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="AccountNumberBeneficiary" for-property="AccountNumberBeneficiary" data-model-property="paymentMethodSubVendor.AccountNumberBeneficiary"
+                            class="col-lg-4 control-label req-lab-right">Account Number</label>
+                        <div class="col-lg-8">
+                            <input type="text" ng-maxlength="35" maxlength="35" ng-model="paymentMethodSubVendor.AccountNumberBeneficiary" class="form-control"
+                                name="AccountNumberBeneficiary" id="AccountNumberBeneficiary" data-ng-required="paymentMethodSubVendor.PaymentMethodTypeId==ApplicationConstants.PaymentMethodType.WireTransfer && scopeOrg.entity.AreComplianceFieldsRequired"
+                                data-pt-field-view="scopeOrg.ptFieldViewConfigOnChangeStatusId" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="Address1Beneficiary" for-property="Address1Beneficiary" data-model-property="paymentMethodSubVendor.Address1Beneficiary"
+                            class="col-lg-4 control-label req-lab-right">Address</label>
+                        <div class="col-lg-8">
+                            <input type="text" ng-maxlength="35" maxlength="35" ng-model="paymentMethodSubVendor.Address1Beneficiary" class="form-control"
+                                name="Address1Beneficiary" id="Address1Beneficiary" data-ng-required="paymentMethodSubVendor.PaymentMethodTypeId==ApplicationConstants.PaymentMethodType.WireTransfer && scopeOrg.entity.AreComplianceFieldsRequired"
+                                data-pt-field-view="scopeOrg.ptFieldViewConfigOnChangeStatusId" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="Address2Beneficiary" for-property="Address2Beneficiary" data-model-property="paymentMethodSubVendor.Address2Beneficiary"
+                            class="col-lg-4 control-label"></label>
+                        <div class="col-lg-8">
+                            <input type="text" ng-maxlength="35" maxlength="35" ng-model="paymentMethodSubVendor.Address2Beneficiary" class="form-control"
+                                name="Address2Beneficiary" id="Address2Beneficiary" data-pt-field-view="scopeOrg.ptFieldViewConfigOnChangeStatusId"
+                            />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="CityBeneficiary" for-property="CityBeneficiary" data-model-property="paymentMethodSubVendor.CityBeneficiary"
+                            class="col-lg-4 control-label">City</label>
+                        <div class="col-lg-8">
+                            <input type="text" ng-maxlength="35" maxlength="35" ng-model="paymentMethodSubVendor.CityBeneficiary" class="form-control"
+                                name="CityBeneficiary" id="CityBeneficiary" data-pt-field-view="scopeOrg.ptFieldViewConfigOnChangeStatusId"
+                            />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="ProvinceOrStateBeneficiary" for-property="ProvinceOrStateBeneficiary" data-model-property="paymentMethodSubVendor.ProvinceOrStateBeneficiary"
+                            class="col-lg-4 control-label">Province/State</label>
+                        <div class="col-lg-8">
+                            <input type="text" ng-maxlength="35" maxlength="35" ng-model="paymentMethodSubVendor.ProvinceOrStateBeneficiary" class="form-control"
+                                name="ProvinceOrStateBeneficiary" id="ProvinceOrStateBeneficiary" data-pt-field-view="scopeOrg.ptFieldViewConfigOnChangeStatusId"
+                            />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="CountryCodeBeneficiary" for-property="CountryCodeBeneficiary" data-model-property="paymentMethodSubVendor.CountryCodeBeneficiary"
+                            class="col-lg-4 control-label req-lab-right">Country Code</label>
+                        <div class="col-lg-8">
+                            <div class="input-group select2-bootstrap-append">
+                                <ui-select name="CountryCodeBeneficiary" data-ng-model="paymentMethodSubVendor.CountryCodeBeneficiary" theme="select2" class="form-control"
+                                    data-ng-required="paymentMethodSubVendor.PaymentMethodTypeId==ApplicationConstants.PaymentMethodType.WireTransfer && scopeOrg.entity.AreComplianceFieldsRequired"
+                                    data-pt-field-view="scopeOrg.ptFieldViewConfigOnChangeStatusId">
+                                    <ui-select-match placeholder="-- Select One --">{{$select.selected.text}}</ui-select-match>
+                                    <ui-select-choices repeat="item.id as item in scopeOrg.lists.countryList | uiSelectChoicesFilter: $select.search: 'text'">
+                                        <span data-ng-bind-html="item.text | highlight: $select.search"></span>
+                                    </ui-select-choices>
+                                </ui-select>
+                                <span class="input-group-btn">
+                                    <button tabindex="-1" data-ng-click="paymentMethodSubVendor.CountryCodeBeneficiary = undefined" class="btn btn-default btn-contact-drp">
+                                        <i class="material-icons md-18">clear</i>
+                                    </button>
+                                </span>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="PostalorZipBeneficiary" for-property="PostalorZipBeneficiary" data-model-property="paymentMethodSubVendor.PostalorZipBeneficiary"
+                            class="col-lg-4 control-label">Postal/Zip</label>
+                        <div class="col-lg-4">
+                            <input type="text" ng-maxlength="16" maxlength="16" name="PostalorZipBeneficiary" class="form-control" data-ng-model="paymentMethodSubVendor.PostalorZipBeneficiary"
+                                data-pt-field-view="scopeOrg.ptFieldViewConfigOnChangeStatusId" data-postal-zip-code-valid="{countryId: paymentMethodSubVendor.CountryCodeBeneficiary, isRequired: false}"
+                                data-postal-zip-code-mask="paymentMethodSubVendor.CountryCodeBeneficiary">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="PayCurrencyBeneficiary" for-property="PayCurrencyBeneficiary" data-model-property="paymentMethodSubVendor.PayCurrencyBeneficiary"
+                            class="col-lg-4 control-label req-lab-right">Pay Currency</label>
+                        <div class="col-lg-8">
+                            <div class="input-group select2-bootstrap-append">
+                                <ui-select name="PayCurrencyBeneficiary" data-ng-model="paymentMethodSubVendor.PayCurrencyBeneficiary" theme="select2" class="form-control"
+                                    data-ng-required="paymentMethodSubVendor.PaymentMethodTypeId==ApplicationConstants.PaymentMethodType.WireTransfer && scopeOrg.entity.AreComplianceFieldsRequired"
+                                    data-pt-field-view="scopeOrg.ptFieldViewConfigOnChangeStatusId">
+                                    <ui-select-match placeholder="-- Select One --">{{$select.selected.text}}</ui-select-match>
+                                    <ui-select-choices repeat="item.id as item in scopeOrg.lists.currencyList | uiSelectChoicesFilter: $select.search: 'text'">
+                                        <span data-ng-bind-html="item.text | highlight: $select.search"></span>
+                                    </ui-select-choices>
+                                </ui-select>
+                                <span class="input-group-btn">
+                                    <button tabindex="-1" data-ng-click="paymentMethodSubVendor.PayCurrencyBeneficiary = undefined" class="btn btn-default btn-contact-drp">
+                                        <i class="material-icons md-18">clear</i>
+                                    </button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="WireTransferBankTypeIdBeneficiary" for-property="WireTransferBankTypeIdBeneficiary" data-model-property="paymentMethodSubVendor.WireTransferBankTypeIdBeneficiary"
+                            class="col-lg-4 control-label req-lab-right">Bank ID Type</label>
+                        <div class="col-lg-8">
+                            <div class="input-group select2-bootstrap-append">
+                                <ui-select name="WireTransferBankTypeIdBeneficiary" data-ng-model="paymentMethodSubVendor.WireTransferBankTypeIdBeneficiary"
+                                    theme="select2" class="form-control" data-ng-required="paymentMethodSubVendor.PaymentMethodTypeId==ApplicationConstants.PaymentMethodType.WireTransfer && scopeOrg.entity.AreComplianceFieldsRequired"
+                                    data-pt-field-view="scopeOrg.ptFieldViewConfigOnChangeStatusId">
+                                    <ui-select-match placeholder="-- Select One --">{{$select.selected.text}}</ui-select-match>
+                                    <ui-select-choices repeat="item.id as item in scopeOrg.lists.wiretransferBankTypes | uiSelectChoicesFilter: $select.search: 'text'">
+                                        <span data-ng-bind-html="item.text | highlight: $select.search"></span>
+                                    </ui-select-choices>
+                                </ui-select>
+                                <span class="input-group-btn">
+                                    <button tabindex="-1" data-ng-click="paymentMethodSubVendor.WireTransferBankTypeIdBeneficiary = undefined" class="btn btn-default btn-contact-drp">
+                                        <i class="material-icons md-18">clear</i>
+                                    </button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="BankIDBeneficiary" for-property="BankIDBeneficiary" data-model-property="paymentMethodSubVendor.BankIDBeneficiary"
+                            class="col-lg-4 control-label req-lab-right">Bank ID </label>
+                        <div class="col-lg-8">
+                            <input type="text" ng-maxlength="35" maxlength="35" ng-model="paymentMethodSubVendor.BankIDBeneficiary" class="form-control"
+                                name="BankIDBeneficiary" id="BankIDBeneficiary" data-ng-required="paymentMethodSubVendor.PaymentMethodTypeId==ApplicationConstants.PaymentMethodType.WireTransfer && scopeOrg.entity.AreComplianceFieldsRequired"
+                                data-pt-field-view="scopeOrg.ptFieldViewConfigOnChangeStatusId" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="ABANoBeneficiary" for-property="ABANoBeneficiary" data-model-property="paymentMethodSubVendor.ABANoBeneficiary"
+                            class="col-lg-4 control-label">ABA #</label>
+                        <div class="col-lg-8">
+                            <input type="text" ng-maxlength="35" maxlength="35" ng-model="paymentMethodSubVendor.ABANoBeneficiary" class="form-control"
+                                name="ABANoBeneficiary" id="ABANoBeneficiary" data-pt-field-view="scopeOrg.ptFieldViewConfigOnChangeStatusId"
+                            />
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-lg-6">
+                    <label>Intermediary Information</label>
+                    <div class="form-group">
+                        <label for="BankIdTypeIntemediary" for-property="BankIdTypeIntemediary" data-model-property="paymentMethodSubVendor.BankIdTypeIntemediary"
+                            class="col-lg-4 control-label">Bank ID Type</label>
+                        <div class="col-lg-8">
+                            <div class="input-group select2-bootstrap-append">
+                                <ui-select name="WireTransferBankTypeIdIntemediary" data-ng-model="paymentMethodSubVendor.WireTransferBankTypeIdIntemediary"
+                                    theme="select2" class="form-control" data-pt-field-view="scopeOrg.ptFieldViewConfigOnChangeStatusId">
+                                    <ui-select-match placeholder="-- Select One --">{{$select.selected.text}}</ui-select-match>
+                                    <ui-select-choices repeat="item.id as item in scopeOrg.lists.wiretransferBankTypes | uiSelectChoicesFilter: $select.search: 'text'">
+                                        <span data-ng-bind-html="item.text | highlight: $select.search"></span>
+                                    </ui-select-choices>
+                                </ui-select>
+                                <span class="input-group-btn">
+                                    <button tabindex="-1" data-ng-click="paymentMethodSubVendor.WireTransferBankTypeIdIntemediary = undefined" class="btn btn-default btn-contact-drp">
+                                        <i class="material-icons md-18">clear</i>
+                                    </button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="BankNameIntemediary" for-property="BankNameIntemediary" data-model-property="paymentMethodSubVendor.BankNameIntemediary"
+                            class="col-lg-4 control-label">Bank Name</label>
+                        <div class="col-lg-8">
+                            <input type="text" ng-maxlength="18" maxlength="18" ng-model="paymentMethodSubVendor.BankNameIntemediary" class="form-control"
+                                name="BankNameIntemediary" id="BankNameIntemediary" data-pt-field-view="scopeOrg.ptFieldViewConfigOnChangeStatusId"
+                            />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="BankIdIntemediary" for-property="BankIdIntemediary" data-model-property="paymentMethodSubVendor.BankIdIntemediary"
+                            class="col-lg-4 control-label">Bank ID</label>
+                        <div class="col-lg-8">
+                            <input type="text" ng-maxlength="35" maxlength="35" ng-model="paymentMethodSubVendor.BankIdIntemediary" class="form-control"
+                                name="BankIdIntemediary" id="BankIdIntemediary" data-pt-field-view="scopeOrg.ptFieldViewConfigOnChangeStatusId"
+                            />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Address1Intemediary" for-property="Address1Intemediary" data-model-property="paymentMethodSubVendor.Address1Intemediary"
+                            class="col-lg-4 control-label">Address</label>
+                        <div class="col-lg-8">
+                            <input type="text" ng-maxlength="35" maxlength="35" ng-model="paymentMethodSubVendor.Address1Intemediary" class="form-control"
+                                name="Address1Intemediary" id="Address1Intemediary" data-pt-field-view="scopeOrg.ptFieldViewConfigOnChangeStatusId"
+                            />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Address2Intemediary" for-property="Address2Intemediary" data-model-property="paymentMethodSubVendor.Address2Intemediary"
+                            class="col-lg-4 control-label"></label>
+                        <div class="col-lg-8">
+                            <input type="text" ng-maxlength="35" maxlength="35" ng-model="paymentMethodSubVendor.Address2Intemediary" class="form-control"
+                                name="Address2Intemediary" id="Address2Intemediary" data-pt-field-view="scopeOrg.ptFieldViewConfigOnChangeStatusId"
+                            />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="CityIntemediary" for-property="CityIntemediary" data-model-property="paymentMethodSubVendor.CityIntemediary"
+                            class="col-lg-4 control-label">City</label>
+                        <div class="col-lg-8">
+                            <input type="text" ng-maxlength="35" maxlength="35" ng-model="paymentMethodSubVendor.CityIntemediary" class="form-control"
+                                name="CityIntemediary" id="CityIntemediary" data-pt-field-view="scopeOrg.ptFieldViewConfigOnChangeStatusId"
+                            />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="ProvinceOrStateIntemediary" for-property="ProvinceOrStateIntemediary" data-model-property="paymentMethodSubVendor.ProvinceOrStateIntemediary"
+                            class="col-lg-4 control-label">Province/State</label>
+                        <div class="col-lg-8">
+                            <input type="text" ng-maxlength="35" maxlength="35" ng-model="paymentMethodSubVendor.ProvinceOrStateIntemediary" class="form-control"
+                                name="ProvinceOrStateIntemediary" id="ProvinceOrStateIntemediary" data-pt-field-view="scopeOrg.ptFieldViewConfigOnChangeStatusId"
+                            />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="CountryCodeIntemediary" for-property="CountryCodeIntemediary" data-model-property="paymentMethodSubVendor.CountryCodeIntemediary"
+                            class="col-lg-4 control-label">Country Code</label>
+                        <div class="col-lg-8">
+                            <div class="input-group select2-bootstrap-append">
+                                <ui-select name="CountryCodeIntemediary" data-ng-model="paymentMethodSubVendor.CountryCodeIntemediary" theme="select2" class="form-control"
+                                    data-pt-field-view="scopeOrg.ptFieldViewConfigOnChangeStatusId">
+                                    <ui-select-match placeholder="-- Select One --">{{$select.selected.text}}</ui-select-match>
+                                    <ui-select-choices repeat="item.id as item in scopeOrg.lists.countryList | uiSelectChoicesFilter: $select.search: 'text'">
+                                        <span data-ng-bind-html="item.text | highlight: $select.search"></span>
+                                    </ui-select-choices>
+                                </ui-select>
+                                <span class="input-group-btn">
+                                    <button tabindex="-1" data-ng-click="paymentMethodSubVendor.CountryCodeIntemediary = undefined" class="btn btn-default btn-contact-drp">
+                                        <i class="material-icons md-18">clear</i>
+                                    </button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="PostalOrZipIntemediary" for-property="PostalOrZipIntemediary" data-model-property="paymentMethodSubVendor.PostalOrZipIntemediary"
+                            class="col-lg-4 control-label">Postal/Zip</label>
+                        <div class="col-lg-4">
+                            <input type="text" ng-maxlength="16" maxlength="16" name="PostalOrZipIntemediary" class="form-control" data-ng-model="paymentMethodSubVendor.PostalOrZipIntemediary"
+                                data-pt-field-view="scopeOrg.ptFieldViewConfigOnChangeStatusId" data-postal-zip-code-valid="{countryId: paymentMethodSubVendor.CountryCodeIntemediary, isRequired: false}"
+                                data-postal-zip-code-mask="paymentMethodSubVendor.CountryCodeIntemediary">
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="clearfix">
+                <div class="col-lg-6">
+                    <label>Receivers Correspondent Information</label>
+                    <div class="form-group">
+                        <label for="BankIdTypeReceivers" for-property="BankIdTypeReceivers" data-model-property="paymentMethodSubVendor.BankIdTypeReceivers"
+                            class="col-lg-4 control-label">Bank ID Type</label>
+                        <div class="col-lg-8">
+                            <div class="input-group select2-bootstrap-append">
+                                <ui-select name="WireTransferBankTypeIdReceivers" data-ng-model="paymentMethodSubVendor.WireTransferBankTypeIdReceivers"
+                                    theme="select2" class="form-control" data-pt-field-view="scopeOrg.ptFieldViewConfigOnChangeStatusId">
+                                    <ui-select-match placeholder="-- Select One --">{{$select.selected.text}}</ui-select-match>
+                                    <ui-select-choices repeat="item.id as item in scopeOrg.lists.wiretransferBankTypes | uiSelectChoicesFilter: $select.search: 'text'">
+                                        <span data-ng-bind-html="item.text | highlight: $select.search"></span>
+                                    </ui-select-choices>
+                                </ui-select>
+                                <span class="input-group-btn">
+                                    <button tabindex="-1" data-ng-click="paymentMethod.WireTransferBankTypeIdReceivers = undefined" class="btn btn-default btn-contact-drp">
+                                        <i class="material-icons md-18">clear</i>
+                                    </button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="BankNameReceivers" for-property="BankIdTypeReceivers" data-model-property="paymentMethodSubVendor.BankIdTypeReceivers"
+                            class="col-lg-4 control-label">Bank Name</label>
+                        <div class="col-lg-8">
+                            <input type="text" ng-maxlength="18" maxlength="18" ng-model="paymentMethodSubVendor.BankNameReceivers" class="form-control"
+                                name="BankNameReceivers" id="BankNameReceivers" data-pt-field-view="scopeOrg.ptFieldViewConfigOnChangeStatusId"
+                            />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="BankIdReceivers" for-property="BankIdReceivers" data-model-property="paymentMethodSubVendor.BankIdReceivers"
+                            class="col-lg-4 control-label">Bank ID</label>
+                        <div class="col-lg-8">
+                            <input type="text" ng-maxlength="35" maxlength="35" ng-model="paymentMethodSubVendor.BankIdReceivers" class="form-control"
+                                name="BankIdReceivers" id="BankIdReceivers" data-pt-field-view="scopeOrg.ptFieldViewConfigOnChangeStatusId"
+                            />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Address1Receivers" for-property="Address1Receivers" data-model-property="paymentMethodSubVendor.Address1Receivers"
+                            class="col-lg-4 control-label">Address</label>
+                        <div class="col-lg-8">
+                            <input type="text" ng-maxlength="35" maxlength="35" ng-model="paymentMethodSubVendor.Address1Receivers" class="form-control"
+                                name="Address1Receivers" id="Address1Receivers" data-pt-field-view="scopeOrg.ptFieldViewConfigOnChangeStatusId"
+                            />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Address2Receivers" for-property="Address2Receivers" data-model-property="paymentMethodSubVendor.Address2Receivers"
+                            class="col-lg-4 control-label"></label>
+                        <div class="col-lg-8">
+                            <input type="text" ng-maxlength="35" maxlength="35" ng-model="paymentMethodSubVendor.Address2Receivers" class="form-control"
+                                name="Address2Receivers" id="Address2Receivers" data-pt-field-view="scopeOrg.ptFieldViewConfigOnChangeStatusId"
+                            />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="CityReceivers" for-property="CityReceivers" data-model-property="paymentMethodSubVendor.CityReceivers" class="col-lg-4 control-label">City</label>
+                        <div class="col-lg-8">
+                            <input type="text" ng-maxlength="35" maxlength="35" ng-model="paymentMethodSubVendor.CityReceivers" class="form-control"
+                                name="CityReceivers" id="CityReceivers" data-pt-field-view="scopeOrg.ptFieldViewConfigOnChangeStatusId"
+                            />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="ProvinceOrStateReceivers" for-property="ProvinceOrStateReceivers" data-model-property="paymentMethodSubVendor.ProvinceOrStateReceivers"
+                            class="col-lg-4 control-label">Province/State</label>
+                        <div class="col-lg-8">
+                            <input type="text" ng-maxlength="35" maxlength="35" ng-model="paymentMethodSubVendor.ProvinceOrStateReceivers" class="form-control"
+                                name="ProvinceOrStateReceivers" id="ProvinceOrStateReceivers" data-pt-field-view="scopeOrg.ptFieldViewConfigOnChangeStatusId"
+                            />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="CountryCodeReceivers" for-property="CountryCodeReceivers" data-model-property="paymentMethodSubVendor.CountryCodeReceivers"
+                            class="col-lg-4 control-label">Country Code</label>
+                        <div class="col-lg-8">
+                            <div class="input-group select2-bootstrap-append">
+                                <ui-select name="CountryCodeReceivers" data-ng-model="paymentMethodSubVendor.CountryCodeReceivers" theme="select2" class="form-control"
+                                    data-pt-field-view="scopeOrg.ptFieldViewConfigOnChangeStatusId">
+                                    <ui-select-match placeholder="-- Select One --">{{$select.selected.text}}</ui-select-match>
+                                    <ui-select-choices repeat="item.id as item in scopeOrg.lists.countryList | uiSelectChoicesFilter: $select.search: 'text'">
+                                        <span data-ng-bind-html="item.text | highlight: $select.search"></span>
+                                    </ui-select-choices>
+                                </ui-select>
+                                <span class="input-group-btn">
+                                    <button tabindex="-1" data-ng-click="paymentMethodSubVendor.CountryCodeReceivers = undefined" class="btn btn-default btn-contact-drp">
+                                        <i class="material-icons md-18">clear</i>
+                                    </button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="PostalOrZipReceivers" for-property="PostalOrZipReceivers" data-model-property="paymentMethodSubVendor.PostalOrZipReceivers"
+                            class="col-lg-4 control-label">Postal/Zip</label>
+                        <div class="col-lg-4">
+                            <input type="text" ng-maxlength="16" maxlength="16" name="PostalOrZipReceivers" class="form-control" data-ng-model="paymentMethodSubVendor.PostalOrZipReceivers"
+                                data-pt-field-view="scopeOrg.ptFieldViewConfigOnChangeStatusId" data-postal-zip-code-valid="{countryId: paymentMethodSubVendor.CountryCodeReceivers, isRequired: false}"
+                                data-postal-zip-code-mask="paymentMethodSubVendor.CountryCodeReceivers">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <label for="PaymentDetailNotes" for-property="PaymentDetailNotes" data-model-property="paymentMethodSubVendor.PaymentDetailNotes">Payment Detail Notes</label>
+                    <div class="form-group">
+                        <div class="col-lg-12">
+                            <textarea ng-model="paymentMethodSubVendor.PaymentDetailNotes" class="form-control" id="PaymentDetailNotes" name="PaymentDetailNotes"
+                                rows="6" style="resize: none" data-pt-field-view="scopeOrg.ptFieldViewConfigOnChangeStatusId"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div data-ng-if="paymentMethodSubVendor.PaymentMethodTypeId==ApplicationConstants.PaymentMethodType.ADP && paymentMethodSubVendor.IsSelected">
+            <div class="form-group">
+                <div class="col-lg-12">
+                    <h4>ADP</h4>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-lg-3 control-label label-to-right req-lab-right" for="PaymentMethodADP" data-model-property="paymentMethodSubVendor.EmployeeId">Employee Id</label>
+                <div class="col-lg-7">
+                    <div>
+                        <input type="text" name="PaymentMethodADP" class="form-control ng-pristine ng-valid" data-ng-model="paymentMethodSubVendor.EmployeeId"
+                            data-ng-required="paymentMethodSubVendor.PaymentMethodTypeId==ApplicationConstants.PaymentMethodType.ADP && scopeOrg.entity.AreComplianceFieldsRequired"
+                            data-pt-field-view="scopeOrg.ptFieldViewConfigOnChangeStatusId" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,55 @@
+<form [formGroup]="formGroup" *ngIf="formGroup && formGroup.controls.Statuses.value.length">
+  <div class="panel-container">
+    <div class="panel">
+      <div class="panel-body">
+        <div class="outer" phxEqualHeight="t2-filter-block">
+          <div [ngClass]="[isFilter ? 'col-xl-15 col-lg-4 col-sm-4' : 'col-xl-no-filter col-lg-15', formGroup.controls.AllItem.value ? 'box-container-selected disabled-div' : 'box-container']"
+            class="box-container t2-filter-block" *ngIf="formGroup.controls.Statuses.value.length && formGroup.controls.Statuses.value.length > 1"
+            (click)="onStatusClicked(-1,$event)">
+            <phx-form-control [editable]="true" [layoutType]="layoutType" [control]="formGroup.controls.AllItem">
+              <label class="chk-box">
+                <input class="checkbox" formControlName="AllItem" type="checkbox">
+                <span class="checkmark"></span>
+              </label>
+            </phx-form-control>
+            <span class="entity-count">{{formGroup.controls.Count.value}}</span>
+            <p>{{'activityCentre2.t2Filter.AllStatuses' | phxTranslate}}</p>
+          </div>  
+          <div formArrayName="Statuses">
+            <div *ngFor="let status of formGroup.get('Statuses').controls;index as i;">
+              <div [formGroupName]="i">
+                <div [ngClass]="[isFilter ? 'col-xl-15 col-lg-4 col-sm-4' : 'col-xl-no-filter col-lg-15',
+                  status.controls.isActive.value ? 'box-container-selected' : 'box-container', (i >=5 && isNormalDisplay) ||
+                  (i >=9 && isMediumDisplay) || (isLargeDisplay && i >=11) || (i >=9 && isLargeWithFilter) ||
+                  (i >=4 && isMobileScreen) ? 'hidden-block' : '']"
+                  class="box-container t2-filter-block" (click)="onStatusClicked(i, $event)">
+                  <phx-form-control [editable]="true" [layoutType]="layoutType" [control]="status.controls.isActive">
+                    <label class="radio-inline chk-box">
+                      <input class="checkbox" formControlName="isActive" type="checkbox">
+                      <span class="checkmark"></span>
+                    </label>
+                  </phx-form-control>
+                  <span class="entity-count">{{status.controls.Count.value}}</span>
+                  <p>{{status.controls.DisplayName.value}}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <br class="clearboth" />
+        </div>
+      </div>
+      <div *ngIf="isFilter && formGroup.controls.Statuses.value.length > 5 && !largeScreen ||
+          formGroup.controls.Statuses.value.length > 9 && !largeScreen && !isMobile ||
+          largeScreen && formGroup.controls.Statuses.value.length > 11 ||
+          isFilter && formGroup.controls.Statuses.value.length > 9 && largeScreen ||
+          isFilter && formGroup.controls.Statuses.value.length > 4 && isMobile"
+        class="show-btn">
+        <a (click)="showMore()">
+          <div class="show-btn" [ngClass]=" isHidden ? 'showMore' : 'showLess' "></div>
+          <p class="show-all">{{isHidden ? ('activityCentre2.t2Filter.ShowAllBtn' | phxTranslate) :
+            ('activityCentre2.t2Filter.ShowLessBtn' | phxTranslate) }}</p>
+        </a>
+      </div>
+    </div>
+  </div>
+</form>

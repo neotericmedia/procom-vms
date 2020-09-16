@@ -1,0 +1,78 @@
+<div data-ng-form="organization.organizationForm" data-ng-init="labelwidth=labelwidth||3; inputwidth=inputwidth||7;">
+    <div class="panel panel-internal contact-panel">
+        <div class="form-group">
+            <div class="col-lg-12">
+                <h4>Organization Info</h4>
+            </div>
+        </div>
+        <div class="panel-body">
+                <div class="form-horizontal" role="form">
+                    <div class="form-group" data-ng-if="organization.currentProfile.Organization  && (!organization.currentProfile.IsDraftStatus || organization.currentProfile.ProfileTypeId !== ApplicationConstants.UserProfileType.Internal)">
+                        <label class="col-lg-3 col-xl-{{labelwidth}} control-label" data-original-title="" title="">Organization</label>
+                        <div class="col-lg-7 col-xl-{{inputwidth}}">
+                            <p class="form-control-static">
+                                <a data-ui-sref="org.edit.details({organizationId: organization.currentProfile.OrganizationId })">{{organization.currentProfile.Organization.Title}}</a>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="form-group" data-ng-if="(organization.currentProfile.IsDraftStatus && organization.currentProfile.ProfileTypeId === ApplicationConstants.UserProfileType.Internal) || organization.currentProfile.Organization===null">
+                        <label for-property="Organizational" for="Organizational" data-model-property="organization.currentProfile.OrganizationId" class="col-lg-3 col-xl-{{labelwidth}} control-label req-lab-right" data-original-title="" title="">Organization</label>
+                        <div class="col-lg-7 col-xl-{{inputwidth}}">
+                            <div class="input-group select2-bootstrap-append">
+                                <ui-select name="Organizational" data-ng-model="organization.currentProfile.OrganizationId" theme="select2" class="form-control" required data-ng-change="organization.organizationChanged(organization.currentProfile.OrganizationId)" data-pt-field-view="edit.ptFieldViewStatus">
+                                    <ui-select-match placeholder="-- Select One --">{{$select.selected.DisplayName}} - {{$select.selected.Id}}</ui-select-match>
+                                    <ui-select-choices repeat="item.Id as item in organization.organizationsList  | uiSelectChoicesFilter: $select.search: 'DisplayName': 'Id'">
+                                        <span data-ng-bind-html="item.DisplayName | highlight: $select.search"></span>
+                                        <span data-ng-bind-html="' - ' + item.Id | highlight: $select.search"></span>
+                                    </ui-select-choices>
+                                </ui-select>
+                                <span class="input-group-btn">
+                                    <button tabindex="-1" data-ng-click="organization.organizationRestored()" class="btn btn-default btn-contact-drp"><i class="material-icons md-18">clear</i></button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group" data-ng-if="organization.currentProfile.ProfileTypeId === ApplicationConstants.UserProfileType.Internal">
+                        <label for-property="InternalOrganizationDefinition1Id" for="InternalOrganizationDefinition1Id" data-model-property="organization.currentProfile.InternalOrganizationDefinition1Id" class="col-lg-3 col-xl-{{labelwidth}} control-label req-lab-right" data-original-title="" title="">Branch</label>
+                        <div class="col-lg-7 col-xl-{{inputwidth}}">
+                            <div class="input-group select2-bootstrap-append">
+                                <ui-select name="InternalOrganizationDefinition1Id" data-ng-model="organization.currentProfile.InternalOrganizationDefinition1Id" theme="select2" class="form-control" required data-pt-field-view="edit.ptFieldViewStatus">
+                                    <ui-select-match placeholder="-- Select One --">{{$select.selected.text}} - {{$select.selected.code}}</ui-select-match>
+                                    <ui-select-choices repeat="item.id as item in organization.internalOrganizationDefinition1List | uiSelectChoicesFilter: $select.search: 'text'">
+                                        <span data-ng-bind-html="item.text | highlight: $select.search"></span>
+                                        <span data-ng-bind-html="' - ' + item.code | highlight: $select.search"></span>
+                                    </ui-select-choices>
+                                </ui-select>
+                                <span class="input-group-btn">
+                                    <button data-ng-click="organization.currentProfile.InternalOrganizationDefinition1Id=undefined" class="btn btn-default btn-contact-drp"><i class="material-icons md-18">clear</i></button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for-property="Department" for="Department" data-model-property="organization.currentProfile.Department" class="col-lg-3 col-xl-{{labelwidth}} control-label" data-original-title="" title="">Department</label>
+                        <div class="col-lg-7 col-xl-{{inputwidth}}">
+                            <input type="text" ng-model="organization.currentProfile.Department" name="Department" class="form-control" maxlength="500" data-pt-field-view="edit.ptFieldViewStatus">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for-property="ReportsToProfileId" for="ReportsToProfileId" data-model-property="organization.currentProfile.ReportsToProfileId" class="col-lg-3 col-xl-{{labelwidth}} control-label" data-original-title="" title="">Reports To</label>
+                        <div class="col-lg-7 col-xl-{{inputwidth}}">
+                            <div class="input-group select2-bootstrap-append">
+                                <ui-select name="ReportsToProfileId" data-ng-model="organization.currentProfile.ReportsToProfileId" theme="select2" class="form-control" data-pt-field-view="edit.ptFieldViewStatus" data-pt-field-view-custom="{{organization.currentProfile.ReportsToProfileId | lookupnocache: organization.organizationProfilesList:'Id':'Contact.FullName'}}">
+                                    <ui-select-match placeholder="-- Select One --">{{$select.selected.Contact.FullName}} - {{$select.selected.Contact.Id}}</ui-select-match>
+                                    <ui-select-choices repeat="item.Id as item in  organization.organizationProfilesList | uiSelectChoicesFilter: $select.search: 'Contact.FullName': 'Contact.Id'">
+                                        <span data-ng-bind-html="item.Contact.FullName | highlight: $select.search"></span>
+                                        <span data-ng-bind-html="' - ' + item.Contact.Id  | highlight: $select.search"></span>
+                                    </ui-select-choices>
+                                </ui-select>
+                                <span class="input-group-btn">
+                                    <button tabindex="-1" data-ng-click="organization.currentProfile.ReportsToProfileId=undefined" class="btn btn-default btn-contact-drp"><i class="material-icons md-18">clear</i></button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </div>
+</div>

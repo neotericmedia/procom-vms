@@ -1,0 +1,97 @@
+<div class="row page-control">
+    <div class="col-lg-12">
+        <div class="btn-toolbar">
+            <div class="btn-group ">
+                <button type="button" class="btn btn-clouds dropdown-toggle" data-toggle="dropdown">
+                    New <span class="caret ml"></span>
+                </button>
+                <ul class="dropdown-menu bordered">
+                    <li><a data-ui-sref="WizardOrganizationalProfile()">Organizational Contact</a></li>
+                    <li><a data-ui-sref="WizardInternalProfile()">Internal Contact</a></li>
+                    <li><a data-ui-sref="WizardCreateWorkerProfile()">Worker Contact</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="smart-table-wrapper">
+    <div class="row" data-cg-busy="search.busyPromise">
+        <table data-st-table-struct='[{"stTableValue" : "search.items"}, {"stPipeValue" : "search.callServer"}, {"widthValues" : "[5, 10, 10, 20, 15, 20, 10, 10]"}, {"stPaginationValue" : "search.pageSize"}]'>
+            <thead data-st-head="1300px">
+                <tr>
+                    <th data-st-sort="ContactId" data-st-sort-default="reverse">ID</th>
+                    <th data-st-sort="FirstName">First Name</th>
+                    <th data-st-sort="LastName">Last Name</th>
+                    <th data-st-sort="OrganizationNames">Organization</th>
+                    <th data-st-sort="UserProfileTypeId">Profile</th>
+                    <th data-st-sort="Emails">Email</th>
+                    <th data-st-sort="UserStatus">Status</th>
+                    <th data-st-pen-name="Action">Actions</th>
+                </tr>
+                <tr>
+                    <th>
+                        <input data-st-advanced-search="{property: 'ContactId', ignoreQuotes: true}" placeholder=""
+                               class="input-sm form-control numberType" data-safe-restrict-input="[^0123456789.]" />
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="'FirstName'" placeholder="" class="input-sm form-control" type="search" />
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="'LastName'" placeholder="" class="input-sm form-control" type="search" />
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="'OrganizationNames'" placeholder="" class="input-sm form-control" type="search" />
+                    </th>
+                    <th>
+                        <select data-st-advanced-search="{property: 'UserProfileTypeId', ignoreQuotes: true}" class="input-sm form-control">
+                            <option value="1">Organizational</option>
+                            <option value="2">Internal</option>
+                            <option value="3">Temp</option>
+                            <option value="4">Canadian SP</option>
+                            <option value="5">Canadian Inc</option>
+                            <option value="6">Sub Vendor</option>
+                            <option value="7">W2 Worker</option>
+                            <option value="8">LLC Worker</option>
+                        </select>
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="'Emails'" placeholder="" class="input-sm form-control" type="search" />
+                    </th>
+                    <th>
+                        <select data-st-advanced-search="{property: 'UserStatus', ignoreQuotes: false}" class="input-sm form-control">
+                            <option value="Active">Active</option>
+                            <option value="Draft">Draft</option>
+                            <option value="Pending Review">Pending Review</option>
+                            <option value="Pending Change">Pending Change</option>
+                        </select>
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr data-ng-repeat="item in search.items" data-ui-sref-tr="Edit{{item.UserProfileType}}Profile({ contactId: item.ChildContactId ? item.ChildContactId : item.ContactId, profileId: item.ChildContactId ? item.ChildProfileId : item.UserProfileId })" style="cursor:pointer;">
+                    <td ng-bind="::item.ContactId"></td>
+                    <td ng-bind="::item.FirstName"></td>
+                    <td ng-bind="::item.LastName"></td>
+                    <td ng-bind="::item.OrganizationNames"></td>
+                    <td ng-bind="::item.UserProfileTypeId | lookup: search.profileTypes:'id':'code'"></td>
+                    <td ng-bind="::item.Emails"></td>
+                    <td><span ng-bind="::item.UserStatus"></span></td>
+                    <td>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-xs btn-clouds btn-row-action no-padding-bottom-right" data-action="view" title="View"><i class="fontello-icon-eye-1"></i>&nbsp;</button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="8">
+                        <span>Total Count: {{search.totalItemCount || 0}}; Items Loaded: {{ search.items ? search.items.length : 0}}</span>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+
+    </div>
+</div>

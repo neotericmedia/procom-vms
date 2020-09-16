@@ -1,0 +1,13 @@
+<app-phx-data-table [configuration]="dataTableConfiguration" [dataSourceUrl]="'expenseclaim/exceptions'" [dataSourceParams]='odataParams'
+  [columns]="columns" [exportFileName]="'expense claims exception'" [componentName]="'expenseClaimExceptions'" (rowClick)="onRowClick($event)"
+  (contextMenuPreparing)="onContextMenuPreparing($event)">
+  <div *dxTemplate="let c of 'commentsCellTemplate'">
+    <div *ngIf="c.value">
+      <ul class="expense-exception">
+        <li *ngFor="let comment of c.value" class="view-link">
+          <span class="comment">{{comment.Comment | phxTranslate}}</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+</app-phx-data-table>

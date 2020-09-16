@@ -1,0 +1,118 @@
+﻿<div class="row page-control">
+    <div class="col-lg-4">
+    </div>
+    <div class="page-control-bar col col-lg-8">
+    </div>
+</div>
+<div class="row page-control">
+    <div class="page-control-bar col-lg-12">
+        <div class="btn-toolbar">
+            <button type="button" class="btn btn-clouds" ng-click="addWorkOrder()">New</button>
+        </div>
+    </div>
+</div>
+<div class="smart-table-wrapper">
+    <div class="row" data-cg-busy="loadItemsPromise">
+        <table data-st-table-struct='[{"stTableValue" : "items"}, {"stPipeValue" : "callServer"}, {"widthValues" : "[6, 17, 14, 10, 19, 10, 10, 10, 10, 10, 8, 5]"}, {"stPaginationValue" : "pageSize"}]'>
+            <thead data-st-head="1800px">
+                <tr>
+                    <th data-st-pen-name="WorkOrderFullNumber" data-st-sort="AssignmentId" data-st-sort-default="reverse">Number</th>
+                    <th data-st-sort="InternalCompanyDisplayName">Internal Company</th>
+                    <th data-st-sort="WorkerName">Worker Name</th>
+                    <th data-st-sort="WorkerProfileTypeId">Profile Type</th>
+                    <th data-st-sort="ClientName">Client Name</th>
+                    <th data-st-sort="StartDate">Start Date</th>
+                    <th data-st-sort="EndDate">End Date</th>
+                    <th data-st-pen-name="BillingPrimaryRateSumPerRateUnit" data-st-sort="BillRate">Bill Rate</th>
+                    <th data-st-pen-name="PaymentPrimaryRateSumPerRateUnit" data-st-sort="PayRate">Pay Rate</th>
+                    <th data-st-sort="WorkOrderStatusId">Status</th>
+                    <th data-st-pen-name="Action">Action</th>
+                </tr>
+                <tr>
+                    <th>
+                        <input data-st-advanced-search="'WorkOrderFullNumber'" placeholder="" class="input-sm form-control input-align-right" data-safe-restrict-input="[^0123456789.]" />
+                    </th>
+                    <th>
+                        <select data-st-advanced-search="{property:'OrganizationIdInternal', ignoreQuotes: true}" class="input-sm form-control"
+                                data-st-as-options-override="list.listOrganizationInternal"></select>
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="'WorkerName'" placeholder="" class="input-sm form-control input-align-right" type="search" />
+                    </th>
+                    <th>
+                        <select data-st-advanced-search="{property: 'WorkerProfileTypeId', ignoreQuotes: true}" class="input-sm form-control"
+                                data-st-as-options-override="list.profileType"></select>
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="'ClientName'" placeholder="" class="input-sm form-control input-align-right" type="search" />
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="'StartDate'"
+                               data-st-as-operator-override="'ge'"
+                               close-on-date-selection="false" show-button-bar="false" show-weeks="false" class="input-sm form-control"
+                               data-st-as-lazy-attributes="{'uib-datepicker' : ApplicationConstants.formatDate}"
+                               data-st-as-height-override="400"
+                               data-st-as-width-override="315" />
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="'EndDate'"
+                               data-st-as-operator-override="'le'"
+                               close-on-date-selection="false" show-button-bar="false" show-weeks="false" class="input-sm form-control"
+                               data-st-as-lazy-attributes="{'uib-datepicker' : ApplicationConstants.formatDate}"
+                               data-st-as-height-override="400"
+                               data-st-as-width-override="315" />
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="'BillingPrimaryRateSumPerRateUnit'" placeholder="" class="input-sm form-control numberType disableAdvancedSearch" data-safe-restrict-input="[^0123456789.]" />
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="'PaymentPrimaryRateSumPerRateUnit'" placeholder="" class="input-sm form-control numberType disableAdvancedSearch" data-safe-restrict-input="[^0123456789.]" />
+                    </th>
+                    <th>
+                        <select data-st-advanced-search="{property: 'WorkOrderStatusId', ignoreQuotes: true}" class="input-sm form-control" data-st-as-width-override="165">
+                            <!--<option value="1">New</option>-->
+                            <option value="2">Active</option>
+                            <option value="3">Draft</option>
+                            <!--<option value="4">Replaced</option>-->
+                            <option value="5">Pending Approval</option>
+                            <!--<option value="6">Cancelled</option>-->
+                            <option value="7">Terminated</option>
+                            <!--<option value="8">Discarded</option>-->
+                        </select>
+                        <!--<select data-st-advanced-search="{property: 'WorkOrderStatusId', ignoreQuotes: true}" class="input-sm form-control"
+                            data-st-as-options-override="list.status">
+                    </select>-->
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr data-ng-repeat="item in items track by item.WorkOrderFullNumber" data-ui-sref-tr="workorder.edit.core({ assignmentId: item.AssignmentId, workOrderId: item.WorkOrderId, workOrderVersionId: item.WorkOrderVersionId })" style="height:auto !important; cursor:pointer;">
+                    <td ng-bind="::item.WorkOrderFullNumber"></td>
+                    <td ng-bind="::item.InternalCompanyDisplayName"></td>
+                    <td ng-bind="::item.WorkerName"></td>
+                    <td ng-bind="::item.WorkerProfileType"></td>
+                    <td ng-bind="::item.ClientName"></td>
+                    <td ng-bind="::item.StartDate | date:ApplicationConstants.formatDate"></td>
+                    <td ng-bind="::item.EndDate | date:ApplicationConstants.formatDate"></td>
+                    <td ng-bind="::item.BillingPrimaryRateSumPerRateUnit"></td>
+                    <td ng-bind="::item.PaymentPrimaryRateSumPerRateUnit"></td>
+                    <td ng-bind="::item.WorkOrderStatus"></td>
+                    <td>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-xs btn-clouds btn-row-action no-padding-bottom-right" data-action="view" title="View"><i class="material-icons md-18">remove_red_eye</i>&nbsp;</button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="10">
+                        <span>Total Count: {{totalItemCount || 0}}; Items Loaded: {{ items ? items.length : 0}}</span>
+                        <!--<span>Total Count: <span ng-bind="totalItemCount || 0"></span>; Items Loaded: <span ng-bind="items ? items.length : 0}"></span></span>-->
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>

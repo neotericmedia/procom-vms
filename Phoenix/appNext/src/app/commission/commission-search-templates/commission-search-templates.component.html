@@ -1,0 +1,78 @@
+<app-phx-data-table #commissionTemplateGrid [columns]="columns" [configuration]="dataTableConfiguration" [dataSourceUrl]="url"
+    [dataSourceParams]='oDataParams' componentName="CommissionSearchTemplates" (rowClick)="onRowClick($event)" 	(contextMenuOpenTab)="onContextMenuOpenTab($event)">
+    <div *dxTemplate="let d of 'viewCommissionDetailTemplate'">
+        <div class="btn-group">
+            <button type="button" class="btn btn-default btn-material" title="Update Template Settings" (click)="openSettingsPopup(d.data, $event)"><i class="material-icons">settings</i></button>
+        </div>
+    </div>
+</app-phx-data-table>
+
+<div bsModal #saveModal="bs-modal" [config]="{ show: false, backdrop: 'static', keyboard: true }" class="modal fade" tabindex="-1"
+    role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <form #settingsForm="ngForm" novalidate>
+                <div class="modal-header">
+                    <h4>Update Template Settings</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+
+                        <label for="templateName">Template Name *</label>
+                        <input type="text" autocomplete="off" class="form-control" id="templateName" required [(ngModel)]="newTemplateName" name="templateName"
+                            #templateName="ngModel" [pattern]="inputPattern" minlength='3' maxlength="50">
+
+                        <div *ngIf="templateName.errors && templateName.dirty" class="validation-error">
+                            <div *ngIf="templateName?.errors?.required">
+                                Template Name is required
+                            </div>
+                            <div *ngIf="templateName?.errors?.maxlength">
+                                Template Name should be less than 50 charachters
+                            </div>
+                            <div *ngIf="templateName?.errors?.minlength">
+                                Template Name should be at least 3 charachters
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+                        <label for="templateDesc">Template Description *</label>
+                        <input type="text" autocomplete="off" class="form-control" id="templateDesc" required [(ngModel)]="newTemplateDesc" name="templateDesc"
+                            #templateDesc="ngModel" [pattern]="inputPattern" minlength='3' maxlength="255">
+                        <div *ngIf="templateDesc.errors && templateDesc.dirty" class="validation-error">
+                            <div *ngIf="templateDesc?.errors?.required">
+                                Template Description is required
+                            </div>
+                            <div *ngIf="templateDesc?.errors?.maxlength">
+                                Template Description should be less than 255 charachters
+                            </div>
+                            <div *ngIf="templateDesc?.errors?.minlength">
+                                Template Description should be at least 3 charachters
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <div class="form-group">
+                        <label for="templateStatus">Status *</label>
+                        <app-phx-select-box [items]="templateStatusList" #templateStatus required [value]="newTemplateStatusId" id="templateStatus" name="templateStatus" textField="text" valueField="value"
+                            placeholder="Status" (valueChanged)="newTemplateStatusId = $event.value">
+                        </app-phx-select-box>
+                        
+                        <div *ngIf="templateStatus?.errors && templateStatus?.dirty" class="validation-error">
+                            <div *ngIf="templateStatus?.errors?.required">
+                                Template Status is required
+                            </div>                            
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="pull-right">
+                        <button class="btn btn-default customToolbarButton" (click)="cancelSaveSettings()">Cancel</button>
+                        <button type="submit" class="btn btn-primary customToolbarButton " [disabled]="settingsForm.valid === false" (click)="saveSettings()">Save</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

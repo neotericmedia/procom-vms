@@ -1,0 +1,33 @@
+<app-vms-documents-batch-header [record]="record"></app-vms-documents-batch-header>
+<div class="row">
+  <div class="tabbable col-lg-12">
+    <div>
+      <tabset>
+        <tab heading="Details">
+          <h4>VMS Processed Record</h4>
+          <app-phx-data-table #phxTableProcessedRecord [configuration]="phxTableProcessedRecordConfig" [dataSource]="phxTableProcessedRecordDataSource"
+            [columns]="phxTableProcessedRecordColumns" (rowClick)="onProcessedRecordClick($event)">
+            <div *dxTemplate="let d of 'reasonTemplate'">
+              <span style="white-space: pre">{{d.value | replaceHtmlBreakWithNewLine}}</span>
+            </div>
+          </app-phx-data-table>
+          <h4>Work Order Mapping</h4>
+          <app-phx-data-table #phxTableWorkOrder [configuration]="phxTableWorkOrderConfig" [dataSource]="phxTableWorkOrderDataSource"
+            [columns]="phxTableWorkOrderColumns" (rowClick)="onWorkOrderClick($event)">
+          </app-phx-data-table>
+          <h4>Timesheet</h4>
+          <app-phx-data-table #phxTableTimesheet [configuration]="phxTableTimesheetConfig" [dataSource]="phxTableTimesheetDataSource"
+            [columns]="phxTableTimesheetColumns" (rowClick)="onTimesheetClick($event)">
+          </app-phx-data-table>
+          <h4>Transaction</h4>
+          <app-phx-data-table #phxTableTransaction [configuration]="phxTableTransactionConfig" [dataSource]="phxTableTransactionDataSource"
+            [columns]="phxTableTransactionColumns" (rowClick)="onTransactionClick($event)">
+          </app-phx-data-table>
+        </tab>
+        <tab heading="Workflow">
+          TBD
+        </tab>
+      </tabset>
+    </div>
+  </div>
+</div>

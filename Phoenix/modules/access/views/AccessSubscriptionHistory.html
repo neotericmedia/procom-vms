@@ -1,0 +1,28 @@
+﻿<div class="form-horizontal contact-history-main" data-ng-init="history.init(edit)">
+    <div class="form-group">
+        <div class="col-lg-12 contact-history-data">
+            <div class="contact-history-data-header">
+                Change History
+            </div>
+            <div class="contact-history-data-body">
+                <utility-data-change-tracker data-culture-id="history.cultureId"
+                                             data-entity-type-id="ApplicationConstants.EntityType.AccessSubscription"
+                                             data-entity-id="history.Subscription.Id"
+                                             data-black-list="history.changeHistoryBlackList">
+                </utility-data-change-tracker>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-lg-12 contact-history-workflow">
+            <div class="contact-history-workflow-header">
+                Workflow History
+            </div>
+            <div class="contact-history-workflow-body">
+                <app-phx-workflow-event-history [entity-type-id]="ApplicationConstants.EntityType.AccessSubscription"
+                                         [entity-id]="history.Subscription.Id" class="workflow-records">
+                </app-phx-workflow-event-history >
+            </div>
+        </div>
+    </div>
+</div>

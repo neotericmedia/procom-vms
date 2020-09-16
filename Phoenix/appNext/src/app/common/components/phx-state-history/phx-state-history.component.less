@@ -1,0 +1,187 @@
+@time-block-height-offset: 25px;
+@time-block-bgcolor: #fafafa;
+@time-block-arrow-color: @time-block-bgcolor;
+@time-block-arrow-size: 10px;
+@time-block-spacing: 8px;
+@time-block-time-line-spacing: 18px;
+@time-line-width: 2px;
+@time-line-future-color: #c4c4c4;
+@time-line-color: #f7b01c;
+@time-line-milestone-size: 16px;
+
+:host {
+  /deep/ .state-history-panel {
+    border: none !important;
+  }
+
+  /deep/ .non-version .panel-heading {
+    display: none;
+  }
+
+  /deep/ .panel-heading {
+    background: #F1F3F5 !important;
+    padding-left: 0 !important;
+  }
+
+  /deep/ .panel-body {
+    border: none !important;
+    padding-right: 0 !important;
+  }
+}
+
+.version-header {
+  display: inline-block;
+  width: 100%;
+  font-size: 13px;
+  padding-top: 8px;
+
+  .menu-icon {
+    position: absolute;
+    width: 50px;
+    padding-left: 10px;
+    text-align: center;
+  }
+
+  .version-header-content {
+    margin-left: 50px;
+
+    .version-number {
+      color: #1E2430;
+    }
+
+    .version-status {
+      color: #506080;
+    }
+
+    .version-effective-date {
+      color: #5E6E90;
+    }
+  }
+}
+
+.state-history-wrapper {
+  padding-top: @time-block-height-offset;
+  padding-left: @time-block-time-line-spacing;
+
+  .time-block {
+    position: relative;
+    margin: 0 auto;
+
+    &::after {
+      // timeline line
+      content: '';
+      position: absolute;
+      width: @time-line-width;
+      background-color: @time-line-color;
+      top: 0;
+      bottom: 0;
+      margin-left: -@time-line-width;
+      left: calc(@time-line-milestone-size / 2);
+      margin-top: @time-block-height-offset;
+    }
+
+    &.future {
+      .status:NOT(.next-step) {
+        color: #5e6e90 !important;
+      }
+
+      &::after {
+        // timeline line
+        background-color: @time-line-future-color;
+      }
+
+      .time-block-container::after {
+        // timeline milestone circle
+        background-image: url("./../../../../assets/timeline/status_future.svg");
+      }
+    }
+
+    &.current {
+      .time-block-container::after {
+        // timeline milestone circle
+        background-image: url("./../../../../assets/timeline/status_current.svg");
+      }
+    }
+
+    &.last {
+      &::after {
+        // timeline line
+        width: 0px;
+      }
+
+      .time-block-container {
+        padding-bottom: 0;
+      }
+    }
+
+    .time-block-container {
+      padding: @time-block-spacing 0 @time-block-spacing calc(@time-block-time-line-spacing + @time-block-arrow-size);
+      position: relative;
+      background-color: inherit;
+      margin-left: calc(@time-line-milestone-size / 2);
+      margin-top: -@time-block-height-offset;
+      padding-bottom: @time-block-height-offset;
+
+      &::before {
+        // timeline block pointing arrow
+        content: ' ';
+        height: 0;
+        position: absolute;
+        top: calc(@time-block-height-offset + @time-line-milestone-size / 2 - @time-block-arrow-size);
+        width: 0;
+        z-index: 1;
+        left: @time-block-time-line-spacing;
+        border: medium solid @time-block-arrow-color;
+        border-width: @time-block-arrow-size @time-block-arrow-size @time-block-arrow-size 0;
+        border-color: transparent @time-block-arrow-color transparent transparent;
+      }
+
+      &::after {
+        // timeline milestone circle
+        content: '';
+        background-image: url("./../../../../assets/timeline/status_done.svg");
+        background-size: @time-line-milestone-size;
+        position: absolute;
+        left: calc(-1 * (@time-line-milestone-size / 2 + @time-line-width / 2));
+        width: @time-line-milestone-size;
+        height: @time-line-milestone-size;
+        top: @time-block-height-offset;
+        z-index: 1;
+      }
+
+      .content {
+        padding: 16px;
+        padding-right: 24px;
+        background-color: @time-block-bgcolor;
+        position: relative;
+
+        &:not(.last) {
+          margin-bottom: @time-block-spacing;
+        }
+
+        .status {
+          color: #1e2430;
+        }
+
+        .description {
+          color: #506080;
+        }
+
+        .date {
+          color: #5e6e90;
+          text-align: right;
+        }
+      }
+    }
+  }
+}
+
+@media (min-width: 768px) {
+  .version-effective-date {
+    text-align: right;
+  }
+
+  .first-version-header {
+    padding-top: 0 !important;
+  }
+}

@@ -1,0 +1,115 @@
+<div class="remittance-batch-summary">
+    <div class="panel-body">
+        <div class="row" *ngIf="batchHeader && batchHeader.RemittanceTypeId===commonService.ApplicationConstants.RemittanceType.Payroll">
+            <div class="col-xs-12 batch-sub-header">
+                <h3>Total Remittance Batch Breakdown by Type</h3>
+            </div>
+            <div class="col-md-6">
+                <div class="row">
+                    <div class="col-xs-6">Canadian Pension Plan Employee<span class="pull-right">{{'$'}}{{ batchHeader.CPPAmountEmployee | number:'.2'}}</span></div>
+                    <div class="col-xs-6"></div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-6">Employment Insurance Employee<span class="pull-right">{{'$'}}{{ batchHeader.EIAmountEmployee | number:'.2'}}</span></div>
+                    <div class="col-xs-6"></div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-6">Parental Insurance Plan Employee<span class="pull-right">{{'$'}}{{ batchHeader.PIPAmountEmployee | number:'.2'}}</span></div>
+                    <div class="col-xs-6"></div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-6">Federal Income Tax<span class="pull-right">{{'$'}}{{ batchHeader.FITAmountEmployee | number:'.2'}}</span></div>
+                    <div class="col-xs-6"></div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-6">Provincial Income Tax<span class="pull-right">{{'$'}}{{ batchHeader.PITAmountEmployee | number:'.2'}}</span></div>
+                    <div class="col-xs-6"></div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-6">Quebec Pension Plan Employee<span class="pull-right">{{'$'}}{{ batchHeader.QPPAmountEmployee | number:'.2'}}</span></div>
+                    <div class="col-xs-6"></div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-6">Non-Resident Withholding Tax<span class="pull-right">{{'$'}}{{ batchHeader.NonResidentAmountEmployee | number:'.2'}}</span></div>
+                    <div class="col-xs-6"></div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-6">Deduct Additional Tax<span class="pull-right">{{'$'}}{{ batchHeader.AddTaxAmountEmployee | number:'.2'}}</span></div>
+                    <div class="col-xs-6"></div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="row">
+                    <div class="col-xs-6">Canadian Pension Plan Employer<span class="pull-right">{{'$'}}{{ batchHeader.CPPAmountEmployer | number:'.2'}}</span></div>
+                    <div class="col-xs-6"></div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-6">Employment Insurance Employer<span class="pull-right">{{'$'}}{{ batchHeader.EIAmountEmployer | number:'.2'}}</span></div>
+                    <div class="col-xs-6"></div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-6">Parental Insurance Plan Employer<span class="pull-right">{{'$'}}{{ batchHeader.PIPAmountEmployer | number:'.2'}}</span></div>
+                    <div class="col-xs-6"></div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-6">Quebec Pension Plan Employer<span class="pull-right">{{'$'}}{{ batchHeader.QPPAmountEmployer | number:'.2'}}</span></div>
+                    <div class="col-xs-6"></div>
+                </div>
+                <br/>
+                <div class="row">
+                    <div class="col-xs-6">Gross Pay<span class="pull-right">{{'$'}}{{ batchHeader.GrossPay | number:'.2'}}</span></div>
+                    <div class="col-xs-6"></div>
+                </div>
+                <br/>
+                <div class="row">
+                    <div class="col-xs-6">Total Remitted<span class="pull-right"><b>{{'$'}}{{ batchHeader.TotalAmount | number:'.2'}}</b></span></div>
+                    <div class="col-xs-6"></div>
+                </div>
+            </div>
+        </div>
+        <div class="row" *ngIf="batchHeader && batchHeader.RemittanceTypeId===commonService.ApplicationConstants.RemittanceType.WorkerSafety">
+            <div class="col-xs-12 batch-sub-header">
+                <h3>Total Remittance Batch Breakdown by Type</h3>
+            </div>
+            <div class="col-md-6">
+                <div class="row" *ngFor="let w of batchHeader.RemittanceBatchWCBs">
+                    <div class="col-xs-6">{{w.Name}}<span class="pull-right">{{'$'}}{{ w.Amount | number:'.2'}}</span></div>
+                    <div class="col-xs-6"></div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="row">
+                    <div class="col-xs-6">Gross Pay<span class="pull-right">{{'$'}}{{ batchHeader.GrossPay | number:'.2'}}</span></div>
+                    <div class="col-xs-6"></div>
+                </div>
+                <br/>
+                <div class="row">
+                    <div class="col-xs-6">Total Remitted<span class="pull-right"><b>{{'$'}}{{ batchHeader.TotalAmount | number:'.2'}}</b></span></div>
+                    <div class="col-xs-6"></div>
+                </div>
+            </div>
+        </div>
+        <div class="row" *ngIf="batchHeader && batchHeader.RemittanceTypeId===commonService.ApplicationConstants.RemittanceType.HealthTax">
+            <div class="col-xs-12 batch-sub-header">
+                <h3>Total Remittance Batch Breakdown by Type</h3>
+            </div>
+            <div class="col-md-6">
+                <div class="row">
+                    <div class="col-xs-6">Employer Health Tax<span class="pull-right">{{'$'}}{{ batchHeader.EHTAmountEmployer | number:'.2'}}</span></div>
+                    <div class="col-xs-6"></div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="row">
+                    <div class="col-xs-6">Gross Pay<span class="pull-right">{{'$'}}{{ batchHeader.GrossPay | number:'.2'}}</span></div>
+                    <div class="col-xs-6"></div>
+                </div>
+                <br/>
+                <div class="row">
+                    <div class="col-xs-6">Total Remitted<span class="pull-right"><b>{{'$'}}{{ batchHeader.TotalAmount | number:'.2'}}</b></span></div>
+                    <div class="col-xs-6"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

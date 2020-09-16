@@ -1,0 +1,141 @@
+
+.dnd-drag-start {
+    -moz-transform: scale(0.8);
+    -webkit-transform: scale(0.8);
+    transform: scale(0.8);
+    opacity: 0.7;
+    border: 2px dashed #000;
+    .lm-btn {
+        display: none;
+    }
+}
+
+.dnd-drag-enter {
+    opacity: 0.7;
+    border: 2px dashed #000;
+    .lm-btn {
+        display: none;
+    }
+}
+
+.dnd-drag-receiver {
+    border: 2px solid transparent;
+}
+
+.dnd-drag-over {
+    border: 2px dashed #000;
+}
+
+.dnd-sortable-drag {
+    -moz-transform: scale(0.9);
+    -webkit-transform: scale(0.9);
+    transform: scale(0.9);
+    opacity: 0.7;
+    border: 1px dashed #000;
+    .lm-btn {
+        display: none;
+    }
+}
+
+input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+input[type=number] {
+    -moz-appearance:textfield;
+}
+
+@enabled-color: #999;
+@active-color: #777;
+@hover-color: @active-color;
+@focus-color: @active-color;
+@disabled-color: #ccc;
+
+.btn-svg {
+    height: 24px;  
+    .img-svg {
+        fill: @enabled-color;
+        width: 24px;        
+        height: 24px;
+    }
+    &:hover, &:focus{
+        &:not([disabled]){
+            .img-svg {
+                fill: @active-color;
+            }
+        }
+    }
+    &:active  {
+        transform: scale(0.9);
+        .img-svg {
+            fill: #000;
+        }
+    }
+    &[disabled] {
+        .img-svg {
+            fill: @disabled-color;
+        }
+    }
+}
+
+.btn-material {
+    .material-icons {
+        color: @enabled-color;
+
+    }
+    &:hover, &:focus, &:active  {
+        &:not([disabled]) {
+            .material-icons {
+                color: @active-color;
+            }
+        }
+    }
+    &[disabled] {
+        .material-icons {
+            color: @disabled-color;
+        }
+    }
+}
+
+.btn-badge {
+    .badge {
+        background-color: @enabled-color;
+        color: #fff;
+    }
+    &:hover, &:focus, &:active  {
+        &:not([disabled]) {
+            .badge {
+                background-color: @active-color;
+            }
+        }
+    }
+    &[disabled] {
+        .badge {
+            background-color: @disabled-color;
+        }
+    }
+}
+
+.tooltip-top {
+    z-index: 25;
+}
+
+.capsule-total {
+    font-size: 24px;
+    line-height: 24px;
+    font-weight: bold;
+    display: inline-block;
+}
+
+.capsule-unit {
+    font-size: 16px;
+}
+
+.panel-footer{
+    /*background-color: #F5F5F5;*/
+    border-top: 1px solid #DDD;
+    border-bottom-right-radius: 3px;
+    min-height: 75px;
+    margin-bottom: 24px;
+}

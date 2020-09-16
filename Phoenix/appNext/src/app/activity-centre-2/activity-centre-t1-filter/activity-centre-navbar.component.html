@@ -1,0 +1,45 @@
+<div class="nav-container">
+  <div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-7 col-lg-7 nav-tab-container col-md-width">
+      <ul class="nav nav-tabs responsive-tabs">
+        <li class="text-center tab-width-xs" [ngClass]="{'active' : getTaskType == taskTypeEnum.toDo}">
+          <a (click)="goTo('to-do')">
+            {{'activityCentre2.navbar.ToDo' | phxTranslate}}
+          </a>
+        </li>
+        <li class="text-center tab-width-xs" [ngClass]="{'active' : getTaskType == taskTypeEnum.inProgress}">
+          <a (click)="goTo('in-progress')">
+            {{'activityCentre2.navbar.InProgress' | phxTranslate}}
+          </a>
+        </li>
+        <!-- Inline style will be removed once Completed Tab is done-->
+        <li style="display: none;" class="text-center tab-width-xs" [ngClass]="{'active' : getTaskType == taskTypeEnum.completed}">
+          <a (click)="goTo('completed')">
+            {{'activityCentre2.navbar.Completed' | phxTranslate}}
+          </a>
+        </li>
+      </ul>
+      <div class="refresh-icon">
+        <i class="fa fa-repeat" (click)="refreshFun()"></i>
+      </div>
+    </div>
+    <div class="row col-xs-12 col-sm-6 col-md-5 col-lg-5 pull-right lg-visible">
+      <div class="filter-div">
+        <button type="button" class="btn btn-default btn-material btn-filter"
+          [ngClass]="showFilter ? 'btn-filter-selected' : ''" (click)="onClickShowFilter()">
+          <i class="fa fa-filter" style="font-size: 18px;"></i> 
+          {{'activityCentre2.navbar.filtersBtn' | phxTranslate}} {{filterCount ? '(' + filterCount + ')' : ''}}
+        </button>
+      </div>
+      <div class="refresh-div">
+        <div class="refresh-data" [ngClass] = "!finalCalculatedTime ? 'refresh-active' : '' " (click)="refreshFun()">
+          <i class="fa fa-repeat"></i>
+          <span class="refresh-label">{{'activityCentre2.navbar.refreshDataBtn' | phxTranslate}}</span>
+        </div>
+        <div class="time-div" *ngIf = "finalCalculatedTime">
+          <span>{{'activityCentre2.navbar.lastUpdated' | phxTranslate : finalCalculatedTime}}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

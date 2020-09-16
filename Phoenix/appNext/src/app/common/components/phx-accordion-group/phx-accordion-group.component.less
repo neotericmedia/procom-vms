@@ -1,0 +1,53 @@
+:host {
+    display: block;
+
+    .panel.phx-accordion-group {
+        border-left: none;
+        border-right: none;
+        border-top: 1px solid #ddd;
+        margin-bottom: 10px;
+    }
+
+    .bordered .panel-body {
+        border-right: 1px solid #ddd;
+        border-left: 1px solid #ddd;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .panel-default {
+        border: none;
+    }
+
+    .panel-heading.card-header {
+        border-left: 8px solid #a5a5a5;
+        border-right: 1px solid #ddd;
+    }
+
+    .panel-heading,
+    .panel {
+        border-radius: 0px;
+    }
+
+    .panel-heading {
+        cursor: pointer;
+
+        &:hover {
+            background: #e5e5e5;
+        }
+    }
+
+    .panel-title {
+        font-size: 1.4em;
+    }
+
+    .toggle-button {
+        color: #333;
+        font-size: 1em;
+        padding: 0;
+    }
+
+    .toggle-button:focus {
+        text-decoration: none;
+        outline: 0;
+    }
+}

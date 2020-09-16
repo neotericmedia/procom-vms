@@ -1,0 +1,11 @@
+﻿<div class="app-accordion-container app-accordion-container-28">
+    <div class="app-accordion-level-one">
+        <div class="app-accordion-level-one-item" ng-repeat="item in scopeUiRoot.lists.listComplianceDocumentRuleAreaType" ng-click="scopeUiRoot.onGo(item)">
+            <span>{{item.text}}</span>
+            <i class="app-accordion-chevron icon-chevron-right"></i>
+        </div>
+    </div>
+    <p class="app-no-items" ng-if="scopeUiRoot.lists.listComplianceDocumentRuleAreaType.length == 0">
+        There are no document rule area types to search.
+    </p>
+</div>

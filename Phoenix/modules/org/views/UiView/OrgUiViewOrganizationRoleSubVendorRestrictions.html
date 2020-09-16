@@ -1,0 +1,48 @@
+﻿<div data-ng-form="formOrganizationSubVendorRoleRestriction">
+    <div class="form-group">
+        <div class="col-lg-8">
+            <h4>Restrictions</h4>
+        </div>
+    </div>
+    <div class="form-group" style="margin-left:10px;" data-ng-if="scopeOrg.actionScope.show.showAddModifyRestrictionType  && scopeOrg.entity.AreComplianceFieldsRequired">
+        <div class="col-lg-3 no-padding-h">
+            <button type="button" class="btn btn-clouds dropdown-toggle" data-toggle="dropdown">
+                <span class="sub-user-crt">Add/Edit Restriction</span>
+            </button>
+
+            <ul class="dropdown-menu bordered">
+                <li class="sub-user-restr" style="cursor:pointer;" data-ng-repeat="restrictionType in scopeOrg.lists.listOrganizationSubVendorRoleRestrictionType">
+                    <a data-ng-click="scopeOrg.actionScope.event.role.subVendor.restriction.update(restrictionType.id)">{{restrictionType.text}}</a>
+
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="form-group org-payment-chk">
+        <div class="row" ng-if="(scopeOrg.entity.OrganizationSubVendorRoles[0].OrganizationSubVendorRoleRestrictions || scopeOrg.entity.OrganizationSubVendorRoles[0].OrganizationSubVendorRoleRestrictions .length > 0)">
+            <div class="col-xs-3 label-to-right">
+                <label>Type</label>
+            </div>
+            <div class="col-xs-8 label-to-same-padding">
+                <label>Restrictions</label>
+            </div>
+        </div>
+        <div class="row " data-ng-repeat="restrictionGroup in scopeOrg.actionScope.event.role.subVendor.restriction.subscriptionRestrictionsGrouped() | filter : scopeOrg.actionScope.event.role.subVendor.restriction.filterGroupByOrganizationSubVendorRoleRestrictionTypeId| orderBy:['OrganizationSubVendorRoleRestrictionTypeId']">
+            <div class="col-xs-3 label-to-right">
+                <div data-ng-if="scopeOrg.actionScope.show.showAddModifyRestrictionType" style="cursor:pointer;" data-ng-click="scopeOrg.actionScope.event.role.subVendor.restriction.update(restrictionGroup.OrganizationSubVendorRoleRestrictionTypeId)">
+                    <a>{{restrictionGroup.OrganizationSubVendorRoleRestrictionTypeId| lookup: scopeOrg.lists.listOrganizationSubVendorRoleRestrictionType
+                        }}
+                    </a>
+                </div>
+                <div data-ng-if="!scopeOrg.actionScope.show.showAddModifyRestrictionType">
+                    {{restrictionGroup.OrganizationSubVendorRoleRestrictionTypeId| lookup: scopeOrg.lists.listOrganizationSubVendorRoleRestrictionType
+                    }}
+                </div>
+            </div>
+            <div class="col-xs-8 label-to-same-padding">
+                <span data-ng-repeat="restriction in scopeOrg.entity.OrganizationSubVendorRoles[0].OrganizationSubVendorRoleRestrictions | filter:{ OrganizationSubVendorRoleRestrictionTypeId: restrictionGroup.OrganizationSubVendorRoleRestrictionTypeId }">
+                    <span data-ng-if="$index>0">, </span>{{restriction.Name}}</span>
+            </div>
+        </div>
+    </div>
+</div>

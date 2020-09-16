@@ -1,0 +1,42 @@
+<div class="panel-default remittance-batch-main">
+    <div class="panel-body">
+        <div class="row remittance-batch-header headstone">
+            <div class="col-xs-1"></div>
+            <div class="col-xs-2">
+                <div class="text-gray">Payroll remittance batch</div>
+                <div class="batch-header">{{ remittanceBatch.Id }}</div>
+            </div>
+            <div class="col-xs-3">
+                <div class="text-gray">Internal company</div>
+                <div class="batch-header">{{ remittanceBatch.OrganizationInternalDisplayName }}</div>
+            </div>
+            <div class="col-xs-2">
+                <div class="text-gray">Remittance date</div>
+                <div class="batch-header">{{ remittanceBatch.RemittanceDate | date:formatDate }} </div>
+            </div>
+            <div class="col-xs-2">
+                <div class="text-gray">Total remitted</div>
+                <div class="batch-header">{{remittanceBatch.CurrencyId | CodeValue:commonService.CodeValueGroups.Currency:'code'}}&nbsp;{{'$'}}{{ remittanceBatch.TotalAmount| number:'.2'}} </div>
+            </div>
+            <div class="col-xs-2">
+                <div class="text-gray">Status</div>
+                <div class="batch-header">{{remittanceBatch.RemittanceTransactionBatchStatusId | CodeValue:commonService.CodeValueGroups.RemittanceTransactionBatchStatus:'text'}}</div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 batch-sub-header"><h3>{{remittanceBatch.RemittanceTypeId | CodeValue:commonService.CodeValueGroups.RemittanceType:'text'}}&nbsp;{{'Source Deductions'}}</h3></div>            
+            <div class="batch-sub-header-drp" *ngIf="remittanceBatch.RemittanceTransactionBatchStatusId===commonService.ApplicationConstants.RemittanceTransactionBatchStatus.Created">
+                    <app-phx-state-action-buttons [stateActions]="stateActions" [availableStateActions]="remittanceBatch.AvailableStateActions" [displayType]="'DROPDOWN'">
+                    </app-phx-state-action-buttons>     
+            </div>  
+        </div>       
+        <div class="row">
+            <div class="col-xs-12 remittance-batch-nav">
+                <app-phx-navigation-bar #navBar [navigationBarContent]="tabList"></app-phx-navigation-bar>
+            </div>
+            <div class="col-xs-12 remittance-batch-body">
+                <router-outlet></router-outlet>
+            </div>
+        </div>
+    </div>
+</div>

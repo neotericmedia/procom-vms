@@ -1,0 +1,45 @@
+<div class="row" *ngIf="apiEndpointPathParameter !== 'vms/getUnitedStatesSourceDeductionProcessedRecords'">
+    <div class="col-lg-4">
+        <app-phx-select-box 
+            [value]="organizationIdClient" 
+            [items]="orgClients" 
+            [disabled]="!orgClients || !orgClients.length" 
+            textField="ClientOrgDisplayName" valueField="OrganizationIdClient"
+            [placeholder]="!orgClients || !orgClients.length ? 'Loading...' : 'Select Client Organization'" 
+            (valueChanged)="onOrgClientSelected($event.value)">
+        </app-phx-select-box>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <div *ngIf="showTable">
+            <app-phx-data-table #grid [columns]="columns" [configuration]="dataTableConfiguration" [dataSourceUrl]="dataSourceUrl" [dataSourceParams]="oDataParams"
+                [exportFileName]="'transactions'" [componentName]="'TransactionSearch'" (responseReceived)="dataReceived($event)"> 
+                <div *dxTemplate="let d of 'SendToConflictTemplate'">
+                    <!-- <div class="btn-group">
+                        <button type="button" class="btn btn-xs btn-warning" *ngIf = "hasAccess && d.data && d.data.WorkflowPendingTaskId " (click)="sendToConflict(d)">Send to Conflict</button>
+                    </div> -->
+
+
+                    <app-phx-state-action-buttons [displayType]="'SMALL_BUTTON'" [stateActions]="tableStateActions"  [refData]="d.data"></app-phx-state-action-buttons>
+
+                </div>
+            </app-phx-data-table>
+        </div>
+    </div>
+</div>
+<p>&nbsp;</p>
+<div class="row">
+    <!-- <div class="col-lg-offset-10 col-lg-2">        
+        <button class="btn btn-primary pull-right" (click)="createTransaction()" *ngIf = "isEnableWorkFlowAction" [disabled]="!(items?.length)">Create Transaction</button>
+    </div> -->
+
+    <!-- <div class="col-lg-offset-10 col-lg-2" *ngIf = "isEnableStateAction" >         -->
+    <div class="col-lg-offset-10 col-lg-2">    
+        <app-phx-state-action-buttons [stateActions]="stateActions" ></app-phx-state-action-buttons>
+    </div>
+</div>
+<div class="row">
+    <app-phx-validation-messages [messages]="validationMessages"></app-phx-validation-messages>
+</div>
+<app-phx-dialog [config]="phxDialogComponentConfigModel"></app-phx-dialog>

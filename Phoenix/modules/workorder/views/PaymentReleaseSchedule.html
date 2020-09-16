@@ -1,0 +1,28 @@
+﻿<div class="smart-table-wrapper" style="height:100%">
+    <div data-cg-busy="loadItemsPromise" style="height:100%">
+        <table class="table table-striped table-content table-hover payment-release-schedule-table" data-st-table="items" data-st-pagination-scroll="pageSize" data-st-pipe="callServer" data-st-fixed-header="" data-st-column-widths="[20, 40, 40]">
+            <thead class="payment-release-schedule-table-header">
+                <tr>
+                    <th data-st-sort="Id" data-st-sort-default=""><span class="payment-release-schedule-table-th">ID</span></th>
+                    <th data-st-sort="TimesheetEndDate"><span class="payment-release-schedule-table-th">Timesheet End Date</span></th>
+                    <th data-st-sort="PlannedPaymentDate"><span class="payment-release-schedule-table-th">Planned Payment Date</span></th>
+                </tr>
+            </thead>
+            <tbody class="ignore-set-height payment-release-schedule-body">
+                <tr data-ng-repeat="item in items">
+                    <td title="{{item.Id}}"><span class="payment-release-schedule-table-cell">{{item.Id}}</span></td>
+                    <td title="{{item.TimesheetEndDate | date:ApplicationConstants.formatDate}}"><span class="payment-release-schedule-table-cell">{{item.TimesheetEndDate | date:ApplicationConstants.formatDate}}</span></td>
+                    <td title="{{item.PlannedPaymentDate | date:ApplicationConstants.formatDate}}"><span class="payment-release-schedule-table-cell">{{item.PlannedPaymentDate | date:ApplicationConstants.formatDate}}</span></td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td class="payment-release-schedule-total">
+                        <span>Total Count: {{totalItemCount || 0}}; Items Loaded: {{ items ? items.length : 0}}</span>
+                        <button style="margin-left: 25px;" type="button" ng-click="close()" class="btn btn-default pull-right">Close</button>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>

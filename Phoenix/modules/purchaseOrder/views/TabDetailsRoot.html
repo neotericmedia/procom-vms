@@ -1,0 +1,166 @@
+﻿<div class="content-group form-horizontal po-tab-details" data-ng-form="formPurchaseOrderDetails">
+    <div>
+        <div class="panel-internal">
+            <div class="form-group">
+                <div class="col-lg-9">
+                    <!--<h4>Details</h4>-->
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-lg-2 control-label" data-ng-if="model.entity.CreatedByProfileId>0">Created By</label>
+                <div class="col-lg-4" data-ng-if="model.entity.CreatedByProfileId>0">
+                    <p class="form-control-static" data-ng-if="(model.entity.CreatedDatetime| date:ApplicationConstants.formatDateSorting).length==10">{{model.entity.CreatedByContactName}} - {{model.entity.CreatedDatetime | date:ApplicationConstants.formatDate}}</p>
+                </div>
+                <label class="col-lg-2 control-label" data-ng-if="model.entity.LastModifiedByProfileId>0">Modified By</label>
+                <div class="col-lg-4" data-ng-if="model.entity.CreatedByProfileId>0">
+                    <p class="form-control-static" data-ng-if="(model.entity.LastModifiedDatetime| date:ApplicationConstants.formatDateSorting).length==10">{{model.entity.LastModifiedByContactName}} - {{model.entity.LastModifiedDatetime | date:ApplicationConstants.formatDate}}</p>
+                </div>
+            </div>
+            <div class="form-group">
+                <label data-for-property="OrganizationId" for="OrganizationId" data-model-property="model.entity.OrganizationId" class="col-lg-2 control-label req-lab-right"
+                    data-original-title="" title="">Client Company</label>
+                <div class="col-lg-4">
+                    <div class="input-group select2-bootstrap-append">
+                        <ui-select name="OrganizationId" data-ng-model="model.entity.OrganizationId" theme="select2" class="form-control" required
+                            data-pt-field-view="model.ptFieldViewConfigOnChangeStatusId" data-pt-field-view-custom="<a data-ui-sref='org.edit.details({organizationId: model.entity.OrganizationId })'>{{model.entity.OrganizationId | lookupnocache:lists.listOrganizationClient:'Id':'DisplayName'}} - {{model.entity.OrganizationId}}</a>">
+                            <ui-select-match placeholder="-- Select One --">{{$select.selected.DisplayName}} - {{$select.selected.Id}}</ui-select-match>
+                            <ui-select-choices repeat="item.Id as item in  lists.listOrganizationClient | uiSelectChoicesFilter: $select.search: 'DisplayName': 'Id'">
+                                <span data-ng-bind-html="item.DisplayName | highlight: $select.search"></span>
+                                <span data-ng-bind-html="' - ' + item.Id | highlight: $select.search"></span>
+                            </ui-select-choices>
+                        </ui-select>
+                        <span class="input-group-btn">
+                            <button tabindex="-1" data-ng-click="model.entity.OrganizationId=undefined" class="btn btn-default"><i class="material-icons md-18">clear</i></button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label data-for-property="PurchaseOrderNumber" for="PurchaseOrderNumber" data-model-property="model.entity.PurchaseOrderNumber"
+                    class="col-lg-2 control-label req-lab-right" data-original-title="" title="">PO Number</label>
+                <div class="col-lg-4">
+                    <input type="text" data-ng-model="model.entity.PurchaseOrderNumber" name="PurchaseOrderNumber" data-pt-field-view="model.ptFieldViewConfigOnChangeStatusId"
+                        required class="form-control ng-scope" maxlength="64">
+                </div>
+
+            </div>
+            <div class="form-group">
+                <label data-for-property="Description" for="Description" data-model-property="model.entity.Description" class="col-lg-2 control-label"
+                    data-original-title="" title="">Description</label>
+                <div class="col-lg-4">
+                    <input type="text" data-ng-model="model.entity.Description" name="Description" data-pt-field-view="model.ptFieldViewConfigOnChangeStatusId"
+                        class="form-control ng-scope" maxlength="64">
+                </div>
+            </div>
+            <div class="form-group">
+                <label data-for-property="DepletedActionId" for="DepletedActionId" data-model-property="model.entity.DepletedActionId" class="col-lg-2 control-label req-lab-right"
+                    data-original-title="" title="">Depleted Action</label>
+                <div class="col-lg-4">
+                    <div class="input-group select2-bootstrap-append">
+                        <ui-select name="DepletedActionId" data-ng-model="model.entity.DepletedActionId" theme="select2" class="form-control" data-pt-field-view="model.ptFieldViewConfigOnChangeStatusId"
+                            required>
+                            <ui-select-match placeholder="-- Select One --">{{$select.selected.text}}</ui-select-match>
+                            <ui-select-choices repeat="item.id as item in lists.purchaseOrderDepletedActionList | uiSelectChoicesFilter: $select.search: 'text'"><span data-ng-bind-html="item.text | highlight: $select.search"></span></ui-select-choices>
+                        </ui-select>
+                        <span class="input-group-btn">
+                            <button tabindex="-1" data-ng-click="model.entity.DepletedActionId=undefined" class="btn btn-default"><i class="material-icons md-18">clear</i></button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-lg-2 control-label">Total Funds</label>
+                <div class="col-lg-4">
+                    <p class="form-control-static">{{model.entity.amountTotal()|currency}} {{model.entity.PurchaseOrderLines[0].CurrencyId | lookup:lists.currencyList:'id':'code'}}</p>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-lg-2 control-label">Funds Committed</label>
+                <div class="col-lg-4">
+                    <p class="form-control-static">{{model.entity.amountCommitedTotal()|currency}} {{model.entity.PurchaseOrderLines[0].CurrencyId | lookup:lists.currencyList:'id':'code'}}</p>
+                </div>
+            </div>
+            <div class="form-group">
+                <label data-for-property="InvoiceRestrictionId" for="InvoiceRestrictionId" data-model-property="model.entity.InvoiceRestrictionId"
+                    class="col-lg-2 control-label req-lab-right" data-original-title="" title="">Restriction</label>
+                <div class="col-lg-4">
+                    <div class="input-group select2-bootstrap-append">
+                        <ui-select name="InvoiceRestrictionId" data-ng-model="model.entity.InvoiceRestrictionId" theme="select2" class="form-control"
+                            data-pt-field-view="model.ptFieldViewConfigOnChangeStatusId" required>
+                            <ui-select-match placeholder="-- Select One --">{{$select.selected.text}}</ui-select-match>
+                            <ui-select-choices repeat="item.id as item in lists.purchaseOrderInvoiceRestrictionsList | uiSelectChoicesFilter: $select.search: 'text'"><span data-ng-bind-html="item.text | highlight: $select.search"></span></ui-select-choices>
+                        </ui-select>
+                        <span class="input-group-btn">
+                            <button tabindex="-1" data-ng-click="model.entity.InvoiceRestrictionId=undefined" class="btn btn-default"><i class="material-icons md-18">clear</i></button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group" data-ng-show="{{model.entity.PurchaseOrderLines.length > 0}} || actionButton.show.addLine || true==true">
+                <label class="col-lg-2 control-label h4 bold po-lines-lbl">Lines</label>
+            </div>
+            <div class="form-group">
+                <div class="col-lg-2">
+                </div>
+                <div class="col-lg-10 table-responsive">
+                    <table class="table table-striped table-content table-hover" data-ng-show="showLines || true==true">
+                        <thead class="align-table-cells-center">
+                            <tr>
+                                <th scope="col">Line<span class="column-sorter"></span></th>
+                                <th scope="col">Total Funds<span class="column-sorter"></span></th>
+                                <th scope="col">Funds Committed<span class="column-sorter"></span></th>
+                                <th scope="col">Funds Reserved<span class="column-sorter"></span></th>
+                                <th scope="col">Funds Spent<span class="column-sorter"></span></th>
+                                <th scope="col">PO Line Ref<span class="column-sorter"></span></th>
+                                <th scope="col">Description<span class="column-sorter"></span></th>
+                                <th scope="col">Status<span class="column-sorter"></span></th>
+                                <th scope="col">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody class="align-table-cells-center">
+                            <tr data-ng-repeat="pol in model.entity.PurchaseOrderLines" data-ng-click="purchaseOrderLineOpen(pol)" style="cursor: pointer;">
+                                <td>
+                                    <span data-ng-if="pol.Id>0">{{pol.PurchaseOrderLineNumber}}</span>
+                                </td>
+                                <td>
+                                    <span>{{pol.Amount>0?pol.Amount:0|currency}} {{pol.CurrencyId | lookup:lists.currencyList:'id':'code'}}</span>
+                                </td>
+                                <td>
+                                    <span>{{pol.amountCommitedTotal()>0?pol.amountCommitedTotal():0|currency}} {{pol.CurrencyId | lookup:lists.currencyList:'id':'code'}}</span>
+                                </td>
+                                <td>
+                                    <span>{{pol.amountResevedTotal() |currency}} {{pol.CurrencyId | lookup:lists.currencyList:'id':'code'}}</span>
+                                </td>
+                                <td>
+                                    <span>{{pol.amountSpentTotal() |currency}} {{pol.CurrencyId | lookup:lists.currencyList:'id':'code'}}</span>
+                                </td>
+                                <td style="max-width:150px;word-wrap: break-word">
+                                    <span>{{pol.PurchaseOrderLineReference || 'N/A'}}</span>
+                                </td>
+                                <td style="max-width:150px;word-wrap: break-word">
+                                    <span>{{pol.Description || 'N/A'}}</span>
+                                </td>
+
+                                <td>
+                                    <span data-ng-class="pol.StatusId==ApplicationConstants.PurchaseOrderStatus.Active?'text-warning':''">{{pol.StatusId | lookup:lists.purchaseOrderStatuses}}</span>
+                                </td>
+                                <td data-ng-click="$event.stopPropagation()">
+                                    <button type="button" class="btn btn-default btn-material pull-left" data-ng-click="removeLine(pol)" title="removeLine" data-ng-if="actionButton.show.deleteLine && pol.StatusId!=ApplicationConstants.PurchaseOrderStatus.Active"><i class="material-icons">delete</i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-lg-12">
+                    <button type="button" class="btn btn-default btn-material pull-right" data-ng-click="addLine(model.entity)" data-ng-show="actionButton.show.addLine || true==true"
+                        title="addLine">
+                        <i class="material-icons">add</i>
+                    </button>
+                </div>
+            </div>
+            <br/>
+        </div>
+    </div>
+</div>

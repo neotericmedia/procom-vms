@@ -1,0 +1,103 @@
+// Core variables and mixins
+@import "variables.less";
+@import "mixins.less";
+
+// IMPORT BOOTSTRAP MIXINS
+// --------------------------------------------------
+
+.validation-summary-errors {
+	border: 1px solid #FF0000;
+	background-color: #F7F7F7;
+	padding: 2px;
+	margin: 5px 5px 10px 5px;
+	.border-radius(5px);
+	.background-clip(padding-box);
+}
+
+.error-title {
+	color: #FF0000;
+	font-size: 16px;
+	font-weight: bold;
+	padding: 4px;
+	padding-left: 30px;
+	background: url('../../src/assets/images/tooltip/attention.png') 8px 6px no-repeat;
+}
+
+.validation-summary-errors ul {
+	margin-top: 5px;
+	margin-bottom: 5px;
+	list-style-type: disc;
+}
+
+.validation-summary-errors li {
+	margin-bottom: 2px;
+	color: #CC0000;
+	font-style: italic;
+}
+
+.validation-summary-errors strong {
+	color: #222;
+	font-weight: bold;
+}
+
+
+// jQuery invalid states
+input.ng-dirty.ng-invalid,
+textarea.ng-dirty.ng-invalid,
+dx-text-box.ng-dirty.ng-invalid,
+dx-text-area.ng-dirty.ng-invalid,
+select.ng-dirty.ng-invalid,
+dx-date-box.ng-dirty.ng-invalid,
+app-phx-date-box.ng-dirty.ng-invalid dx-date-box,
+app-phx-select-box.ng-dirty.ng-invalid dx-select-box,
+.show-error {
+    border-color: @error-border-color !important;
+
+    &:focus {
+        color: @error-focus-text-color !important;
+        border-color: darken(@error-border-color, 10%) !important;
+        @shadow: 0 0 6px lighten(@error-border-color, 20%);
+        .box-shadow-important(@shadow);
+    }
+
+    option {
+        color: #555;
+    }
+}
+
+/* required label tooltip */
+.req-lab-left {
+	background: url(../../src/assets/images/tooltip/icon-required.png) left 3px no-repeat;
+	padding-left: 16px !important;
+	border-bottom: 0px dashed #E0713B;
+}
+
+.req-lab-right {
+	background: url(../../src/assets/images/tooltip/icon-required.png) right 3px no-repeat;
+	padding-right: 16px !important;
+	border-bottom: 0px dashed #E0713B;
+}
+
+.req-lab-left-valid {
+	padding-left: 16px !important;
+	border-bottom: 0px dashed #E0713B;
+}
+
+.req-lab-right-valid, .noreq-lab {
+	padding-right: 16px !important;
+	border-bottom: 0px dashed #E0713B;
+}
+
+.editFormTableViewMode .req-lab-left, .editFormTableViewMode .req-lab-right {
+	background-image: none !important;
+}
+
+.error-lab-right {
+	background: url(../../src/assets/images/tooltip/icon-error.png) right 1px no-repeat;
+	padding-right: 16px !important;
+	cursor: help;
+}
+
+.error-box {
+	margin: 15px;
+}

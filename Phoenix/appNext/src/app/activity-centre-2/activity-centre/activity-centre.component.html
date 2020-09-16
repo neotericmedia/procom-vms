@@ -1,0 +1,108 @@
+<form [formGroup]="rootFormGroup" *ngIf="rootFormGroup">
+  <app-activity-centre-navbar [taskType]="taskType" (canShowFilter)="canShowFilter($event)"
+    (refreshAction)="setRefreshData()" [filterCount]="filterCount">
+  </app-activity-centre-navbar>
+  <div class="row search-results" infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="750"
+    (scrolled)="onScrolled()">
+    <div class="search-container filter-search-container col-sm-12 col-xs-12" [ngClass]="showFilter ? 'col-lg-8 col-lg-card-item container-position' : 'col-lg-12 lg-no-filter'">
+      <div class="col-xs-12 pull-right lg-hide">
+        <div class="activity-filter">
+          <button type="button" class="btn btn-default btn-material btn-activity-filter"
+            [ngClass]="showFilter ? 'btn-filter-selected' : ''" (click)="filterClick()">
+            <i class="fa fa-filter"></i>
+            {{'activityCentre2.navbar.filtersBtn' | phxTranslate}} {{filterCount ? '(' + filterCount + ')' : ''}}
+          </button>
+          <div class="sortby-block text-right">
+            <div class="btn-group sortby-dropdown" dropdown>
+              <button id="btn-sortby-sm" dropdownToggle type="button" class="btn btn-sort dropdown-toggle btn-caret"
+                aria-controls="dropdown-sort-sm">
+                {{'activityCentre2.sortTitle.SortByTitle' | phxTranslate}}
+                <span class="caret"></span>
+              </button>
+              <ul id="dropdown-sort-sm" *dropdownMenu class="dropdown-menu dropdown-menu-right" role="menu"
+                aria-labelledby="btn-sortby-sm">
+                <li role="menuitem" *ngFor="let field of sortFields" [ngClass]="[field.isSelected ? 'active' : '' ]">
+                  <a class="dropdown-item" (click)="getSortItem(field)">
+                    {{field.SortTitle}}
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card-container">
+        <app-activity-centre-t2-filter class="hidden-tab" [isFilter]="showFilter"
+          (t2FilterChanged)="t2FilterStatusChanged($event)" [formGroup]="rootFormGroup.controls.T2Filter">
+        </app-activity-centre-t2-filter>
+        <div class="sortby-block text-right hidden-tab">
+          <div class="btn-group sortby-dropdown" dropdown>
+            <button id="btn-sortby-lg" dropdownToggle type="button" class="btn btn-sort dropdown-toggle btn-caret"
+              aria-controls="dropdown-sort-lg">
+              {{'activityCentre2.sortTitle.SortByTitle' | phxTranslate}}
+              <span class="caret"></span>
+            </button>
+            <ul id="dropdown-sort-lg" *dropdownMenu class="dropdown-menu dropdown-menu-right" role="menu"
+              aria-labelledby="btn-sortby-lg">
+              <li role="menuitem" *ngFor="let field of sortFields" [ngClass]="[field.isSelected ? 'active' : '' ]">
+                <a class="dropdown-item" (click)="getSortItem(field)">
+                  {{field.SortTitle}}
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div *ngIf="cardList && cardList.length === 0 && !loading">
+          <div class="no-card-block">
+            <div class="no-card">
+              <div class="sun-img" style="text-align: center;"></div>
+              <span class="caption">
+                {{'activityCentre2.card.NoCardsMessage' | phxTranslate}}
+              </span>
+            </div>
+          </div>
+        </div>
+        <div *ngFor="let cardEntity of showedCardList; trackBy: trackByFn" #cardContainer class="card-item">
+          <ng-container *ngIf="cardEntity && cardEntity.EntityTypeId === phxConstants.EntityType.UserProfile">
+            <app-activity-centre-card-profile [cardEntity]="cardEntity"></app-activity-centre-card-profile>
+          </ng-container>
+          <ng-container *ngIf="cardEntity && +cardEntity.EntityTypeId === phxConstants.EntityType.Payment">
+            <app-activity-centre-card-payment [cardEntity]="cardEntity"></app-activity-centre-card-payment>
+          </ng-container>
+          <ng-container *ngIf="cardEntity && cardEntity.EntityTypeId === phxConstants.EntityType.TimeSheet">
+            <app-activity-centre-card-timesheet (cardActionCompleted)="setRefreshData()" [cardEntity]="cardEntity">
+            </app-activity-centre-card-timesheet>
+          </ng-container>
+          <ng-container *ngIf="cardEntity && +cardEntity.EntityTypeId === phxConstants.EntityType.Organization">
+            <app-activity-centre-card-organization [cardEntity]="cardEntity"></app-activity-centre-card-organization>
+          </ng-container>
+          <ng-container *ngIf="cardEntity && cardEntity.EntityTypeId === phxConstants.EntityType.WorkOrderVersion">
+            <app-activity-centre-card-workorder [cardEntity]="cardEntity"></app-activity-centre-card-workorder>
+          </ng-container>
+          <ng-container *ngIf="cardEntity && cardEntity.EntityTypeId === phxConstants.EntityType.ComplianceDocument">
+            <app-activity-centre-card-document [cardEntity]="cardEntity"></app-activity-centre-card-document>
+          </ng-container>
+          <ng-container *ngIf="cardEntity && cardEntity.EntityTypeId === phxConstants.EntityType.ExpenseItem">
+            <app-activity-centre-card-expense [cardEntity]="cardEntity"></app-activity-centre-card-expense>
+          </ng-container>
+        </div>
+        <a (click)="onScrollToTop()" name="top" class="btn-scroll-top" *ngIf="showScrollTop">
+          <div class="icon-arrow-up"></div>
+        </a>
+      </div>
+    </div>
+    <div class="t3-filter-block col-lg-4 col-md-4 col-lg-filter" [ngClass]="!showFilter ? 'hide': ''">
+    <div [ngClass]="isPositionFixed ? 'filter-position-fixed' : ''" class="t3-filter">
+      <div class="t3-filter-header">
+        <app-activity-centre-t3-filter [formGroup]="rootFormGroup.controls.T3Filter"
+          (t3FilterChanged)="t3FilterDetailsChanged($event)" (canShowFilter)="canShowFilter($event)"
+          [t1Status]="t1Status" [isClientListVisible]="isClientListVisible">
+          <app-activity-centre-t2-filter [isFilter]="showFilter" (t2FilterChanged)="t2FilterStatusChanged($event)"
+            [formGroup]="rootFormGroup.controls.T2Filter">
+          </app-activity-centre-t2-filter>
+        </app-activity-centre-t3-filter>
+      </div>
+    </div>
+  </div>
+  </div>
+</form>

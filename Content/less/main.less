@@ -1,0 +1,825 @@
+// Core variables and mixins
+@import "variables.less";
+@import "mixins.less";
+
+// End core
+
+//@import "type.less";
+//@import "panes.less";
+//@import "grid.less";
+
+//@import "tables.less";
+//@import "forms.less";
+//@import "buttons.less";
+
+// Components: common
+//@import "animations.less";
+//@import "colors.less";
+//@import "input-groups.less";
+//@import "dropdowns.less";
+
+// Components: Nav
+//@import "navs.less";
+//@import "navbar.less";
+//@import "button-groups.less";
+//@import "breadcrumbs.less";
+//@import "pagination.less";
+//@import "panels.less";
+
+//@import "tab-accordion.less";
+
+//@import "calendar.less";
+
+// Components: Modal
+//@import "modals.less";
+
+// Components: Misc
+//@import "labels.less";
+//@import "layouts.less";
+//@import "sidebar.less";
+//@import "dataicon.less";
+
+//@import "sidebar-new.less";
+//@import "sidebar-min.less";
+
+// Utility classes
+//@import "utilities.less";
+
+// Application specific style
+//@import "style.less";
+//@import "validation.less";
+//@import "wizard.less";
+//@import "responsive.less";
+//@import "file-upload.less";
+//@import "misc.less";
+//@import "responsive-align.less";
+
+////@import "smart-table.less";
+
+//// BOOTSTRAP OVERRIDES
+.col-xs-1,
+.col-sm-1,
+.col-md-1,
+.col-lg-1,
+.col-xs-2,
+.col-sm-2,
+.col-md-2,
+.col-lg-2,
+.col-xs-3,
+.col-sm-3,
+.col-md-3,
+.col-lg-3,
+.col-xs-4,
+.col-sm-4,
+.col-md-4,
+.col-lg-4,
+.col-xs-5,
+.col-sm-5,
+.col-md-5,
+.col-lg-5,
+.col-xs-6,
+.col-sm-6,
+.col-md-6,
+.col-lg-6,
+.col-xs-7,
+.col-sm-7,
+.col-md-7,
+.col-lg-7,
+.col-xs-8,
+.col-sm-8,
+.col-md-8,
+.col-lg-8,
+.col-xs-9,
+.col-sm-9,
+.col-md-9,
+.col-lg-9,
+.col-xs-10,
+.col-sm-10,
+.col-md-10,
+.col-lg-10,
+.col-xs-11,
+.col-sm-11,
+.col-md-11,
+.col-lg-11,
+.col-xs-12,
+.col-sm-12,
+.col-md-12,
+.col-lg-12 {
+    padding-right: 10px;
+    padding-left: 10px;
+
+    &.app-col-original {
+        padding-right: 15px; // (@grid-gutter-width / 2) doesn't work because @grid-gutter-width is overriden after make-row()
+        padding-left: 15px;
+    }
+}
+
+pt-date-picker {
+    ul.dropdown-menu {
+        min-width: 266px;
+    }
+}
+
+h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+    font-family: 'Open Sans', "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.tooltip, .tooltip.top-right, .tooltip.in {
+
+    filter: alpha(opacity=100);
+    opacity: 1;
+
+    .tooltip-arrow.arrow, .tooltip-arrow {
+        border-top-color : @sidebar-bg;
+    }
+    .tooltip-inner {
+        background-color: @sidebar-bg;
+    }
+}
+
+
+//// END BOOTSTRAP OVERRIDES
+
+
+* {
+    #reset .box-shadow-none();
+}
+
+/*.nav-tabs > li > a {
+    #reset .border-radius-none();
+}*/
+.ng-hide {
+    display: none !important;
+}
+
+a, a:hover, a:active, a:focus {
+    outline: 0;
+}
+
+//.select2-hidden-accessible
+//{
+//    display: none;
+//}
+
+.particular-timesheet.decline {
+    color: #ffffff;
+    background-color: #d9534f;
+    border-color: #d43f3a;
+    width: 90px;
+}
+
+.particular-timesheet.approve {
+    color: #ffffff;
+    background-color: #5cb85c;
+    border-color: #4cae4c;
+    width: 90px;
+}
+
+.particular-timesheet.decline.timesheet {
+    width: 150px;
+}
+
+.particular-timesheet.create.transaction {
+    width: 150px;
+}
+
+tr.invoiceReleaseRow.st-selected td {
+    /*background-color: #d9edf7 !important;
+        font-weight:700;
+        border-bottom:1px solid white;*/
+    background-color: #E7F7FF !important;
+    font-weight: 600;
+    border-bottom: 1px solid steelblue;
+}
+
+tr.invoiceReleaseRow.st-selected:hover td {
+    /*background-color: #c4e3f3 !important;
+     font-weight:700;*/
+    background-color: #9edeff !important;
+    font-weight: 600;
+}
+
+.keystone-row [class*='col-lg-'] {
+    text-align: center;
+}
+
+.table > tbody > tr.odd-group > td /*,
+.table-striped > tbody > tr.odd-group > th*/ {
+    background-color: #f9f9f9;
+}
+
+.table > tbody > tr.odd-group.first-member > td,
+.table > tbody > tr.even-group.first-member > td {
+    border-bottom: none;
+}
+
+.table > tbody > tr.odd-group.hover > td,
+.table > tbody > tr.even-group.hover > td {
+    background-color: #f5f5f5;
+}
+
+ul.timesheet-exception, ul.expense-exception {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+
+    .comment {
+        color: #cc3333;
+        white-space: pre-line;
+    }
+
+    a.viewLink {
+        padding-left: 5px;
+    }
+}
+
+span.timesheet-exception-label, span.expense-exception-label {
+    font-weight: bold;
+}
+
+.workflowHistory {
+    border-bottom: 2px solid #eaeaea;
+    border-top: none;
+}
+
+    .transactionDocs .restricted,
+    .workflowHistory .restricted {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .workflowHistory .wfHeader {
+        background: white;
+        margin-left: 25px;
+        border-bottom: 1px solid #dddddd;
+        padding: 5px 0;
+    }
+
+    .workflowHistory .wfBody {
+        margin-left: 25px;
+    }
+
+    .workflowHistory .title {
+        background: white;
+        padding-top: 3px;
+    }
+
+    .workflowHistory .chevron {
+        color: #d35400;
+    }
+
+    .workflowHistory .wfEmptyRow {
+        padding-bottom: 10px;
+    }
+
+.transactionDocHeader {
+    background-color: #a5a5a5;
+    padding: 10px;
+    color: white;
+    font-weight: bold;
+}
+
+.transactionDocs .odd {
+    padding: 15px 10px;
+    background-color: #e5e5e5;
+    min-height: 50px;
+    font-size: 14px;
+}
+
+.transactionDocs .even {
+    padding: 15px 10px;
+    background-color: #f5f5f5;
+    min-height: 50px;
+    font-size: 14px;
+}
+
+#feedbackType .selected {
+    background-color: grey;
+    color: #ffffff;
+}
+
+div.feedbackDialog .modal-dialog {
+    width: 700px;
+
+    .modal-footer .buttons {
+        margin-right: 5px;
+        margin-bottom: 5px;
+    }
+}
+
+.unsupported-container {
+    .unsupported-text {
+        font-family: "Open Sans";
+        font-size: 20px;
+        color: #333333;
+    }
+
+    .unsupported-computer,
+    .unsupported-text,
+    .unsupported-upgrade,
+    .browser-list,
+    .backlink {
+        margin: 10px auto;
+        text-align: center;
+    }
+
+    .unsupported-computer {
+        background: url('/src/assets/images/monitor.png') no-repeat;
+        width: 124px;
+        height: 109px;
+        background-color: black;
+    }
+
+    ul.browser-list {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        display: inline-block;
+    }
+
+        ul.browser-list li {
+            display: inline;
+        }
+
+    .browser-list a {
+        width: 64px;
+        height: 64px;
+        display: inline-block;
+        text-indent: -9999px;
+        overflow: hidden;
+    }
+
+    .browser-list {
+
+        a.ie {
+            background: url('/src/assets/images/explorer.png') no-repeat;
+        }
+
+        a.chrome {
+            background: url('/src/assets/images/chrome.png') no-repeat;
+        }
+
+        a.firefox {
+            background: url('/src/assets/images/firefox.png') no-repeat;
+        }
+
+        a.safari {
+            background: url('/stc/assets/images/safari.png') no-repeat;
+        }
+    }
+
+    .unsupported-table {
+        display: table;
+        margin: 0 auto;
+    }
+}
+
+div.minheight50 {
+    min-height: 50px;
+}
+
+div[title="Coming Soon"] {
+    display: none !important;
+}
+
+button[title="Coming Soon"] {
+    cursor: not-allowed !important;
+}
+
+    button[title="Coming Soon"] i {
+        opacity: 0.4 !important;
+        filter: alpha(opacity=40) !important;
+        /* msie  */
+    }
+
+div.div-placeholder {
+    opacity: 0.1 !important;
+    filter: alpha(opacity=10) !important;
+    /* msie  */
+}
+
+.badge-positive-gray {
+    background-color: gray;
+}
+
+.summary-table {
+    overflow-x: auto;
+    overflow-y: hidden;
+    clear: both;
+
+    td {
+        min-width: 100px;
+
+        &:not(:first-child) {
+            text-align: right;
+        }
+    }
+}
+
+table.app-salestax-popup tbody tr td {
+    border-bottom: none;
+    padding: 0.25em 10px;
+}
+
+.noselect {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.cg-busy.non-intrusive {
+    position: fixed;
+    left: 0;
+    bottom: inherit;
+}
+
+
+
+
+
+
+
+
+/* -----------------------from ng2.component.html
+-----------------------------------------------*/
+#loading-Overlay {
+  position: fixed;
+  /* Sit on top of the page content */
+  width: 100%;
+  /* Full width (cover the whole page) */
+  height: 100%;
+  /* Full height (cover the whole page) */
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 0;
+  margin: 0;
+  background-color: rgba(53, 64, 81, 0.6);
+  /* Black background with opacity */
+  z-index: 999;
+  /* Specify a stack order in case you're using a different order for other elements */
+  cursor: pointer;
+  /* Add a pointer on hover */
+}
+
+#loading-Animation-Container {
+  width: 200px;
+  margin: 5px auto;
+  padding-top: 5px;
+}
+
+.loading-text {
+  font-size: 1.2em;
+  color: #fff;
+}
+
+.loading-text.loading-progress-text {
+  font-size: 1.1em;
+}
+
+.sk-three-bounce {
+  margin: 30px auto;
+  width: 100px;
+  text-align: center;
+}
+
+.sk-three-bounce .sk-child {
+  width: 13px;
+  height: 13px;
+  background-color: #fff;
+  border-radius: 100%;
+  display: inline-block;
+  -webkit-animation: sk-three-bounce 1.4s ease-in-out 0s infinite both;
+  animation: sk-three-bounce 1.4s ease-in-out 0s infinite both;
+}
+
+.sk-three-bounce .sk-bounce1 {
+  -webkit-animation-delay: -0.32s;
+  animation-delay: -0.32s;
+}
+
+.sk-three-bounce .sk-bounce2 {
+  -webkit-animation-delay: -0.16s;
+  animation-delay: -0.16s;
+}
+
+@-webkit-keyframes sk-three-bounce {
+  0%,
+  80%,
+  100% {
+      -webkit-transform: scale(0);
+      transform: scale(0);
+  }
+
+  40% {
+      -webkit-transform: scale(1);
+      transform: scale(1);
+  }
+}
+
+@keyframes sk-three-bounce {
+  0%,
+  80%,
+  100% {
+      -webkit-transform: scale(0);
+      transform: scale(0);
+  }
+
+  40% {
+      -webkit-transform: scale(1);
+      transform: scale(1);
+  }
+}
+/* -----------------------END from ng2.component.html
+-----------------------------------------------*/
+
+
+
+
+
+
+
+
+
+// Bookmark Classes
+
+.bookmark-top-menu {
+    text-align: center;
+    margin-top: 5px;
+    margin-bottom: 2px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+
+    .bookmark-top-menu-button {
+        text-align: center;
+    }
+}
+
+
+.bookmark-input-menu {
+    .bookmark-input-menu-inner-div {
+        /*border: 1px solid burlywood;*/
+        padding: 3px;
+        margin: 0px;
+        min-height: 80px;
+    }
+
+    .bookmark-input-menu-description {
+        width: 211px;
+        padding-left: 1px;
+        padding-right: 2px;
+    }
+
+    .add-bookmark-icon {
+        /*margin-top: 10px;*/
+        /*margin-left: 10px;*/
+    }
+
+    .bookmark-input-menu-title {
+        width: calc(~'100% - 45px');
+    }
+
+    .bookmark-input-menu-none {
+        color: white;
+        padding-left: 35px;
+    }
+
+    #sidebar.menu-min & {
+        display: none !important;
+    }
+}
+
+.editBookmarkTitleInput {
+    width: 100%;
+}
+
+.bookmark-input-title {
+    padding-top: 5px;
+    padding-bottom: 7px;
+    padding-left: 10px;
+    padding-right: 10px;
+    margin-bottom: 5px;
+}
+
+.bookmarkInput {
+    border-radius: 0px;
+    color: white;
+    border: 1px solid white;
+    background-color: #354051;
+}
+
+.bookmarkButtonWhiteColor {
+    color: white;
+}
+
+.bookmarkButtonStyle {
+    border: 1px solid white;
+    vertical-align: middle;
+}
+
+.bookmarkButtonStyleNoBorder {
+    vertical-align: middle;
+    border: none;
+}
+
+/*.bookmarkUnselected {
+    background-color: #354051;
+    color: white;
+}*/
+
+.bookmarkButtonStyle:focus {
+      outline: none;
+}
+
+/*.bookmarkButtonStyle:hover {
+    background-color: white;
+    color: #354051;
+}*/
+
+.bookmarkButtonSelected {
+    background-color: white;
+    color: #354051;
+}
+
+.headerBookmarkIcons {
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.bookmarkIcons {
+    padding-top: 3px;
+    padding-right: 6px;
+    padding-left: 6px;
+    padding-bottom: 0px;
+}
+
+.bookmarkInsideIcons {
+    padding-top: 0px;
+    padding-right: 6px;
+    padding-left: 6px;
+    padding-bottom: 0px;
+}
+
+.bookmarkIconAdd {
+    padding-top: 3px;
+    padding-right: 6px;
+    padding-left: 6px;
+    padding-bottom: 0px;
+}
+
+.bookmarkFilterButtons {
+    padding-left: 10px;
+    padding-right: 10px;
+    margin-right: 5px;
+    margin-left: 5px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+}
+
+.backgroundColorDarkBlue {
+    background-color: #354051;
+}
+
+.backgroundColorDarkerBlue {
+    background-color: #2F3948;
+}
+
+.bookmarkChevronStyling {
+    padding-left: 8px;
+}
+
+/*.bookmark-ul-menu-link-wrapper:hover {
+    background-color: #2F3948;
+}*/
+
+.bookmark-ul-menu-li-wrapper:hover {
+    background-color: #2F3948;    
+}
+
+.bookmark-ul-menu {
+    overflow-y: auto;
+    max-height: 700px;
+    overflow-x: hidden;
+
+    .bookmark-ul-menu-link {
+        overflow: hidden;
+        text-decoration: none;
+        text-overflow: ellipsis;
+        color: #ffffff;
+        font-size: 14px;
+        /*padding-bottom: 20px;*/
+        /*margin-top: 20px;*/
+    }
+
+    .bookmark-ul-menu-link:hover {
+        color: lightgrey;
+        cursor: pointer;
+    }
+    /*.bookmark-ul-menu-link-wrapper:hover {
+        background-color: #2F3948;
+    }*/
+    .bookmark-ul-menu-link-wrapper {
+        margin-left: 10px;
+        margin-right: 3px;
+        padding-top: 3px;
+        padding-bottom: 10px;
+    }
+
+    .showFirst {
+        display: block;
+    }
+    /*.bookmark-ul-menu-link-wrapper {
+        padding-top: 7px;
+        padding-bottom: 7px;
+    }*/
+    .bookmark-ul-menu-buttons-wrapper {
+        /*padding-top: 5px;*/
+        /*padding-bottom: 5px;*/
+        padding-left: 5px;
+        text-align: end;
+    }
+}
+
+.bookmarkDisplayInlineBox {
+    display: inline-block;
+}
+
+.bookmarkDisplayInlineBoxImportant {
+    display: inline-block !important;
+}
+
+.bookmark-ul-menu-break-span {
+    word-wrap: break-word;
+}
+
+.bookmark-order-menu {
+    text-align: center;
+    margin-bottom: 5px;
+    margin-top: 5px;
+}
+
+bookmarkInput::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+    color: white;
+}
+
+bookmarkInput:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+    color: white;
+    opacity:  1;
+}
+
+bookmarkInput::-moz-placeholder { /* Mozilla Firefox 19+ */
+    color: white;
+    opacity:  1;
+}
+
+bookmarkInput:-ms-input-placeholder { /* Internet Explorer 10-11 */
+    color: white;
+}
+
+bookmarkInput::-ms-input-placeholder { /* Microsoft Edge */
+    color: white;
+}
+
+.bookmark-details-menu {
+    margin-left: 2px;
+    margin-right: 2px;
+}
+
+.bookmark-details-arrow {
+    width: 217px;
+    height: 12px;
+    padding-left: 4px;
+}
+
+.bookmark-folder-inside-link {
+    cursor: pointer;
+    max-width: 217px;
+}
+
+.bookmark-folder-link {
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.bookmark-menu-icons {
+    color: dimgray;
+}
+
+.bookmark-icon {
+    margin-right: 10px;
+}
+
+.payroll-taxes-gray-box-fields {
+    margin-bottom: 5px;
+}
+
+.ellipsis-field {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}

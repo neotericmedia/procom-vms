@@ -1,0 +1,149 @@
+// Core variables and mixins
+@import "variables.less";
+@import "mixins.less";
+
+//
+// Data-Icon
+// --------------------------------------------------
+
+
+// Data Icon Core
+.dataicon,
+.dataicon-right {
+    &[data-icon]:before {
+        display: block;
+        position: absolute;
+        text-align: center;
+        .size(@line-height-computed, @line-height-computed);
+        font-family: 'appicon';
+        line-height: @line-height-computed;
+        vertical-align: middle;
+    }
+}
+
+.btn {
+    &.dataicon,
+    &.dataicon-right {
+        &[data-icon]:before {
+            top: @padding-base-vertical;
+            font-size: ceil(@font-size-base * 1.05); // ~16px
+        }
+    }
+
+    &.dataicon {
+        padding-left: 32px;
+        &[data-icon]:before {            
+            left: 7px;
+        }
+    }
+
+    &.dataicon-right {
+        padding-right: 32px;
+        &[data-icon]:before {
+            right: 7px;
+        }
+    }
+}
+
+.btn-sm {
+    &.dataicon,
+    &.dataicon-right {
+        &[data-icon]:before {
+            top: @padding-small-vertical;
+            font-size: ceil(@font-size-base * .92); // ~13px
+            .size(@line-height-small-computed, @line-height-small-computed); // ~18px);
+        }
+    }
+
+    &.dataicon {
+        padding-left: 30px;
+        &[data-icon]:before {            
+            left: 7px;
+        }
+    }
+
+    &.dataicon-right {
+        padding-right: 30px;
+        &[data-icon]:before {
+            right: 7px;
+        }
+    }
+}
+
+.btn-dataicon {
+    &[data-icon] {
+        padding: 0 6px;
+
+        &:before {
+            display: block;
+            position: relative;
+            //.size((@padding-base-vertical * 2) + @line-height-computed, ((@padding-base-vertical * 2) + @line-height-computed));
+            font-size: ceil(@font-size-base * 1.50); // ~18px
+            line-height: ((@padding-base-vertical * 2) + @line-height-computed);
+            .opacity(.8)
+        }
+
+        &:hover {
+            &[data-icon]:before {
+                .opacity(1)
+            }
+        }
+    }
+}
+
+.btn-dataicon.btn-sm {
+    &[data-icon] {
+        padding: 0;
+
+        &:before {
+            display: block;
+            position: relative;
+            .size(@padding-small-vertical * 2 + @line-height-small-computed, (@padding-small-vertical * 2 + @line-height-small-computed));
+            font-size: ceil(@font-size-base * .92); // ~13px
+            line-height: ((@padding-small-vertical * 2) + @line-height-small-computed);
+            .opacity(.8)
+        }
+
+        &:hover {
+            &[data-icon]:before {
+                .opacity(1)
+            }
+        }
+    }
+}
+
+
+.nav > li > a.dataicon{
+    padding-left: 40px;
+    cursor: pointer;
+    &[data-icon]:before {
+        top: 10px;
+        left: 12px;
+        font-size: ceil(@font-size-base * 1.42); // ~16px
+    }
+}
+
+.navbar-nav > li > a.dataicon {
+    padding-right: 10px;
+    padding-left: 25px;
+
+
+    &[data-icon]:before {
+        top: 15px;
+        left: 8px;
+        font-size: ceil(@font-size-base * 1.6); // ~16px
+    }
+}
+
+.navbar-nav > li > a.btn-dataicon {
+    &[data-icon] {
+        padding: 0 12px;
+
+        &:before {
+            height: @navbar-height;
+            line-height: @navbar-height;
+            font-size: ceil(@font-size-base * 2); // ~16px
+        }
+    }
+}
+

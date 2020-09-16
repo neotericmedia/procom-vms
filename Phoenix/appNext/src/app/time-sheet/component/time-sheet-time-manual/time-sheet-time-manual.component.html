@@ -1,0 +1,68 @@
+<app-time-sheet-command-list [timeSheet]="timeSheet" ></app-time-sheet-command-list>
+<div class="row" *ngIf="timeSheet && lineManagement">
+    <div class="col-lg-2">
+        <app-time-sheet-line-management [timeSheet]="timeSheet" [lineManagement]="lineManagement"></app-time-sheet-line-management>
+    </div>
+    <div class="col-lg-10">
+        <div class="row">
+            <div class="alert alert-danger alert-day-validation alert-dismissable" *ngIf="timeSheet && timeSheet.Errors && timeSheet.Errors.showErrors" >                
+                <div class="row">
+                    <h3>
+                        <a class="close" aria-label="close" (click)="clearTimeSheetErrors()"><i class="material-icons">clear</i></a>
+                        <div class="col-sm-2 col-lg-1"><strong><i class="material-icons" style="vertical-align: middle; padding-bottom:6px">warning</i></strong></div>
+                        <div class="col-sm-9 col-lg-10">{{uiService.getMessage('validationErrors').body}} </div>
+                    </h3>
+                </div>
+                <div *ngFor="let day of timeSheet.Errors.errorType.TimeSheetDays | keyValue;" class="row">
+                    <div class="col-sm-2 col-lg-1"><strong>{{ uiService.formatCalendarDate(day.value.date) }}</strong></div>
+                    <div class="col-sm-10 col-lg-11">{{ day.value.message }} </div>
+                </div>
+            </div>
+
+            <app-phx-validation-messages [messages]="validationMessages"></app-phx-validation-messages>
+            <app-phx-validation-messages *ngIf="timeSheet.ServerError" [messages]="timeSheet.ServerError"></app-phx-validation-messages>
+
+            <div *ngIf="hasSubmitAction && !timeSheet?.IsPreviousSubmitted && previousTimeSheetsNotSubmittedMessage" class="text-right">
+                <div class="alert alert-info alert-dismissable error-box" style="display: inline-block;">         
+                    <a class="close" data-dismiss="alert" aria-label="close"><i class="material-icons">clear</i></a>           
+                    <div class="row" style="padding-right: 40px;">
+                        <div class="col-xs-12">
+                            <strong>{{previousTimeSheetsNotSubmittedMessage.title}}</strong> {{previousTimeSheetsNotSubmittedMessage.body}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <app-time-sheet-calendar [timeSheet]="timeSheet" [lineManagement]="lineManagement" ></app-time-sheet-calendar>
+        <div *ngIf="isDetailsSaving" class="details-saving-message text-right text-primary error-box">
+            <strong>{{ 'timesheet.timeCard.autoSaveMessage' | phxTranslate }}</strong>
+        </div>
+        <div class="row" >
+            <div class="col-lg-8">
+                <div class="total-rate" *ngFor="let total of totalsByRateType;">                    
+                    <strong>{{ total.DisplayName }}</strong>                            
+                    <button 
+                        (click)="setSpotLightRate(total.RateTypeId)"
+                        class="btn btn-link btn-svg" 
+                        [tooltip]="'common.generic.highlight' | phxTranslate"
+                        triggers="hover" placement="top" container="body">
+                        <svg class="img-svg" xmlns="http://www.w3.org/2000/svg" width="70" height="40.4" viewBox="0 0 70 40.4"><title>icon-focus</title><path d="M27.34,17.24H0V34.4H27.34A22.3,22.3,0,0,0,47.31,46V5.62A22.3,22.3,0,0,0,27.34,17.24Z" transform="translate(0 -5.62)" /><polygon points="64.44 7.79 62.29 4.21 53.43 9.55 55.58 13.13 64.44 7.79" /><polygon points="53.41 33.94 63.45 36.42 64.46 32.37 54.42 29.88 53.41 33.94"/><rect x="60.04" y="18.11" width="9.96" height="4.18" /></svg>
+                    </button>
+                    <div class="unit">
+                        <strong><span class="unit-about">{{ total.UnitAmount | number : '1.2-2' }}</span></strong>
+                        <span class="unit-type">{{ total.UnitId | CodeValue: commonService.CodeValueGroups.RateUnit:'text' | slice:0:1 }}</span>                    
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 text-right">
+                <div class="total" *ngIf="totalPrimaryUnitDetail">
+                    <strong>{{'common.generic.total' | phxTranslate}} <span class="unit-about">{{ totalPrimaryUnitDetail.UnitAmount | number : '1.2-2' }}</span></strong> 
+                    <span class="unit-type">{{ totalPrimaryUnitDetail.UnitId | CodeValue: commonService.CodeValueGroups.RateUnit:'text' | slice:0:1 }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="shroud" (click)="clearSpotLight()" [hidden]="lineManagement?.spotLightMode == null"></div>
+</div>  
+
+

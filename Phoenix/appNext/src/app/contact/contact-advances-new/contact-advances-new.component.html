@@ -1,0 +1,212 @@
+<div class="advance-new">
+  <div class="content-group form-horizontal" style="height:100%;" *ngIf="rootFormGroup">
+    <form [formGroup]="rootFormGroup">
+      <div class="col-lg-12 advance-info" *ngIf="canShow">
+        <div class="col-lg-12 advance-details">
+          <div>
+            <div class="panel-heading">
+              <div class="row">
+                <h3 class="panel-title">Advance Details</h3>
+              </div>
+            </div>
+            <div class="panel-body advance-new-body">
+              <div class="row">
+                <div class="form-horizontal">
+                  <div class="form-group">
+                    <div>
+                      <phx-form-control labelText="Internal Company" [editable]="true" [control]="rootFormGroup.controls.OrganizationIdInternal"
+                        viewModeText="{{rootFormGroup.controls.OrganizationIdInternal.value}}">
+                        <div class="col-lg-8">
+                          <app-phx-select-box [items]="listInternalOrganization" textField="DisplayValue" valueField="Id"
+                            [formControl]="rootFormGroup.controls.OrganizationIdInternal" placeholder="-- Select One --">
+                          </app-phx-select-box>
+                        </div>
+                      </phx-form-control>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <phx-form-control name="IssueDate" labelText="Issue Date" [control]="rootFormGroup.controls.IssueDate"
+                      [editable]="true" viewModeText="{{rootFormGroup.controls.IssueDate.value | date:phxConstants.DateFormat.mediumDate}}">
+                      <div class="col-lg-8">
+                        <app-phx-date-box type="date" [formControl]="rootFormGroup.controls.IssueDate" [displayFormat]="phxConstants.DateFormat.MMM_dd_yyyy">
+                        </app-phx-date-box>
+                      </div>
+                    </phx-form-control>
+                  </div>
+                  <div class="form-group">
+                    <phx-form-control [control]="rootFormGroup.controls.AmountInitial" labelText="Amount" [editable]="true"
+                      viewModeText="{{rootFormGroup.controls.AmountInitial.value}} | phxPercentWithDecimals">
+                      <div class="col-lg-8">
+                        <div class="input-group">
+                          <input formControlName="AmountInitial" type="text" class="form-control" (keyup)="keyUp.next($event)"
+                            phxFloatBetweenInput='{"from":0, "to":9999999.99, "decimalplaces":2}' placeholder="Advance Initial Amount" />
+                          <span class="input-group-addon"><b>$</b></span>
+                        </div>
+                      </div>
+                    </phx-form-control>
+                  </div>
+                  <div class="form-group">
+                    <phx-form-control [control]="rootFormGroup.controls.PaybackType" labelText="Payback Type"
+                      [editable]="true" viewModeText="{{rootFormGroup.controls.PaybackType.value}}">
+                      <div class="col-lg-8">
+                        <label class="radio-inline">
+                          <input class="form-check-input" name="PaybackType" type="radio" [value]="true" [checked]="rootFormGroup.controls.PaybackType.value == true"
+                            formControlName="PaybackType" (change)="paybackTypeChanged(true)">Amount</label>
+                        <label class="radio-inline">
+                          <input class="form-check-input" name="PaybackType" type="radio" [value]="false" [checked]="rootFormGroup.controls.PaybackType.value == false"
+                            formControlName="PaybackType" (change)="paybackTypeChanged(false)">Percentage</label>
+                      </div>
+                    </phx-form-control>
+                  </div>
+                  <div class="form-group">
+                    <phx-form-control *ngIf="rootFormGroup.controls.PaybackType.value" [control]="rootFormGroup.controls.PaybackAmount"
+                      [editable]="true" labelText="Payback Amount" viewModeText="{{rootFormGroup.controls.PaybackAmount.value | phxPercentWithDecimals}}">
+                      <div class="col-lg-8">
+                        <div class="input-group">
+                          <input formControlName="PaybackAmount" type="text" class="form-control" (keyup)="keyUp.next($event)"
+                            phxFloatBetweenInput='{"from":0, "to":9999999.99, "decimalplaces":2}' placeholder="Payback Amount" />
+                          <span class="input-group-addon"><b>$</b></span>
+                        </div>
+                      </div>
+                    </phx-form-control>
+                  </div>
+                  <div class="form-group">
+                    <phx-form-control *ngIf="!rootFormGroup.controls.PaybackType.value" [editable]="true" [control]="rootFormGroup.controls.PaybackPercentage"
+                      labelText="Payback Percentage" viewModeText="{{rootFormGroup.controls.PaybackPercentage.value | phxPercentWithDecimals}}">
+                      <div class="col-lg-8">
+                        <div class="input-group">
+                          <input formControlName="PaybackPercentage" type="text" class="form-control" placeholder="Payback Percentage"
+                            phxFloatBetweenInput='{"from":0, "to":100, "decimalplaces":4}' />
+                          <span class="input-group-addon"><b>%</b></span>
+                        </div>
+                      </div>
+                    </phx-form-control>
+                  </div>
+                  <div class="form-group">
+                    <phx-form-control [control]="rootFormGroup.controls.Description" [editable]="true" labelText="Description"
+                      viewModeText="{{rootFormGroup.controls.Description.value}}">
+                      <div class="col-lg-8">
+                        <div class="input-group">
+                          <input formControlName="Description" type="text" class="form-control" placeholder="Description" />
+                          <span class="input-group-addon"><b>T</b></span>
+                        </div>
+                      </div>
+                    </phx-form-control>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6 advance-payee-details">
+          <div>
+            <div class="panel-heading panel-info-title">
+              <div class="row">
+                <h3 class="col-lg-10 panel-title">Payee Details</h3>
+              </div>
+            </div>
+            <div class="panel-body">
+              <div class="form-group">
+                <phx-form-control [control]="rootFormGroup.controls.PayeeName" labelText="Payee Name" viewModeText="{{rootFormGroup.controls.PayeeName.value}}"
+                  [editable]="false" style="cursor: not-allowed">
+                </phx-form-control>
+              </div>
+              <div class="form-group">
+                <phx-form-control [control]="rootFormGroup.controls.AddressLine1" labelText="Address 1" [editable]="true"
+                  viewModeText="{{rootFormGroup.controls.AddressLine1.value}}">
+                  <input formControlName="AddressLine1" type="text" class="form-control" placeholder="Address Line 1" />
+                </phx-form-control>
+              </div>
+              <div class="form-group">
+                <phx-form-control [control]="rootFormGroup.controls.AddressLine2" labelText="Address 2" [editable]="true"
+                  viewModeText="{{rootFormGroup.controls.AddressLine2.value}}">
+                  <input formControlName="AddressLine2" type="text" class="form-control" placeholder="Address Line 2" />
+                </phx-form-control>
+              </div>
+              <div class="form-group">
+                <phx-form-control [control]="rootFormGroup.controls.CityName" labelText="City" [editable]="true"
+                  viewModeText="{{rootFormGroup.controls.CityName.value}}">
+                  <input formControlName="CityName" type="text" class="form-control" placeholder="City" />
+                </phx-form-control>
+              </div>
+              <div class="form-group">
+                <phx-form-control [control]="rootFormGroup.controls.CountryId" labelText="Country" [editable]="true"
+                  viewModeText="{{rootFormGroup.controls.CountryId.value | CodeValue:codeValueGroups.Country}}">
+                  <app-phx-select-box-code-value [formControl]="rootFormGroup.controls.CountryId" #addressCountry
+                    placeholder="-- Select One --" [groupName]="codeValueGroups.Country" sortByFieldName="text"
+                    (valueChanged)="onCountryChanged()">
+                  </app-phx-select-box-code-value>
+                </phx-form-control>
+              </div>
+              <div class="form-group">
+                <phx-form-control [control]="rootFormGroup.controls.SubdivisionId" labelText="Province/State"
+                  [editable]="true" viewModeText="{{rootFormGroup.controls.SubdivisionId.value | CodeValue:codeValueGroups.Subdivision}}">
+                  <app-phx-select-box-code-value [formControl]="rootFormGroup.controls.SubdivisionId" [groupName]="codeValueGroups.Subdivision"
+                    sortByFieldName="text" [relatedGroupName]="codeValueGroups.Country" [relatedValue]="addressCountry.value"
+                    placeholder="-- Select One --">
+                  </app-phx-select-box-code-value>
+                </phx-form-control>
+              </div>
+              <div class="form-group">
+                <phx-form-control [control]="rootFormGroup.controls.PostalCode" [editable]="true" labelText="Postal/Zip"
+                  viewModeText="{{rootFormGroup.controls.PostalCode.value}}">
+                  <input formControlName="PostalCode" type="text" [textMask]="commonService.setMask(rootFormGroup.controls.CountryId.value)"
+                    placeholder="Postal/Zip" class="postal-code form-control" phxPostalZipCodeValid='{"countryId": {{rootFormGroup.controls.CountryId.value}}, "isRequired": true}' />
+                </phx-form-control>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6 advance-payment-details">
+          <div>
+            <div class="panel-heading panel-info-title">
+              <div class="row">
+                <h3 class="col-lg-10 panel-title">Advance Payment</h3>
+              </div>
+            </div>
+            <div class="panel-body">
+              <div class="form-group">
+                <phx-form-control [control]="rootFormGroup.controls.PaymentMethodId" labelText="Payment Method"
+                  [editable]="true" viewModeText="{{rootFormGroup.controls.PaymentMethodId.value | CodeValue:codeValueGroups.PaymentMethodType }}">
+                  <app-phx-select-box [formControl]="rootFormGroup.controls.PaymentMethodId" [items]="listPaymentMethod"
+                    placeholder="-- Select One --" textField="text" valueField="id">
+                  </app-phx-select-box>
+                </phx-form-control>
+              </div>
+              <div class="form-group">
+                <phx-form-control [control]="rootFormGroup.controls.CurrencyId" labelText="Currency" [editable]="true"
+                  viewModeText="{{rootFormGroup.controls.CurrencyId.value | CodeValue:codeValueGroups.Currency }}">
+                  <app-phx-select-box [formControl]="rootFormGroup.controls.CurrencyId" [items]="listCurrency"
+                    placeholder="-- Select One --" textField="text" valueField="id">
+                  </app-phx-select-box>
+                </phx-form-control>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row" *ngIf="validationMessages.length > 0">
+          <div class="col-xs-12 alert alert-danger alert-dismissable error-box">
+            <div *ngFor="let msg of validationMessages">
+              <div>
+                {{msg}}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-12 panel-footer">
+          <div class="row">
+            <div class="col-lg-6"></div>
+            <div class="col-lg-6">
+              <div class="pull-right">
+                <button type="button" class="btn btn-primary" (click)="onSubmit()" [disabled]="!rootFormGroup.valid || !isPaybackValid">
+                  Submit
+                </button>
+                <button type="button" class="btn btn-default" (click)="onClickCancel()">Cancel</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

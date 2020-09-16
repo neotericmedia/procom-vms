@@ -1,0 +1,73 @@
+﻿<h3>Organization Drafts</h3>
+<div class="smart-table-wrapper">
+    <div class="row" data-cg-busy="loadItemsPromise">
+        <table data-st-table-struct='[{"stTableValue" : "items"}, {"stPipeValue" : "callServer"}, {"widthValues" : "[10, 25, 10, 25, 10, 10, 10]"}, {"stPaginationValue" : "pageSize"}]'>
+            <thead data-st-head="1700px">
+                <tr>
+                    <th data-st-sort="Id" data-st-sort-default="reverse">ID</th>
+                    <th data-st-sort="DisplayName">Display Name</th>
+                    <th data-st-sort="Code">Org Code</th>
+                    <th data-st-sort="LegalName">Legal Name</th>
+                    <th data-st-pen-name="useODataExpressions">Roles</th>
+                    <th data-st-sort="ModifiedBy">Modified By</th>
+                    <th data-st-pen-name="Action">Actions</th>
+                </tr>
+                <tr>
+                    <th>
+                        <input data-st-advanced-search="{property: 'Id', ignoreQuotes: true}" placeholder=""
+                               class="input-sm form-control numberType" data-safe-restrict-input="[^0123456789]" />
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="'DisplayName'" placeholder="" class="input-sm form-control" type="search" />
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="'Code'" placeholder="" class="input-sm form-control" type="search" />
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="'LegalName'" placeholder="" class="input-sm form-control" type="search" />
+                    </th>
+                    <th>
+                        <select data-st-as-width-override="185" data-st-advanced-search="{propery : 'AAAA', useODataExpressions : true, useSecondarySearch : true, switchSearchType : true}" class="input-sm form-control">
+                            <option data-st-advanced-search-expression="IsOrganizationClientRole eq true">Client Role</option>
+                            <option data-st-advanced-search-expression="IsOrganizationIndependentContractorRole eq true">Ind. Contractor Role</option>
+                            <option data-st-advanced-search-expression="IsOrganizationLimitedLiabilityCompanyRole eq true">Limited Liability Company</option>
+                            <option data-st-advanced-search-expression="IsOrganizationInternalRole eq true">Internal Role</option>
+                            <option data-st-advanced-search-expression="IsOrganizationInternalRole eq false and IsOrganizationIndependentContractorRole eq false and IsOrganizationLimitedLiabilityCompanyRole eq false and IsOrganizationClientRole eq false">No Roles</option>
+                        </select>
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="'ModifiedBy'" placeholder="" class="input-sm form-control" type="search" />
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr data-ng-repeat="item in items" data-ui-sref-tr="org.edit.details({organizationId: item.Id })" style="cursor:pointer">
+                    <td ng-bind="::item.Id"></td>
+                    <td ng-bind="::item.DisplayName"></td>
+                    <td ng-bind="::item.Code"></td>
+                    <td ng-bind="::item.LegalName"></td>
+                    <td>
+                        <i data-ng-if="item.IsOrganizationClientRole" class="icon icon-small icon-organization-client" title="Client"></i>
+                        <i data-ng-if="item.IsOrganizationIndependentContractorRole" class="icon icon-small icon-organization-independentcontractor" title="Independent Contractor"></i>
+                        <i data-ng-if="item.IsOrganizationLimitedLiabilityCompanyRole" class="icon icon-small icon-organization-limitedliabilitycompany" title="Limited Liability Company"></i>
+                        <i data-ng-if="item.IsOrganizationInternalRole" class="icon icon-small icon-organization-internal" title="Internal"></i>
+                    </td>
+                    <td ng-bind="::item.ModifiedBy"></td>
+                    <td>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-xs btn-clouds btn-row-action no-padding-bottom-right" data-action="view" title="View"><i class="fontello-icon-eye-1"></i>&nbsp;</button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="7">
+                        <span>Total Count: {{totalItemCount || 0}}; Items Loaded: {{ items ? items.length : 0}}</span>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>

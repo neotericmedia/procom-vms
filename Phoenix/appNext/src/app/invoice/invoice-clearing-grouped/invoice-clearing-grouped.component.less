@@ -1,0 +1,22 @@
+:host /deep/ .phx-accordion-group {
+    .panel-body {
+        padding: 0;
+    }
+    .entityBlock {
+        font-size: 14px;
+        .divRelease {
+            padding: 5px 10px;
+            margin: 3px 40px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        @media only screen and (max-width: 767px) {
+            .divRelease {
+                margin: 3px 0px;
+            }
+        }
+    }
+    .entityBlock .divRelease:hover {
+        background: #e5e5e5;
+    }
+}

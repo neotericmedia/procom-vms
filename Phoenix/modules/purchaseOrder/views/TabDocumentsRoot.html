@@ -1,0 +1,41 @@
+﻿<div class="content-group form-horizontal" data-ng-form="formPurchaseOrderDocuments">
+        <div class="">            
+            <div class="form-group">
+                <div class="col-lg-12">
+                    <h4 style="display: inline-block;">Documents</h4>
+                    <span class="btn btn-default btn-material cmd" data-toggle="collapse" data-target="#documentUpload-po" style="float: right; margin-top: 5px;"><i class="material-icons">add</i></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-lg-12">
+                    <div data-pt-document-list=""
+                         data-entity-type-id="ApplicationConstants.EntityType.PurchaseOrder"
+                         data-entity-id="model.entity.Id"
+                         data-func-get-documents-length="getDocumentsLength"
+                         data-func-get-document-id-to-preview="getDocumentIdToPreview"
+                         data-template-url="/Phoenix/templates/Template/Components/Document/DocumentListDefault.html">
+                    </div>
+                </div>
+            </div>
+        </div>
+    <div id="documentUpload-po" class="panel-collapse collapse">
+        <div class="form-group">
+            <div class="col-lg-12">
+                <div data-pt-document-upload=""
+                     data-holder-id="documentUpload-po"
+                     data-entity-type-id="ApplicationConstants.EntityType.PurchaseOrder"
+                     data-entity-id="model.entity.Id"
+                     data-show-description-input="true"
+                     data-enable-image-resize="false"
+                     data-max-file-size="20971520"
+                     data-accept-file-types=""
+                     data-limit-multi-file-uploads="15"
+                     data-func-callback-on-done="documentUploadCallbackOnDone"
+                     data-header-text="Upload documents"
+                     data-content-text1="Accepted file types: PNG, JPG, JPEG, TIF, BMP, PDF, DOC, DOCX"
+                     data-content-text2="20 MB file size limit">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,60 @@
+<div class="modal-header">
+  <div class="col-md-12">
+    <h4>
+      {{'project.selectDetail.title' | phxTranslate}}
+    </h4>
+  </div>
+</div>
+<div class="modal-body">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="dx-searchbar">
+        <dx-text-box valueChangeEvent="keyup" mode="search" (onValueChanged)="filterProjectLists($event.value)">
+        </dx-text-box>
+      </div>
+    </div>
+  </div>
+  <div class="row" *ngFor="let project of projectFavouriteList">
+    <div class="col-xs-1 col-sm-3">
+      <span class="table-icon">
+        <i (click)="toggleFavourtie(project)" class="material-icons md-18" aria-hidden="true">star</i>
+      </span>
+    </div>
+    <div class="col-xs-11 col-sm-9">
+      <strong>
+        <a class="project-select-link" (click)="selectProject(project)">{{ project.ActiveProjectVersion.Name }}</a>
+      </strong>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <hr />
+    </div>
+  </div>
+  <div class="row" *ngFor="let project of projectNonFavouriteList">
+    <div class="col-xs-1 col-sm-3">
+      <span class="table-icon">
+        <i (click)="toggleFavourtie(project)" class="material-icons md-18" aria-hidden="true">star_border</i>
+      </span>
+    </div>
+    <div class="col-xs-11 col-sm-9">
+      <strong>
+        <a class="project-select-link" (click)="selectProject(project)">{{ project.ActiveProjectVersion.Name }}</a>
+      </strong>
+    </div>
+  </div>
+</div>
+<div class="confirm-fab">
+  <button class="btn btn-link" (click)="add()">
+    <i class="material-icons" aria-hidden="true">add_circle</i>
+  </button>
+</div>
+<div class="modal-footer">
+  <div class="row btn-row">
+    <div class="col-sm-12">
+      <button type="button" class="pull-left btn btn-link btn-default" (click)="cancel()">
+        {{'common.generic.cancel' | phxTranslate}}
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,8 @@
+<div *ngIf="id > 0">
+    <app-phx-panel headerTitle="Change History">
+        <app-changeHistory [entityTypeId]="entityTypeId" [entityId]="id" [blackList]="changeHistoryBlackList"></app-changeHistory>
+    </app-phx-panel>
+    <app-phx-panel headerTitle="Workflow History">
+        <app-phx-workflow-event-history #wokflowHistory [entityTypeId]="entityTypeId" [entityId]="id"></app-phx-workflow-event-history>
+    </app-phx-panel>
+</div>

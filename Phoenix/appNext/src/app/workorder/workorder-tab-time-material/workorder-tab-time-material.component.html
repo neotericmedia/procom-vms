@@ -1,0 +1,18 @@
+<form [formGroup]="inputFormGroup">
+  <div class="form-horizontal">
+    <app-workorder-time-material-detail [inputFormGroup]="inputFormGroup.controls.TabTimeMaterialInvoiceDetail"
+      [readOnlyStorage]="readOnlyStorage" (outputEvent)="onOutputEvent()"></app-workorder-time-material-detail>
+    <div class="content-group">
+      <div class="content-left">
+        <app-workorder-billing-invoices [inputFormGroup]="inputFormGroup.controls.TabTimeMaterialInvoiceBillingInfoes"
+          [invoiceType]="phxConstants.InvoiceType.TimeSheet" [readOnlyStorage]="readOnlyStorage" (outputEvent)="onOutputEvent()">
+        </app-workorder-billing-invoices>
+      </div>
+      <div class="content-right">
+        <app-workorder-payment-invoices [inputFormGroup]="inputFormGroup.controls.TabTimeMaterialInvoicePaymentInfoes"
+          [invoiceType]="phxConstants.InvoiceType.TimeSheet" [readOnlyStorage]="readOnlyStorage" (outputEvent)="onOutputEvent()">
+        </app-workorder-payment-invoices>
+      </div>
+    </div>
+  </div>
+</form>

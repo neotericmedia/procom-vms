@@ -1,0 +1,8 @@
+<app-phx-intercept-panel 
+    [mainHeading]="'timesheet.notFound.title' | phxTranslate" 
+    [buttonList]="[navButton]"
+    [panelType]="PhxInterceptPanelType.error"
+    (clickEmmiter)="onGoToList($event)"
+>
+    <p>{{'timesheet.notFound.message' | phxTranslate}}</p>
+</app-phx-intercept-panel>

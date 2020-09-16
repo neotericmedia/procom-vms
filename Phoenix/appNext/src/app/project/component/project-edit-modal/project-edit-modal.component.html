@@ -1,0 +1,16 @@
+<div class="row">
+    <div class="col-md-12 text-right">
+        <button [disabled]="isEditable !== true" type="button" class="btn btn-default" (click)="add()">{{'common.generic.create' | phxTranslate}}</button>
+    </div>
+</div>
+
+<div class="responsiveModal">
+    <div bsModal [config]="{ show: false, backdrop: 'static', keyboard: true }" #projectModal="bs-modal" class="modal fade" tabindex="-1"
+        role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-sm projectModal">
+            <div class="modal-content">
+                  <app-project-edit [assignmentId]="assignmentId" [isEditable]="isEditable" (projectManagementState)="projectEditStateChange($event)" ></app-project-edit>
+            </div>
+        </div>
+    </div>
+</div>

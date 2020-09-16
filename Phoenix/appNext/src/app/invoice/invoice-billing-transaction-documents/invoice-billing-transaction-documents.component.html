@@ -1,0 +1,115 @@
+<div class="row">
+  <div class="col-lg-4 col-xl-3">
+    <dx-tree-view #treeview id="treeviewReport" [items]="tree" [searchEnabled]="true" searchMode="contains" showCheckBoxesMode="none"
+      (onItemClick)="onItemClick($event)" height="600px">
+      <div *dxTemplate="let data of 'item'">
+        <div [ngSwitch]="data.itemType">
+          <div *ngSwitchCase="INVOICE_TYPE">
+            <strong>{{data.text}}</strong>
+          </div>
+          <div *ngSwitchCase="RECIPIENT_TYPE">
+            <span class="cc-icon">CC</span>
+            <strong>{{data.text}}</strong>
+          </div>
+          <div *ngSwitchCase="TRANSACTION_TYPE">
+            <div class="transaction-item-info">
+              <div>
+                <strong>{{data.WorkerName}}</strong>
+              </div>
+              <div>{{data.StartDate | date:formatDate}} - {{data.EndDate | date:formatDate}}</div>
+              <div>{{data.TransactionTypeId | CodeValue:codeValueGroups.TransactionType }} {{data.TransactionHeaderTimeSheetId}}
+                <span class="badge badge-warning">{{data.items.length}}</span>
+              </div> 
+            </div>
+          </div>
+          <div *ngSwitchCase="DOCUMENT_TYPE">
+            <div class="document-item-info">
+              <dx-check-box *ngIf="isCurrentUserHasClientRelatedRoles === false" [(value)]="data.isSelected" [disabled]="!editable" (onValueChanged)="updateDocumentStatus($event, data)"></dx-check-box>
+              <span class="doc-name">{{data.index}}. {{data.DocumentTypeId | CodeValue:codeValueGroups.DocumentType}}</span>
+              <a [href]="data.url" download="{{data.DocumentName}}" target="_blank">
+                <button class="btn btn-material btn-download">
+                  <i class="material-icons">file_download</i>
+                </button>
+              </a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </dx-tree-view>
+
+  </div>
+  <div class="col-lg-9 col-xl-9 content-panel" *ngIf="currentItemType === INVOICE_TYPE || currentItemType === RECIPIENT_TYPE">
+      <div class="doc-headstone ">
+          <div class="row ">
+            <div class="col col-xs-12">
+              <h4>
+                <strong>{{invoiceModuleResourceKeys.documents.invoiceLabel| phxTranslate}}</strong>
+              </h4>
+            </div>
+          </div>
+        </div>
+        <div class="pdfContainerReportView">
+      <iframe id="invoiceReport" [src]="url" *ngIf="url" [hidden]="isInvoiceLoading" (load)="onInvoiceLoaded()"></iframe>
+    </div>
+  </div>
+  <div class="col-lg-8 col-xl-9 content-panel" *ngIf="currentTransaction && currentTransaction.itemType === TRANSACTION_TYPE">
+    <div class="doc-headstone ">
+      <div class="row ">
+        <div class="col col-xs-12">
+          <h4>
+            <strong>{{invoiceModuleResourceKeys.documents.documentReviewLabel| phxTranslate}}</strong>
+          </h4>
+        </div>
+        <div class="col col-md-6 form-horizontal">
+          <div class="form-group">
+            <label class="control-label col-xs-4">{{invoiceModuleResourceKeys.documents.workerLabel| phxTranslate}}</label>
+            <div class="controls col-xs-8">{{currentTransaction.WorkerName}}</div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-xs-4">{{invoiceModuleResourceKeys.documents.periodLabel| phxTranslate}}</label>
+            <div class="controls col-xs-8">{{currentTransaction.StartDate | date:formatDate}} - {{currentTransaction.EndDate | date:formatDate}}</div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-xs-4">{{invoiceModuleResourceKeys.documents.unitsLabel| phxTranslate}}</label>
+            <div class="controls col-xs-8">{{currentTransaction.SumUnits}} {{currentTransaction.BillRateUnitId | CodeValue: codeValueGroups.RateUnit}}</div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-xs-4 ">{{invoiceModuleResourceKeys.documents.amountLabel| phxTranslate}}</label>
+            <div class="controls col-xs-8">{{currentTransaction.TotalAmount | number:'1.2'}} {{invoice?.CurrencyId | CodeValue:codeValueGroups.Currency:'code'}}</div>
+          </div>
+        </div>
+        <div class="col col-md-6 form-horizontal">
+          <div class="form-group">
+            <label class="control-label col-xs-4">{{invoiceModuleResourceKeys.documents.transactionTypeLabel| phxTranslate}}</label>
+            <div class="controls col-xs-8">
+              {{currentTransaction.TransactionTypeId | CodeValue:codeValueGroups.TransactionType }}
+              <a target="_blank" class="dummy-link" *ngIf="currentTransaction.TransactionHeaderTimeSheetId" (click)="openTimeSheet(currentTransaction)">{{currentTransaction.TransactionHeaderTimeSheetId}}</a>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-xs-4 ">{{invoiceModuleResourceKeys.documents.transactionNumberLabel| phxTranslate}}</label>
+            <div class="controls col-xs-8">
+              <a target="_blank" class="dummy-link" (click)="openTransaction(currentTransaction)">{{currentTransaction.BillingTransactionNumber}}</a>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-xs-4">{{invoiceModuleResourceKeys.documents.workOrderLabel| phxTranslate}}</label>
+            <div class="controls col-xs-8">
+              <a target="_blank" class="dummy-link" (click)="openWorkOrder(currentTransaction)">{{currentTransaction.WorkOrderNumber}}</a>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-xs-4 ">{{invoiceModuleResourceKeys.documents.fileNameLabel| phxTranslate}}</label>
+            <div class="controls col-xs-8">
+              <a [href]="url" target="_blank" class="file-name">{{currentDoc.DocumentName}}</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pdfContainerReportView">
+      <iframe id="invoiceReport" [src]="url" *ngIf="url"></iframe>
+    </div>
+  </div>
+</div>

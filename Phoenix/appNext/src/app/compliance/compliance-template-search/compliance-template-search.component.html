@@ -1,0 +1,45 @@
+<div class="row">
+  <div class="col-xs-12">
+    <div class="btn-toolbar" *ngIf="showNewButton">
+      <button class="btn btn-default" (click)="createNew()">New</button>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <app-phx-data-table [columns]="columns" [configuration]="dataTableConfiguration" [dataSourceUrl]="'ComplianceTemplate/templates'"
+    [dataSourceParams]='oDataParams' [componentName]="componentName" (rowClick)="onRowClick($event)" (contextMenuOpenTab)="onContextMenuOpenTab($event)">
+    <div *dxTemplate="let row of 'lineOfBusinessListTemplate'">
+      <span>{{row?.data?.LineOfBusinesses}}</span>
+    </div>
+    <div *dxTemplate="let row of 'lineOfBusinessListTemplate'">
+      <span>{{row?.data?.LineOfBusinesses}}</span>
+    </div>
+    <div *dxTemplate="let row of 'ClientOrganizationsTemplate'">
+      <span>{{row?.data?.ClientOrganizations}}</span>
+    </div>
+    <div *dxTemplate="let row of 'BranchesTemplate'">
+      <span>{{row?.data?.Branches}}</span>
+    </div>
+    <div *dxTemplate="let row of 'lineOfBusinessListTemplate'">
+      <span>{{row?.data?.LineOfBusinesses}}</span>
+    </div>
+    <div *dxTemplate="let row of 'ProfileTypesTemplate'">
+      <span>{{row?.data?.ProfileTypes}}</span>
+    </div>
+    <div *dxTemplate="let row of 'InternalOrganizationsTemplate'">
+      <span>{{row?.data?.InternalOrganizations}}</span>
+    </div>
+    <div *dxTemplate="let row of 'WorksitesTemplate'">
+      <span>{{row?.data?.Worksites}}</span>
+    </div>
+    <div *dxTemplate="let row of 'OrganizationRoleTypesTemplate'">
+      <span>{{row?.data?.OrganizationRoleTypes}}</span>
+    </div>
+    <div *dxTemplate="let row of 'TaxSubdivisionsTemplate'">
+      <span>{{row?.data?.TaxSubdivisions}}</span>
+    </div>
+    <div *dxTemplate="let row of 'WorkerEligibilitiesTemplate'">
+      <span>{{row?.data?.WorkerEligibilities}}</span>
+    </div>
+  </app-phx-data-table>
+</div>

@@ -1,0 +1,24 @@
+<app-phx-panel headerTitle="Sales Taxes">
+    <form [formGroup]="inputFormGroup" *ngIf="readOnlyStorage && inputFormGroup">
+        <div formArrayName="SalesTax">
+            <div *ngFor="let tax of formArrayOrganizationSaleTax().controls; let i = index; trackBy: trackByFn">
+                <div [formGroupName]="i">
+                    <div class="form-group">
+                        <app-organization-sales-tax [inputFormGroup]="tax" [selectedValues]="inputFormGroup.controls.SelectedType" [taxIndex]="i"
+                            [readOnlyStorage]="readOnlyStorage" [listTaxTypes]="listTaxTypes" (outputEvent)="onOutputEvent($event,i)" [editable]="editable">
+                        </app-organization-sales-tax>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="btn-add">
+            <phx-form-control *ngIf="readOnlyStorage.IsEditable && editable">
+                <button type="button" class="btn btn-default btn-material right pull-right" (click)="onClickAddSalesTax()" 
+                    [disabled]="!inputFormGroup.valid || (inputFormGroup.controls.SelectedType.value.length === listTaxTypes.length)"
+                    title ="used {{inputFormGroup.controls.SelectedType.value.length}} from {{listTaxTypes.length}} available taxes">
+                    <i class="material-icons">add</i>
+                </button>
+            </phx-form-control>
+        </div>
+    </form>
+</app-phx-panel>

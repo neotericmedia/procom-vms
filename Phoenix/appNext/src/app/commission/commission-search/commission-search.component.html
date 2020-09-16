@@ -1,0 +1,10 @@
+<div class="row page-control">
+    <div class="page-control-bar col-lg-12">
+        <div class="btn-toolbar">
+            <a href="javascript:;" type="button" class="btn btn-clouds" (click)="createComm()">New</a>
+        </div>
+    </div>
+</div>
+<app-phx-data-table [columns]="columns" [configuration]="dataTableConfiguration" [dataSourceUrl]="'Commission/getCommissionUserProfileListWithRatesOnly'"
+    [dataSourceParams]='oDataParams' componentName="CommissionSearch" [summary]="summary" (rowClick)="onRowClick($event)" 	(contextMenuOpenTab)="onContextMenuOpenTab($event)">
+</app-phx-data-table>

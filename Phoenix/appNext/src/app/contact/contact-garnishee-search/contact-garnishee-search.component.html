@@ -1,0 +1,27 @@
+<div class="btn-group btn-garnishee-search-nav" *ngIf="!profile.ActiveGarnisheesCount">
+  <div class="garnishee-btn-wrapper">
+    <button type="button" class="btn btn-clouds dropdown-toggle" data-toggle="dropdown">
+      <span class="garnishee-btn-name">Actions</span>
+      <span class="caret ml garnishee-btn-caret"></span>
+    </button>
+    <ul class="dropdown-menu bordered">
+      <li *ngIf="profile.ProfileTypeId===phxConstants.ProfileType.WorkerTemp || profile.ProfileTypeId===phxConstants.ProfileType.WorkerCanadianSP">
+        <a (click)="onClickAddNewGarnishee()" class="btn-add-garnishee" style="cursor: pointer;">Add Garnishee</a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div>
+  <app-contact-garnishees #grid [userProfileId]="profile.Id" (outputEvent)="onOutputEvent($event)"></app-contact-garnishees>
+</div>
+
+<app-phx-modal [buttons]="modalFabButtons" title="" #modalGarnisheeEdit>
+  <app-contact-garnishee-edit [modal]="modalGarnisheeEdit" [garnisheeId]="garnisheeId" [profileId]="profile.Id"
+    [activeCount]="profile.ActiveGarnisheesCount" (outputResponse)="onOutputResponse()">
+  </app-contact-garnishee-edit>
+</app-phx-modal>
+<app-phx-modal [buttons]="modalFabButtons" title="" #modalGarnisheeNew>
+  <app-contact-garnishee-new [profileId]="profile.Id" [modal]="modalGarnisheeNew" (outputResponse)="onOutputResponse()">
+  </app-contact-garnishee-new>
+</app-phx-modal>

@@ -1,0 +1,4 @@
+<dx-select-box #selectBox [dataSource]="dataSource" [placeholder]="placeholder" [showClearButton]="showClearButton" [readOnly]="readOnly" [disabled]="disabled"
+  [displayExpr]="textField" [valueExpr]="valueField" [value]="value" [searchEnabled]="searchable" [acceptCustomValue]="acceptCustomValue" [width]="width" [maxLength]="maxLength"
+  (onValueChanged)="onValueChanged($event)" (onCustomItemCreating)="onCustomItemCreating($event)" (onOpened)="onOpened($event)">
+</dx-select-box>

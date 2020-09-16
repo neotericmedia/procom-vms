@@ -1,0 +1,95 @@
+/* You can add global styles to this file, and also import other style files */
+@import "../../../Content/less/fonts.css";
+
+@import "../../../Content/less/type.less";
+@import "../../../Content/less/panes.less";
+@import "../../../Content/less/grid.less";
+
+@import "../../../Content/less/tables.less";
+@import "../../../Content/less/forms.less";
+@import "../../../Content/less/buttons.less";
+
+@import "../../../Content/less/animations.less";
+@import "../../../Content/less/colors.less";
+@import "../../../Content/less/input-groups.less";
+@import "../../../Content/less/dropdowns.less";
+
+@import "../../../Content/less/navs.less";
+@import "../../../Content/less/navbar.less";
+@import "../../../Content/less/button-groups.less";
+@import "../../../Content/less/breadcrumbs.less";
+@import "../../../Content/less/pagination.less";
+@import "../../../Content/less/panels.less";
+
+@import "../../../Content/less/tab-accordion.less";
+
+@import "../../../Content/less/calendar.less";
+
+@import "../../../Content/less/modals.less";
+
+@import "../../../Content/less/labels.less";
+@import "../../../Content/less/layouts.less";
+@import "../../../Content/less/sidebar.less";
+@import "../../../Content/less/dataicon.less";
+
+@import "../../../Content/less/sidebar-new.less";
+@import "../../../Content/less/sidebar-min.less";
+
+@import "../../../Content/less/utilities.less";
+
+@import "../../../Content/less/style.less";
+@import "../../../Content/less/validation.less";
+@import "../../../Content/less/wizard.less";
+@import "../../../Content/less/responsive.less";
+@import "../../../Content/less/file-upload.less";
+@import "../../../Content/less/misc.less";
+@import "../../../Content/less/responsive-align.less";
+@import "../../../Content/less/bootstrap-xlgrid.less";
+
+// TEST THESE:
+
+@import "../../../Content/less/pretty-print.less";
+@import "../../../Content/less/main.less";
+@import "../../../Content/less/smart-table.less";
+
+@import "app/common/styles/style.less";
+
+// Extra material design icon styles
+.material-icons.md-18 { font-size: 18px; }
+.material-icons.md-24 { font-size: 24px; }
+.material-icons.md-36 { font-size: 36px; }
+.material-icons.md-48 { font-size: 48px; }
+.material-icons.md-dark { color: rgba(0, 0, 0, 0.54); }
+.material-icons.md-dark.md-inactive { color: rgba(0, 0, 0, 0.26); }
+.material-icons.md-light { color: rgba(255, 255, 255, 1); }
+.material-icons.md-light.md-inactive { color: rgba(255, 255, 255, 0.3); }
+
+.svg-18px { width: 18px; height: 18px; }
+.svg-24px { width: 24px; height: 24px; }
+.svg-36px { width: 36px; height: 36px; }
+.svg-48px { width: 48px; height: 48px; }
+
+.btn {
+	&.btn-material {
+		line-height: 1;
+		padding: 3px 5px;
+        background-color:transparent;
+	}
+    &.btn-borderless {
+        border:none
+	}
+}
+
+.btn-group.btn-group-spacing {
+    .btn:not(:first-child)  {
+        margin-left: 5px;
+    }
+}
+
+@media screen and (max-width: 900px) {
+    body {
+        .btn-link.btn-svg {
+            cursor: pointer;
+        }
+    }
+}

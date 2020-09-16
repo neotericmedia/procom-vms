@@ -1,0 +1,73 @@
+<form [formGroup]="inputFormGroup" *ngIf="inputFormGroup">
+  <div>
+    <p class="form-control-static" *ngIf="inputFormGroup.controls.OrganizationIdClient.value>0">
+      <a routerLink="/next/organization/{{inputFormGroup.controls.OrganizationIdClient.value}}/details">
+        {{inputFormGroup.controls.OrganizationIdClient.value |
+        lookup:html.commonLists.listOrganizationClient:'Id':'DisplayName'}}
+        - {{inputFormGroup.controls.OrganizationIdClient.value}}</a>
+    </p>
+  </div>
+  <div *ngIf="!inputFormGroup.controls.OrganizationIdClient.value || inputFormGroup.controls.OrganizationIdClient.value==0">
+    <phx-form-control labelText="Client Company" [control]="inputFormGroup.controls.OrganizationIdClient" [editable]="readOnlyStorage.IsEditable"
+      viewModeText="{{inputFormGroup.controls.OrganizationIdClient.value}}">
+      <app-phx-select-box [items]="html.commonLists.listOrganizationClient" textField="DisplayName" valueField="Id"
+        [formControl]="inputFormGroup.controls.OrganizationIdClient" placeholder=" -- select one --" (valueChanged)="onChangeOrganizationIdClient()">
+      </app-phx-select-box>
+    </phx-form-control>
+  </div>
+  <div *ngIf="inputFormGroup.controls.OrganizationIdClient.value>0">
+    <phx-form-control labelText="Client Company" [control]="inputFormGroup.controls.OrganizationIdClient" [editable]="true"
+      viewModeText="">
+      <div class="col-lg-12 padding-0">
+        <p class="form-control-static">
+          {{inputFormGroup.controls.OrganizationIdClient.value | lookupNoCache:
+          html.commonLists.listOrganizationClient:'Id':'DisplayName'
+          }} - {{inputFormGroup.controls.OrganizationIdClient.value}}
+        </p>
+      </div>
+      <!-- 20190225: hide change button according to Steven -->
+      <!-- <div class="col-lg-4 pull-right padding-0">
+        <button type="button" class="btn btn-clouds pull-right" *ngIf="isDraftStatus" (click)="eraseBillingInfo(billingInfo)"
+          [disabled]="AtsPlacementId>0 ||TransactionHeaderCount>0 || WorkOrderVersionActiveCount>1">
+          Change
+        </button>
+      </div> -->
+    </phx-form-control>
+  </div>
+  <div class="form-group">
+    <phx-form-control labelText="Client Manager" [control]="inputFormGroup.controls.UserProfileIdClient" [editable]="readOnlyStorage.IsEditable && checkPtFiledAccessibility('WorkOrderVersion.BillingInfoes','UserProfileIdClient')"
+      viewModeText="{{inputFormGroup.controls.UserProfileIdClient.value |lookupNoCache: html.commonLists.ProfilesListForBillingOrganization:'Id':'Contact.FullName'}} - 
+        {{inputFormGroup.controls.UserProfileIdClient.value}}">
+      <app-phx-select-box [items]="html.commonLists.ProfilesListForBillingOrganization" textField="DisplayValue"
+        valueField="Id" [formControl]="inputFormGroup.controls.UserProfileIdClient" placeholder=" -- select one --">
+      </app-phx-select-box>
+    </phx-form-control>
+  </div>
+  <div>
+    <div *ngIf="billingInfoIndex==0">
+      <phx-form-control [control]="inputFormGroup.controls.Hours" labelText="Hours Per Day" [editable]="readOnlyStorage.IsEditable && checkPtFiledAccessibility('WorkOrderVersion.BillingInfoes','Hours')"
+        viewModeText="{{inputFormGroup.controls.Hours.value}}">
+        <input [formControl]="inputFormGroup.controls.Hours" type="text" class="form-control" (blur)="floatApplyTwoDecimalPlaces(inputFormGroup.controls.Hours.value)"
+          phxFloatBetweenInput='{"from":0, "to":24.99, "decimalplaces":2}' />
+      </phx-form-control>
+    </div>
+    <div *ngIf="billingInfoIndex>0">
+      <!-- <p class="form-control-static">{{billingInfo.Hours | number:2}}</p> -->
+      <p class="form-control-static">{{inputFormGroup.controls.Hours.value }}</p>
+    </div>
+  </div>
+  <div class="form-group">
+    <phx-form-control [control]="inputFormGroup.controls.CurrencyId" labelText="Currency" [editable]="readOnlyStorage.IsEditable && checkPtFiledAccessibility('WorkOrderVersion.BillingInfoes','Currency')"
+      viewModeText="{{inputFormGroup.controls.CurrencyId.value | CodeValue:codeValueGroups.Currency }}">
+      <app-phx-select-box [formControl]="inputFormGroup.controls.CurrencyId" [items]="html.codeValueLists.listCurrency"
+        textField="text" valueField="id" placeholder="-- select one --">
+      </app-phx-select-box>
+    </phx-form-control>
+  </div>
+  <app-workorder-billing-rates [inputFormGroup]="inputFormGroup.controls.BillingRatesDetail" [readOnlyStorage]="readOnlyStorage"
+    [billingInfoIndex]="billingInfoIndex" [selectedRateType]="inputFormGroup.controls.selectedRateType" (outputEvent)="onOutputEvent($event,i)"
+    (addBillingPartyRate)="onAddBillingPartyRate()" (removeBillingPartyRate)="onRemoveBillingPartyRate($event)" (addPaymentPartyRate)="onAddPaymentPartyRate($event)">
+  </app-workorder-billing-rates>
+  <app-workorder-rebate-vmsfee [inputFormGroup]="inputFormGroup.controls.RebateAndVMSFee" [readOnlyStorage]="readOnlyStorage"
+    (outputEvent)="onOutputEvent($event,i)"></app-workorder-rebate-vmsfee>
+</form>

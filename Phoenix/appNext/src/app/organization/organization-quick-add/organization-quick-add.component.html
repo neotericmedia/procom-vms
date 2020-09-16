@@ -1,0 +1,63 @@
+<div class="organization" *ngIf="organization">
+  <div class="organization-wrap">
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="row">
+          <div class="content-group form-horizontal">
+            <div class="col-xs-12 col-lg-6">
+              <div class="panel-internal no-margin col-lg-12">
+                <app-organization-details [inputFormGroup]="rootFormGroup.controls.OrgDetails" 
+                  [readOnlyStorage]="readOnlyStorage" (outputEvent)="onOutputEvent($event)">
+                </app-organization-details>
+              </div>
+              <div class="panel-internal no-margin col-lg-12">
+                <app-organization-role-detail [inputFormGroup]="rootFormGroup.controls.OrganizationRole" 
+                  [readOnlyStorage]="readOnlyStorage" [isQuickAdd]="isQuickAdd" (outputEvent)="onOutputEvent($event)">
+                </app-organization-role-detail>
+              </div>
+              <div class="panel-internal no-margin col-lg-12">
+                <app-organization-sales-taxes [inputFormGroup]="rootFormGroup.controls.OrganizationTaxNumbers"
+                  [readOnlyStorage]="readOnlyStorage" (outputEvent)="onOutputEvent($event)">
+                </app-organization-sales-taxes>
+              </div>
+            </div>
+            <div class="col-xs-12 col-lg-6">
+              <div class="panel panel-internal no-margin col-lg-12">
+                <app-organization-addresses [inputFormGroup]="rootFormGroup.controls.OrganizationAddressesDetails"
+                  [readOnlyStorage]="readOnlyStorage" [isQuickAdd]="isQuickAdd" (outputEvent)="onOutputEvent($event)">
+                </app-organization-addresses>
+              </div>
+              <div class="panel panel-internal no-margin col-lg-12 margin-top-10">
+                <app-organization-primary-contact [inputFormGroup]="rootFormGroup.controls.OrganizationContact" 
+                  [readOnlyStorage]="readOnlyStorage" (outputEvent)="onOutputEvent($event)">
+                </app-organization-primary-contact>
+              </div>
+              <div class="panel panel-internal no-margin col-lg-12 margin-top-10">
+                <app-organization-collaborators [inputFormGroup]="rootFormGroup.controls.OrganizationCollaborators" 
+                  [readOnlyStorage]="readOnlyStorage" (outputEvent)="onOutputEvent($event)">
+                </app-organization-collaborators>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row page-control">
+    <div class="col-lg-12">
+      <div class="panel pull-right">
+        <div class="panel-body">
+          <button type="button" class="btn btn-default" (click)="onClickCancel()">Cancel</button>
+          <button type="button" class="btn btn-primary" (click)="onClickSave()" [disabled]="!rootFormGroup.valid">Submit</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="validationMessages.length > 0" class="alert alert-danger alert-dismissable error-box">
+    <div *ngFor="let msg of validationMessages">
+      <div>
+        {{msg}}
+      </div>
+    </div>
+  </div>
+</div>

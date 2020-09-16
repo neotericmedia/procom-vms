@@ -1,0 +1,43 @@
+<div class="account-container stacked" *ngIf="user && user.Profiles && user.Profiles.length > 1">
+  <div class="content clearfix">
+      <form>
+          <h1>Select a Profile</h1>
+          <div>
+              <div class="panel panel-default" *ngFor="let profile of user.Profiles">
+                  <a (click)="pickProfile(profile)">
+                      <div class="panel-body">
+                          <p>{{profile.FirstName}} {{profile.LastName}}</p>
+                          <!-- <p>{{profile.ProfileTypeId | lookup:lists.UserProfileType:'id':'text'}}</p> -->
+                          <p>{{profile.PrimaryEmail}}</p>
+                          <p>{{profile.InstanceName}}</p>
+                      </div>
+                  </a>
+              </div>
+          </div>
+          <!--<div class="login-fields">-->
+          <!--<p>Log in to Flashbackoffice</p>-->
+          <!--<div class="field">-->
+          <!--<label name="UserEmail" class="col-lg-4  control-label"></label>-->
+          <!--<input type="text" name="UserEmail" ng-model="user.UserEmail" class="form-control input-lg username-field" placeholder="Email Address" />-->
+          <!--</div>-->
+          <!--<div class="field">-->
+          <!--<label name="Password" class="col-lg-4  control-label"></label>-->
+          <!--<input type="password" name="Password" ng-model="user.Password" class="form-control input-lg password-field" placeholder="Password" />-->
+          <!--</div>-->
+          <!--</div>-->
+          <!--<div class="login-actions">-->
+          <!--<span class="login-checkbox" style="display: none">-->
+          <!--<label class="checkbox">-->
+          <!--<input type="checkbox" value="true" class="field login-checkbox" data-ng-model="user.RememberMe" name="RememberMe" id="RememberMe">-->
+          <!--Remember me-->
+          <!--</label>-->
+          <!--</span>-->
+          <!--<span id="loading" style="display: none;">Loading . . .</span>-->
+          <!--<button class="login-action btn btn-primary" ng-click="login()">Sign In</button> &lt;!&ndash;  onclick="$('#Password').val() && $('#loading').show();" &ndash;&gt;-->
+          <!--</div>-->
+          <!--<div class="login-recover">-->
+          <!--<a href="">Recover your password</a>-->
+          <!--</div>-->
+      </form>
+  </div>
+</div>

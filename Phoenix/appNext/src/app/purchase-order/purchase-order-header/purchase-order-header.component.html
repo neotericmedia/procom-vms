@@ -1,0 +1,35 @@
+<div class="panel panel-default headstone">
+  <div class="row">
+    <div class="col col-lg-4">
+      <div class="form-group">
+        <label class="text-gray">Client</label>
+        <div>{{ purchaseOrder.OrganizationId | lookupNoCache:listOrganizationClient:'Id':'DisplayName'}} - {{purchaseOrder.OrganizationId }} </div>
+      </div>
+    </div>
+    <div class="col col-lg-2">
+      <div class="form-group">
+        <label class="text-gray">Total Funds</label>
+        <div>{{purchaseOrder.TotalFund | pxCurrencyFormatter}} {{currencyId | lookup:listCurrency:'id':'code'}}</div>
+      </div>
+    </div>
+    <div class="col col-lg-2">
+      <div class="form-group">
+        <label class="text-gray">Funds Committed</label>
+        <div>{{purchaseOrder.FundCommitted | pxCurrencyFormatter}} {{currencyId| lookup:listCurrency:'id':'code'}}
+        </div>
+      </div>
+    </div>
+    <div class="col col-lg-2">
+      <div class="form-group">
+        <label class="text-gray">Funds Spent</label>
+        <div>{{purchaseOrder.FundSpent | pxCurrencyFormatter}} {{currencyId | lookup:listCurrency:'id':'code'}}</div>
+      </div>
+    </div>
+    <div class="col col-lg-1">
+      <div class="form-group">
+        <label class="text-gray">Status</label>
+        <div>{{purchaseOrder.StatusId | CodeValue: html.codeValueGroups.PurchaseOrderStatus}}</div>
+      </div>
+    </div>
+  </div>
+</div>

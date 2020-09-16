@@ -1,0 +1,28 @@
+<app-vms-documents-batch-header [record]="record"></app-vms-documents-batch-header>
+<div class="row">
+  <div class="tabbable col-lg-12">
+    <div>
+      <tabset>
+        <tab heading="Details">
+          <h4>VMS Processed Record</h4>
+          <app-phx-data-table #phxTableProcessedRecord [configuration]="phxTableProcessedRecordConfig" [dataSource]="phxTableProcessedRecordDataSource"
+            [columns]="phxTableProcessedRecordColumns" (rowClick)="onProcessedRecordClick($event)">
+            <div *dxTemplate="let d of 'reasonTemplate'">
+              <span style="white-space: pre">{{d.value | replaceHtmlBreakWithNewLine}}</span>
+            </div>
+            <div *dxTemplate="let d of 'currencyTemplate'">
+                <span>{{d.value | number:'1.2-2'}} {{d.data.CurrencyId | CodeValue:codeValueGroups.Currency:'code'}}</span>
+            </div>
+          </app-phx-data-table>
+          <h4>Transaction</h4>
+          <app-phx-data-table #phxTableTransaction [configuration]="phxTableTransactionConfig" [dataSource]="phxTableTransactionDataSource"
+            [columns]="phxTableTransactionColumns" (rowClick)="onTransactionClick($event)">
+          </app-phx-data-table>
+        </tab>
+        <tab heading="Workflow">
+          TBD
+        </tab>
+      </tabset>
+    </div>
+  </div>
+</div>

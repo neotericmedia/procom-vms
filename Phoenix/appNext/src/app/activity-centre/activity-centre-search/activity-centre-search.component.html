@@ -1,0 +1,39 @@
+<app-activity-centre-navbar [hideBackButton]="hideBackButton"></app-activity-centre-navbar>
+<app-activity-centre-header [cardTotals]="cardTotals" (drillDown)="onDrillDown($event)"></app-activity-centre-header>
+<!-- <app-activity-centre-filterbar></app-activity-centre-filterbar> -->
+<div *ngIf="batchOperations?.length" class="row checkAll checkAll_top">
+  <label class="col-xs-2 col-sm-1">
+    <input type="checkbox" [value]="selectAllCheckbox.checked" [indeterminate]="selectAllCheckbox.indeterminate" (click)="onTopLevelSelect()"
+    />
+    <i _ngcontent-c7="" class="material-icons">
+      {{selectAllCheckbox.checked ? 'check_box' : (selectAllCheckbox.indeterminate ? 'indeterminate_check_box' : 'check_box_outline_blank'
+      ) }}
+    </i>
+  </label>
+</div>
+<div class="search-results" infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="750" (scrolled)="onScroll()">
+  <div class="search-container">
+    <div *ngFor="let card of cardList" #cardContainer>
+      <app-activity-centre-card [card]="card" [selectable]="batchOperations?.length" (changeSelection)="onToggleCardSelection($event)"
+        [entityTypeId]="entityTypeId"></app-activity-centre-card>
+    </div>
+    <app-phx-batch-operation-buttons (callBatchOperation)="onCallBatchOperation($event)" [batchOperations]="batchOperations"
+      [disabled]="selectedCards?.size == 0"></app-phx-batch-operation-buttons>
+    <div class="footer-btn">
+      <div *ngIf="batchOperations?.length" class="row checkAll checkAll_bottom col-xs-2 col-sm-1">
+        <label>
+          <input type="checkbox" [value]="selectAllCheckbox.checked" [indeterminate]="selectAllCheckbox.indeterminate" (click)="onTopLevelSelect()"
+          />
+          <i _ngcontent-c7="" class="material-icons">
+            {{selectAllCheckbox.checked ? 'check_box' : (selectAllCheckbox.indeterminate ? 'indeterminate_check_box' : 'check_box_outline_blank'
+            ) }}
+          </i>
+        </label>
+      </div>
+      <div class="count" [ngClass]="{ 'count-display' : selectedCards?.size > 0 }">
+        <h5>{{ ('activityCentre.search.selectionCount' + (selectedCards.size > 1 ? 'Multiple' : 'Single')) | phxTranslate : selectedCards.size}}</h5>
+        <!--<h5>{{ ('activityCentre.search.selectionCount' + (selectedCards.size > 1 ? 'Multiple' : 'Single')) | phxTranslate : selectedCards.size}} of {{totalCount + ' ' + ('common.generic.total' | phxTranslate ).toLowerCase()}} </h5>-->
+      </div>
+    </div>
+  </div>
+</div>

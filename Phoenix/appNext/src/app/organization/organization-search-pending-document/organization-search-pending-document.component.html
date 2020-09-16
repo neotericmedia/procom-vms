@@ -1,0 +1,35 @@
+<div class="row page-control">
+    <div class="page-control-bar col-lg-12">
+        <div class="btn-toolbar">
+            <a href="javascript:;" type="button" class="btn btn-clouds" (click)="createOrg()">New</a>
+        </div>
+    </div>
+</div>
+<app-phx-data-table [columns]="columns" [configuration]="dataTableConfiguration" 
+    [dataSourceUrl]="dataSourceUrl"
+    [dataSourceParams]="oDataParams"
+    [componentName]="dataGridComponentName"
+    [summary]="summary" (rowClick)="onRowClick($event)">
+    <div *dxTemplate="let role of 'orgRolesTemplate'">
+        <i *ngIf='role.data.IsOrganizationClientRole' class="icon icon-small icon-organization-client ng-scope" title="Client"></i>
+        <i *ngIf='role.data.IsOrganizationIndependentContractorRole' class="icon icon-small icon-organization-independentcontractor ng-scope"
+            title="Independent Contractor"></i>
+        <i *ngIf='role.data.IsOrganizationLimitedLiabilityCompanyRole' class="icon icon-small icon-organization-limitedliabilitycompany ng-scope"
+           title="Limited Liability Company"></i>
+        <i *ngIf='role.data.IsOrganizationSubVendorRole' class="icon icon-small icon-organization-independentcontractor ng-scope"
+            title="Sub Vendor"></i>   
+        <i *ngIf='role.data.IsOrganizationInternalRole' class="icon icon-small icon-organization-internal ng-scope" title="Internal"></i>
+        <span *ngIf='!role.data.IsOrganizationClientRole && !role.data.IsOrganizationInternalRole && role.data.IsOrganizationClientRole'>No Roles</span>
+    </div>
+    <div *dxTemplate="let role of 'orgStatusTemplate'">
+        <span *ngIf='role.data.OrganizationStatusId == 4'>Active</span>
+        <span *ngIf='role.data.OrganizationStatusId == 2'>Draft</span>
+        <span *ngIf='role.data.OrganizationStatusId == 3'>Pending Review</span>
+        <span *ngIf='role.data.OrganizationStatusId == 5'>Pending Change</span>
+    </div>
+    <div *dxTemplate="let d of 'viewOrganizationDetailTemplate'">
+        <div class="btn-group">
+            <button type="button" class="btn btn-xs btn-clouds btn-row-action no-padding-bottom-right" title="View" (click)="viewOrganizationDetail(d.data)"><i class="fontello-icon-eye-1"></i>&nbsp;</button>
+        </div>
+    </div>
+</app-phx-data-table>

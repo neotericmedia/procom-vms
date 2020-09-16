@@ -1,0 +1,167 @@
+:host {
+    dx-data-grid {
+        margin-top: 5px;
+        /deep/ .dx-datagrid{
+            .has-filter {
+                color: #FF0000;
+            }
+            .dx-datagrid-filter-row .dx-editor-with-menu .dx-tagbox .dx-tag-container {
+                padding-left: 30px;
+                .dx-texteditor-input {
+                    padding-left: 0;
+                }
+            }
+            .dx-scrollable-customizable-scrollbars {
+                -ms-scrollbar-base-color: #d2d2d2;  /* IE */
+                & ::-webkit-scrollbar-thumb {   /* Chrome, Safari, etc.. */
+                    background-color: #d2d2d2;
+                }
+                /* Firefox native scrollbar styling is not supported at the moment https://bugzilla.mozilla.org/show_bug.cgi?id=1460109 */
+            }
+        }
+    }
+}
+
+.record-count-panel {
+    color: #333333;
+    margin-left: 5px;
+    .record-count-value {
+        font-weight: bold;
+    }
+}
+
+@subtract: 100px;
+@xs-min: 480px;
+@sm-min: 768px;
+@md-min: 992px;
+@lg-min: 1200px;
+@xlg-min: 1600px;
+@4k-min: 2160px;
+@phone-height: ~"only screen and (min-height: @{xs-min})";
+@tablet-height: ~"only screen and (min-height: @{sm-min})";
+@desktop-height: ~"only screen and (min-height: @{md-min})";
+@large-height: ~"only screen and (min-height: @{lg-min})";
+@xlarge-height: ~"only screen and (min-height: @{xlg-min})";
+@4klarge-height: ~"only screen and (min-height: @{4k-min})";
+@phone-width: ~"only screen and (max-width: @{sm-min})";
+/* border and other css properties in media queries break virtual scrolling - problem devextreme css hacks */
+
+.gridContainer {
+    max-height: 300px;
+    @media @phone-height {
+        max-height: @xs-min - @subtract; //430 px from 480 px
+    }
+    @media @tablet-height {
+        max-height: @sm-min - @subtract; //718 px from 768 px
+    }
+    @media @desktop-height {
+        max-height: @md-min - 2*@subtract; //892 px from 992 px
+    }
+    @media @large-height {
+        max-height: @lg-min - 3*@subtract; //1050 px from 1200 px
+    }
+    @media @xlarge-height {
+        max-height: @xlg-min - 3.5*@subtract; //1425 px from 1600 px
+    }
+    @media @4klarge-height {
+        max-height: @4k-min - 4*@subtract; //1960 px from 2160 px
+    }
+}
+
+@media (max-width: @xs-min) {
+    .btn-toolbar>.btn,
+    .btn-toolbar>.btn+.btn {
+        width: inherit;
+        margin-bottom: 0;
+        &.template-save-button,
+        &.template-reset-button {
+            width: 36px;
+        };
+        &.template-clear-filter-button {
+            width: 36px;
+            padding-left: 9px; 
+            label {display: none;}
+            i {display: block;}
+        }
+    }
+}
+
+.apply-view-dropdown-label {
+    @media @phone-width {
+        display: none;
+    }
+}
+
+.dropdown-menu {
+    min-width: 187px;
+    right: -70px;
+    @media @phone-width {
+        right: -153px;
+    }
+    a {
+        white-space: normal;
+        padding-right: 36px;
+    }
+    >li {
+        position: relative;
+        margin-top: 5px;
+        >i {
+            position: absolute;
+            right: 12px;
+            top: 2px;
+            font-size: 1.5em;
+            cursor: pointer;
+        }
+    }
+}
+
+.custom-tool-button {
+    font-size: 1.7em;
+    margin-left: -3px;
+}
+
+.templates-dropdown {
+    margin-right: 0;
+    button.dropdown-toggle {
+        height: 36px;
+    }
+}
+
+.template-save-button,
+.template-reset-button {
+    width: 36px;
+    height: 36px;
+    padding-left: 9px;
+    margin-left: 0;
+    float: right;    
+}
+.template-clear-filter-button {
+    background-color: #F00;
+    color: #FFF;   
+    height: 36px;         
+    i {
+        display: none;
+    }   
+}
+button#saveAsButton {
+    margin-left: -2px;
+}
+
+button#resetButton {
+    margin-left: -1px;
+}
+
+.modal-dialog {
+    width: 400px;
+    margin: 0 auto;
+}
+
+.validation-error {
+    color: #a94442;
+    font-weight: 600;
+    padding-top: 8px;
+}
+
+.bottom-spacer {
+    height: 20px;
+}

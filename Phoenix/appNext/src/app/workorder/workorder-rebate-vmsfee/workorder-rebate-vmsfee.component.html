@@ -1,0 +1,131 @@
+<form [formGroup]="inputFormGroup">
+  <div class="form-group">
+    <div class="col-lg-10">
+      <h4>Rebate and VMS Fee</h4>
+    </div>
+  </div>
+  <div class="form-group">
+    <phx-form-control [control]="inputFormGroup.controls.HasRebate" labelText="Rebate" [editable]="readOnlyStorage.IsEditable && checkPtFiledAccessibility('WorkOrderVersion','HasRebate')"
+      viewModeText="{{inputFormGroup.controls.HasRebate.value? 'Yes' : 'No'}}">
+      <fieldset [disabled]="!workorderLineOfBusinessId || !billingOraganizationId">
+        <label class="radio-inline">
+          <input class="form-check-input" name="HasRebate" type="radio" [value]="true" [checked]="inputFormGroup.controls.HasRebate.value"
+            [formControl]="inputFormGroup.controls.HasRebate">Yes</label>
+        <label class="radio-inline">
+          <input class="form-check-input" name="HasRebate" type="radio" [value]="false" [checked]="!inputFormGroup.controls.HasRebate.value"
+            [formControl]="inputFormGroup.controls.HasRebate">No</label>
+      </fieldset>
+    </phx-form-control>
+  </div>
+  <div *ngIf="inputFormGroup.controls.HasRebate.value">
+    <div class="form-group">
+      <phx-form-control [control]="inputFormGroup.controls.RebateHeaderId" labelText="Rate Selection"
+        [editable]="readOnlyStorage.IsEditable && checkPtFiledAccessibility('WorkOrderVersion','RebateHeaderId')"
+        viewModeText="{{inputFormGroup.controls.RebateHeaderId.value | lookupNoCache:html.commonLists.listavailableRebates:'headerId':'description' }}">
+        <app-phx-select-box [formControl]="inputFormGroup.controls.RebateHeaderId" [items]="html.commonLists.listavailableRebates"
+          textField="description" valueField="headerId">
+        </app-phx-select-box>
+      </phx-form-control>
+    </div>
+    <div class="form-group">
+      <phx-form-control [control]="inputFormGroup.controls.RebateTypeId" labelText="Rebate Type" [editable]="true"
+        viewModeText="">
+        <div *ngIf="!inputFormGroup.controls.RebateHeaderId.value && (readOnlyStorage.IsEditable && checkPtFiledAccessibility('WorkOrderVersion','RebateTypeId'))">
+          <app-phx-select-box [formControl]="inputFormGroup.controls.RebateTypeId" [items]="html.codeValueLists.listRebateTypes"
+            textField="text" valueField="id">
+          </app-phx-select-box>
+        </div>
+        <div class="form-control-static" *ngIf="inputFormGroup.controls.RebateHeaderId.value">
+            {{getRebateType(html.commonLists.listavailableRebates, inputFormGroup.controls.RebateHeaderId.value)}}
+        </div>
+      </phx-form-control>
+    </div>
+    <div class="form-group">
+      <div>
+        <phx-form-control [control]="inputFormGroup.controls.RebateRate" labelText="Rebate Rate" [editable]="true">
+          <div class="input-group" *ngIf="!inputFormGroup.controls.RebateHeaderId.value &&
+          (inputFormGroup.controls.RebateTypeId.value == phxConstants.RebateType.Percentage) &&
+          (readOnlyStorage.IsEditable && checkPtFiledAccessibility('WorkOrderVersion','RebateRate'))">
+            <input [formControl]="inputFormGroup.controls.RebateRate" type="text" class="form-control" />
+            <span class="input-group-addon">
+              <b>%</b>
+            </span>
+          </div>
+          <div class="input-group" *ngIf="!inputFormGroup.controls.RebateHeaderId.value && 
+          (inputFormGroup.controls.RebateTypeId.value == phxConstants.RebateType.Amount) &&
+          (readOnlyStorage.IsEditable && checkPtFiledAccessibility('WorkOrderVersion','RebateRate'))">
+            <span class="input-group-addon rebate-addon">
+              <b>$</b>
+            </span>
+            <input [formControl]="inputFormGroup.controls.RebateRate" type="text" class="form-control" />
+          </div>
+          <div class="form-control-static" *ngIf="inputFormGroup.controls.RebateHeaderId.value">
+            <div>{{getRebateOrVmsFeeRate(html.commonLists.listavailableRebates,
+              inputFormGroup.controls.RebateHeaderId.value)}}</div>
+          </div>
+        </phx-form-control>
+      </div>
+    </div>
+  </div>
+  <div class="form-group">
+    <phx-form-control [control]="inputFormGroup.controls.HasVmsFee" labelText="VMS Fee" viewModeText="{{inputFormGroup.controls.HasRebate.value? 'Yes' : 'No'}}"
+    [editable]="readOnlyStorage.IsEditable && checkPtFiledAccessibility('WorkOrderVersion','HasVmsFee')">
+      <fieldset [disabled]="!workorderLineOfBusinessId || !billingOraganizationId">
+        <label class="radio-inline">
+          <input class="form-check-input" name="HasVmsFee" type="radio" [value]="true" [checked]="inputFormGroup.controls.HasVmsFee.value"
+            [formControl]="inputFormGroup.controls.HasVmsFee">Yes</label>
+        <label class="radio-inline">
+          <input class="form-check-input" name="HasVmsFee" type="radio" [value]="false" [checked]="!inputFormGroup.controls.HasVmsFee.value"
+            [formControl]="inputFormGroup.controls.HasVmsFee">No</label>
+      </fieldset>
+    </phx-form-control>
+  </div>
+  <div *ngIf="inputFormGroup.controls.HasVmsFee.value">
+    <div class="form-group">
+      <phx-form-control [control]="inputFormGroup.controls.VmsFeeHeaderId" labelText="VMS Fee Selection"
+        [editable]="readOnlyStorage.IsEditable && checkPtFiledAccessibility('WorkOrderVersion','VmsFeeHeaderId')"
+        viewModeText="{{inputFormGroup.controls.VmsFeeHeaderId.value | lookupNoCache:html.commonLists.listavailableVmsFees:'headerId':'description' }}">
+        <app-phx-select-box [formControl]="inputFormGroup.controls.VmsFeeHeaderId" [items]="html.commonLists.listavailableVmsFees"
+          textField="description" valueField="headerId">
+        </app-phx-select-box>
+      </phx-form-control>
+    </div>
+    <!-- [editable]="readOnlyStorage.IsEditable && checkPtFiledAccessibility('WorkOrderVersion','VmsFeeTypeId')" -->
+    <div class="form-group">
+      <phx-form-control [control]="inputFormGroup.controls.VmsFeeTypeId" labelText="VMS Fee Type" [editable]="true"
+        viewModeText="">
+        <div class="form-control-static" *ngIf="!inputFormGroup.controls.VmsFeeHeaderId.value && (readOnlyStorage.IsEditable && checkPtFiledAccessibility('WorkOrderVersion','VmsFeeTypeId'))">
+          <app-phx-select-box [formControl]="inputFormGroup.controls.VmsFeeTypeId" [items]="html.codeValueLists.listRebateTypes"
+            textField="text" valueField="id">
+          </app-phx-select-box>
+        </div>
+        <div class="form-control-static" *ngIf="inputFormGroup.controls.VmsFeeHeaderId.value">
+          {{getRebateType(html.commonLists.listavailableRebates, inputFormGroup.controls.VmsFeeHeaderId.value)}}
+        </div>
+      </phx-form-control>
+    </div> 
+    <div class="form-group">
+      <phx-form-control [control]="inputFormGroup.controls.VmsFeeRate" labelText="VMS Fee Rate" [editable]="true">
+        <div class="input-group" *ngIf="!inputFormGroup.controls.VmsFeeHeaderId.value &&
+              (inputFormGroup.controls.VmsFeeTypeId.value == phxConstants.RebateType.Percentage) &&
+              (readOnlyStorage.IsEditable && checkPtFiledAccessibility('WorkOrderVersion','VmsFeeRate'))">
+          <input [formControl]="inputFormGroup.controls.VmsFeeRate" type="text" class="form-control" />
+          <span class="input-group-addon">
+            <b>%</b>
+          </span>
+        </div>
+        <div class="input-group" *ngIf="!inputFormGroup.controls.VmsFeeHeaderId.value && 
+              (inputFormGroup.controls.VmsFeeTypeId.value == phxConstants.RebateType.Amount) &&
+              (readOnlyStorage.IsEditable && checkPtFiledAccessibility('WorkOrderVersion','VmsFeeRate'))">
+          <span class="input-group-addon rebate-addon">
+            <b>$</b>
+          </span>
+          <input [formControl]="inputFormGroup.controls.VmsFeeRate" type="text" class="form-control" />
+        </div>
+        <div class="form-control-static" *ngIf="inputFormGroup.controls.VmsFeeHeaderId.value">
+          {{getRebateOrVmsFeeRate(html.commonLists.listavailableVmsFees,inputFormGroup.controls.VmsFeeHeaderId.value)}}
+        </div>
+      </phx-form-control>
+    </div>
+  </div>
+</form>

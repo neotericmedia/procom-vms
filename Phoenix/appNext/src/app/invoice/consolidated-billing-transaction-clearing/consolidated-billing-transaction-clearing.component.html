@@ -1,0 +1,43 @@
+<div class="form-horizontal">
+  <div class="row">
+    <div class="col-md-6">
+      <phx-form-control labelText="Client" name="Client">
+        <app-phx-select-box-badge #clientsSelectBox [items]="clients" textField="ClientLegalName" badgeField="Count" [value]="selectedClient">
+        </app-phx-select-box-badge>
+      </phx-form-control>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <phx-form-control labelText="Currency" name="Currency">
+        <app-phx-select-box-badge #currencySelectBox [items]="(clientsSelectBox.value || {Currencies:[]}).Currencies" textField="CurrencyCode"
+          badgeField="Count" valueField="CurrencyId" [value]="selectedCurrency">
+        </app-phx-select-box-badge>
+      </phx-form-control>
+    </div>
+  </div>
+</div>
+<app-billing-transaction #grid (selectionChanged)="onSelectionChanged($event)" [invoicePresentationStyle]="BillingInvoicePresentationStyle?.Consolidated"
+  [organizationIdInternal]="organizationIdInternal" [clientId]="(clientsSelectBox.value || {ClientId:0}).ClientId" [currencyId]="currencySelectBox.value"></app-billing-transaction>
+<app-phx-validation-messages [messages]="validationMessages">
+</app-phx-validation-messages>
+<div class="row toolbar">
+  <div class="col-md-6">
+    <div *ngIf="selectedRowKeys.length > 0">
+      <span class="total-label">Number Of Selected Rows </span>
+      <span class="total-value">{{selectedRowKeys.length}}</span>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="btn-toolbar pull-right">
+      <button type="button" class="btn btn-primary pull-right" [disabled]="selectedRowKeys.length === 0" (click)="createInvoiceAndStay()"
+        title="Create Invoice">Create Invoice</button>
+      <button type="button" class="btn btn-default pull-right" [disabled]="selectedRowKeys.length === 0" (click)="createAndReviewInvoice()"
+        title="Create and Review Invoice">Create and Review Invoice</button>
+      <button type="button" class="btn btn-default pull-right" [disabled]="selectedRowKeys.length === 0" (click)="executeBatchCommand(batchActions.SuppressTransaction)"
+        title="Suppress">Suppress</button>
+      <button type="button" class="btn btn-default pull-right" [disabled]="selectedRowKeys.length === 0" (click)="executeBatchCommand(batchActions.ChangeToSingle)"
+        title="Suppress">Change to Single</button>
+    </div>
+  </div>
+</div>

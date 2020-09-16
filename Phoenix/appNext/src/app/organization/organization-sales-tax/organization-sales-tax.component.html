@@ -1,0 +1,28 @@
+<form [formGroup]="inputFormGroup" *ngIf="readOnlyStorage && inputFormGroup">
+  <div class="panel-organization-tax-number">
+    <div class="form-group">
+      <div class="tax-type">
+        <phx-form-control labelText="Type" [editable]="readOnlyStorage.IsEditable && editable" [control]="inputFormGroup.controls.SalesTaxId"
+          viewModeText="{{inputFormGroup.controls.SalesTaxId.value | lookupNoCache:listTaxTypes:'id':'text'}}">
+          <app-phx-select-box [items]="listTaxTypes | filterSelectChoicesByUsage: selectedValues.value:inputFormGroup.value:'SalesTaxId': 'id' : 'text'"
+            textField="text" valueField="id" [formControl]="inputFormGroup.controls.SalesTaxId">
+          </app-phx-select-box>
+        </phx-form-control>
+      </div>
+    </div>
+    <div class="form-group">
+      <phx-form-control [control]="inputFormGroup.controls.SalesTaxNumber" [editable]="readOnlyStorage.IsEditable && editable" 
+        labelText="Number" viewModeText="{{inputFormGroup.controls.SalesTaxNumber.value}}">
+        <input formControlName="SalesTaxNumber" type="text" class="form-control" />
+      </phx-form-control>
+    </div>
+    <div class="form-group">
+      <phx-form-control>
+        <button type="button" class="btn btn-default btn-material right pull-right"
+        *ngIf="readOnlyStorage.IsEditable && editable" (click)="onClickDeleteSalesTax()">
+          <i class="material-icons">delete</i>
+        </button>
+      </phx-form-control>
+    </div>
+  </div>
+</form>

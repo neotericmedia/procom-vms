@@ -1,0 +1,39 @@
+<app-phx-panel headerTitle="Client Specific Fields">
+  <div *ngIf="formGroup" class="form-horizontal">
+    <form [formGroup]="formGroup">
+      <div *ngFor="let field of fields">
+        <div [ngSwitch]="field.FieldType">
+          <div *ngSwitchCase="'Textbox'">
+            <phx-form-control [control]="formGroup.controls[field.FieldName]" [labelText]="field.DisplayName" [editable]="editable" [viewModeText]="field.FieldValue">
+              <dx-text-box [formControlName]="field.FieldName" [(ngModel)]="formData[field.FieldName]" valueChangeEvent="keyup" (onFocusOut)="trimText(field.FieldName)"
+                [maxLength]="500"></dx-text-box>
+              <div class="error-inline" *ngIf="formGroup.controls[field.FieldName].invalid">
+                <span *ngIf="formGroup.controls[field.FieldName].errors.pattern">{{field.ValidationMessage}}</span>
+              </div>
+            </phx-form-control>
+          </div>
+          <div *ngSwitchCase="'DecimalNumber'">
+            <phx-form-control [control]="formGroup.controls[field.FieldName]" [labelText]="field.DisplayName" [editable]="editable" [viewModeText]="field.FieldValue| number : '1.2-2'">
+              <dx-number-box [formControlName]="field.FieldName" [(ngModel)]="formData[field.FieldName]" [min]="-9999999999999998" [max]="9999999999999998"
+                [step]="0" format="#,##0.00" valueChangeEvent="keyup"></dx-number-box>
+              <div class="error-inline" *ngIf="formGroup.controls[field.FieldName].invalid">
+                <span *ngIf="formGroup.controls[field.FieldName].errors.pattern">{{field.ValidationMessage}}</span>
+              </div>
+            </phx-form-control>
+          </div>
+          <div *ngSwitchCase="'Dropdown'">
+            <phx-form-control [control]="formGroup.controls[field.FieldName]" [labelText]="field.DisplayName" [editable]="editable" [viewModeText]="field.FieldValue">
+              <app-phx-select-box [formControlName]="field.FieldName" [items]="field.SelectValueArray" placeholder="-- select one --" [value]="formData[field.FieldName]"
+                (valueChanged)="onDropdownSelectValueChanged($event.value, field.FieldName)"></app-phx-select-box>
+            </phx-form-control>
+          </div>
+          <div *ngSwitchCase="'Datepicker'">
+            <phx-form-control [control]="formGroup.controls[field.FieldName]" [labelText]="field.DisplayName" [editable]="editable" [viewModeText]="field.FieldValue | date:dateDisplayFormat">
+              <dx-date-box [formControlName]="field.FieldName" type="date" [(ngModel)]="formData[field.FieldName]" [dateSerializationFormat]="dateSerializationFormat"></dx-date-box>
+            </phx-form-control>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</app-phx-panel>

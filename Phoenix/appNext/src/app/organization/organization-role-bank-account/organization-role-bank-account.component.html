@@ -1,0 +1,87 @@
+<div [formGroup]="inputFormGroup" class="panel panel-internal panel-internal-bank-accounts row">
+  <div class="col-lg-6 no-padding-h">
+    <phx-form-control [showValidationMessages]="false" [control]="inputFormGroup.controls.BankName" labelText="Bank Name" 
+    [editable]="isEditable"
+      viewModeText="{{ inputFormGroup.controls.BankName.value }}">
+      <input type="text" class="form-control" formControlName="BankName" />
+    </phx-form-control>
+    
+    <phx-form-control [showValidationMessages]="false" [control]="inputFormGroup.controls.Description" labelText="Description"
+      [editable]="isEditable" viewModeText="{{ inputFormGroup.controls.Description.value }}">
+      <input type="text" class="form-control" formControlName="Description" />
+    </phx-form-control>
+    
+    <phx-form-control [showValidationMessages]="false" [control]="inputFormGroup.controls.GLAccount" labelText="GL Account" [editable]="isEditable"
+      viewModeText="{{ inputFormGroup.controls.GLAccount.value }}">
+      <input type="text" class="form-control" formControlName="GLAccount" />
+    </phx-form-control>
+  
+    <phx-form-control [control]="inputFormGroup.controls.CurrencyId" labelText="Currency" 
+    [editable]="isEditable" 
+    viewModeText="{{inputFormGroup.controls.CurrencyId.value | CodeValue:codeValueGroups.Currency:'code'}} - 
+    {{inputFormGroup.controls.CurrencyId.value | CodeValue:codeValueGroups.Currency:'text'}}">
+      <app-phx-select-box [items]="html.codeValueLists.listCurrency" 
+      textField="text" valueField="id" 
+      [formControl]="inputFormGroup.controls.CurrencyId">
+      </app-phx-select-box>
+    </phx-form-control>
+
+    <phx-form-control [showValidationMessages]="false" [control]="inputFormGroup.controls.Transit" labelText="Transit" [editable]="isEditable"
+      viewModeText="{{ inputFormGroup.controls.Transit.value }}">
+      <input type="text" class="form-control" formControlName="Transit" />
+    </phx-form-control>
+
+    <phx-form-control [showValidationMessages]="false" [control]="inputFormGroup.controls.AccountNo" labelText="Account #" [editable]="isEditable"
+      viewModeText="{{ inputFormGroup.controls.AccountNo.value }}">
+      <input type="text" class="form-control" formControlName="AccountNo" />
+    </phx-form-control>
+  </div>
+  <div class="col-lg-6 no pagging-h">
+
+    <phx-form-control>
+      <button type="button" class="btn btn-default action-button" *ngIf="!isPrimaryBankAccount && canPrimaryAccountButtonEnabled" 
+      (click)="onClickMakePrimaryAccount()" >Make Primary</button>
+      <strong *ngIf="isPrimaryBankAccount" >Primary Bank Account</strong>
+    </phx-form-control>
+
+    <phx-form-control [control]="inputFormGroup.controls.OrganizationBankStatusId" labelText="Status" 
+    [editable]="isEditable" 
+    viewModeText="{{inputFormGroup.controls.OrganizationBankStatusId.value | CodeValue: codeValueGroups?.OrganizationBankStatus}}">
+      <app-phx-select-box [items]="html.codeValueLists.listAccountStatus" 
+      textField="text" valueField="id" 
+      [formControl]="inputFormGroup.controls.OrganizationBankStatusId">
+      </app-phx-select-box>
+    </phx-form-control>
+
+    <phx-form-control name="NextChequeNumber" labelText="Next Cheque" [editable]="false" 
+      viewModeText="{{inputFormGroup.controls.NextChequeNumber.value}}">
+    </phx-form-control>
+
+    <phx-form-control name="NextDirectDepositBatchNumber" labelText="Next Direct Deposit Batch Number" [editable]="false" 
+      viewModeText="{{inputFormGroup.controls.NextDirectDepositBatchNumber.value}}">
+    </phx-form-control>
+
+    <phx-form-control name="NextWireTransferBatchNumber" labelText="Next Wire Transfer Batch Number" [editable]="false" 
+      viewModeText="{{inputFormGroup.controls.NextWireTransferBatchNumber.value}}">
+    </phx-form-control>
+
+    <phx-form-control [showValidationMessages]="false" [control]="inputFormGroup.controls.AccountId" labelText="Account ID" [editable]="isEditable"
+      viewModeText="{{ inputFormGroup.controls.AccountId.value }}">
+      <input type="text" class="form-control" formControlName="AccountId" />
+    </phx-form-control>
+
+    <phx-form-control [control]="inputFormGroup.controls.OrganizationBankSignatureId" labelText="Signature" 
+    [editable]="isEditable" 
+    viewModeText="{{inputFormGroup.controls.OrganizationBankSignatureId.value | CodeValue:codeValueGroups?.OrganizationBankSignature}}">
+      <app-phx-select-box [items]="html.codeValueLists.AccountSignature" 
+      textField="text" valueField="id" 
+      [formControl]="inputFormGroup.controls.OrganizationBankSignatureId">
+      </app-phx-select-box>
+    </phx-form-control>
+    
+    <button type="button" (click)="onClickDeleteAccount()" *ngIf="isEditable" style="margin-right: -10px;" class="btn btn-material btn-default pull-right">
+      <i class="material-icons">delete</i>
+    </button>
+
+  </div>
+</div>

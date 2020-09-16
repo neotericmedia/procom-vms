@@ -1,0 +1,76 @@
+<div class="row">
+  <div class="col-xs-10 col-xs-push-1 col-sm-4 col-sm-push-1 pp-outer-container">
+    <div class="pp-container circle" [ngClass]="{'pp-empty-img-container':imageUrl==''}">
+      <div class="pp-empty-img" *ngIf="imageUrl==''" (click)="inputImage.click()">
+        <span>{{'account.picture.chooseAnImage' | phxTranslate}}</span>
+      </div>
+      <angular-cropper #angularCropper [cropperOptions]="config" [imageUrl]="imageUrl" *ngIf="imageUrl!=''"></angular-cropper>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-sm-6">
+    <div class="docs-preview clearfix" [ngClass]="{'img-preview-empty':imageUrl==''}">
+      <div class="img-preview preview-lg">
+        <img src="{{imageUrl}}">
+      </div>
+      <div class="img-preview preview-md">
+        <img src="{{imageUrl}}">
+      </div>
+      <div class="img-preview preview-sm">
+        <img src="{{imageUrl}}">
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-sm-6 btn-grp-container" [ngClass]="{'img-empty':imageUrl==''}">
+    <div class="btn-group">
+      <label class="btn btn-default btn-material btn-upload" for="inputImage" title="{{'account.picture.uploadImageFile' | phxTranslate}}">
+        <input type="file" class="sr-only" id="inputImage" #inputImage name="file" accept=".jpg,.jpeg,.png,.gif,.bmp,.tiff" (change)="changeImage($event)">
+        <i class="material-icons">
+          file_upload
+        </i>
+      </label>
+      <button type="button" class="btn btn-default btn-material" title="{{'account.picture.reset' | phxTranslate}}" (click)="reset()">
+        <i class="material-icons">
+          restore
+        </i>
+      </button>
+      <button type="button" class="btn btn-default btn-material" title="{{'account.picture.delete' | phxTranslate}}" (click)="delete()">
+        <i class="material-icons">
+          delete_forever</i>
+      </button>
+    </div>
+    <div class="btn-group">
+      <button type="button" class="btn btn-default btn-material" title="{{'account.picture.zoomIn' | phxTranslate}}" (click)="zoom(0.1)">
+        <i class="material-icons">
+          zoom_in
+        </i>
+      </button>
+      <button type="button" class="btn btn-default btn-material" title="{{'account.picture.zoomOut' | phxTranslate}}" (click)="zoom(-0.1)">
+        <i class="material-icons">
+          zoom_out
+        </i>
+      </button>
+    </div>
+    <div class="btn-group">
+      <button type="button" class="btn btn-default btn-material" title="{{'account.picture.rotateLeft' | phxTranslate}}" (click)="rotate(-45)">
+        <i class="material-icons">
+          rotate_left
+        </i>
+      </button>
+      <button type="button" class="btn btn-default btn-material" title="{{'account.picture.rotateRight' | phxTranslate}}" (click)="rotate(45)">
+        <i class="material-icons">
+          rotate_right
+        </i>
+      </button>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="btn-row col-sm-6" [ngClass]="{'img-empty-img-btn':imageUrl==''}">
+    <button class="btn btn-primary" (click)="save()" [disabled]="!imageUrl&&!docPublicId">{{'common.generic.save' | phxTranslate}}</button>
+    <button class="btn btn-default" (click)="cancel()">{{'common.generic.cancel' | phxTranslate}}</button>
+  </div>
+</div>

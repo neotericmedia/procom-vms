@@ -1,0 +1,120 @@
+<div class="page-content organization" *ngIf="workOrder && rootFormGroup">
+  <div class="organization-wrap">
+    <div class="row organization-workflow-buttons-row-spacer">
+      <app-phx-state-action-buttons displayType="DROPDOWN" [stateActions]="stateActions" [availableStateActions]="workOrder.combinedAvailableStateActions"></app-phx-state-action-buttons>
+    </div>
+    <div class="row">
+      <div class="col-lg-10">
+        <div class="row">
+          <app-workorder-header [workOrder]="workOrder"></app-workorder-header>
+        </div>
+        <div class="row">
+          <app-phx-navigation-bar [navigationBarContent]="this.html.navigationBarContent" [url]="routerState.url" *ngIf="this.html.navigationBarContent"></app-phx-navigation-bar>
+        </div>
+        <div class="row">
+          <app-workorder-tab-core *ngIf="routerState.routerPath===html.phxConstants.WorkorderNavigationName.core"
+            [inputFormGroup]="rootFormGroup.controls.TabCore" [readOnlyStorage]="readOnlyStorage" (outputEvent)="onOutputEvent($event)"></app-workorder-tab-core>
+          <app-workorder-tab-parties *ngIf="routerState.routerPath===html.phxConstants.WorkorderNavigationName.parties"
+            [inputFormGroup]="rootFormGroup.controls.TabParties" [readOnlyStorage]="readOnlyStorage" (outputEvent)="onOutputEvent($event)"></app-workorder-tab-parties>
+          <app-workorder-tab-time-material *ngIf="routerState.routerPath===html.phxConstants.WorkorderNavigationName.timematerialinvoice"
+            [inputFormGroup]="rootFormGroup.controls.TabTimeMaterialInvoice" [readOnlyStorage]="readOnlyStorage"
+            (outputEvent)="onOutputEvent($event)"></app-workorder-tab-time-material>
+          <app-workorder-tab-expense-invoice *ngIf="routerState.routerPath===html.phxConstants.WorkorderNavigationName.expensemanagement"
+            [inputFormGroup]="rootFormGroup.controls.TabExpenseInvoice" [readOnlyStorage]="readOnlyStorage"
+            (outputEvent)="onOutputEvent($event)"></app-workorder-tab-expense-invoice>
+          <ng-container *ngIf="routerState.routerPath===html.phxConstants.WorkorderNavigationName.purchaseorder && showTemplate">
+            Purchase Order not available in template mode
+          </ng-container>
+          <app-workorder-tab-purchase-order *ngIf="routerState.routerPath===html.phxConstants.WorkorderNavigationName.purchaseorder && !showTemplate"
+            [workOrderId]="workOrder.WorkOrderId" (outputEvent)="onOutputEvent($event)"></app-workorder-tab-purchase-order>
+          <app-workorder-tab-earnings-deductions *ngIf="routerState.routerPath===html.phxConstants.WorkorderNavigationName.earningsanddeductions"
+            [inputFormGroup]="rootFormGroup.controls.TabEarningsAndDeductions" [readOnlyStorage]="readOnlyStorage"
+            (outputEvent)="onOutputEvent($event)"></app-workorder-tab-earnings-deductions>
+          <app-workorder-tab-taxes *ngIf="routerState.routerPath===html.phxConstants.WorkorderNavigationName.taxes"
+            [inputFormGroup]="rootFormGroup.controls.TabTaxes" [readOnlyStorage]="readOnlyStorage" (outputEvent)="onOutputEvent($event)"></app-workorder-tab-taxes>
+          <app-workorder-tab-documents *ngIf="routerState.routerPath===html.phxConstants.WorkorderNavigationName.compliancedocuments"
+            (outputEvent)="onOutputEvent($event)"></app-workorder-tab-documents>
+          <app-client-specific-fields *ngIf="routerState.routerPath===html.phxConstants.WorkorderNavigationName.clientspecificfields"
+            [entityTypeId]="html.phxConstants.EntityType.WorkOrderVersion" [entityId]="routerParams.versionId"
+            [clientId]="workOrder.WorkOrderVersion.BillingInfoes[0].OrganizationIdClient" [editable]="readOnlyStorage.IsEditable"
+            (formValueChanged)="onChangeClientSpecificFields($event)">
+          </app-client-specific-fields>
+          <app-workorder-tab-activity *ngIf="routerState.routerPath===html.phxConstants.WorkorderNavigationName.activity"
+            (outputEvent)="onOutputEvent($event)"></app-workorder-tab-activity>
+        </div>
+        <div class="row panel-footer">
+          <div class="row form-horizontal">
+            <div class="col-md-5">
+              <phx-form-control [control]="rootFormGroup.controls.EffectiveDate" [editable]="readOnlyStorage.IsEditable && checkPtFiledAccessibility('WorkOrderVersion','EffectiveDate')"
+                labelText="Effective Date" viewModeText="{{workOrder.WorkOrderVersion.StatusId == html.phxConstants.WorkOrderVersionStatus.Approved 
+                ? (rootFormGroup.controls.EffectiveDate.value | date: html.phxConstants.DateFormat.mediumDate) + ' - ' + (effectiveToDate|date:html.phxConstants.DateFormat.mediumDate)
+                : rootFormGroup.controls.EffectiveDate.value | date: html.phxConstants.DateFormat.mediumDate}}">
+                <app-phx-date-box type="date" (onValueChanged)="onEffectiveDateValueChanged()" [displayFormat]="html.phxConstants.DateFormat.MMM_dd_yyyy"
+                  [formControl]="rootFormGroup.controls.EffectiveDate"></app-phx-date-box>
+              </phx-form-control>
+            </div>
+            <div class="col-md-7">
+              <app-phx-state-action-buttons [stateActions]="stateActions" [availableStateActions]="workOrder.combinedAvailableStateActions"></app-phx-state-action-buttons>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="html.validationMessages.length > 0 && !showTemplate" class="alert alert-danger alert-dismissable error-box">
+          <div *ngFor="let message of html.validationMessages">
+            <div>
+              {{message}}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-2 ng-scope" *ngIf="!showTemplate">
+        <div class="version-panel ng-scope">
+          <div class="assignment-workorders">
+            <app-phx-note-header [entityId]="workOrder.WorkOrderId" *ngIf="workOrder.WorkOrderId" (navigateToNote)="onNotesHeaderClicked($event)"
+              [entityTypeId]="html.phxConstants.EntityType.WorkOrder">
+            </app-phx-note-header>
+            <div>
+              <div class="assignment-workorders-header">
+                <span class="bold ng-binding" *ngIf="workOrder.WorkOrderId">Work Order:&nbsp;{{workOrder.AssignmentId}}</span>
+              </div>
+              <div class="workorders-selection">
+                <app-phx-select-box [items]="html.list.workOrders" textField="text" [ngModel]="selectedCounter"
+                  valueField="counter" searchable="true" (valueChanged)="onWorkorderChange($event)">
+                </app-phx-select-box>
+              </div>
+            </div>
+            <div class="assignment-workorder-item" [ngClass]="workOrder.Id===routerParams.workOrderId?'active':''">
+              <div class="workorder-item bold">
+                <div>
+                  {{workOrder.StartDate | date: html.phxConstants.DateFormat.mediumDate}} - {{workOrder.EndDate | date:
+                  html.phxConstants.DateFormat.mediumDate}}
+                </div>
+              </div>
+              <div class="workorder-version-item" *ngFor="let version of html.versionsOrdered" [ngClass]="version.Id===this.workOrder.WorkOrderVersion.Id?'active':''"
+                (click)="onVersionClick(version)" title="{{routerParams.workOrderId}}.{{workOrder.WorkOrderVersion.WorkOrderNumber}}.{{workOrder.WorkOrderVersion.VersionNumber}} - {{version.EffectiveDate | date: html.phxConstants.DateFormat.mediumDate}}">
+                <div>
+                  <span class="small-text">Version:&nbsp;</span>
+                  <span class="bold">{{version.VersionNumber}}</span>
+                </div>
+                <div>
+                  <span class="small-text">Effective Date:&nbsp;</span>
+                  {{(workOrder.StartDate ? workOrder.StartDate : version.EffectiveDate) | date: html.phxConstants.DateFormat.mediumDate}}
+                </div>
+                <div class="ellipsis-field">
+                  <span [ngClass]="version.StatusId===html.phxConstants.WorkOrderVersionStatus.Approved?'text-warning':''">
+                    <span class="small-text">Status:&nbsp;</span>{{version.StatusId |
+                    lookupNoCache:html.list.workOrderVersionStatuses}}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="form-group" *ngIf="!showTemplate">
+      <div class="col-lg-12">
+        <app-workorder-workflow #workFlow (commandValidation)="setValidationMessages($event)"></app-workorder-workflow>
+      </div>
+    </div>
+  </div>
+</div>

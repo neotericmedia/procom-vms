@@ -1,0 +1,31 @@
+﻿<div class="modal-content" data-ng-form="formPaymentMethodBatchDialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <span class="modal-title">{{data.title}}</span>
+            <div class="btn pull-right paymentBatchClose" data-ng-click="cancel()"><i class="fontello-icon-cancel-circle"></i></div>
+        </div>
+        <div class="modal-body">
+            <div class="content-group form-horizontal">
+                <div class="form-group col-lg-12" style="margin-top:24px;">
+                    <label for-property="PaymentMethodId" for="PaymentMethodId" model-property="data.paymentMethodId" class="control-label col-lg-4 label-to-right req-lab-right" data-original-title="" title="">Payment Method</label>
+                    <div class="input-group select2-bootstrap-append col-lg-6" style="padding-left:10px;">
+                        <ui-select name="PaymentMethodId" data-ng-model="data.paymentMethodId" theme="select2" class="form-control" required>
+                            <ui-select-match placeholder="Select Payment Method">{{$select.selected.text}}</ui-select-match>
+                            <ui-select-choices repeat="item.id as item in paymentMethods | uiSelectChoicesFilter: $select.search: 'text': 'id'">
+                                <span data-ng-bind-html="item.text | highlight: $select.search"></span>
+                            </ui-select-choices>
+                        </ui-select>
+                        <span class="input-group-btn">
+                            <button tabindex="-1" data-ng-click="data.paymentMethodId=undefined;" class="btn btn-default"><i class="material-icons md-18">clear</i></button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" ng-click="cancel()">Cancel</button>
+            <button type="button" class="btn btn-primary" ng-click="submit()" data-ng-disabled="!formPaymentMethodBatchDialog.$valid">Submit</button>
+
+        </div>
+    </div>
+</div>

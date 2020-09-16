@@ -1,0 +1,275 @@
+<form [formGroup]="formGarnishee" *ngIf="formGarnishee">
+  <div class="col-lg-12 garnishee-info">
+    <div class="col-lg-12 garnishee-details" *ngIf="canShow">
+      <div class="panel-heading garnishee-view-header">
+        <div class="row">
+          <h3 class="panel-title">Garnishee Details</h3>
+        </div>
+      </div>
+      <div class="panel-body garnishee-view-body">
+        <div class="row">
+          <div class="form-horizontal">
+            <div class="form-group">
+              <phx-form-control labelText="Internal Company" [editable]="true" [control]="formGarnishee.controls.OrganizationIdInternal"
+                viewModeText="{{formGarnishee.controls.OrganizationIdInternal.value}}">
+                <div class="col-md-8 padding-0">
+                  <app-phx-select-box [items]="listInternalOrganization" textField="DisplayValue" valueField="Id"
+                    [formControl]="formGarnishee.controls.OrganizationIdInternal" placeholder="-- Select One --">
+                  </app-phx-select-box>
+                </div>
+              </phx-form-control>
+            </div>
+            <div class="form-group">
+              <phx-form-control labelText="Issue Date" [editable]="true" [control]="formGarnishee.controls.IssueDate"
+                viewModeText="{{formGarnishee.controls.IssueDate.value | date:phxConstants.DateFormat.mediumDate}}">
+                <div class="col-md-8 padding-0">
+                  <app-phx-date-box type="date" [formControl]="formGarnishee.controls.IssueDate" [displayFormat]="phxConstants.DateFormat.MMM_dd_yyyy"
+                    placeholder="Issue Date">
+                  </app-phx-date-box>
+                </div>
+              </phx-form-control>
+            </div>
+            <div class="form-group">
+              <phx-form-control [control]="formGarnishee.controls.CurrencyId" [editable]="true" labelText="Currency"
+                viewModeText="{{formGarnishee.controls.CurrencyId.value | CodeValue:codeValueGroups.Currency }}">
+                <div class="col-md-8 padding-0">
+                  <app-phx-select-box [formControl]="formGarnishee.controls.CurrencyId" [items]="listCurrency"
+                    textField="text" valueField="id" placeholder="-- Select One --">
+                  </app-phx-select-box>
+                </div>
+              </phx-form-control>
+            </div>
+            <div class="form-group">
+              <phx-form-control [control]="formGarnishee.controls.PayTypeIsAmount" [editable]="true" labelText="Payback Type"
+                viewModeText="{{formGarnishee.controls.PayTypeIsAmount.value}}">
+                <label class="radio-inline">
+                  <input class="form-check-input" type="radio" [value]="true" [checked]="formGarnishee.controls.PayTypeIsAmount.value"
+                    formControlName="PayTypeIsAmount" (change)="paybackTypeChanged(true)">Amount</label>
+                <label class="radio-inline">
+                  <input class="form-check-input" type="radio" [value]="false" [checked]="!formGarnishee.controls.PayTypeIsAmount.value"
+                    formControlName="PayTypeIsAmount" (change)="paybackTypeChanged(false)">Percentage</label>
+              </phx-form-control>
+            </div>
+            <div class="form-group" *ngIf="formGarnishee.controls.PayTypeIsAmount.value">
+              <phx-form-control [control]="formGarnishee.controls.PayAmount" [editable]="true" labelText="Garnish Amount"
+                viewModeText="{{formGarnishee.controls.PayAmount.value | phxPercentWithDecimals}}">
+                <div class="col-md-8 padding-0">
+                  <div class="input-group">
+                    <input formControlName="PayAmount" type="text" class="form-control" placeholder="Garnish Amount"
+                      phxFloatBetweenInput='{"from":0, "to":9999999.99, "decimalplaces":2}' />
+                    <span class="input-group-addon"><b>$</b></span>
+                  </div>
+                </div>
+              </phx-form-control>
+            </div>
+            <div class="form-group" *ngIf="!formGarnishee.controls.PayTypeIsAmount.value">
+              <phx-form-control [control]="formGarnishee.controls.PayPercentage" [editable]="true" labelText="Garnish Percentage"
+                viewModeText="{{formGarnishee.controls.PayPercentage.value | phxPercentWithDecimals}}">
+                <div class="col-md-8 padding-0">
+                  <div class="input-group">
+                    <input formControlName="PayPercentage" type="text" class="form-control" placeholder="Garnish Percentage"
+                      phxFloatBetweenInput='{"from":0, "to":100, "decimalplaces":4}' />
+                    <span class="input-group-addon"><b>%</b></span>
+                  </div>
+                </div>
+              </phx-form-control>
+            </div>
+            <div class="form-group">
+              <phx-form-control [control]="formGarnishee.controls.PayAmountIsMaximum" [editable]="true" labelText="Garnish Maximum"
+                viewModeText="{{formGarnishee.controls.PayAmountIsMaximum.value}}">
+                <label class="radio-inline">
+                  <input class="form-check-input" type="radio" [value]="true" [checked]="formGarnishee.controls.PayAmountIsMaximum.value"
+                    formControlName="PayAmountIsMaximum" (change)="amountTypeChanged(true)">Set Amount</label>
+                <label class="radio-inline">
+                  <input class="form-check-input" type="radio" [value]="false" [checked]="!formGarnishee.controls.PayAmountIsMaximum.value"
+                    formControlName="PayAmountIsMaximum" (change)="amountTypeChanged(false)">Unlimited</label>
+              </phx-form-control>
+            </div>
+            <div class="form-group" *ngIf="formGarnishee.controls.PayAmountIsMaximum.value">
+              <phx-form-control [control]="formGarnishee.controls.PayAmountMaximum" [editable]="true" labelText="Maximum Amount"
+                viewModeText="{{formGarnishee.controls.PayAmountMaximum.value | phxPercentWithDecimals}}">
+                <div class="col-md-8 padding-0">
+                  <div class="input-group">
+                    <input formControlName="PayAmountMaximum" type="text" class="form-control" placeholder="Maximum Amount"
+                      phxFloatBetweenInput='{"from":0, "to":9999999.99, "decimalplaces":2}' />
+                    <span class="input-group-addon"><b>$</b></span>
+                  </div>
+                </div>
+              </phx-form-control>
+            </div>
+            <div class="form-group garnishee-detail-text">
+              <phx-form-control [control]="formGarnishee.controls.Description" [editable]="true" labelText="Description"
+                viewModeText="{{formGarnishee.controls.Description.value}}">
+                <div class="col-md-8 padding-0">
+                  <div class="input-group">
+                    <input formControlName="Description" type="text" class="form-control" placeholder="Description" />
+                    <span class="input-group-addon"><b>T</b></span>
+                  </div>
+                </div>
+              </phx-form-control>
+            </div>
+            <div class="form-group garnishee-detail-text">
+              <phx-form-control [control]="formGarnishee.controls.ReferenceNumber" [editable]="true" labelText="Garnish Reference"
+                viewModeText="{{formGarnishee.controls.ReferenceNumber.value}}">
+                <div class="col-md-8 padding-0">
+                  <div class="input-group">
+                    <input formControlName="ReferenceNumber" type="text" class="form-control" placeholder="Garnish Reference" />
+                    <span class="input-group-addon"><b>T</b></span>
+                  </div>
+                </div>
+              </phx-form-control>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div [formGroup]="formGarnishee.controls.Payee" class="panel-heading garnishee-new-header garnishee-payee-header">
+        <div class="row">
+          <div class="col-xs-9">
+            <h3 class="panel-title">Payee Details</h3>
+          </div>
+          <div class="col-xs-3" *ngIf="!isNew">
+            <button class="btn btn-default pull-right" (click)="onClickPayee(true)">New</button>
+          </div>
+          <div class="col-xs-3" *ngIf="isNew">
+            <button class="btn btn-default pull-right" (click)="onClickPayee(false)">Discard</button>
+          </div>
+        </div>
+      </div>
+      <div class="panel-body garnishee-view-body">
+        <div class="row">
+          <div class="form-horizontal">
+            <div class="form-group" *ngIf="!isNew">
+              <phx-form-control labelText="Garnishee Type" [editable]="true" [control]="formGroupPayeeDetails().controls.PayToType"
+                viewModeText="{{formGroupPayeeDetails().controls.PayToType.value}}">
+                <div class="col-md-8 padding-0">
+                  <app-phx-select-box [items]="listGarnisheePayToList" textField="PayToDetails.PayToType" valueField="PayToId"
+                    [formControl]="formGarnishee.controls.Payee.controls.PayToId" (valueChanged)="onValueChanged($event)"
+                    placeholder="-- Select One --">
+                  </app-phx-select-box>
+                </div>
+              </phx-form-control>
+            </div>
+            <div class="form-group" *ngIf="isNew">
+              <phx-form-control labelText="Garnishee Type" [editable]="true" [control]="formGroupPayeeDetails().controls.PayToType"
+                viewModeText="{{formGroupPayeeDetails().controls.PayToType.value}}">
+                <div class="col-md-8 padding-0">
+                  <div class="input-group">
+                    <input [formControl]="formGroupPayeeDetails().controls.PayToType" type="text" class="form-control"
+                      placeholder="Garnishee Type" />
+                    <span class="input-group-addon"><b>T</b></span>
+                  </div>
+                </div>
+              </phx-form-control>
+            </div>
+            <div class="existing-garnishee-wrapper" [style.visibility]="isNew || !isPayeeEditable ? 'visible' : 'hidden'">
+              <div class="form-group">
+                <phx-form-control [control]="formGroupPayeeDetails().controls.PayToName" [editable]="isPayeeEditable"
+                  labelText="Payee" viewModeText="{{formGroupPayeeDetails().controls.PayToName.value}}">
+                  <div class="col-md-8 padding-0">
+                    <div class="input-group">
+                      <input [formControl]="formGroupPayeeDetails().controls.PayToName" type="text" class="form-control"
+                        placeholder="Payee" />
+                      <span class="input-group-addon"><b>T</b></span>
+                    </div>
+                  </div>
+                </phx-form-control>
+              </div>
+              <div class="form-group">
+                <phx-form-control [control]="formGroupPayeeDetails().controls.AddressLine1" [editable]="isPayeeEditable"
+                  labelText="Address 1" viewModeText="{{formGroupPayeeDetails().controls.AddressLine1.value}}">
+                  <div class="col-md-8 padding-0">
+                    <div class="input-group">
+                      <input [formControl]="formGroupPayeeDetails().controls.AddressLine1" type="text" class="form-control"
+                        placeholder="Address Line 1" />
+                      <span class="input-group-addon"><b>T</b></span>
+                    </div>
+                  </div>
+                </phx-form-control>
+              </div>
+              <div class="form-group" *ngIf="formGroupPayeeDetails().controls.AddressLine2.value || isPayeeEditable">
+                <phx-form-control [control]="formGroupPayeeDetails().controls.AddressLine2" [editable]="isPayeeEditable"
+                  labelText="Address 2" viewModeText="{{formGroupPayeeDetails().controls.AddressLine2.value}}">
+                  <div class="col-md-8 padding-0">
+                    <div class="input-group">
+                      <input [formControl]="formGroupPayeeDetails().controls.AddressLine2" type="text" class="form-control"
+                        placeholder="Address Line 2" />
+                      <span class="input-group-addon"><b>T</b></span>
+                    </div>
+                  </div>
+                </phx-form-control>
+              </div>
+              <div class="form-group">
+                <phx-form-control [control]="formGroupPayeeDetails().controls.CityName" [editable]="isPayeeEditable"
+                  labelText="City" viewModeText="{{formGroupPayeeDetails().controls.CityName.value}}">
+                  <div class="col-md-8 padding-0">
+                    <div class="input-group">
+                      <input [formControl]="formGroupPayeeDetails().controls.CityName" type="text" class="form-control"
+                        placeholder="City" />
+                      <span class="input-group-addon"><b>T</b></span>
+                    </div>
+                  </div>
+                </phx-form-control>
+              </div>
+              <div class="form-group">
+                <phx-form-control [control]="formGroupPayeeDetails().controls.CountryId" labelText="Country" [editable]="isPayeeEditable"
+                  viewModeText="{{formGroupPayeeDetails().controls.CountryId.value | CodeValue:codeValueGroups.Country}}">
+                  <div class="col-md-8 padding-0">
+                    <app-phx-select-box-code-value [formControl]="formGroupPayeeDetails().controls.CountryId"
+                      #addressCountry [groupName]="codeValueGroups.Country" sortByFieldName="text" placeholder="-- Select One --">
+                    </app-phx-select-box-code-value>
+                  </div>
+                </phx-form-control>
+              </div>
+              <div class="form-group">
+                <phx-form-control [control]="formGroupPayeeDetails().controls.SubdivisionId" labelText="Province/State"
+                  [editable]="isPayeeEditable" viewModeText="{{formGroupPayeeDetails().controls.SubdivisionId.value | CodeValue:codeValueGroups.Subdivision}}">
+                  <div class="col-md-8 padding-0">
+                    <app-phx-select-box-code-value [formControl]="formGroupPayeeDetails().controls.SubdivisionId"
+                      [groupName]="codeValueGroups.Subdivision" sortByFieldName="text" [relatedGroupName]="codeValueGroups.Country"
+                      [relatedValue]="addressCountry.value" placeholder="-- Select One --">
+                    </app-phx-select-box-code-value>
+                  </div>
+                </phx-form-control>
+              </div>
+              <div class="form-group">
+                <phx-form-control [control]="formGroupPayeeDetails().controls.PostalCode" [editable]="isPayeeEditable"
+                  labelText="Postal/Zip" viewModeText="{{formGroupPayeeDetails().controls.PostalCode.value}}">
+                  <div class="col-md-8 padding-0">
+                    <div class="input-group">
+                      <input [formControl]="formGroupPayeeDetails().controls.PostalCode" type="text" class="postal-code form-control"
+                        [textMask]="commonService.setMask(formGroupPayeeDetails().controls.CountryId.value)"
+                        placeholder="Postal/Zip" phxPostalZipCodeValid='{"countryId": {{formGroupPayeeDetails().controls.CountryId.value}}, "isRequired": true}' />
+                      <span class="input-group-addon"><b>T</b></span>
+                    </div>
+                  </div>
+                </phx-form-control>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div *ngIf="validationMessages.length > 0" class="alert alert-danger alert-dismissable error-box">
+        <div *ngFor="let msg of validationMessages">
+          <div>
+            {{msg}}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xs-12 panel-footer garnishee-footer-div">
+      <div class="row">
+        <div class="col-xs-6"></div>
+        <div class="col-xs-6">
+          <div class="pull-right">
+            <button type="button" class="btn btn-primary" (click)="onClickSubmit()" [disabled]="!formGarnishee.valid">
+              Submit
+            </button>
+            <button type="button" class="btn btn-default" (click)="onClickCancel()">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

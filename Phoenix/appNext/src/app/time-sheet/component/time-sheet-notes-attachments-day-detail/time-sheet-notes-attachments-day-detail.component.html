@@ -1,0 +1,22 @@
+<div *ngIf="noteCount && timeSheetDay && timeSheet">
+    <div class="note-sub-header-container" (click)="isCollapsedContent = !isCollapsedContent" [class.collapsed]="isCollapsedContent">
+        <span class="note-sub-header"> {{ date | date: formatDateFull }} </span>
+        <span class="badge">{{ noteCount }}</span>
+    </div>
+    <div [collapse]="isCollapsedContent">
+        <div *ngFor="let detail of timeSheetDay.TimeSheetDetails | keyValue; trackBy: identify;">
+            <div *ngIf="!!detail.value?.Note">
+                <app-time-sheet-notes-attachments-edit                     
+                    [isEditable]="timeSheet?.IsEditable" 
+                    [noteText]="detail.value.Note" 
+                    [noteLabel]="formatLabel(detail.value)"
+                    [maxLength]="140"
+                    (udpatedNote)="onUpdatedNote(detail.value, $event)"
+                    >
+                </app-time-sheet-notes-attachments-edit>
+            </div>
+        </div>
+    </div>
+</div>
+
+

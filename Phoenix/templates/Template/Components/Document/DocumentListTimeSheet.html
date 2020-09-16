@@ -1,0 +1,28 @@
+﻿<div class="document-list">
+    <div data-ng-repeat="document in documents" class="panel-row">
+        <div class="form-group">
+            <div class="row">
+                <div class="col-md-10">
+                    <a class="label-document-list-link" type="button" data-ng-href="{{getPdfStreamByPublicId(document.PdfDocumentPublicId)}}" target="_blank" data-ng-if="document.PdfDocumentPublicId" title="View">{{document.Name}}</a>
+                </div>
+                <div class="col-md-2">
+                    <div class="btn-toolbar pull-right" data-ng-if="model.entity.TimeSheetStatusId != ApplicationConstants.TimeSheet.Status.PendingReview && model.entity.TimeSheetStatusId != ApplicationConstants.TimeSheet.Status.Approved">
+                        <a type="button" class="document-delete" data-ng-click="documentDelete(document)" title="Delete"><i class="fontello-icon-trash"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12" data-ng-if="document.Description && document.Description.length>0">
+                <label class="label-document-list-details">{{document.Description}}</label>
+            </div>
+            <div class="col-md-12">
+                <label class="label-document-list">Uploaded by:</label>
+            </div>
+            <div class="col-md-12">
+                <label class="label-document-list-details">{{document.UploadedByContactFirstName}} {{document.UploadedByContactLastName}}</label>
+            </div>
+            <div class="col-md-12">
+                <label class="label-document-list-details">{{document.UploadedDatetime | date:ApplicationConstants.formatDateTimeHM}}</label>
+            </div>
+        </div>
+    </div>
+</div>

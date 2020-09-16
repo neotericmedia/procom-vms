@@ -1,0 +1,79 @@
+.cursor {
+    cursor: pointer;
+}
+
+.note-sub-header{
+    font-size: 15px;
+    font-weight: bold;
+    padding: 5px 5px 0 10px;
+}
+
+.note-edit {
+    margin-top: 5px;
+}
+
+.btn-icon {
+    padding-right: 15px;
+    color: #000000;
+}
+
+.badge{
+    background-color: #565656; 
+    margin-top: -5px;
+}
+
+.note-sub-header {
+    display: inline-block;
+    width: 150px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.badge {
+    display: inline-block;
+}
+
+.note-sub-header-container {
+    border-bottom: 1px solid #ccc;
+    padding: 10px 5px 10px 5px;
+    margin: 10px -10px;
+}
+
+.note-sub-header-container.collapsed:after{
+    content: "\f0d7"
+}
+
+.collapse.in {
+    min-width: 200px !important;
+}
+
+.note-sub-header-container:after {
+    content: "\f0d8";
+    font-family: FontAwesome;
+    font-style: normal;
+    font-weight: normal;
+    text-decoration: inherit;
+/*--adjust as necessary--*/
+    color: #505050;
+    font-size: 18px;
+    padding-right: 0.5em;
+    float: right;
+}
+
+.accordion-toggle:after {
+    /* symbol for "opening" panels */
+    font-family: 'Glyphicons Halflings';
+    /* essential for enabling glyphicon */
+    content: "\e114";
+    /* adjust as needed, taken from bootstrap.css */
+    float: right;
+    /* adjust as needed */
+    color: grey;
+    /* adjust as needed */
+}
+
+.accordion-toggle.collapsed:after {
+    /* symbol for "collapsed" panels */
+    content: "\e080";
+    /* adjust as needed, taken from bootstrap.css */
+}

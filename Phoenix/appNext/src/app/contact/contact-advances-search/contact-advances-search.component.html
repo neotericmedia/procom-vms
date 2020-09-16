@@ -1,0 +1,28 @@
+<div class="btn-group btn-garnishee-search-nav" *ngIf="!profile.ActiveAdvancesCount">
+  <div class="garnishee-btn-wrapper">
+    <button type="button" class="btn btn-clouds dropdown-toggle" data-toggle="dropdown">
+      <span class="garnishee-btn-name">Actions</span>
+      <span class="caret ml garnishee-btn-caret"></span>
+    </button>
+    <ul class="dropdown-menu bordered">
+      <li *ngIf="profile.ProfileTypeId===phxConstants.ProfileType.WorkerTemp || profile.ProfileTypeId===phxConstants.ProfileType.WorkerCanadianSP">
+        <a (click)="onClickAddNewAdvance()" class="btn-add-garnishee" style="cursor: pointer;">Add Advance</a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div>
+  <app-contact-advances #grid [userProfileId]="profile.Id" (outputEvent)="onOutputEvent($event)"></app-contact-advances>
+</div>
+
+<app-phx-modal [buttons]="modalFabButtons" title="" #modalAdvanceEdit>
+  <app-contact-advances-edit [modal]="modalAdvanceEdit" [profileId]="profile.Id" [advanceId]="advanceId" [activeCount]="profile.ActiveAdvancesCount"
+    (outputResponse)="onOutputResponse()">
+  </app-contact-advances-edit>
+</app-phx-modal>
+
+<app-phx-modal [buttons]="modalFabButtons" title="" #modalAdvanceAdd>
+  <app-contact-advances-new [profileDetails]="profile" [modal]="modalAdvanceAdd" (outputEvent)="onOutputResponse()">
+  </app-contact-advances-new>
+</app-phx-modal>

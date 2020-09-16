@@ -1,0 +1,10 @@
+﻿<div class="form-horizontal" data-ng-init="contactNotes.init(edit)">
+    <div class="form-group" data-ng-if="edit.currentContact.Id > 0 && edit.currentProfile.Id > 0 && !edit.currentContact.SourceId">
+        <div data-pt-comment-utility-service=""
+             data-entity-type-id="ApplicationConstants.EntityType.Contact"
+             data-entity-id="$state.params.contactId"
+             data-func-get-notes-length="contactNotes.getNotesCount"
+             data-header-text="Add your notes here">
+        </div>
+    </div>
+</div>

@@ -1,0 +1,77 @@
+<div class="form-group">
+</div>
+<form [formGroup]="inputFormGroup">
+  <div class="panel-internal">
+    <div class="content-group form-horizontal">
+      <div class="form-group col-lg-12">
+        <phx-form-control [control]="inputFormGroup.controls.EffectiveDate" [editable]="readOnlyStorage.IsEditable && (this.stateAction?.actionId === phxConstants.StateAction.CommissionRateVersionScheduleChange) "
+          labelText="Effective Date" viewModeText="{{inputFormGroup.controls.EffectiveDate.value | date: phxConstants.DateFormat.mediumDate}}">
+          <app-phx-date-box type="date" [displayFormat]="phxConstants.DateFormat.MMM_dd_yyyy" [formControl]="inputFormGroup.controls.EffectiveDate"></app-phx-date-box>
+        </phx-form-control>
+      </div>
+      <div class="form-group col-lg-12">
+        <phx-form-control [control]="inputFormGroup.controls.Description" labelText="Description" viewModeText="{{inputFormGroup.controls.Description.value}}"
+          [editable]="readOnlyStorage.IsEditable">
+          <input type="text" formControlName="Description" class="form-control" />
+        </phx-form-control>
+      </div>
+      <div class="form-group col-lg-12">
+        <phx-form-control [control]="inputFormGroup.controls.ScheduledChangeRateApplicationId" labelText="Work Order Applicable"
+          [editable]="readOnlyStorage.IsEditable" viewModeText="{{inputFormGroup.controls.ScheduledChangeRateApplicationId.value | lookupNoCache: html.lists.scheduledChangeRateApplication:'id':'text'}}">
+          <app-phx-select-box [formControl]="inputFormGroup.controls.ScheduledChangeRateApplicationId" [items]="html.lists.scheduledChangeRateApplication"
+            textField="text" valueField="id" placeholder="-- select one --">
+          </app-phx-select-box>
+        </phx-form-control>
+      </div>
+      <div class="form-group col-lg-12">
+        <phx-form-control [control]="inputFormGroup.controls.Percentage" labelText="Commission Rate" viewModeText="{{inputFormGroup.controls.Percentage.value| phxPercentWithDecimals}}"
+          [editable]="readOnlyStorage.IsEditable">
+          <input class="form-control ng-scope" type="text" formControlName="Percentage" phxFloatBetweenInput='{"from":0, "to":100, "decimalplaces":4}' />
+        </phx-form-control>
+      </div>
+      <div class="form-group col-lg-12">
+        <app-restriction-dropdown [labelText]="'Restrictions'" #refDropDown [dropdowmitems]="html.restrictionItems"
+          [(selectedItems)]="html.selectedItems" [items]="html.items" (restrictionItemClick)="onClickRestrictionItem($event)"
+          (selectedItemsChanged)="onItemsSelect($event)" *ngIf="customStatusId === phxConstants.commissionCustomStatusType.ToManageRestrictions ||(commissionRate && commissionRate.CommissionRateHeaderStatusId === phxConstants.CommissionRateHeaderStatus.New)"></app-restriction-dropdown>
+      </div>
+      <!-- Below validation msg is also displayed in command error messages.
+      <div class="col-lg-6 form-control-static text-warning">
+        {{commissionRateRestrictionsValidionMessage}}
+    </div> -->
+    </div>
+  </div>
+</form>
+
+<div class="col-lg-12 panel" style="padding: 0" *ngIf="inputFormGroup">
+  <div class="panel-heading form-group" style="padding: 1%; margin-top: 24px;" *ngIf="inputFormGroup.controls.CommissionRateRestrictions.value?.length">
+    <div class="col-xs-4 col-lg-offset-2">
+      <label>Type</label>
+    </div>
+    <div class="col-xs-8 col-lg-6" style="padding-left: 5px">
+      <label>Restrictions</label>
+    </div>
+  </div>
+  <div class="panel-body" style="margin-left: -3px">
+    <div class="restriction-type-border" *ngFor="let item of getGroupedRestrictions(this.inputFormGroup.controls.CommissionRateRestrictions.value)">
+      <div class="row" style="margin-left: -5px; margin-right:5px;">
+        <div class="col-xs-4 col-lg-offset-2" style="cursor:pointer;">
+          <span>{{item[0].CommissionRateRestrictionTypeId | lookupNoCache:
+            html.lists.commissionRateRestrictionTypeList:'id':'text'
+            }}
+          </span>
+        </div>
+        <div class="col-xs-8 col-lg-6">
+          <span *ngFor="let restriction of item; let i = index">
+            <span *ngIf="i>0">, </span>
+            {{restriction.Name}}
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-12 panel panel-internal" *ngIf="commissionRate && phxConstants.CommissionRateHeaderStatus.Active === commissionRate.CommissionRateHeaderStatusId">
+    <div class="panel-body">
+      <app-phx-workflow-event-history [entityTypeId]="phxConstants.EntityType.CommissionRateHeader" [entityId]="commissionRateHeaderId">
+      </app-phx-workflow-event-history>
+    </div>
+  </div>

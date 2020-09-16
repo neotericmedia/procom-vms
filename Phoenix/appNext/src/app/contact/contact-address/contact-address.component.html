@@ -1,0 +1,52 @@
+<form [formGroup]="inputFormGroup" *ngIf="readOnlyStorage && inputFormGroup">
+
+  <phx-form-control [control]="inputFormGroup.controls.ProfileAddressTypeId" labelText="Type" [editable]="readOnlyStorage.IsEditable"
+      viewModeText="{{inputFormGroup.controls.ProfileAddressTypeId.value | CodeValue:codeValueGroups.ProfileAddressType}}">
+      <app-phx-select-box-code-value [formControl]="inputFormGroup.controls.ProfileAddressTypeId" [groupName]="codeValueGroups.ProfileAddressType"
+          sortByFieldName="text" placeholder="-- Select One --">
+      </app-phx-select-box-code-value>
+  </phx-form-control>
+
+  <phx-form-control [control]="inputFormGroup.controls.AddressLine1" [editable]="readOnlyStorage.IsEditable" labelText="Address 1"
+      viewModeText="{{inputFormGroup.controls.AddressLine1.value}}">
+      <input formControlName="AddressLine1" type="text" class="form-control" />
+  </phx-form-control>
+
+  <phx-form-control [control]="inputFormGroup.controls.AddressLine2" [editable]="readOnlyStorage.IsEditable" labelText="Address 2"
+      viewModeText="{{inputFormGroup.controls.AddressLine2.value}}">
+      <input formControlName="AddressLine2" type="text" class="form-control" />
+  </phx-form-control>
+
+  <phx-form-control [control]="inputFormGroup.controls.CityName" [editable]="readOnlyStorage.IsEditable" labelText="City"
+      viewModeText="{{inputFormGroup.controls.CityName.value}}">
+      <input formControlName="CityName" type="text" class="form-control" />
+  </phx-form-control>
+
+  <phx-form-control [control]="inputFormGroup.controls.CountryId" labelText="Country" [editable]="readOnlyStorage.IsEditable"
+      viewModeText="{{inputFormGroup.controls.CountryId.value | CodeValue:codeValueGroups.Country}}">
+      <app-phx-select-box-code-value [formControl]="inputFormGroup.controls.CountryId" #addressCountry [groupName]="codeValueGroups.Country"
+          sortByFieldName="text" placeholder="-- Select One --">
+      </app-phx-select-box-code-value>
+  </phx-form-control>
+
+  <phx-form-control [control]="inputFormGroup.controls.SubdivisionId" labelText="Province/State" [editable]="readOnlyStorage.IsEditable"
+      viewModeText="{{inputFormGroup.controls.SubdivisionId.value | CodeValue:codeValueGroups.Subdivision}}">
+      <app-phx-select-box-code-value [formControl]="inputFormGroup.controls.SubdivisionId" [groupName]="codeValueGroups.Subdivision"
+          sortByFieldName="text" [relatedGroupName]="codeValueGroups.Country" [relatedValue]="addressCountry.value" >
+      </app-phx-select-box-code-value>
+  </phx-form-control>
+
+  <phx-form-control [control]="inputFormGroup.controls.PostalCode" [editable]="readOnlyStorage.IsEditable" labelText="Postal Code"
+      viewModeText="{{inputFormGroup.controls.PostalCode.value}}">
+      <input formControlName="PostalCode" type="text" [textMask]="commonService.setMask(inputFormGroup.controls.CountryId.value)"
+          class="postal-code form-control" phxPostalZipCodeValid='{"countryId": {{inputFormGroup.controls.CountryId.value}}, "isRequired": true}' />
+  </phx-form-control>
+
+  <phx-form-control labelText="">
+      <button type="button" class="btn btn-default btn-material right pull-right" (click)="onClickDeleteAddress()" 
+          *ngIf="readOnlyStorage.IsEditable">
+          <i class="material-icons">delete</i>
+      </button>
+  </phx-form-control>
+
+</form>

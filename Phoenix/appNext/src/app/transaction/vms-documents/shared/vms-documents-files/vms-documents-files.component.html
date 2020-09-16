@@ -1,0 +1,30 @@
+<!-- <div class="col-lg-12" data-ng-init="files.initialize(document)"> -->
+<div class="col-lg-12">
+  <div class="row">
+    <div class="panel panel-internal panel-contact">
+      <div class="contact-name">
+        <h4>Processed Files</h4>
+        <table class="table">
+          <thead class="my-thead">
+            <tr>
+              <th>File Name</th>
+              <th>Import Type</th>
+              <th>File Type</th>
+              <th>Upload Date</th>
+              <th>Uploaded By</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr data-ng-repeat="item in files.items" style="cursor:pointer">
+              <td><a href="javascript:void(0);" href="{{getCsvStreamByPublicId(document.PublicId)}} _blank">{{document.FileName}}</a></td>
+              <td>{{importType}}</td>
+              <td>{{document.DocumentTypeId | CodeValue:codeValueGroups.DocumentType }}</td>
+              <td>{{document.UploadDate | date: phxConstants.DateFormat.mediumDate}}</td>
+              <td>{{document.UploadedBy}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

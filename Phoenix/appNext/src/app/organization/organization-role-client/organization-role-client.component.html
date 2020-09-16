@@ -1,0 +1,281 @@
+<div class="row">
+  <div class="col-xs-12" style="margin-left: 10px;">
+    <h4>{{html.roleDisplayName}} Role</h4>
+  </div>
+</div>
+
+<form [formGroup]="inputFormGroup" *ngIf="inputFormGroup">
+
+  <div class="row">
+    <div>
+      <button type="button" class="btn btn-default" style="margin-left: 20px;" *ngIf="inputFormGroup.controls.Id.value===0"
+        (click)="onClickDeleteOrganizationRole()">Cancel
+        {{html.roleDisplayName}} Role</button>
+    </div>
+  </div>
+
+  <app-phx-panel headerTitle="Role Details">
+
+    <phx-form-control [control]="inputFormGroup.controls.OrganizationRoleStatusId" *ngIf="inputFormGroup.controls.Id.value !== 0"
+      [editable]="readOnlyStorage.IsEditable"
+      labelText="Role Status" viewModeText="{{inputFormGroup.controls.OrganizationRoleStatusId.value | CodeValue:codeValueGroups.OrganizationRoleStatusType }}">
+      <app-phx-select-box [formControl]="inputFormGroup.controls.OrganizationRoleStatusId" [items]="html.codeValueLists.listOrganizationRoleStatusType"
+        textField="text" valueField="id">
+      </app-phx-select-box>
+    </phx-form-control>
+
+    <phx-form-control *ngIf="!readOnlyStorage.IsEditable" [forceValidation]="false" [control]="inputFormGroup.controls.OrganizationClientRoleLOBs"
+      labelText="Line Of Business">
+      <div formArrayName="OrganizationClientRoleLOBs">
+        <div *ngFor="let lob of formArrayOrganizationClientRoleLOBs(inputFormGroup.controls.OrganizationClientRoleLOBs).controls; let i = index; trackByFn">
+          <div [formGroupName]="i">
+            <input type="checkbox" required="false" disabled formControlName="IsSelected" [id]="'checkbox_OrganizationClientRoleLOBs_' + i" />
+            <label [for]="'checkbox_OrganizationClientRoleLOBs_' + i">&nbsp;{{lob.value.LineOfBusinessId |
+              CodeValue:codeValueGroups.LineOfBusiness}}</label>
+          </div>
+        </div>
+      </div>
+    </phx-form-control>
+
+    <phx-form-control [control]="inputFormGroup.controls.OrganizationClientRoleLOBs" labelText="Line Of Business" *ngIf="readOnlyStorage.IsEditable"
+      [editable]="readOnlyStorage.IsEditable">
+      <div formArrayName="OrganizationClientRoleLOBs">
+        <div *ngFor="let lob of formArrayOrganizationClientRoleLOBs(inputFormGroup.controls.OrganizationClientRoleLOBs).controls; let i = index; trackByFn">
+          <div [formGroupName]="i">
+            <input type="checkbox" formControlName="IsSelected" [id]="'checkbox_OrganizationClientRoleLOBs_' + i" />
+            <label [for]="'checkbox_OrganizationClientRoleLOBs_' + i">&nbsp;{{lob.value.LineOfBusinessId|
+              CodeValue:codeValueGroups.LineOfBusiness}}</label>
+          </div>
+        </div>
+      </div>
+    </phx-form-control>
+
+    <!-- <phx-form-control name="lblNationalAccountManager" *ngIf="rootModel.OrganizationStatusId === phxConstants.OrganizationStatus.Active &&
+    inputFormGroup.controls.OrganizationClientRoleNationalAccountManagers.value.length === 0"
+      labelText="National Account Manager">
+    </phx-form-control> -->
+
+    <div class="form-group" style="text-align: left;" *ngIf="
+     inputFormGroup.controls.OrganizationClientRoleNationalAccountManagers.value.length === 0">
+      <label for-property="NationalAccountManager" for="NationalAccountManager" class="col-lg-4 control-label" style="text-align: right;"
+        title="">National Account Manager</label>
+      <div class="col-lg-7"></div>
+      <div class="col-lg-1">
+        <div class="btn-group pull-right">
+          <button type="button" class="btn btn-default btn-material" *ngIf="html.access.organizationClientRoleEditNationalAccountManager && inputFormGroup.controls.OrganizationClientRoleNationalAccountManagers.value.length==0"
+            (click)="onClickAddOrganizationClientRoleNationalAccountManager()">
+            <i class="material-icons">add</i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div formArrayName="OrganizationClientRoleNationalAccountManagers">
+      <div *ngFor="let nationalAccountManager of formArrayOrganizationClientRoleNationalAccountManagers(inputFormGroup
+      .controls.OrganizationClientRoleNationalAccountManagers).controls; let i = index; trackByFn">
+        <div [formGroupName]="i">
+          <div class="form-group">
+            <phx-form-control [control]="formGroupOrganizationClientRoleNationalAccountManager(nationalAccountManager).controls.UserProfileInternalId"
+              [editable]="readOnlyStorage.IsEditable" labelText="National Account Manager" viewModeText="{{nationalAccountManager.value.ContactFullName}}">
+
+              <div class="row">
+                <div class="col-sm-11">
+                  <app-phx-select-box [formControl]="formGroupOrganizationClientRoleNationalAccountManager(nationalAccountManager).controls.UserProfileInternalId"
+                    [items]="html.commonLists.listUserProfileInternal |
+                 filterSelectChoicesByUsage: selectedNationalAccountManagers:nationalAccountManager.value:'UserProfileInternalId':'Id': 'Contact.FullName'"
+                    textField="DisplayText" valueField="Id">
+                  </app-phx-select-box>
+                </div>
+                <div class="col-sm-1">
+                  <button *ngIf="html.access.organizationClientRoleEditNationalAccountManager" type="button" class="btn btn-default btn-material right pull-right"
+                    (click)="onClickDeleteOrganizationClientRoleNationalAccountManager(i)">
+                    <i class="material-icons">delete</i>
+                  </button>
+                </div>
+              </div>
+            </phx-form-control>
+
+            <!-- <phx-form-control labelText="">
+              
+            </phx-form-control> -->
+
+          </div>
+          <phx-form-control labelText="" *ngIf="html.access.organizationClientRoleEditNationalAccountManager && i+1 === 
+          inputFormGroup.controls.OrganizationClientRoleNationalAccountManagers.value.length">
+            <button type="button" class="btn btn-default btn-material right pull-right padding-10"
+             style="margin-right: -5px" (click)="onClickAddOrganizationClientRoleNationalAccountManager()">
+              <i class="material-icons">add</i>
+            </button>
+          </phx-form-control>
+        </div>
+      </div>
+    </div>
+
+    <phx-form-control [control]="inputFormGroup.controls.StartDate" labelText="MSA Start Date" [editable]="readOnlyStorage.IsEditable"
+      viewModeText="{{inputFormGroup.controls.StartDate.value | date:phxConstants.DateFormat.MMM_ddComma_yyyy}}">
+      <app-phx-date-box class="col-xs-4 col-lg-4" [displayFormat]="'MMM dd yyyy'" [formControl]="inputFormGroup.controls.StartDate"
+        type="date"></app-phx-date-box>
+    </phx-form-control>
+
+    <phx-form-control [control]="inputFormGroup.controls.ExpiryDate" labelText="MSA Expiry Date" [editable]="readOnlyStorage.IsEditable"
+      viewModeText="{{inputFormGroup.controls.ExpiryDate.value | date:phxConstants.DateFormat.MMM_ddComma_yyyy}}">
+      <app-phx-date-box class="col-xs-4 col-lg-4" [displayFormat]="'MMM dd yyyy'" [formControl]="inputFormGroup.controls.ExpiryDate"
+        type="date"></app-phx-date-box>
+    </phx-form-control>
+
+    <phx-form-control [control]="inputFormGroup.controls.IsChargeSalesTax" labelText="Charge Sales Tax?" [editable]="html.access.complianceFieldsEditable"
+      viewModeText="{{inputFormGroup.controls.IsChargeSalesTax.value | boolToYesNo}}">
+      <dx-radio-group layout="horizontal" #radioGroupIsChargeSalesTax [required]="html.access.areComplianceFieldsRequired"
+        [items]="[{key:true,value:'Yes'},{key:false,value:'No'}]" displayExpr="value" valueExpr="key" [formControl]="inputFormGroup.controls.IsChargeSalesTax">
+      </dx-radio-group>
+    </phx-form-control>
+
+    <phx-form-control [control]="inputFormGroup.controls.IsChargeableExpenseSalesTax" [editable]="html.access.complianceFieldsEditable"
+      labelText="Ignore Entered Sales Tax" [editable]="readOnlyStorage.IsEditable" viewModeText="{{inputFormGroup.controls.IsChargeableExpenseSalesTax.value | boolToYesNo}}">
+      <dx-radio-group layout="horizontal" [required]="html.access.areComplianceFieldsRequired"
+        #radioGroupIsChargeableExpenseSalesTax [items]="[{key:true,value:'Yes'},{key:false,value:'No'}]" displayExpr="value"
+        valueExpr="key" formControlName="IsChargeableExpenseSalesTax">
+      </dx-radio-group>
+    </phx-form-control>
+
+    <phx-form-control [control]="inputFormGroup.controls.ClientSalesTaxDefaultId" labelText="Default Sales Tax Territory"
+      [editable]="html.access.complianceFieldsEditable" viewModeText="{{inputFormGroup.controls.ClientSalesTaxDefaultId.value | CodeValue:codeValueGroups.ClientSalesTaxDefault }}">
+      <app-phx-select-box [required]="html.access.areComplianceFieldsRequired" [formControl]="inputFormGroup.controls.ClientSalesTaxDefaultId"
+        [items]="html.codeValueLists.listClientSalesTaxDefault" textField="text" valueField="id">
+      </app-phx-select-box>
+    </phx-form-control>
+
+    <phx-form-control [control]="inputFormGroup.controls.IsBypassZeroUnitTimeSheetApproval" labelText="Auto-approve 0 unit timesheets"
+      [editable]="readOnlyStorage.IsEditable" viewModeText="{{inputFormGroup.controls.IsBypassZeroUnitTimeSheetApproval.value | boolToYesNo}}">
+      <dx-radio-group layout="horizontal" #radioGroupIsBypassZeroUnitTimeSheetApproval [items]="[{key:true,value:'Yes'},{key:false,value:'No'}]"
+        displayExpr="value" valueExpr="key" formControlName="IsBypassZeroUnitTimeSheetApproval">
+      </dx-radio-group>
+    </phx-form-control>
+
+    <phx-form-control [control]="inputFormGroup.controls.IsSuppressZeroAmountInvoiceRelease" labelText="Suppress release of 0 value invoices"
+      [editable]="readOnlyStorage.IsEditable" viewModeText="{{inputFormGroup.controls.IsSuppressZeroAmountInvoiceRelease.value | boolToYesNo}}">
+      <dx-radio-group layout="horizontal" #radioGroupIsSuppressZeroAmountInvoiceRelease [items]="[{key:true,value:'Yes'},{key:false,value:'No'}]"
+        displayExpr="value" valueExpr="key" formControlName="IsSuppressZeroAmountInvoiceRelease">
+      </dx-radio-group>
+    </phx-form-control>
+
+  </app-phx-panel>
+
+  <app-phx-panel headerTitle="Employer Accruals and Liabilities">
+
+    <phx-form-control [control]="inputFormGroup.controls.IsAccrueMaxedOutCanadaPensionPlanForTemp" [editable]="html.access.complianceFieldsEditable"
+      labelText="Temp – Accrue Employer CPP/QPP after Max Deductions" viewModeText="{{inputFormGroup.controls.IsAccrueMaxedOutCanadaPensionPlanForTemp.value | boolToYesNo}}">
+      <dx-radio-group layout="horizontal" #radioGroupIsAccrueMaxedOutCanadaPensionPlanForTemp [items]="[{key:true,value:'Yes'},{key:false,value:'No'}]"
+        displayExpr="value" valueExpr="key" formControlName="IsAccrueMaxedOutCanadaPensionPlanForTemp">
+      </dx-radio-group>
+    </phx-form-control>
+
+    <phx-form-control [control]="inputFormGroup.controls.IsAccrueMaxedOutCanadaPensionPlanForSP" [editable]="html.access.complianceFieldsEditable"
+      labelText="Canadian SP – Accrue Employer CPP/QPP after Max Deductions" viewModeText="{{inputFormGroup.controls.IsAccrueMaxedOutCanadaPensionPlanForSP.value | boolToYesNo}}">
+      <dx-radio-group layout="horizontal" [items]="[{key:true,value:'Yes'},{key:false,value:'No'}]"
+        displayExpr="value" valueExpr="key" formControlName="IsAccrueMaxedOutCanadaPensionPlanForSP">
+      </dx-radio-group>
+    </phx-form-control>
+
+    <phx-form-control [control]="inputFormGroup.controls.IsAccrueMaxedOutEmploymentInsuranceForTemp" [editable]="html.access.complianceFieldsEditable"
+      labelText="Temp – Accrue Employer EI after Max Deductions" viewModeText="{{inputFormGroup.controls.IsAccrueMaxedOutEmploymentInsuranceForTemp.value | boolToYesNo}}">
+      <dx-radio-group layout="horizontal" [items]="[{key:true,value:'Yes'},{key:false,value:'No'}]"
+        displayExpr="value" valueExpr="key" formControlName="IsAccrueMaxedOutEmploymentInsuranceForTemp">
+      </dx-radio-group>
+    </phx-form-control>
+
+    <phx-form-control [control]="inputFormGroup.controls.IsAccrueMaxedOutEmploymentInsuranceForSP" [editable]="html.access.complianceFieldsEditable"
+      labelText="Canadian SP – Accrue Employer EI after Max Deductions" viewModeText="{{inputFormGroup.controls.IsAccrueMaxedOutEmploymentInsuranceForSP.value | boolToYesNo}}">
+      <dx-radio-group layout="horizontal" [items]="[{key:true,value:'Yes'},{key:false,value:'No'}]"
+        displayExpr="value" valueExpr="key" formControlName="IsAccrueMaxedOutEmploymentInsuranceForSP">
+      </dx-radio-group>
+    </phx-form-control>
+
+    <phx-form-control [control]="inputFormGroup.controls.IsAccrueMaxedOutQuebecParentalInsurancePlanForTemp" [editable]="html.access.complianceFieldsEditable"
+      labelText="Temp - Accrue Employer PIP after Max Deductions" viewModeText="{{inputFormGroup.controls.IsAccrueMaxedOutQuebecParentalInsurancePlanForTemp.value | boolToYesNo}}">
+      <dx-radio-group layout="horizontal" [items]="[{key:true,value:'Yes'},{key:false,value:'No'}]"
+        displayExpr="value" valueExpr="key" formControlName="IsAccrueMaxedOutQuebecParentalInsurancePlanForTemp">
+      </dx-radio-group>
+    </phx-form-control>
+
+    <phx-form-control [control]="inputFormGroup.controls.IsAccrueMaxedOutQuebecParentalInsurancePlanForSP" [editable]="html.access.complianceFieldsEditable"
+      labelText="Canadian SP - Accrue Employer PIP after Max Deductions" viewModeText="{{inputFormGroup.controls.IsAccrueMaxedOutQuebecParentalInsurancePlanForSP.value | boolToYesNo}}">
+      <dx-radio-group layout="horizontal" [items]="[{key:true,value:'Yes'},{key:false,value:'No'}]"
+        displayExpr="value" valueExpr="key" formControlName="IsAccrueMaxedOutQuebecParentalInsurancePlanForSP">
+      </dx-radio-group>
+    </phx-form-control>
+
+  </app-phx-panel>
+
+
+  <app-phx-panel headerTitle="Alternate Bills">
+
+    <phx-form-control *ngIf="html.access.organizationClientRoleEditAlternateBill && inputFormGroup.controls.OrganizationClientRoleAlternateBills.value.length==0">
+      <button type="button" class="btn btn-default btn-material right pull-right padding-10" (click)="onClickAddOrganizationClientRoleAlternateBill()">
+        <i class="material-icons">add</i>
+      </button>
+    </phx-form-control>
+
+    <div formArrayName="OrganizationClientRoleAlternateBills">
+      <div *ngFor="let alternateBill of formArrayOrganizationClientRoleAlternateBills(inputFormGroup.controls.OrganizationClientRoleAlternateBills).controls; let i = index; trackBy: trackByFn">
+        <div [formGroupName]="i">
+
+          <div class="organization-panel-of-array">
+
+            <phx-form-control [control]="formGroupOrganizationClientRoleAlternateBill(alternateBill).controls.AlternateBillLegalName"
+              [editable]="readOnlyStorage.IsEditable" labelText="Name" viewModeText="{{alternateBill.value.AlternateBillLegalName}}">
+              <input formControlName="AlternateBillLegalName" (keyup)="onNameAltBillNameChange(i)" type="text" class="form-control" />
+            </phx-form-control>
+
+            <phx-form-control [control]="formGroupOrganizationClientRoleAlternateBill(alternateBill).controls.AlternateBillCode"
+              [editable]="readOnlyStorage.IsEditable" labelText="Code" viewModeText="{{alternateBill.value.AlternateBillCode}}">
+              <input formControlName="AlternateBillCode" type="text" class="form-control" />
+            </phx-form-control>
+
+            <phx-form-control *ngIf="html.access.organizationClientRoleEditAlternateBill">
+              <button type="button" class="btn btn-default btn-material right pull-right padding-10" (click)="onClickDeleteOrganizationClientRoleAlternateBill(i)">
+                <i class="material-icons">delete</i>
+              </button>
+            </phx-form-control>
+
+          </div>
+
+          <phx-form-control *ngIf="html.access.organizationClientRoleEditAlternateBill && i+1 === inputFormGroup.controls.OrganizationClientRoleAlternateBills.value.length"
+            class="padding-10">
+            <button type="button" class="btn btn-default btn-material right pull-right" (click)="onClickAddOrganizationClientRoleAlternateBill()">
+              <i class="material-icons">add</i>
+            </button>
+          </phx-form-control>
+
+        </div>
+      </div>
+    </div>
+  </app-phx-panel>
+
+  <app-phx-panel headerTitle="Third Party Import">
+
+    <phx-form-control [control]="inputFormGroup.controls.UsesThirdPartyImport" labelText="Uses Third Party Import"
+      [editable]="readOnlyStorage.IsEditable" viewModeText="{{inputFormGroup.controls.UsesThirdPartyImport.value | boolToYesNo}}">
+      <dx-radio-group layout="horizontal" (onContentReady)="onThirdPartyImportValueChance()" [items]="[{key:true,value:'Yes'},{key:false,value:'No'}]"
+        displayExpr="value" valueExpr="key" formControlName="UsesThirdPartyImport">
+      </dx-radio-group>
+    </phx-form-control>
+
+    <phx-form-control [control]="inputFormGroup.controls.IsBillSalesTaxAppliedOnExpenseImport" labelText="Add Bill Taxes for Expenses on Import"
+      [editable]="readOnlyStorage.IsEditable" viewModeText="{{inputFormGroup.controls.IsBillSalesTaxAppliedOnExpenseImport.value | boolToYesNo}}"
+      *ngIf="inputFormGroup.controls.UsesThirdPartyImport.value">
+      <dx-radio-group layout="horizontal" [items]="[{key:true,value:'Yes'},{key:false,value:'No'}]" displayExpr="value"
+        valueExpr="key" formControlName="IsBillSalesTaxAppliedOnExpenseImport">
+      </dx-radio-group>
+    </phx-form-control>
+
+    <phx-form-control [control]="inputFormGroup.controls.IsPaySalesTaxAppliedOnExpenseImport" labelText="Add Pay Taxes for Expenses on Import"
+      [editable]="readOnlyStorage.IsEditable" viewModeText="{{inputFormGroup.controls.IsPaySalesTaxAppliedOnExpenseImport.value | boolToYesNo}}"
+      *ngIf="inputFormGroup.controls.UsesThirdPartyImport.value">
+      <dx-radio-group layout="horizontal" [items]="[{key:true,value:'Yes'},{key:false,value:'No'}]" displayExpr="value"
+        valueExpr="key" formControlName="IsPaySalesTaxAppliedOnExpenseImport">
+      </dx-radio-group>
+    </phx-form-control>
+
+  </app-phx-panel>
+</form>

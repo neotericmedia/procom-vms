@@ -1,0 +1,11 @@
+<div *ngIf="userViewStateDescription" class="report-description">
+        {{userViewStateDescription}}
+</div>
+<app-phx-data-table *ngIf="isDefaultView" #grid [configuration]="dataTableConfiguration" [dataSourceUrl]="dataSourceUrl" [dataSourceParams]='oDataParams' [columns]="columns" [componentName]="reportName"
+    (editorPreparing)="onEditorPreparing($event)" (exporting)="onExporting($event)" (exported)="onExported($event)" (contentReady)="onContentReady($event.component)" [defaultStateName]="userViewStateName" (fileSaving)="onFileSaving($event)" (contextMenuPreparing)="onContextMenuPreparing($event)">
+</app-phx-data-table>
+<div class="panel-footer">
+    <button type="button" class="btn btn-primary" [disabled]="isExporting" (click)="exportReport()" title="Export Report">
+        Export
+    </button>
+</div>

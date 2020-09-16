@@ -1,0 +1,175 @@
+﻿<div data-loading-spinner="processing"></div>
+
+<div class="row" style="margin-right: 10px;">
+    <div class="col-md-3" style="padding-right: 0px;">
+        <table class="app-vms-totals" style="margin-left: 10px; margin-right: 0px;">
+            <tbody>
+                <tr class="bg-success">
+                    <td>Total Pending</td>
+                    <td class="text-right"><strong>&nbsp; {{totalPending}}</strong></td>
+                </tr>
+                <tr class="bg-warning">
+                    <td>Total Conflict</td>
+                    <td class="text-right"><strong>&nbsp; {{totalConflict}}</strong></td>
+                </tr>
+                <tr class="bg-danger">
+                    <td>Total Discarded</td>
+                    <td class="text-right"><strong>&nbsp; {{totalDiscarded}}</strong></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="form-group">
+    <div class="smart-table-wrapper">
+        <div class="row" style="margin-left: 0px; margin-right: 0px">
+            <table data-st-table-struct='[{"stTableValue" : "items"}, {"stPipeValue" : "callServer"}, {"widthValues" : "[5, 7, 5, 5, 5, 5, 4, 5, 5, 4, 5, 5, 8, 5, 11, 6]"}]'>
+                <thead data-st-head="2400px">
+                    <tr>
+                        <th data-st-sort="UploadedDatetime">Import Date</th>
+                        <th data-st-sort="WorkOrderReference" data-st-sort-default="">Third Party Worker ID</th>
+                        <th data-st-sort="FirstName">First name</th>
+                        <th data-st-sort="LastName">Last Name</th>
+                        <th data-st-sort="V1RateTypeId">Rate Type 1</th>
+                        <th data-st-sort="V1BillRate">Bill Rate 1</th>
+                        <th data-st-sort="V1BillUnits">Rate Units 1</th>
+                        <th data-st-sort="V2RateTypeId">Rate Type 2</th>
+                        <th data-st-sort="V2BillRate">Bill Rate 2</th>
+                        <th data-st-sort="V2BillUnits">Rate Units 2</th>
+                        <th data-st-sort="StartDate">From Date</th>
+                        <th data-st-sort="EndDate">To Date</th>
+                        <th data-st-sort="InvoiceReference">Transaction Reference</th>
+                        <th data-st-sort="VmsImportedRecordTypeIdFinal">Import To</th>
+                        <th data-st-sort="Reason">Reason</th>
+                        <th data-st-pen-name="Action">Action</th>
+                    </tr>
+                    <tr>
+                        <th>
+                            <input data-st-advanced-search="'UploadedDatetime'"
+                                   data-st-as-operator-override="'eq'"
+                                   close-on-date-selection="false" show-button-bar="false" show-weeks="false" class="input-sm form-control"
+                                   data-st-as-lazy-attributes="{'uib-datepicker' : ApplicationConstants.formatDate}"
+                                   data-st-as-height-override="400"
+                                   data-st-as-width-override="315" />
+                        </th>
+                        <th>
+                            <input data-st-advanced-search="'WorkOrderReference'" placeholder=""
+                                   class="input-sm form-control" type="search" />
+                        </th>
+                        <th>
+                            <input data-st-advanced-search="'FirstName'" placeholder=""
+                                   class="input-sm form-control" type="search" data-safe-restrict-input="" />
+                        </th>
+                        <th>
+                            <input data-st-advanced-search="'LastName'" placeholder=""
+                                   class="input-sm form-control" data-safe-restrict-input="" />
+                        </th>
+                        <th>
+                            <select data-st-advanced-search="{property: 'V1RateTypeId', ignoreQuotes: true}" class="input-sm form-control">
+                                <option value="1">Primary</option>
+                                <option value="2">Overtime</option>
+                                <option value="3">On-Call</option>
+                                <option value="4">Pager</option>
+                                <option value="5">Other</option>
+                            </select>
+                        </th>
+                        <th>
+                            <input data-st-advanced-search="{property: 'V1BillRate', ignoreQuotes: true, valueSuffix: 'M'}" placeholder=""
+                                   class="input-sm form-control numberType" data-safe-restrict-input="[^0123456789.]" />
+                        </th>
+
+                        <th>
+                            <input data-st-advanced-search="{property: 'V1BillUnits', ignoreQuotes: true, valueSuffix: 'M'}" placeholder=""
+                                   class="input-sm form-control numberType" data-safe-restrict-input="[^0123456789.]" />
+                        </th>
+                        <th>
+                            <select data-st-advanced-search="{property: 'V2RateTypeId', ignoreQuotes: true}" class="input-sm form-control">
+                                <option value="1">Primary</option>
+                                <option value="2">Overtime</option>
+                                <option value="3">On-Call</option>
+                                <option value="4">Pager</option>
+                                <option value="5">Other</option>
+                            </select>
+                        </th>
+                        <th>
+                            <input data-st-advanced-search="{property:'V2BillRate',ignoreQuotes:true,valueSuffix: 'M'}" placeholder=""
+                                   class="input-sm form-control numberType" data-safe-restrict-input="[^0123456789.]" />
+                        </th>
+                        <th>
+                            <input data-st-advanced-search="{property:'V2BillUnits',ignoreQuotes:true,valueSuffix: 'M'}" placeholder=""
+                                   class="input-sm form-control numberType" data-safe-restrict-input="[^0123456789.]" />
+                        </th>
+                        <th>
+                            <input data-st-advanced-search="'StartDate'"
+                                   data-st-as-operator-override="'ge'"
+                                   close-on-date-selection="false" show-button-bar="false" show-weeks="false" class="input-sm form-control"
+                                   data-st-as-lazy-attributes="{'uib-datepicker' : ApplicationConstants.formatDate}"
+                                   data-st-as-height-override="400"
+                                   data-st-as-width-override="315" />
+                        </th>
+                        <th>
+                            <input data-st-advanced-search="'EndDate'"
+                                   data-st-as-operator-override="'le'"
+                                   close-on-date-selection="false" show-button-bar="false" show-weeks="false" class="input-sm form-control"
+                                   data-st-as-lazy-attributes="{'uib-datepicker' : ApplicationConstants.formatDate}"
+                                   data-st-as-height-override="400"
+                                   data-st-as-width-override="315" />
+                        </th>
+                        <th>
+                            <input data-st-advanced-search="'InvoiceReference'" placeholder="" class="input-sm form-control" type="search" />
+                        </th>
+                        <th>
+                            <select data-st-advanced-search="{property: 'VmsImportedRecordTypeIdFinal', ignoreQuotes: true}" class="input-sm form-control menu-dropdown-wide180">
+                                <option value="1">Import to Processed</option>
+                                <option value="2">Import to Conflict</option>
+                                <option value="3">Discarded</option>
+                            </select>
+                        </th>
+                        <th>
+                            <input data-st-advanced-search="'Reason'" placeholder="" class="input-sm form-control" type="search" />
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr data-ng-repeat="txn in items" style="cursor: pointer" ng-class="{success:txn.VmsImportedRecordTypeIdFinal==ApplicationConstants.VmsImportedRecordType.ToProcess,warning:txn.VmsImportedRecordTypeIdFinal==ApplicationConstants.VmsImportedRecordType.Conflict,danger:txn.VmsImportedRecordTypeIdFinal==ApplicationConstants.VmsImportedRecordType.Discarded}">
+                        <td title="{{::txn.UploadedDatetime| date: ApplicationConstants.formatDate}}">{{::txn.UploadedDatetime| date: ApplicationConstants.formatDate}}</td>
+                        <td title="{{::txn.WorkOrderReference}}">{{::txn.WorkOrderReference}}</td>
+                        <td title="{{::txn.FirstName}}">{{::txn.FirstName}}</td>
+                        <td title="{{::txn.LastName}}">{{::txn.LastName}}</td>
+                        <td title="{{::txn.V1RateTypeId| lookup:lists.rateTypesList}}">{{::txn.V1RateTypeId| lookup:lists.rateTypesList}}</td>
+                        <td title="{{::txn.V1BillRate|currency: '$'}}">{{::txn.V1BillRate|currency: '$'}}</td>
+                        <td title="{{::txn.V1BillUnits}}">{{::txn.V1BillUnits}}</td>
+                        <td title="{{::txn.V2RateTypeId| lookup:lists.rateTypesList}}">{{::txn.V2RateTypeId| lookup:lists.rateTypesList}}</td>
+                        <td title="{{::txn.V2BillRate|currency: '$'}}">{{::txn.V2BillRate|currency: '$'}}</td>
+                        <td title="{{::txn.V2BillUnits}}">{{::txn.V2BillUnits}}</td>
+                        <td title="{{::txn.StartDate| date: ApplicationConstants.formatDate}}">{{::txn.StartDate| date: ApplicationConstants.formatDate}}</td>
+                        <td title="{{::txn.EndDate| date: ApplicationConstants.formatDate}}">{{::txn.EndDate| date: ApplicationConstants.formatDate}}</td>
+                        <td title="{{::txn.InvoiceReference}}">{{::txn.InvoiceReference}}</td>
+                        <td title="{{txn.VmsImportedRecordTypeIdFinal | lookup:lists.vmsImportedRecordTypeList}}">{{txn.VmsImportedRecordTypeIdFinal | lookup:lists.vmsImportedRecordTypeList}}</td>
+                        <td title="{{txn.Reason}}" ng-bind-html="txn.Reason"></td>
+                        <td>
+                            <button type="button" class="btn btn-xs btn-default" data-ng-show="txn.VmsImportedRecordTypeIdFinal!=ApplicationConstants.VmsImportedRecordType.ToProcess&&txn.VmsImportedRecordTypeIdInitial==ApplicationConstants.VmsImportedRecordType.ToProcess" data-ng-click="markAsProcess(txn)" data-ng-disabled="processing" title="Mark as Ready to Process">Mark as Ready to Process</button>
+                            <button type="button" class="btn btn-xs btn-default" data-ng-show="txn.VmsImportedRecordTypeIdFinal!=ApplicationConstants.VmsImportedRecordType.Conflict&&txn.VmsImportedRecordTypeIdInitial!=ApplicationConstants.VmsImportedRecordType.Error" data-ng-click="markAsConflict(txn)" data-ng-disabled="processing" title="Mark as Conflict">Mark as Conflict</button>
+                            <button type="button" class="btn btn-xs btn-default" data-ng-show="txn.VmsImportedRecordTypeIdFinal!=ApplicationConstants.VmsImportedRecordType.Discarded&&txn.VmsImportedRecordTypeIdInitial!=ApplicationConstants.VmsImportedRecordType.Error" data-ng-click="markAsDiscarded(txn)" data-ng-disabled="processing" title="Mark as Discarded">Mark as Discarded</button>
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="9">
+                            <span>Total Count: {{totalItemCount || 0}}; Items Loaded: {{items ? items.length : 0}}</span>
+                        </td>
+                        <td>
+                            <div class="pull-right" data-ng-show="documentPublicId">
+                                <button type="button" class="btn" title="Mark as Conflict" data-ng-click="rejectFile(documentPublicId)" data-ng-disabled="!availableActions || processing">Reject File</button>
+                                <button type="button" class="btn btn-primary" title="Mark as Ready to Process" data-ng-click="processFile(documentPublicId)" data-ng-disabled="!availableActions || processing">Process File</button>
+                            </div>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>

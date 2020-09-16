@@ -1,0 +1,101 @@
+<div class="page-content organization" *ngIf="commissionRate">
+  <div class="organization-wrap">
+    <div class="row organization-workflow-buttons-row-spacer">
+      <app-phx-state-action-buttons [stateActions]="stateActions" 
+        *ngIf="!customStatusId && !(commissionRate.CommissionRateHeaderStatusId === phxConstants.CommissionRateHeaderStatus.InActive) && commissionVersion.CommissionRateVersionStatusId === phxConstants.CommissionRateVersionStatus.Active"
+        [availableStateActions]="commissionRate.AvailableStateActions"
+        [displayType]="'DROPDOWN'">
+      </app-phx-state-action-buttons>
+    </div>
+    <div class="row">
+      <div class="col-xs-10">
+        <div class="row">
+          <app-commission-header [commissionDetails]="commissionRate" [commissionRateVersionId]="routerParams.commissionRateVersionId"></app-commission-header>
+        </div>
+        <div class="row">
+          <app-phx-navigation-bar *ngIf="commissionRate.CommissionRateHeaderStatusId !== phxConstants.CommissionRateHeaderStatus.New"
+          [navigationBarContent]="html.navigationBarContent" [url]="routerState.Url"></app-phx-navigation-bar>
+        </div>
+        <div class="row">
+          <app-commission-rate-tab-details [inputFormGroup]="rootFormGroup.controls.TabDetails" [readOnlyStorage]="readOnlyStorage"
+            *ngIf="rootFormGroup && (routerState.RouterPath===html.phxConstants.CommissionRateNavigationName.detail || commissionRate.CommissionRateHeaderStatusId === phxConstants.CommissionRateVersionStatus.New)"
+            (outputEvent)="onOutputEvent($event)" [commissionRateHeaderId]="routerParams.commissionRateHeaderId" [stateAction] = "selectedStateAction"
+            [commissionRateRestrictionsValidionMessage]="commissionRateRestrictionsValidionMessage">
+          </app-commission-rate-tab-details>
+          <app-commission-rate-workorders [commissionRateHeaderId]="routerParams.commissionRateHeaderId" *ngIf="routerState.RouterPath===html.phxConstants.CommissionRateNavigationName.workorders">
+          </app-commission-rate-workorders>
+        </div>
+      </div>
+      <div class="col-lg-2" *ngIf="commissionRate">
+        <div class="commissionrate-versions" *ngIf="commissionRate.CommissionRateVersions.length>0">
+          <div class="commissionrate-version-group">
+            <div class="version-version-item" *ngFor="let version of commissionRate.CommissionRateVersions" (click)="onVersionClick(version)"
+              [ngClass]="(filteredVersionDetails?.CommissionRateVersionStatusId != html.phxConstants.CommissionRateVersionStatus.New && customStatusId != html.phxConstants.commissionCustomStatusType.ToCorrect && customStatusId != html.phxConstants.commissionCustomStatusType.ToScheduleChange && customStatusId != html.phxConstants.commissionCustomStatusType.ToManageRestrictions && version.Id == filteredVersionDetails?.Id)?'active':''">
+              <div>
+                <div>
+                  <span class="small-text">Effective Date:&nbsp;</span>{{version.EffectiveDate|date:html.phxConstants.DateFormat.mediumDate}}</div>
+                <span [ngClass]="version.CommissionRateVersionStatusId==html.phxConstants.CommissionRateVersionStatus.Active?'text-warning':''">
+                  <span class="small-text">Status:&nbsp;</span>{{version.CommissionRateVersionStatusId|
+                  lookupNoCache:html.list.CommissionRateVersionStatus}}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-lg-12">
+        <app-commission-rate-workflow #workFlow (commandValidation)="getValidationMessages($event)"></app-commission-rate-workflow>
+      </div>
+    </div>
+    <div *ngIf="html.validationMessages.length > 0 && !showTemplate" class="alert alert-danger alert-dismissable error-box">
+      <div *ngFor="let message of html.validationMessages">
+        <div>
+          {{message}}
+        </div>
+      </div>
+    </div>
+    <div class="panel-footer">
+      <div class="row">
+        <div class="col-lg-6">
+        </div>
+        <div class="col-lg-6">
+          <div class="pull-right">
+            <button type="button" class="btn btn-default" *ngIf="customStatusId == phxConstants.commissionCustomStatusType.ToScheduleChange || customStatusId == phxConstants.commissionCustomStatusType.ToCorrect
+              || customStatusId == phxConstants.commissionCustomStatusType.ToManageRestrictions"
+              (click)="actionClick('Cancel')">
+              Cancel
+            </button>
+      
+            <button type="button" class="btn btn-default" *ngIf="commissionRate.CommissionRateHeaderStatusId === phxConstants.CommissionRateVersionStatus.New"
+              (click)="navToSearch()">
+              Cancel
+            </button>
+            <button type="button" class="btn btn-primary" [disabled]="!rootFormGroup.valid" *ngIf="customStatusId === phxConstants.commissionCustomStatusType.ToCorrect"
+              (click)="actionClick('ToCorrect')">
+              Submit
+            </button>
+            <button type="button" class="btn btn-primary" [disabled]="true" 
+              *ngIf="commissionRate.CommissionRateHeaderStatusId === phxConstants.CommissionRateVersionStatus.New"
+              (click)="actionClick('CreateTemplate')">
+              Create Template
+            </button>
+            <button type="button" class="btn btn-primary" [disabled]="!rootFormGroup.valid" *ngIf="customStatusId === phxConstants.commissionCustomStatusType.ToScheduleChange"
+              (click)="actionClick('ToScheduleChange')">
+              Schedule Change
+            </button>
+            <button type="button" class="btn btn-primary" [disabled]="!rootFormGroup.valid" *ngIf="customStatusId === phxConstants.commissionCustomStatusType.ToManageRestrictions"
+              (click)="actionClick('ToManageRestrictions')">
+              Submit
+            </button>
+            <button type="button" class="btn btn-primary" [disabled]="!rootFormGroup.valid" *ngIf="commissionRate.CommissionRateHeaderStatusId === phxConstants.CommissionRateVersionStatus.New"
+              (click)="actionClick('NewCreate')">
+              Create
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

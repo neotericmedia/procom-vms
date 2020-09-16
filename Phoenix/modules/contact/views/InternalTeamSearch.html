@@ -1,0 +1,97 @@
+<!--<div class="row page-control">
+    <div class="col-lg-12">
+        <div class="btn-toolbar">
+            <div class="btn-group" data-ng-if="teams.allowCreate">
+                <button type="button" class="btn btn-clouds dropdown-toggle" data-toggle="dropdown">
+                    New <span class="caret ml"></span>
+                </button>
+                <ul class="dropdown-menu bordered">
+                    <li><a data-ui-sref="ContactEdit.InternalTeamEdit({ internalTeamId:0 })">New Internal Team</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>-->
+<div class="row page-control">
+    <div class="page-control-bar col-lg-12">
+        <div class="btn-toolbar">
+            <a href="javascript:;" type="button" class="btn btn-clouds" ui-sref="ContactEdit.InternalTeamEdit({ internalTeamId:0 })">New</a>
+        </div>
+    </div>
+</div>
+<div class="smart-table-wrapper">
+    <div class="row" data-cg-busy="teams.busyPromise">
+        <table data-st-table-struct='[{"stTableValue" : "teams.items"}, {"stPipeValue" : "teams.callServer"}, {"widthValues" : "[6, 12, 12, 15, 10, 10, 10, 10, 10, 5]"}, {"stPaginationValue" : "teams.pageSize"}]'>
+            <thead data-st-head="1300px">
+                <tr>
+                    <th data-st-sort="InternalTeamId" data-st-sort-default="reverse">ID</th>
+                    <th data-st-sort="TeamName">Team Name</th>
+                    <th data-st-sort="Description">Description</th>
+                    <th data-st-sort="TeamMembers">Members</th>
+                    <th data-st-sort="JobOwner">Job Owner</th>
+                    <th data-st-sort="ClientOrgs">Client</th>
+                    <th data-st-sort="InternalOrgs">Internal Org</th>
+                    <th data-st-sort="Branches">Branch</th>
+                    <th data-st-sort="LOBs">Line Of Business</th>
+                    <th data-st-pen-name="Action">Actions</th>
+                </tr>
+                <tr>
+                    <th>
+                        <input data-st-advanced-search="{property: 'InternalTeamId', ignoreQuotes: true}" placeholder="" class="input-sm form-control numberType" data-safe-restrict-input="[^0123456789.]" />
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="'TeamName'" placeholder="" class="input-sm form-control" type="search" />
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="'Description'" placeholder="" class="input-sm form-control" type="search" />
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="'TeamMembers'" placeholder="" class="input-sm form-control" type="search" />
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="'JobOwner'" placeholder="" class="input-sm form-control" type="search" />
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="'ClientOrgs'" placeholder="" class="input-sm form-control" type="search" />
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="'InternalOrgs'" placeholder="" class="input-sm form-control" type="search" />
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="'Branches'" placeholder="" class="input-sm form-control" type="search" />
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="'LOBs'" placeholder="" class="input-sm form-control" type="search" />
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr data-ng-repeat="item in teams.items" data-ui-sref-tr="ContactEdit.InternalTeamEdit({ internalTeamId:item.InternalTeamId })" style="cursor:pointer;">
+                    <td ng-bind="::item.InternalTeamId"></td>
+                    <td ng-bind="::item.TeamName"></td>
+                    <td ng-bind="::item.Description"></td>
+                    <td ng-bind="::item.TeamMembers"></td>
+                    <td ng-bind="::item.JobOwner"></td>
+                    <td ng-bind="::item.ClientOrgs || 'N/A'"></td>
+                    <td ng-bind="::item.InternalOrgs || 'N/A'"></td>
+                    <td ng-bind="::item.Branches || 'N/A'"></td>
+                    <td ng-bind="::item.LOBs || 'N/A'"></td>
+                    <td>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-xs btn-clouds btn-row-action no-padding-bottom-right" data-action="view" title="View"><i class="fontello-icon-eye-1"></i>&nbsp;</button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="8">
+                        <span>Total Count: {{teams.totalItemCount || 0}}; Items Loaded: {{ teams.items ? teams.items.length : 0}}</span>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+
+    </div>
+</div>

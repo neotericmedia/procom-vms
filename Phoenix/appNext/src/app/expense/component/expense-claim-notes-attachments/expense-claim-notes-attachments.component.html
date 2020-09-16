@@ -1,0 +1,63 @@
+<div class="row">
+  <div class="col col-xs-12">
+    <div class="col-md-3 section documents">
+      <header class="header">{{expenseModuleResourceKeys.notesAndAttachments.documentHeader | phxTranslate}}</header>
+      <p> {{expenseModuleResourceKeys.notesAndAttachments.documentDescription | phxTranslate}} </p>
+      <div class="col-xs-2" *ngIf="expenseClaim && expenseClaim.Id && expenseClaim.WorkflowPendingTaskId && (editable || documentUploadableExtraStatuses.includes(expenseClaim.ExpenseClaimStatusId))">
+        <app-phx-document-file-upload [showAddButton]="true" [(configuration)]="documentUploadConfiguration" (onSuccessItem)="getUploadCompleteNotification($event)"
+          (onCompleteAll)="onUploadComplete()"></app-phx-document-file-upload>
+      </div>
+      <div class="col-xs-12 scrolldiv">
+        <div class="card-columns margintop10" *ngFor="let doc of documentList">
+          <div class="card borderbottom">
+            <div class="card-block">
+
+              <div class="card-title">
+
+
+                <a class="pull-right" (click)="deleteDocument(doc)" *ngIf="editable || documentRemovableExtraStatuses.includes(expenseClaim.ExpenseClaimStatusId)">
+                  <button class="btn btn-link no-pad">
+                    <i class="material-icons">clear</i>
+                  </button>
+                </a>
+                <a class="doc-anchor" [title]="doc.Name" [href]="createPdfDocumentLink(doc)" target="_blank">{{ doc.Name }}</a>
+              </div>
+              <div class="card-text">
+                <p class="uploaded-by-content pull-right">{{doc.UploadedDatetime | date:formatDateTimeHM}}</p>
+                <p class="uploaded-by-content">{{doc.UploadedByContactFirstName}} {{doc.UploadedByContactLastName}} </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4 section expense-claim-notes">
+      <header class="header">{{expenseModuleResourceKeys.notesAndAttachments.expenseClaimHeader | phxTranslate}}</header>
+      <div class="expense-claim-notes-group">
+        <p>{{expenseModuleResourceKeys.notesAndAttachments.expenseClaimDescription1 | phxTranslate}} {{expenseClaim?.OrganizationInternalDisplayName}}</p>
+        <p>{{expenseModuleResourceKeys.notesAndAttachments.expenseClaimDescription2 | phxTranslate}} {{expenseClaim?.OrganizationInternalDisplayName}}</p>
+        <div class="fieldViewMode form-control-static" *ngIf="!editable">{{expenseClaim?.NoteBackOffice}}</div>
+        <dx-text-area [height]="90" *ngIf="expenseClaim && editable" [ngModel]="expenseClaim?.NoteBackOffice" placeholder="{{expenseModuleResourceKeys.notesAndAttachments.placeHolderDescription | phxTranslate}}"
+          maxlength="140" [phxDebounce]="500" (onDebounce)="updateProp('NoteBackOffice', $event)" valueChangeEvent="keyup"></dx-text-area>
+
+      </div>
+      <div class="expense-claim-notes-group">
+        <p>{{expenseModuleResourceKeys.notesAndAttachments.clientNoteHeader | phxTranslate}}</p>
+        <div class="fieldViewMode form-control-static" *ngIf="!editable">{{expenseClaim?.NoteApprover}}</div>
+        <dx-text-area [height]="90" *ngIf="expenseClaim && editable" [ngModel]="expenseClaim?.NoteApprover" placeholder="{{expenseModuleResourceKeys.notesAndAttachments.placeHolderDescription | phxTranslate}}"
+          maxlength="140" [phxDebounce]="500" (onDebounce)="updateProp('NoteApprover', $event)" valueChangeEvent="keyup"></dx-text-area>
+      </div>
+    </div>
+    <div class="col-md-5 section category-notes">
+      <header class="header">{{expenseModuleResourceKeys.notesAndAttachments.expenseItemHeader | phxTranslate}}</header>
+      <p>{{expenseModuleResourceKeys.notesAndAttachments.expenseItemDescription | phxTranslate}}</p>
+      <div class="scrolldiv">
+        <div *ngFor="let categoryId of categoryIds">
+          <app-expense-claim-notes-attachments-item-detail [categoryId]="categoryId" [expenseItems]="expenseClaim?.ExpenseItems" [editable]="editable">
+          </app-expense-claim-notes-attachments-item-detail>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

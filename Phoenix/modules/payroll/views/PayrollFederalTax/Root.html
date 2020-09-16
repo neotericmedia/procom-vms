@@ -1,0 +1,251 @@
+﻿<div data-cg-busy="loadItemsPromise" data-ng-form="formPayrollTax">
+    <div class="col-lg-12" style="padding-left:0;height:50px;">
+        <div>
+            <div class="transaction-selection col-lg-2" data-ng-if="header.common.workflow.WorkflowAvailableActions.length>0" style="padding-left:0;">
+                <ui-select data-ng-model="header.common.workflow.SelectedActionId" theme="select2" class="form-control" data-ng-change="header.common.workflow.actionButtonOnClick(header.currentVersion, {{$select.selected}})">
+                    <ui-select-match placeholder="Actions">{{$select.selected.Name}}</ui-select-match>
+                    <ui-select-choices repeat="item.Id as item in header.common.workflow.WorkflowAvailableActions | orderBy:'DisplayButtonOrder' | uiSelectChoicesFilter: $select.search: 'Name': 'Id'">
+                        <span data-ng-bind-html="item.Name | highlight: $select.search"></span>
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+            <label class="col-lg-2 control-label label-to-right" style="height:30px;">&nbsp;</label>
+        </div>
+    </div>
+    <div class="col-lg-10">
+        <div class="row " data-ng-form="entityForm">
+            <div class="tab-content">
+                <div class="tabbable panel panel-tabbable">
+                    <div class="tab-content">
+                        <div class="tab-pane active">
+                            <div class="panel">
+                                <div class="headstone panel-heading container-fluid">
+                                    <div class="row">
+                                        <div class="col-lg-1">
+                                            <label class="control-label col-xs-12 ">ID</label>
+                                            <span class="col-xs-12 " data-ng-class="entity.IsDraft?'text-warning':''">{{header.Id}}</span>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <label class="control-label col-xs-12 ">Country</label>
+                                            <span class="col-xs-12 ">{{header.CountryId|lookup:header.common.lists.listCountry}}</span>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <label class="control-label col-xs-12 ">Created Date</label>
+                                            <span class="col-xs-12 ">{{header.currentVersion.CreatedDatetime|date:ApplicationConstants.formatDate}}</span>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <label class="control-label col-xs-12 ">Effective Date</label>
+                                            <span class="col-xs-12 ">{{header.currentVersion.EffectiveDate|date:ApplicationConstants.formatDate}}</span>
+                                        </div>
+                                        <div class="col-lg-2">
+                                            <label class="control-label col-xs-12 ">Status</label>
+                                            <span class="col-xs-12 " data-ng-if="!header.common.workflow.WorkflowIsRunning&&header.common.customStatusId == null" data-ng-class="header.currentVersion.TaxVersionStatusId==ApplicationConstants.TaxVersionStatus.Active?'text-warning':''">{{header.currentVersion.TaxVersionStatusId|lookup:header.common.lists.listTaxVersionStatus}}</span>
+                                            <span class="col-xs-12 " data-ng-if="!header.common.workflow.WorkflowIsRunning&&header.common.customStatusId !== null">{{header.common.customStatusId|lookup:header.common.lists.listCustomStatus}}</span>
+                                            <span class="col-xs-12 " data-ng-if="header.common.workflow.WorkflowIsRunning">Workflow Is Running</span>
+                                        </div>
+                                    </div>
+                                    <!-- <div class="row">
+                                        <div class="col-lg-1">
+                                            <span data-ng-class="entity.IsDraft?'text-warning':''">{{header.Id}}</span>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <span>{{header.CountryId|lookup:header.common.lists.listCountry}}</span>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            {{header.currentVersion.CreatedDatetime|date:ApplicationConstants.formatDate}}
+                                        </div>
+                                        <div class="col-lg-3">
+                                            {{header.currentVersion.EffectiveDate|date:ApplicationConstants.formatDate}}
+                                        </div>
+                                        <div class="col-lg-2">
+                                            <span data-ng-if="!header.common.workflow.WorkflowIsRunning&&header.common.customStatusId == null" data-ng-class="header.currentVersion.TaxVersionStatusId==ApplicationConstants.TaxVersionStatus.Active?'text-warning':''">{{header.currentVersion.TaxVersionStatusId|lookup:header.common.lists.listTaxVersionStatus}}</span>
+                                            <span data-ng-if="!header.common.workflow.WorkflowIsRunning&&header.common.customStatusId !== null">{{header.common.customStatusId|lookup:header.common.lists.listCustomStatus}}</span>
+                                            <span data-ng-if="header.common.workflow.WorkflowIsRunning">Workflow Is Running</span>
+                                        </div>
+                                    </div> -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tabbable">
+                        <div class="tab-content">
+                            <div class="tab-pane active">
+                                <div class="panel">
+                                    <div class="panel-body payroll-federal-taxes-edit">
+
+                                        <div class="row panel-margin-bottom">
+                                            <div class="col-lg-12">
+                                                <label for-property="CountryId" for="CountryId" data-model-property="header.CountryId" class="col-lg-3 control-label label-to-right req-lab-right" data-original-title="" title="">Country</label>
+                                                <div class="col-lg-5 col-xxl-4">
+                                                    <div class="input-group select2-bootstrap-append">
+                                                        <ui-select name="CountryId" data-ng-model="header.CountryId" theme="select2" class="form-control" data-pt-field-view="header.common.ptFieldViewConfigOnChangeStatusId" required>
+                                                            <ui-select-match placeholder="-- Select One --">{{$select.selected.text}} - {{$select.selected.code}}</ui-select-match>
+                                                            <ui-select-choices repeat="item.id as item in header.common.lists.listCountry | uiSelectChoicesFilter: $select.search: 'text'">
+                                                                <span data-ng-bind-html="item.text | highlight: $select.search"></span>
+                                                                <span data-ng-bind-html="' - ' + item.code | highlight: $select.search"></span>
+                                                            </ui-select-choices>
+                                                        </ui-select>
+                                                        <span class="input-group-btn">
+                                                            <button tabindex="-1" data-ng-click="header.CountryId=undefined" class="btn btn-default"><i class="material-icons md-18">clear</i></button>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row panel-margin-bottom">
+                                            <div class="col-lg-12 federal-taxes-date">
+                                                <label for-property="EffectiveDate" for="EffectiveDate" data-model-property="header.currentVersion.EffectiveDate" class="col-lg-3 control-label label-to-right req-lab-right" data-original-title="" title="">Effective Date</label>
+                                                <div class="col-lg-3 col-xxl-2">
+                                                    <pt-date-picker data-ng-model="header.currentVersion.EffectiveDate" data-pt-field-view="header.common.ptFieldViewConfigOnChangeStatusId" data-ng-required="true" data-required-message="Required" data-func-callback-on-done="header.datePickerCallbackOnDoneEffectiveDate()" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row panel-margin-bottom">
+                                            <div class="col-lg-12">
+                                                <label for-property="TD1Minimum" for="TD1Minimum" data-model-property="header.currentVersion.TD1Minimum" class="col-lg-3 control-label label-to-right req-lab-right" data-original-title="" title="">TD1 Minimum</label>
+                                                <div class="col-lg-3 col-xxl-2">
+                                                    <div class="panel-margin-bottom">
+                                                        <input type="text"
+                                                               data-input-by-float-range="{from:0, to:ApplicationConstants.max.currency, decimalplaces:2, doesemptytozero:'true'}"
+                                                               data-ng-model="header.currentVersion.TD1Minimum"
+                                                               input-display-decimal-places="2"
+                                                               name="TD1Minimum"
+                                                               data-required-message="Required"
+                                                               data-pt-field-view="header.common.ptFieldViewConfigOnChangeStatusId"
+                                                               data-pt-field-view-custom="{ { header.currentVersion.TD1Minimum | currency } }"
+                                                               data-ng-required="true"
+                                                               class="form-control form-control ng-scope"
+                                                               required="required">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row panel-margin-bottom">
+                                            <div class="col-lg-12">
+                                                <label for-property="AbatementRatePercentage" for="AbatementRatePercentage" data-model-property="header.currentVersion.AbatementRatePercentage" class="col-lg-3 control-label label-to-right req-lab-right" data-original-title="" title="">Abatement Rate</label>
+                                                <div class="col-lg-3 col-xxl-2">
+                                                    <div class="input-group panel-margin-bottom">
+                                                        <input type="text"
+                                                               input-by-float-range="{from:0, to:100, decimalplaces:4, doesemptytozero:'true'}"
+                                                               ng-model="header.currentVersion.AbatementRatePercentage"
+                                                               input-display-decimal-places="4"
+                                                               name="AbatementRatePercentage"
+                                                               data-required-message="Required"
+                                                               data-pt-field-view="header.common.ptFieldViewConfigOnChangeStatusId"
+                                                               data-pt-field-view-custom="{ { header.currentVersion.AbatementRatePercentage | displayPercentageView:4 } }"
+                                                               data-ng-required="true"
+                                                               class="form-control form-control ng-scope"
+                                                               required="required">
+                                                        <span class="input-group-addon">%</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row panel-margin-bottom">
+                                            <div class="col-lg-12">
+                                                <label for-property="NonResidentWithholdingPercentage" for="NonResidentWithholdingPercentage" data-model-property="header.currentVersion.NonResidentWithholdingPercentage" class="col-lg-3 control-label label-to-right req-lab-right" data-original-title="" title="">Non Resident Withholding Percentage Rate</label>
+                                                <div class="col-lg-3 col-xxl-2">
+                                                    <div class="input-group panel-margin-bottom">
+                                                        <input type="text"
+                                                               input-by-float-range="{from:0, to:100, decimalplaces:4, doesemptytozero:'true'}"
+                                                               ng-model="header.currentVersion.NonResidentWithholdingPercentage"
+                                                               input-display-decimal-places="4"
+                                                               name="NonResidentWithholdingPercentage"
+                                                               data-required-message="Required"
+                                                               data-pt-field-view="header.common.ptFieldViewConfigOnChangeStatusId"
+                                                               data-pt-field-view-custom="{ { header.currentVersion.NonResidentWithholdingPercentage | displayPercentageView:4 } }"
+                                                               data-ng-required="true"
+                                                               class="form-control form-control ng-scope"
+                                                               required="required">
+                                                        <span class="input-group-addon">%</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row panel-margin-bottom">
+                                            <div class="col-lg-12">
+                                                <label for-property="CanadaEmploymentAmount" for="CanadaEmploymentAmount" data-model-property="header.currentVersion.CanadaEmploymentAmount" class="col-lg-3 control-label label-to-right req-lab-right" data-original-title="" title="">Canada Employment Amount</label>
+                                                <div class="col-lg-3 col-xxl-2">
+                                                    <div class="panel-margin-bottom">
+                                                        <input type="text"
+                                                               data-input-by-float-range="{from:0, to:ApplicationConstants.max.currency, decimalplaces:2, doesemptytozero:'true'}"
+                                                               data-ng-model="header.currentVersion.CanadaEmploymentAmount"
+                                                               input-display-decimal-places="2"
+                                                               name="CanadaEmploymentAmount"
+                                                               data-required-message="Required"
+                                                               data-pt-field-view="header.common.ptFieldViewConfigOnChangeStatusId"
+                                                               data-pt-field-view-custom="{ { header.currentVersion.CanadaEmploymentAmount | currency } }"
+                                                               data-ng-required="true"
+                                                               class="form-control form-control ng-scope"
+                                                               required="required">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12 panel-body" data-pt-validation-messages="header.validationMessages" data-ng-if="header.validationMessages"></div>
+                                        <div class="col-lg-12 panel panel-internal">
+                                            <div>
+                                                <div class="row">
+                                                    <h3 class="col-lg-10 panel-title alignment-on-title">Tax Rates</h3>
+                                                    <div class="col-lg-2">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <div class="panel-body" data-ng-form="formRates">
+
+                                                    <payroll-tax-rates tax-rates="header.currentVersion.FederalTaxRates"
+                                                                       pt-field-view-config-on-change-status-id="header.common.ptFieldViewConfigOnChangeStatusId"
+                                                                       tax-version-status-id="header.currentVersion.TaxVersionStatusId"
+                                                                       custom-status-id="header.common.customStatusId"
+                                                                       show-buttons="header.currentVersion.TaxVersionStatusId == ApplicationConstants.TaxVersionStatus.New || header.common.customStatusId == header.common.customStatusType.ToCorrect || header.common.customStatusId == header.common.customStatusType.ToScheduleChange">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12 panel panel-internal" data-ng-if="header.currentVersion.TaxVersionStatusId == ApplicationConstants.TaxVersionStatus.Active||header.currentVersion.TaxVersionStatusId == ApplicationConstants.TaxVersionStatus.Replaced">
+                                            <div class="panel-body">
+                                                <app-phx-workflow-event-history [entity-type-id]="ApplicationConstants.EntityType.FederalTaxHeader" [entity-id]="$state.params.federalTaxHeaderId"></app-phx-workflow-event-history>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="panel-footer" data-ng-if="header.currentVersion.TaxVersionStatusId == ApplicationConstants.TaxVersionStatus.New || header.common.customStatusId == header.common.customStatusType.ToCorrect || header.common.customStatusId == header.common.customStatusType.ToScheduleChange">
+                                        <div class="row panel-margin-bottom">
+                                            <div class="col-lg-6">
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <div class="pull-right">
+                                                    <button type="button" class="btn btn-default" data-ng-click="header.common.workflow.customButtonOnClick(header.currentVersion,header.CountryId,'NewCancel')" data-ng-if="header.currentVersion.TaxVersionStatusId == ApplicationConstants.TaxVersionStatus.New">Cancel and Discard</button>
+                                                    <button type="button" class="btn btn-default" data-ng-click="header.common.workflow.customButtonOnClick(header.currentVersion,header.CountryId,'Cancel')" data-ng-if="header.common.customStatusId == header.common.customStatusType.ToCorrect || header.common.customStatusId == header.common.customStatusType.ToScheduleChange">Cancel and Discard</button>
+
+                                                    <button type="button" class="btn btn-primary" data-ng-click="header.common.workflow.customButtonOnClick(header.currentVersion,header.CountryId, 'NewCreate')" data-ng-if="header.currentVersion.TaxVersionStatusId == ApplicationConstants.TaxVersionStatus.New" data-ng-disabled="!formPayrollTax.$valid">Create</button>
+                                                    <button type="button" class="btn btn-primary" data-ng-click="header.common.workflow.customButtonOnClick(header.currentVersion,header.CountryId,'ToCorrect')" data-ng-if="header.common.customStatusId == header.common.customStatusType.ToCorrect" data-ng-disabled="!formPayrollTax.$valid">Correct</button>
+                                                    <button type="button" class="btn btn-primary" data-ng-click="header.common.workflow.customButtonOnClick(header.currentVersion,header.CountryId,'ToScheduleChange')" data-ng-if="header.common.customStatusId == header.common.customStatusType.ToScheduleChange" data-ng-disabled="!formPayrollTax.$valid">Schedule Change</button>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="col-lg-2">
+    <div class="payrolltax-versions">
+        <div class="payrolltax-version-group">
+            <div class="version-version-item"
+                 data-ng-repeat="version in header.FederalTaxVersions | orderBy:'EffectiveDate':true" data-ng-form=" formrate"
+                 data-ng-click="header.common.onVersionClick(version)"
+                 data-ng-class="(header.currentVersion.TaxVersionStatusId != ApplicationConstants.TaxVersionStatus.New && header.common.customStatusId != header.common.customStatusType.ToCorrect && header.common.customStatusId != header.common.customStatusType.ToScheduleChange && version.Id==header.currentVersion.Id)?'active':''">
+                <div>
+                    <div><span class="small-text">Effective Date:&nbsp;</span>{{version.EffectiveDate|date:ApplicationConstants.formatDate}}</div>
+                    <span data-ng-class="version.TaxVersionStatusId==ApplicationConstants.TaxVersionStatus.Active?'text-warning':''"><span class="small-text">Status:&nbsp;</span>{{version.TaxVersionStatusId| lookup:header.common.lists.listTaxVersionStatus}}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,80 @@
+<div class="container-fluid" *ngIf="demo">
+  <div class="row">
+    <app-phx-workflow-buttons (callWorkflowCommand)="executeWorkflowAction($event)" [workflowAvailableActions]="demo.WorkflowAvailableActions"
+      [isButtonBar]="false"></app-phx-workflow-buttons>
+    <app-phx-state-action-buttons [stateActions]="stateActions" [displayType]="'DROPDOWN'"></app-phx-state-action-buttons>
+  </div>
+
+
+  <div class="row">
+    <div class="col-xs-12">
+      <app-demo-header [demo]="demo"></app-demo-header>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-xs-12">
+      <app-phx-navigation-bar [navigationBarContent]="tabList" [url]="currentUrl"></app-phx-navigation-bar>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-xs-12">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-xs-12">
+      <button type="button" class="btn btn-default pull-right" (click)="openModal()">Open modal</button>
+      <button type="button" class="btn btn-default pull-right" (click)="openFullScreenModal()">Open full screen modal</button>
+    </div>
+  </div>
+  <br>
+  <div class="row panel-footer">
+    <app-phx-workflow-buttons (callWorkflowCommand)="executeWorkflowAction($event)" [workflowAvailableActions]="demo.WorkflowAvailableActions"
+      [isButtonBar]="true" [getActionButtonCssClass]="getActionButtonCssClass"></app-phx-workflow-buttons>
+    <app-phx-state-action-buttons [stateActions]="stateActions"></app-phx-state-action-buttons>
+  </div>
+
+  <div class="row">
+    <!-- Multiple Fab-->
+    <app-phx-fab [fabButtons]="fabButtons">
+    </app-phx-fab>
+
+    <!-- Single Fab-->
+    <!-- <app-phx-fab [fabButtons]="singleFabButton">
+    </app-phx-fab> -->
+  </div>
+
+  <app-phx-modal #modal [buttons]="modalFabButtons" title="Detail">
+    <app-demo-items [items]="demo.Items" [editable]="editable"></app-demo-items>
+
+    <!-- adding content to make the modal scrollable -->
+    <div class="attachment-container">
+      <img id="attachment" src="assets/gallery/showcase2.png" />
+    </div>
+    <div class="attachment-container">
+      <img id="attachment" src="assets/gallery/showcase3.png" />
+    </div>
+    <div class="attachment-container">
+      <img id="attachment" src="assets/gallery/showcase2.png" />
+    </div>
+  </app-phx-modal>
+
+  <app-phx-modal #fullScreenModal [buttons]="fullScreenModalFabButtons" title="Full screen modal" [fullScreen]="true">
+    <app-demo-items [items]="demo.Items" [editable]="editable"></app-demo-items>
+
+    <!-- adding content to make the modal scrollable -->
+    <div class="attachment-container">
+      <img id="attachment" src="assets/gallery/showcase2.png" />
+    </div>
+    <div class="attachment-container">
+      <img id="attachment" src="assets/gallery/showcase3.png" />
+    </div>
+    <div class="attachment-container">
+      <img id="attachment" src="assets/gallery/showcase2.png" />
+    </div>
+  </app-phx-modal>
+
+</div>

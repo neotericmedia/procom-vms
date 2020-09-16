@@ -1,0 +1,8 @@
+<app-phx-data-table [configuration]="dataTableConfiguration" [dataSourceUrl]="dataSourceUrl" [dataSourceParams]="oDataParams"
+  [columns]="columns" [summary]="summary" [exportFileName]="'workorder'" [componentName]="dataGridComponentName" (selectionChanged)="onRowSelected($event)"
+  (responseReceived)="dataReceived($event)" (contextMenuOpenTab)="onContextMenuOpenTab($event)"
+  >
+  <div *dxTemplate="let d of 'viewFormattedTotalAmount'">
+    ${{(d.data.Amount || 0) | pxCurrency}} {{d.data.CurrencyId | CodeValue:'geo.CodeCurrency':'code'}}
+  </div>
+</app-phx-data-table>

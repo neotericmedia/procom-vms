@@ -1,0 +1,8 @@
+<div class="col-lg-12">
+  <app-phx-data-table [columns]="columns" [configuration]="dataTableConfiguration" [dataSourceUrl]="dataSourceUrl" [dataSourceParams]="odataParams"
+    componentName="PayrollRemittanceBatch" (selectionChanged)="onRowSelected($event)">
+    <div *dxTemplate="let d of 'viewFormattedTotalAmount'">
+      ${{d.data.TotalAmount | pxCurrency}} {{displayCurrency(d.data.CurrencyId)}}
+    </div>
+  </app-phx-data-table>
+</div>

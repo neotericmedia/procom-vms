@@ -1,0 +1,302 @@
+@import "../../../../styles.less";
+
+@header-color: #383838;
+@uploaded-by-color: #323D43;
+
+
+h2{
+    color:#000;
+    margin:0;
+    padding:0;
+}
+
+.capsuleListItem {
+    display:block;
+    border: solid 1px rgb(221, 221, 221);
+    border-bottom: none;
+
+    .capsule-details {
+        padding: 0;
+        width: 100%;
+        width: calc(~'100% - 11px');
+        position: relative;
+        display: flex;
+        .row {
+            margin:0;   
+        }
+        .slide-wrap {
+            width:100%; 
+            overflow:hidden;
+            padding: 10px 0 10px;
+            .text-nowrap {
+                top: 10px;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                position: absolute;
+                display: block;
+                overflow: hidden;
+                flex-basis: 100%;
+                &.active {
+                    position: relative;
+                    overflow-x: hidden;
+                    z-index: 1;
+                    flex-grow: 1;
+                    top: 0;
+                }
+            }
+            .slide {
+                min-width: 100px;
+                width:100%;  
+            }
+        }
+        .pre-fill-cancel{
+            position: absolute;
+            left: 1px;
+            margin-top: -4px;
+        }
+
+        .quick-fill-input{
+            width:50px;
+            padding-left:5px;
+            padding-right:5px;        
+        }
+    }
+
+    .summary-details {
+        padding: 10px 0 10px 0;
+        width: 100%;
+        overflow: hidden;
+
+        .wrap-row {
+            margin-left: 0;
+            margin-right: 0;    
+        }
+
+        .col-total {
+            padding: 0 5px 0 0 !important;
+
+            .total-wrap {
+                white-space: nowrap;
+                padding-left: 0;
+                padding-right: 0;
+                text-align: right;
+            }
+
+            strong {
+                font-size: 16px;
+            }
+        }
+    }
+
+    .project-name, .rate{
+        padding-top: 0;
+        padding-bottom: 0;
+        margin-top: 0;
+        margin-bottom: 0;
+        font-size: 16px;
+        color: #333;
+        min-height: 18px !important;
+        overflow: hidden;
+        text-overflow: ellipsis;    
+    }
+    .rate {
+        font-size: 14px;
+    }
+
+    .qf-btn{
+        height: 100%;
+    }
+    
+    button.btn[hidden] {
+        visibility: hidden !important;
+    }
+
+    .btn-link{
+        padding:0;
+        color: inherit;
+        min-height: 26px;
+    }
+}
+.lm-qf-title {
+    .project-name{
+        margin-left: 15px;
+    }
+}
+.capsuleListItemWrap:last-child > .capsuleListItem {
+    border-bottom: solid 1px rgb(221, 221, 221);
+}
+
+.stripe {
+    width:11px;
+    overflow: hidden;
+    min-height: 72px;
+    button {
+        width:11px;
+        .material-icons {
+            margin-left: -8px;
+        }
+    }
+}
+
+.quick-fill-inline {
+    display: block;
+}
+
+.quick-fill-block {
+    display: none;
+}
+
+.project-row {
+    min-height: 11px;
+}
+
+.lm-project-rate-col {
+    max-width: 90%;
+}
+
+.lm-total-col {
+    text-align: center;
+}
+
+@media screen and (max-width: 959px) { // TODO: do this another way (relative to compoennt width?)
+    .lm-project-rate-col {    
+        width: calc(~'100% - 100px');
+        padding-right: 0;
+        margin-right: 0;
+    }
+    .lm-total-col {
+        padding-left: 0;
+        padding-right:10px;
+        margin-left: 0;
+        width: auto;
+        text-align: right;
+    }
+    .capsule-buttons {
+        text-align: left;
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    .mobileHide {
+        display:none;
+    }
+    .capsuleListItemWrap {
+        margin-bottom: 5px;
+        &:last-child > .capsuleListItem {
+            border-radius: 3px;
+        }
+    }
+    .stripe {
+        border-bottom-right-radius: 3px;
+        border-top-right-radius: 3px;
+    }
+    .lm-project-rate-col {    
+        width: 100%;
+    }
+    .capsuleListItem {
+        .capsule-details {
+            .pre-fill {
+                max-width: 65%;
+                margin: 10px 0 0px 20px;
+                float: left;
+            }
+            button.btn.btn-link.btn-badge {
+                float: right;
+                margin-right: 5px;
+                span.prefill-badge {
+                    background: #1592e6;
+                    padding: 7px 12px;
+                    border-radius: 3px;
+                    font-size: 1.1em;
+                }
+            }
+            .quick-fill-input {
+                width: 90px;
+                min-height: 41px;
+                padding-left: 5px;
+                padding-right: 5px;
+                text-align: center;
+                font-size: 2.2em;
+                border: none;
+                border-bottom: 1px solid #000;
+                font-weight: 700;    
+            }
+            .btn-svg .img-svg {
+                width: 34px;
+            }
+            .btn-material .material-icons {
+                font-size: 34px;
+            }
+        }
+    }
+}
+
+@media screen and (min-width: 1400px),  screen and (max-width: 959px) { // TODO: do this another way (relative to compoennt width?)
+    .btn-svg.center {
+        margin-left: 20px;
+        margin-right: 20px;
+    }
+}
+
+@media screen and (min-width: 1400px) {
+    .lm-project-rate-col {    
+        width: calc(~'100% - 100px');
+        padding-right: 0;
+        margin-right: 0;
+    }
+    .lm-total-col {
+        padding-left: 0;
+        padding-right:10px;
+        margin-left: 0;
+        width: 100px;
+        text-align: right;
+    }
+    .capsule-buttons {
+        text-align: right;
+    }
+}
+
+@media screen and (max-width: 1500px) {
+    .mob-stack {
+        width: 100%;
+        display: block;
+    }
+    .mob-stack.btn-link {
+        width: auto;
+    }
+    .quick-fill-block {
+        display: inline;
+    }
+    .quick-fill-inline {
+        display: none;
+    }
+    .lm-qf-title {
+        text-align: center;
+        .project-name{
+            margin-left: 0;
+        }
+    }
+}
+
+// prevent height jumping (side effect after fixing IE sliding bug #12926)
+@media screen and (min-width: 1501px) {
+    .slide {
+        min-height: 71px;
+    }
+}
+@media screen and (max-width: 1500px) and (min-width: 1400px) {
+    .slide {
+        min-height: 84px;
+    }
+}
+@media screen and (max-width: 1399px) and (min-width: 601px) {
+    .slide {
+        min-height: 98px;
+    }
+}
+@media screen and (max-width: 600px) {
+    .slide {
+        min-height: 105px;
+    }
+}

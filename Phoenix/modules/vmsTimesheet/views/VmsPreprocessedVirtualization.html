@@ -1,0 +1,33 @@
+﻿<div class="form-horizontal" data-ng-form="formVmsPreprocessed">
+    <div data-loading-spinner="processing"></div>
+    <div class="form-group">
+        <div class="col-lg-10">
+            <ui-select name="DocumentPublicId" data-ng-model="selfScope.documentPublicId" theme="select2" class="form-control" data-ng-change="selfScope.onDocumentChange()">
+                <ui-select-match placeholder="--Document--">{{::$select.selected.Document.Name}} - uploaded {{::$select.selected.Document.UploadedDatetime | date:ApplicationConstants.formatDateTimeHMS}}</ui-select-match>
+                <ui-select-choices repeat="item.Document.PublicId as item in selfScope.lists.documentsList| uiSelectChoicesFilter: $select.search: 'Document.Name'">
+                    <span data-ng-bind-html="item.Document.Name | highlight: $select.search"></span>
+                    <span>- uploaded</span>
+                    <span data-ng-bind-html="item.Document.UploadedDatetime | date:ApplicationConstants.formatDateTimeHMSAMPM"></span>
+                </ui-select-choices>
+            </ui-select>
+        </div>
+    </div>
+    <div class="form-group" data-ng-if="selfScope.testVirtualListData.length>0">
+        <div class="col-lg-6 col-md-6 col-sm-6">
+            <ui-virtual-list class="test" data-ng-model="selfScope.testVirtualListOption"
+                             ui-virtual-list-data="selfScope.testVirtualListData"
+                             ui-virtual-list-template="/Phoenix/app/directive/uiVirtualList.html"
+                             ui-virtual-list-on-select="selfScope.testVirtualListOnSelect(option)"></ui-virtual-list>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-6">
+            <div class="selectedOption">
+                {{selfScope.testVirtualListOption | json}}
+            </div>
+        </div>
+    </div>
+    <div class="form-group" data-ng-if="selfScope.items.length>0">
+        <ui-virtual-list class="vms" data-ng-model="selfScope.item"
+                         ui-virtual-list-data="selfScope.items"
+                         ui-virtual-list-template="/Phoenix/modules/vmsTimesheet/views/VmsPreprocessedVirtualizationListDirective.html"></ui-virtual-list>
+    </div>
+</div>

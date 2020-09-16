@@ -1,0 +1,77 @@
+﻿<h3>Contact Drafts</h3>
+<div class="smart-table-wrapper">
+    <div class="row" data-cg-busy="loadItemsPromise">
+        <table data-st-table-struct='[{"stTableValue" : "items"}, {"stPipeValue" : "callServer"}, {"widthValues" : "[5, 10, 10, 20, 10, 20, 8, 8]"}, {"stPaginationValue" : "pageSize"}]'>
+            <thead data-st-head="1800px">
+                <tr>
+                    <th data-st-sort="ContactId" data-st-sort-default="reverse">ID</th>
+                    <th data-st-sort="FirstName">First Name</th>
+                    <th data-st-sort="LastName">Last Name</th>
+                    <th data-st-sort="OrganizationNames">Organization</th>
+                    <th data-st-sort="ProfileGroups">Profile</th>
+                    <th data-st-sort="Emails">Email</th>
+                    <th data-st-sort="ModifiedBy">Modified By</th>
+                    <th data-st-pen-name="Action">Actions</th>
+                </tr>
+                <tr>
+                    <th>
+                        <input data-st-advanced-search="{property: 'ContactId', ignoreQuotes: true}" placeholder=""
+                               class="input-sm form-control numberType" data-safe-restrict-input="[^0123456789]" />
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="'FirstName'" placeholder="" class="input-sm form-control" type="search" />
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="'LastName'" placeholder="" class="input-sm form-control" type="search" />
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="'OrganizationNames'" placeholder="" class="input-sm form-control" type="search" />
+                    </th>
+                    <th>
+                        <select data-st-advanced-search="{property: 'UserProfileTypeId', ignoreQuotes: true}" class="input-sm form-control">
+                            <option value="1">Organizational</option>
+                            <option value="2">Internal</option>
+                            <option value="3">Temp</option>
+                            <option value="4">Canadian SP</option>
+                            <option value="5">Canadian Inc</option>
+                            <option value="6">Sub Vendor</option>
+                            <option value="7">W2 Worker</option>
+                            <option value="8">LLC Worker</option>
+                        </select>
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="'Emails'" placeholder="" class="input-sm form-control" type="search" />
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="'ModifiedBy'" type="search" placeholder="" class="input-sm form-control" />
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr data-ng-repeat="item in items" data-ui-sref-tr="Edit{{item.ProfileType}}Profile({ contactId: item.ChildContactId ? item.ChildContactId : item.ContactId, profileId: item.ChildContactId ? item.ChildProfileId : item.UserProfileId })" style="cursor:pointer">
+                    <td ng-bind="::item.ContactId"></td>
+                    <td ng-bind="::item.FirstName"></td>
+                    <td ng-bind="::item.LastName"></td>
+                    <td ng-bind="::item.OrganizationNames"></td>
+                    <td ng-bind="::item.ProfileTypes"></td>
+                    <td ng-bind="::item.Emails"></td>
+                    <td ng-bind="::item.ModifiedBy"></td>
+                    <td>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-xs btn-clouds btn-row-action no-padding-bottom-right" data-action="view" title="View"><i class="fontello-icon-eye-1"></i>&nbsp;</button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="8">
+                        <span>Total Count: {{totalItemCount || 0}}; Items Loaded: {{ items ? items.length : 0}}</span>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+
+    </div>
+</div>

@@ -1,0 +1,40 @@
+<div class="panel-body" [formGroup]="inputFormGroup">
+  <div class="col-lg-12">
+    <p class="h4 center">Transaction Notes</p>
+  </div>
+  <div class="col-lg-6" style="padding: 0">
+    <div class="form-group">
+      <phx-form-control [control]="inputFormGroup.controls.InvoiceNote1" labelText="Invoice Note 1" viewModeText="{{inputFormGroup.controls.InvoiceNote1.value}}">
+        <input class="form-control ng-scope" type="text" formControlName="InvoiceNote1" />
+      </phx-form-control>
+    </div>
+    <div class="form-group">
+      <phx-form-control [control]="inputFormGroup.controls.InvoiceNote2" labelText="Invoice Note 2" viewModeText="{{inputFormGroup.controls.InvoiceNote2.value}}">
+        <input class="form-control ng-scope" type="text" formControlName="InvoiceNote2" />
+      </phx-form-control>
+    </div>
+  </div>
+  <div class="col-lg-6" style="padding: 0">
+    <div class="form-group">
+      <phx-form-control [control]="inputFormGroup.controls.InvoiceNote3" labelText="Invoice Note 3" viewModeText="{{inputFormGroup.controls.InvoiceNote3.value}}">
+        <input class="form-control ng-scope" type="text" formControlName="InvoiceNote3" />
+      </phx-form-control>
+    </div>
+    <div class="form-group">
+      <phx-form-control [control]="inputFormGroup.controls.InvoiceNote4" labelText="Invoice Note 4" viewModeText="{{inputFormGroup.controls.InvoiceNote4.value}}">
+        <input class="form-control ng-scope" type="text" formControlName="InvoiceNote4" />
+      </phx-form-control>
+    </div>
+  </div>
+  <div class="col-lg-6" style="padding: 0">
+    <div class="form-group">
+      <phx-form-control labelText="Is Internal?" [control]="inputFormGroup.controls.IsInternalTransaction" [editable]="true"
+        viewModeText="{{inputFormGroup.controls.IsInternalTransaction.value ? 'Yes' : 'No'}}">
+        <label class="radio-inline">
+          <input class="form-check-input" type="radio" [value]="true" required formControlName="IsInternalTransaction">Yes</label>
+        <label class="radio-inline">
+          <input class="form-check-input" type="radio" [value]="false" required formControlName="IsInternalTransaction">No</label>
+      </phx-form-control>
+    </div>
+  </div>
+</div>

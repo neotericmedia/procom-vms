@@ -1,0 +1,57 @@
+﻿<div class="modal-content" data-ng-form="formPaymentBatchDialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <span class="modal-title">The following payments will not be released</span>
+            <div class="btn pull-right paymentBatchClose" data-ng-click="cancel()"><i class="fontello-icon-cancel-circle"></i></div>
+        </div>
+        <div class="modal-body">
+            <div class="content-group form-horizontal">
+                <div class="form-group col-lg-12">
+                    <label for-property="DepositDate" for="DepositDate" data-model-property="data.DepositDate" class="col-lg-4 control-label label-to-right" data-original-title="" title="">Total Payment Amount:</label>
+                    <div class="col-lg-6">
+                        <label class="control-label">{{data.AmountTotal | currency: data.currency + " $"}}</label>
+                    </div>
+                </div>
+                <div class="form-group col-lg-12" ng-if="data.BankId">
+                    <label for-property="DepositDate" for="DepositDate" data-model-property="data.DepositDate" class="col-lg-4 control-label label-to-right" data-original-title="" title="">Pay From:</label>
+                    <div class="col-lg-6">
+                        <label class="control-label">{{data.BankId | lookup:data.bankAccounts:'id':'text'}}</label>
+                    </div>
+                </div>
+                <div class="form-group col-lg-12">
+                    <label for-property="DepositDate" for="DepositDate" data-model-property="data.DepositDate" class="col-lg-4 control-label label-to-right" data-original-title="" title="">Tentative Batch Number:</label>
+                    <div class="col-lg-6">
+                        <label class="control-label">{{data.batchNo}}</label>
+                    </div>
+                </div>
+                <div class="form-group col-lg-12">
+                    <label for-property="DepositDate" for="DepositDate" data-model-property="data.DepositDate" class="col-lg-4 control-label label-to-right" data-original-title="" title="">Deposit Date:</label>
+                    <div class="col-lg-6">
+                        <label class="control-label">{{data.DepositDate | date:ApplicationConstants.formatDate}}</label>
+                    </div>
+                </div>
+                <div class="row col-lg-12">
+                    <div class="col-lg-1"></div>
+                    <div class="col-lg-1"></div>
+                    <div class="col-lg-4">Payee Name</div>
+                    <div class="col-lg-2 label-to-right">Subtotal</div>
+                    <div class="col-lg-2 label-to-right">Sales Tax</div>
+                    <div class="col-lg-2 label-to-right">Total</div>
+                </div>
+                <div class="row col-lg-12" data-ng-repeat="groupedPaymentTransactions in data.GroupedPaymentTransactionsList">
+                    <div class="col-lg-1"><input data-ng-if="groupedPaymentTransactions.PaymentTotal>0" type="checkbox" data-ng-model="groupedPaymentTransactions.IsSelected" /></div>
+                    <div class="col-lg-1"><label class="control-label">{{groupedPaymentTransactions.TaskIds.length}}</label></div>
+                    <div class="col-lg-4"><label class="control-label">{{groupedPaymentTransactions.PayeeName}}</label></div>
+                    <div class="col-lg-2 label-to-right"><label class="control-label">{{groupedPaymentTransactions.PaymentSubtotal| currency: data.currency + " $"}}</label></div>
+                    <div class="col-lg-2 label-to-right"><label class="control-label">{{groupedPaymentTransactions.PaymentSalesTax| currency: data.currency + " $"}}</label></div>
+                    <div class="col-lg-2 label-to-right" data-ng-class="groupedPaymentTransactions.PaymentTotal<=0?'text-danger':''"><label class="control-label">{{groupedPaymentTransactions.PaymentTotal| currency: data.currency + " $"}}</label></div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" ng-click="create()" data-ng-if="!isNotifyEventsSet&&selectedGroups.length>0" data-ng-disabled="!formPaymentBatchDialog.$valid">Create</button>
+            <button type="button" class="btn btn-default" ng-click="cancel()" data-ng-if="!isNotifyEventsSet">Cancel</button>
+            <button type="button" class="btn btn-default" ng-click="cancel()" data-ng-if="isNotifyEventsSet">Ok</button>
+        </div>
+    </div>
+</div>

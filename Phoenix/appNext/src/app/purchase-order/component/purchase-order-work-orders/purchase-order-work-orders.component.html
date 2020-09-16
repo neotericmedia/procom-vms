@@ -1,0 +1,16 @@
+<app-phx-data-table [columns]="columns" [configuration]="dataTableConfiguration" [dataSourceUrl]="dataSourceUrl" [dataSourceParams]="odataParams"
+    componentName="PurchaseOrderWorkOrders" [summary]="summary" (selectionChanged)="onRowSelected($event)">
+    <div class="btn-group">
+        <button type="button" class="btn btn-xs btn-clouds btn-row-action no-padding-bottom-right" title="View" (click)="viewWorkOrderDetail(d.data)">
+                <i class="fontello-icon-eye-1"></i>&nbsp;
+        </button>
+    </div>
+    <div *dxTemplate="let d of 'viewFormattedFundsSpent'">
+       {{d.data.AmountSpent | pxCurrency}} {{displayCurrency(d.data.PurchaseOrderLineCurrencyId)}}
+  
+    </div>
+    <div *dxTemplate="let d of 'viewFormattedFundsCommitted'">
+       {{d.data.AmountCommited | pxCurrency}} {{displayCurrency(d.data.PurchaseOrderLineCurrencyId)}}
+  
+    </div>
+</app-phx-data-table>

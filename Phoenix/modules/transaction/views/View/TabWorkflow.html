@@ -1,0 +1,22 @@
+﻿<app-phx-workflow-event-history [entity-type-id]="ApplicationConstants.EntityType.TransactionHeader" [entity-id]="trn.transactionHeader.Id"
+    [func-get-last-item]="trn.transactionWorkflowIterator">
+    </app-phx-workflow-event-history>
+
+    <div ng-if="trn.hasReversedTransaction">
+        <app-phx-workflow-event-history [entity-type-id]="ApplicationConstants.EntityType.TransactionHeader" [entity-id]="trn.transactionHeader.Id"
+            data-show-header="false" [func-get-last-item]="trn.reversedTransactionWorkflowIterator">
+        </app-phx-workflow-event-history>
+    </div>
+
+    <div data-ng-repeat="billingTransaction in trn.transactionHeader.BillingTransactions">
+        <div ng-if="billingTransaction.VmsDiscountProcessedRecordId">
+            <app-phx-workflow-event-history [entity-type-id]="ApplicationConstants.EntityType.VmsDiscountProcessedRecord" [entity-id]="billingTransaction.VmsDiscountProcessedRecordId"
+                data-show-header="false" [func-get-last-item]="trn.discountImportIterator">
+            </app-phx-workflow-event-history>
+            <div ng-if="trn.hasReversedTransaction">
+                <app-phx-workflow-event-history [entity-type-id]="ApplicationConstants.EntityType.VmsDiscountProcessedRecord" [entity-id]="billingTransaction.VmsDiscountProcessedRecordId"
+                    data-show-header="false" [func-get-last-item]="trn.reversedDiscountImportIterator">
+                </app-phx-workflow-event-history>
+            </div>
+        </div>
+    </div>

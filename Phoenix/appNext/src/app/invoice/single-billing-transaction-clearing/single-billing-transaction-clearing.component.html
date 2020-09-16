@@ -1,0 +1,24 @@
+<app-billing-transaction #grid (selectionChanged)="onSelectionChanged($event)" [invoicePresentationStyle]="BillingInvoicePresentationStyle?.OneInvoicePerTransactions"
+  [organizationIdInternal]="organizationIdInternal"></app-billing-transaction>
+
+<app-phx-validation-messages [messages]="validationMessages">
+</app-phx-validation-messages>
+
+<div class="row toolbar">
+  <div class="col-md-6">
+    <div *ngIf="selectedRowKeys.length > 0">
+      <span class="total-label">Number Of Selected Rows </span>
+      <span class="total-value">{{selectedRowKeys.length}}</span>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="btn-toolbar pull-right">
+      <button type="button" [disabled]="selectedRowKeys.length === 0" class="btn btn-primary pull-right" (click)="executeBatchCommand(batchActions.CreateInvoice)"
+        title="Create Invoice">Create Invoice</button>
+      <button type="button" [disabled]="selectedRowKeys.length === 0" class="btn btn-default pull-right" (click)="executeBatchCommand(batchActions.SuppressTransaction)"
+        title="Suppress">Suppress</button>
+      <button type="button" class="btn btn-default pull-right" [disabled]="selectedRowKeys.length === 0" (click)="executeBatchCommand(batchActions.ChangeToConsolidated)"
+        title="Suppress">Change to Consolidated</button>
+    </div>
+  </div>
+</div>

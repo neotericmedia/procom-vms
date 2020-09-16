@@ -1,0 +1,32 @@
+<div *ngIf="timeSheet" id="lineManagement" [ngClass]="{'hidden-sm hidden-md hidden-xs' : activeProjectManagementState === ProjectManagementState.disabled ||  activeProjectManagementState === ProjectManagementState.cancel}">
+    <div *ngIf="timeSheet.IsEditable">
+        <header class="lm-header clearfix" (click)="toggleShowAddMenu()" (keyup.enter)="toggleShowAddMenu()" role="button" tabindex="0">
+            <div class="clearfix">
+                <div class="pull-right">
+                    <i class="material-icons" *ngIf="!lineManagement?.showAddMenu">expand_more</i>
+                    <i class="material-icons" *ngIf="lineManagement?.showAddMenu">expand_less</i>
+                </div>
+                <div class="header-text">{{'timesheet.lineManagement.header' | phxTranslate}}</div>
+            </div>
+        </header>
+        <div [hidden]="!lineManagement?.showAddMenu">
+            <app-time-sheet-line-management-capsule-edit [timeSheet]="timeSheet" [lineManagement]="lineManagement"></app-time-sheet-line-management-capsule-edit>
+            <hr class="lm-rule" />
+        </div>
+
+        <p class="info">
+            {{'timesheet.lineManagement.description' | phxTranslate}}
+        </p>
+
+    </div>
+
+    <div *ngIf="!timeSheet.IsEditable">
+        <header class="lm-header">{{'timesheet.lineSummary.capusleSummaryHeader' | phxTranslate}}</header>
+    </div>
+
+    <app-time-sheet-line-management-search [sortMode]="lineManagement?.sortMode" [sortAsc]="lineManagement?.sortAsc" [filter]="lineManagement?.filterText" [showSort]="timeSheet.IsTimeSheetUsesProjects"></app-time-sheet-line-management-search>
+
+    <app-time-sheet-line-management-capsule-list [timeSheet]="timeSheet" [capsuleList]="lineManagement?.capsuleList" [sortMode]="lineManagement?.sortMode" [sortAsc]="lineManagement?.sortAsc" [filter]="lineManagement?.filterText"
+        [editable]="timeSheet.IsEditable" [disabled]="isTimeSheetSaving" (capsuleRemove)="onRemoveCapsule($event)"></app-time-sheet-line-management-capsule-list>
+
+</div>

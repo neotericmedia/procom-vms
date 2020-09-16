@@ -1,0 +1,147 @@
+﻿<div data-save-as-template="" data-control="templateControl"></div>
+<div class="domain organization">
+    <div class="col-lg-12">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="row" style="height: 35px;">
+                    <div class="col col-lg-3">
+                        <div class="btn-toolbar" data-ng-if="scopeOrg.workflow.WorkflowAvailableActions.length>0">
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-clouds dropdown-toggle" data-toggle="dropdown">
+                                    Actions...
+                                    <span class="caret ml"></span>
+                                </button>
+                                <ul class="dropdown-menu bordered">
+                                    <li style="cursor: pointer;" data-ng-repeat="action in scopeOrg.workflow.WorkflowAvailableActions | orderBy:'DisplayButtonOrder'"
+                                        data-ng-click="scopeOrg.workflow.actionButtonOnClick(action)">
+                                        <a>{{action.Name}}</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-10 col-md-10 tab-content">
+                        <div class="tabbable panel panel-tabbable">
+                            <div class="tab-content">
+                                <div class="tab-pane active">
+                                    <div class="panel">
+                                        <div class="panel-heading headstone">
+                                            <div class="row">
+                                                <div class="col-xs-12 col-md-1">
+                                                    <label class="control-label col-xs-3 col-md-12 ">ID</label>
+                                                    <span class="col-xs-8 col-md-12" data-ng-class="scopeOrg.entity.IsDraftStatus?'text-warning':''">{{scopeOrg.entity.SourceId || scopeOrg.entity.Id}}</span>
+                                                </div>
+                                                <div class="col-xs-12 col-md-5">
+                                                    <label class="control-label col-xs-3 col-md-12 ">Legal Name</label>
+                                                    <span class=" col-xs-8 col-md-12 ">{{scopeOrg.entity.LegalName}} &nbsp;</span>
+                                                </div>
+                                                <div class="col-xs-12 col-md-4">
+                                                    <label class="control-label col-xs-3 col-md-12 ">Role</label>
+                                                    <div class="col-xs-8 col-md-12">
+                                                        <i data-ng-if="scopeOrg.entity.OrganizationClientRoles.length>0" class="icon icon-small icon-organization-client" title="Client"></i>
+                                                        <i data-ng-if="scopeOrg.entity.OrganizationIndependentContractorRoles.length>0 || scopeOrg.entity.OrganizationSubVendorRoles.length>0 || scopeOrg.entity.OrganizationLimitedLiabilityCompanyRoles.length>0"
+                                                            class="icon icon-small icon-organization-independentcontractor" title="Supplier"></i>
+                                                        <i data-ng-if="scopeOrg.entity.OrganizationInternalRoles.length>0" class="icon icon-small icon-organization-internal" title="Internal"></i>
+                                                        &nbsp;
+                                                    </div>
+                                                </div>
+                                                <div class="col-xs-12 col-md-2">
+                                                    <label class="control-label col-xs-3 col-md-12 ">Status</label>
+                                                    <div class="col-xs-8 col-md-12 ">
+                                                        <span data-ng-if="!scopeOrg.workflow.WorkflowIsRunning&&scopeOrg.customStatusId == null" data-ng-class="scopeOrg.entity.IsDraftStatus?'text-warning':''">{{scopeOrg.entity.OrganizationStatusId | lookup:scopeOrg.lists.organizationStatusList}}</span>
+                                                        <span data-ng-if="!scopeOrg.workflow.WorkflowIsRunning&&scopeOrg.customStatusId !== null">{{scopeOrg.customStatusId|lookup:scopeOrg.lists.listCustomStatus}}</span>
+                                                        <span data-ng-if="scopeOrg.workflow.WorkflowIsRunning">Workflow Is Running</span>
+                                                        &nbsp;
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tabbable">
+                                <ul class="nav nav-tabs">
+                                    <li data-ng-repeat='curTab in scopeOrg.tab.configList' data-ng-class="{ active : $state.includes(curTab.state) }" data-ng-click="scopeOrg.tab.onClick(curTab.state)">
+                                        <a data-ui-sref="{{curTab.state}}">
+                                            {{curTab.stateName}} &nbsp;
+                                            <i ng-if="!scopeOrg.tab.valid(curTab)" class="material-icons md-18">warning</i>
+                                            <i data-ng-bind-html="scopeOrg.tab.addonHtml(curTab)"></i>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="tab-content">
+                                <div class="tab-pane active">
+                                    <div class="panel no-border">
+                                        <div class="" data-ui-view="organizationActiveTab" data-autoscroll="false"></div>
+                                        <div class="" ng-if="scopeOrg.validationMessages && scopeOrg.validationMessages.length>0" data-pt-validation-messages="scopeOrg.validationMessages"></div>
+                                        <div class="panel-footer">
+                                            <div class="row">
+                                                <div class="col-lg-6">
+
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <div class="pull-right">
+                                                        <div data-ng-if="(scopeOrg.workflow.WorkflowAvailableActions|filter:{CommandName:'!OrganizationOriginalCorrect'}).length>0">
+                                                            <span data-ng-repeat="item in scopeOrg.workflow.WorkflowAvailableActions | orderBy:'DisplayButtonOrder' | filter: { IsActionButton: true }">
+                                                                <button type="button" class="btn" data-ng-class="item.CommandName=='OrganizationSubmit'||item.CommandName=='OrganizationFinalize'||item.CommandName=='OrganizationApprovalApprove'?'btn-primary':'btn-default'"
+                                                                    data-ng-click="scopeOrg.workflow.actionButtonOnClick(item)"
+                                                                    ng-if="((item.CommandName !== 'OrganizationSubmit' && item.CommandName=='OrganizationFinalize') || scopeOrg.actionScope.show.workflowActionSubmit) && (item.CommandName !== 'OrganizationDiscard' || scopeOrg.actionScope.show.workflowActionDiscard)"
+                                                                    data-ng-disabled="((item.CommandName=='OrganizationSubmit'||item.CommandName=='OrganizationFinalize'||item.CommandName=='OrganizationApprovalApprove') && (!scopeOrg.validator.tabDetailsIsValid||!scopeOrg.validator.tabRolesIsValid||!scopeOrg.validator.tabCollaboratorsIsValid)) || scopeOrg.workflow.isSubmitted">
+                                                                    {{item.Name}}
+                                                                </button>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-md-2">
+                                <div class="version-panel notes-panel" style="margin-bottom: 30px;padding-left: 0;" ng-if="scopeOrg.actionScope.show.notesList">
+                                    <div class="panel-group">
+                                        <div class="panel panel-default">
+                                            <div>
+                                                <a data-toggle="collapse" data-target="#notes-panel" class="panel-header panel-header-link col-lg-6 notes-panel">
+                                                    NOTES
+                                                    <span class="badge " data-ng-if="scopeOrg.orgUnreadNotes>0" style="padding: 2px 5px;background-color:#FE9701">{{scopeOrg.orgUnreadNotes}}</span>
+                                                </a>
+                                                <button type="button" class="btn btn-material pull-right" data-toggle="collapse" data-ng-click="scopeOrg.goToNotes()">
+                                                    <i class="material-icons md-dark">launch</i>
+                                                </button>
+                                            </div>
+                                            <div id="notes-panel" class="panel-collapse collapse" data-ng-if="scopeOrg.orgNotesTotal>0">
+                                                <div class="panel-body form-horizontal">
+                                                    <div class="row">
+                                                        <div data-pt-notes-list="" data-entity-type-id="ApplicationConstants.EntityType.Organization" data-entity-id="$state.params.organizationId">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                </div>
+                            </div>
+                        <div class="organization-versions">
+                            <div class="organization-version-group">
+                                <div class="version-version-item" data-ng-repeat="version in scopeOrg.entity.Versions | orderBy:'IsOriginal':true" data-ng-click="scopeOrg.actionScope.event.onVersionClick(version)"
+                                    data-ng-class="(version.Id==$state.params.organizationId)?'active':''">
+                                    <div>{{version.IsOriginal?'Current Organization':'Proposed Change'}}</div>
+                                    <div>
+                                        <span data-ng-class="version.OrganizationStatusId==ApplicationConstants.OrganizationStatus.Active?'text-warning':''">
+                                            <span class="small-text">Status:&nbsp;</span>{{version.OrganizationStatusId|lookup:scopeOrg.lists.organizationStatusList}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

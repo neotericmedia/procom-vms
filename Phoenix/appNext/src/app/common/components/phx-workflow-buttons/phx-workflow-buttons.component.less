@@ -1,0 +1,119 @@
+.action-link {
+    cursor: pointer;
+}
+
+.no-click {
+    pointer-events: none;
+    a {
+        color: rgb(207, 207, 207);
+    }
+}
+
+.btn-toolbar.link-bar {
+    text-align: left;
+}
+
+.btn-toolbar.button-bar {
+    text-align: right;
+    &.mobileFab {
+        width: 100%; // padding: 10px 4.7% 15px;
+        position: fixed; // background-color: rgba(255, 255, 255, 0.75);
+        bottom: 0px;
+        z-index: 100;
+        right: 0;
+    }
+}
+
+.btn-group {
+    margin: 10px 0 10px 5px;
+    .btn.action-button {
+        margin-left: 5px;
+    }
+    .mobileFab & {
+        padding-top: 5px;
+    }
+}
+
+// new mobile styles
+.mBtn {
+    width: 50px;
+    height: 50px;
+    background-color: #12a4f4;
+    border-radius: 50%;
+    box-shadow: 0 0 12px 0 #ccc !important;
+    display: none;
+    cursor: pointer;
+    i.material-icons {
+        display: block;
+        position: relative;
+        margin: 0;
+        top: 24%;
+        color: #fff;
+        width: 100%;
+        text-align: center;
+    }
+}
+
+// end new styles
+@media only screen and (max-width: 959px) {
+    .btn-toolbar.button-bar.mobile-center {
+        text-align: center;
+    }
+}
+
+@media only screen and (min-width: 550px) {
+    .btn-toolbar.button-bar.mobileFab {
+        background-color: #fff;
+        border-top: 1px solid #e8e8e8;
+        padding: 0 4.7% 5px;
+    }
+}
+
+@media only screen and (max-width: 550px) {
+    .btn-toolbar.button-bar.mobileFab {
+        padding: 0;
+        transition: padding 200ms ease-in;
+        &.open {
+            padding: 10px 4.7% 65px;
+            background-color: rgba(255, 255, 255, 0.85);
+        }
+    }
+    .btn-group {
+        margin: 10px auto 0; // new mobile styles
+        .mobileFab & {
+            width: 100%;
+            opacity: 0;
+            height: 0;
+            transition: height 200ms ease-in, opacity 150ms ease-in 100ms;
+            &.open {
+                display: inline-block;
+                height: initial;
+                height: 100px;
+                opacity: 1;
+            }
+        } // end new styles
+        .btn.action-button {
+            display: block;
+            width: 200px;
+            margin: auto;
+            float: none;
+            margin-bottom: 10px; // new mobile styles
+            .mobileFab & {
+                color: #fff;
+                background-color: #666;
+                padding: 5px;
+                margin-bottom: 20px;
+                margin-left: 50px;
+                float: right;
+                border: none;
+            } // end new styles
+        }
+    }
+    .mBtn {
+        display: block;
+        position: fixed;
+        bottom: 20px;
+        right: 15px;
+        z-index: 101;
+    }
+}

@@ -1,0 +1,21 @@
+<div class="container-fluid" *ngIf="documentType">
+
+
+  <div class="row">
+    <div class="col-xs-12">
+      <app-document-type-header [documentType]="documentType"></app-document-type-header>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-xs-12">
+      <app-phx-navigation-bar [navigationBarContent]="tabList" [url]="currentUrl" (onTabSelected)="onTabSelected($event)"></app-phx-navigation-bar>
+    </div>
+  </div>
+
+  <div class="row" *ngIf="currentTab">
+    <div class="col-xs-12">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>

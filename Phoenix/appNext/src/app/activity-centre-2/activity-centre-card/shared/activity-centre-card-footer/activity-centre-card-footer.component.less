@@ -1,0 +1,67 @@
+@import "../../shared/activity-centre-card-style-config.less";
+
+.panel-footer {
+    clear: both;
+    position: absolute;
+    bottom: 1px;
+    padding-left: 16px;
+    padding-right: 16px;
+    background-color: #fafbfd;
+    display: flex;
+    border-top: 1px solid #eee;
+    height: auto !important;
+    min-height: 24px !important;
+    margin-bottom: 0px !important;
+    align-items: center;
+    margin-left: 1px;
+    width: 99%;
+
+    .content-right {
+        max-width: 50%;
+
+        .text-muted {
+            color: #999999;
+        }
+
+        small {
+            width: 100%;
+        }
+    }
+
+    .content-left {
+        display: flex;
+        flex: 1 1 auto;
+        overflow: hidden;
+        padding-right: 5px;
+
+        .text-muted {
+            color: #999999;
+        }
+
+        i {
+            margin-left: -5px;
+        }
+
+        small {
+            width: 85%;
+            margin-top: 4px;
+            margin-left: 5px;
+        }
+    }
+
+    .content-right,
+    .content-left {
+        small {
+            display: block;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+    }
+}
+
+@media only screen and (max-width: @screen-xs-max) {
+    .panel-footer {
+        position: relative;
+    }
+}

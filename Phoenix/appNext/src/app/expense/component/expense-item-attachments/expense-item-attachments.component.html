@@ -1,0 +1,13 @@
+<div class="row">
+  <div class="col-xs-4" *ngIf="editable && item.Id > 0">
+    <div class="block add-image" (click)="openFileUploader()"></div>
+  </div>
+  <div class="col-xs-4" *ngFor="let doc of docs">
+    <div class="block img-container loading">
+      <div class="btn btn-material btn-borderless btn-delete" *ngIf="editable" (click)="deleteAttachment(doc)">
+        <i class="material-icons">clear</i>
+      </div>
+      <img class="fade" [src]="createSanitizeUrl(doc.PublicId)" onload="this.style.opacity='1';" (click)="openPreview(doc)" />
+    </div>
+  </div>
+</div>

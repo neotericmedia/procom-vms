@@ -1,0 +1,59 @@
+﻿<div>
+    <show-busy-controlled associate="viewLoading"></show-busy-controlled>
+    <div data-ng-repeat="item in items" class="paymentRelease">
+        <div class="companyHeaderLine row col-md12"></div>
+        <div class="row companyHeader" data-ng-click="companyRowClicked(item)">
+            <div class="row">
+                <div class="col-lg-12 companyHeaderName">
+                    <span>{{item.OrganizationInternalLegalName}}</span>
+                    <i class="pull-right" data-ng-class="{'icon-chevron-up': item.IsExpanded, 'icon-chevron-right': !item.IsExpanded}"></i>
+                </div>
+            </div>
+        </div>
+        <div data-ng-repeat="currency in item.Currencies" class="panel-collapse companyBlock" data-ng-show="item.IsExpanded">
+            <div class="row" data-ng-if="currency.PaymentCount > 0">
+                <div class="currencyHeader" data-ng-click="currencyRowClicked(currency)" data-ng-if="currency.CurrencyId">
+                    <div class="col-lg-12">
+                        <span class="badge badge-warning currencyBadge">{{currency.PaymentCount}}</span>
+                        <span class="currencyName">{{currency.CurrencyCode}} </span>
+                        <i data-ng-class="{'icon-chevron-up': currency.IsExpanded, 'icon-chevron-right': !currency.IsExpanded}"></i>
+                    </div>
+                </div>
+                <div class="panel-collapse" data-ng-if="currency.CurrencyId">
+                    <div data-ng-repeat="method in currency.PaymentMethods" class="col-md-4 currencyBlock" ng-show="currency.IsExpanded">
+                        <div class="row methodBlock">
+                            <span>{{method.PaymentMethodType}}</span>
+                        </div>
+                        <div class="row entityBlock">
+                            <div class="divRelease" data-ng-class="{ navWithOutLink: method.PendingReleaseDue.length == 0, navWithLink: method.PendingReleaseDue.length > 0}" 
+                                 ui-sref="payment.method({ organizationId:item.OrganizationIdInternal, currencyId: currency.CurrencyId, methodId: method.PaymentMethodId, statusId: ApplicationConstants.PaymentTransactionStatus.PendingPaymentProcessing, dueId: 1 })">
+                                <span class="releaseNavigation" title="View ready to release payments">Ready to release</span>
+                                <span class="badge badge-positive-gray releaseBadge" data-ng-show="method.PendingReleaseDue.length>0">{{method.PendingReleaseDue.length}}</span>
+                            </div>
+                            <div class="divRelease" data-ng-class="{ navWithOutLink: method.PendingReleaseLate.length == 0, navWithLink: method.PendingReleaseLate.length > 0}" 
+                                 ui-sref="payment.method({ organizationId:item.OrganizationIdInternal, currencyId: currency.CurrencyId, methodId: method.PaymentMethodId, statusId: ApplicationConstants.PaymentTransactionStatus.PendingPaymentProcessing, dueId: 0 })">
+                                <span class="releaseNavigation" title="View planned for release payments">Planned for release</span>
+                                <span class="badge badge-positive-gray releaseBadge" data-ng-show="method.PendingReleaseLate.length>0">{{method.PendingReleaseLate.length}}</span>
+                            </div>
+                            <div class="divRelease" data-ng-class="{ navWithOutLink: method.OnHold.length == 0, navWithLink: method.OnHold.length > 0}" 
+                                 ui-sref="payment.method({ organizationId:item.OrganizationIdInternal, currencyId: currency.CurrencyId, methodId: method.PaymentMethodId, statusId: ApplicationConstants.PaymentTransactionStatus.OnHold, dueId: 1 })">
+                                <span class="releaseNavigation" ng-if="method.PaymentMethodType != 'Wire Transfer'" title="View on hold payments">On Hold</span>
+                                <span class="releaseNavigation" ng-if="method.PaymentMethodType == 'Wire Transfer'" title="N/A">N/A</span>
+                                <span class="badge badge-positive-gray releaseBadge" data-ng-show="method.OnHold.length>0">{{method.OnHold.length}}</span>
+                            </div>
+                            <div class="divRelease" data-ng-class="{ navWithOutLink: method.PendingReview.length == 0, navWithLink: method.PendingReview.length > 0}" 
+                                 ui-sref="payment.method({ organizationId:item.OrganizationIdInternal, currencyId: currency.CurrencyId, methodId: method.PaymentMethodId, statusId: ApplicationConstants.PaymentTransactionStatus.PendingReview, dueId: 1 })">
+                                <span class="releaseNavigation" ng-if="method.PaymentMethodType != 'Wire Transfer'" title="View pending review payments">Pending review</span>
+                                <span class="releaseNavigation" ng-if="method.PaymentMethodType == 'Wire Transfer'" title="N/A">N/A</span>
+                                <span class="badge badge-positive-gray releaseBadge" data-ng-show="method.PendingReview.length>0">{{method.PendingReview.length}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div data-ng-if="!item || !item.Currencies || item.Currencies.length == 0 || item.Currencies[0].PaymentCount == 0" data-ng-show="item.IsExpanded" class="emptyCurrency">
+            There are no pending payments for this internal organization
+        </div>
+    </div>
+</div>

@@ -1,0 +1,15 @@
+<div class="fab fab-fixed" *ngIf="fabButtons && fabButtons.length > 0">
+  <button #fab class="btn btn-float btn-primary main-button" [attr.data-toggle]="fabButtons && fabButtons.length > 1 ? 'button' : null"
+    (click)="onMainButtonClick()">
+    <i class="fab-icon-default material-icons md-24" aria-hidden="true"> {{ fabButtons && fabButtons.length>1 ? fabIcon: fabButtons[0].icon }} </i>
+    <i class="fab-icon-active material-icons md-24" aria-hidden="true"> {{ fabButtons && fabButtons.length>1 ? 'clear': fabButtons[0].icon }} </i>
+  </button>
+  <ul class="fab-buttons" *ngIf="fabButtons.length > 1">
+    <li *ngFor="let button of fabButtons">
+      <button class="btn btn-float btn-sm fab-button" placement="left" container="body" [disabled]="button.disabled && button.disabled()" (click)="onFabButtonClick(button)">
+        <i class="material-icons" aria-hidden="true"> {{ button.icon }} </i>
+      </button>
+      <span class="fab-tooltip"> {{ button.tooltip }} </span>
+    </li>
+  </ul>
+</div>

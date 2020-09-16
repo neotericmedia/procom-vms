@@ -1,0 +1,52 @@
+<div class="input-sm form-control fixed stAdvancedSearch menu ng-isolate-scope" style="position: relative; padding: 0px;"
+  placeholder="" type="search" id="parentFilterBox">
+  <div (click)="onClickOnColumn()" style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap; padding: 5px 10px; max-width: inherit; width: 100%;">
+    <span title="" class="ng-binding">&nbsp; {{displaySelectedValues}}</span>
+  </div>
+  <div class="menu-dropdown" *ngIf="isDisplayPopup" id="filterBox">
+    <div class="menu-header">Filter
+      <span (click)="onClearClick()" class="pull-right badge badge-info">Clear</span>
+    </div>
+    <div class="menu-content" [ngSwitch]="inputFilter.filterType">
+
+      <ng-template [ngSwitchCase]="filterType.Dropdown">
+        <input type="search" [(ngModel)]="inputFilter.filterConfiguration.inputText" placeholder="" class="input-sm form-control" />
+        
+        <div class="ng-scope">
+            Type: 
+            <select [(ngModel)]="inputFilter.filterConfiguration.selectedDropdownValue" class="ng-pristine ng-valid ng-not-empty ng-touched">
+                <option *ngFor="let item of inputFilter.filterConfiguration.items.dropDownList" [value]="item[inputFilter.filterConfiguration.items.valueField]">{{item[inputFilter.filterConfiguration.items.textField]}}</option>
+              </select>
+          </div>
+      </ng-template>
+
+      <ng-template [ngSwitchCase]="filterType.Checkbox">
+        <ul class="list-group checked-list-box">
+          <li class="list-group-item" *ngFor="let item of inputFilter.filterConfiguration.items.list; let i = index;">
+            <input type="checkbox" [(ngModel)]="item.isSelected" />
+            <span class="lbl" (click)="selectCheckboxValue(i)">{{item[inputFilter.filterConfiguration.items.textField]}}</span>
+          </li>
+        </ul>
+      </ng-template>
+
+      <ng-template [ngSwitchCase]="filterType.Date">
+        <app-phx-calendar [(ngModel)]="inputFilter.filterConfiguration.inputDate" [min]="minDate" [max]="maxDate"
+          [(value)]="currentDate">
+        </app-phx-calendar>
+        <div class="ng-scope">
+          Type: 
+          <select [(ngModel)]="inputFilter.filterConfiguration.selectedDropdownValue" class="ng-pristine ng-valid ng-not-empty ng-touched">
+            <option *ngFor="let item of inputFilter.filterConfiguration.items.dropDownList"
+              [value]="item[inputFilter.filterConfiguration.items.valueField]">{{item[inputFilter.filterConfiguration.items.textField]}}</option>
+          </select>
+        </div>
+      </ng-template>
+
+      <ng-template *ngSwitchDefault></ng-template>
+
+    </div>
+    <div class="menu-footer">
+      <a class="btn btn-success pull-right" (click)="onClickGo()">Go</a>
+    </div>
+  </div>
+</div>

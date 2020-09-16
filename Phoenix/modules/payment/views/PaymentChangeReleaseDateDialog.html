@@ -1,0 +1,49 @@
+﻿<div class="modal-content" data-ng-form="formChangeReleaseDateDialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <span class="modal-title">{{data.title}}</span>
+            <div class="btn pull-right releaseDateClose" data-ng-click="cancel()">
+                <i class="fontello-icon-cancel-circle"></i>
+            </div>
+        </div>
+        <div class="alert alert-info alert-dismissable error-box" style="display: inline-block;">
+            <a class="close" data-dismiss="alert" aria-label="close">
+                <i class="material-icons">clear</i>
+            </a>
+            <div style="padding-right: 25px;">
+                <div>
+                    You cannot change a payment’s release date or put it on hold if it has a credit transaction.
+                </div>
+            </div>
+        </div>
+        <div class="modal-body">
+            <div class="content-group form-horizontal">
+                <div class="radio">
+                    <label class="dateRdoLbl" data-ng-click="changeChkChanged()">
+                        <input type="radio" name="changeRdo" value="{{data.changeDateChk}}" checked="checked" />
+                        <span>Change Release Date</span>
+                    </label>
+                </div>
+                <div class="form-group" data-ng-class="{disabledLbl: !data.releaseDate && data.putOnHoldChk}">
+                    <label for-property="ReleaseDate" for="ReleaseDate" data-model-property="data.releaseDate" data-watch-property="data.releaseDate"
+                        class="col-lg-4 control-label label-to-right req-lab-right ng-invalid ng-invalid-required" data-original-title=""
+                        title="">New Release Date</label>
+                    <div class="datePickerDiv" data-ng-class="{disabledDatePicker: !data.releaseDate && data.putOnHoldChk}">
+                        <pt-date-picker data-ng-model="data.releaseDate" name="ReleaseDate" data-ng-required="true" />
+                    </div>
+                </div>
+                <div class="radio" data-ng-if="data.statusId!=ApplicationConstants.PaymentTransactionStatus.OnHold">
+                    <label class="dateRdoLbl" data-ng-click="onHoldChkChanged()">
+                        <input type="radio" name="changeRdo" value="{{data.putOnHoldChk}}" />
+                        <span>Put on Hold</span>
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" ng-click="cancel()">Cancel</button>
+            <button type="button" class="btn btn-primary" ng-click="changeReleaseDate(data.paymentTransactionIds, data.changeDateChk, data.releaseDate)"
+                data-ng-disabled="data.releaseDate==null&&data.putOnHoldChk==false">OK</button>
+        </div>
+    </div>
+</div>

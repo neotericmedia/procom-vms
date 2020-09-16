@@ -1,0 +1,10 @@
+<div class="row">
+  <app-phx-data-table [configuration]="dataTableConfiguration" dataSourceUrl="payment/chequeEPPBatches" [dataSourceParams]="oDataParams"
+    [columns]="columns" exportFileName="epp-cheque-batch-list" componentName="epp-cheque-batch-list" (rowClick)="onRowClick($event)">
+    <div *dxTemplate="let data of 'actionCellTemplate'">
+      <i class="material-icons" (click)="onDownloadAction($event,data.value)">
+        get_app
+      </i>
+    </div>
+  </app-phx-data-table>
+</div>

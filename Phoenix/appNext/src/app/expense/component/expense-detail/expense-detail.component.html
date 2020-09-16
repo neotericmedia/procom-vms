@@ -1,0 +1,38 @@
+<div class="expense-detail" *ngIf="expenseClaim">
+    <div class="row">
+        <!-- <app-phx-workflow-buttons (callWorkflowCommand)="onWorkflowButtonClicked($event)" [workflowAvailableActions]="expenseClaim.WorkflowAvailableActions"
+            [isButtonBar]="false"></app-phx-workflow-buttons> -->
+
+        <app-phx-state-action-buttons [stateActions]="stateActions" 
+            [availableStateActions]="expenseClaim.AvailableStateActions"
+            [displayType]="'DROPDOWN'">
+        </app-phx-state-action-buttons>
+    </div>
+
+    <div class="row">
+        <app-expense-header [expenseClaim]="expenseClaim"></app-expense-header>
+    </div>
+
+    <div class="row">
+        <app-phx-navigation-bar [navigationBarContent]="tabList" [url]="currentUrl"></app-phx-navigation-bar>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12">
+            <router-outlet></router-outlet>
+        </div>
+    </div>
+    <!-- <div class="row panel-footer">
+        <app-phx-workflow-buttons (callWorkflowCommand)="onWorkflowButtonClicked($event)" [workflowAvailableActions]="expenseClaim.WorkflowAvailableActions"
+            [isButtonBar]="true" [getActionButtonCssClass]="getActionCssClass"></app-phx-workflow-buttons>
+    </div> -->
+    <div class="row panel-footer">
+        <app-phx-state-action-buttons [stateActions]="stateActions" 
+            [availableStateActions]="expenseClaim.AvailableStateActions"
+            [displayType] = "ActionDisplayType.BUTTON">
+        </app-phx-state-action-buttons>
+    </div>
+    <div class="row">
+        <app-phx-validation-messages [messages]="validationMessages"></app-phx-validation-messages>
+    </div>
+</div>

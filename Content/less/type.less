@@ -1,0 +1,75 @@
+// Core variables and mixins
+@import "variables.less";
+@import "mixins.less";
+
+//
+// Typography
+// --------------------------------------------------
+
+
+// Body text
+// -------------------------
+
+// Emphasis & misc
+// -------------------------
+
+// Headings
+// -------------------------
+
+hr {
+    &.separator-vertical {
+        display: inline-block;
+        width: 1px;
+        margin: 0 10px 0 9px;
+        vertical-align: top;
+        border-left: 1px solid @hr-border;
+    }
+
+    &.separator-btn {
+        height: @line-height-computed + (@padding-base-vertical * 2);
+        
+    }
+}
+
+// Page header
+// -------------------------
+
+.page-heading,
+.sidebar-heading {
+  padding-bottom: ((@line-height-computed / 2) - 1);
+  margin: (@line-height-computed / 4) 0 (@line-height-computed - (@line-height-computed / 4));
+  border-bottom: 1px solid #e5e5e5;//@page-header-border-color;
+  .clearfix();
+    h1, .h1,
+    h2, .h2 {
+        display: inline-block;
+        margin: 0 10px 0 0;
+        line-height: 40px;
+        color: @brand-primary-accent;
+    }
+
+    .label {
+        padding: 2px 15px;
+        font-size: @font-size-base;
+        vertical-align: 5px;
+    }
+}
+
+.sidebar-heading {
+    margin-bottom: 0;
+    h3 {
+        margin-top: @line-height-computed / 2;
+        margin-bottom: 0;
+        line-height: 30px;
+        color: @brand-primary-accent;
+    }
+}
+
+// Description Lists
+
+dt {
+  font-weight: 600;
+}
+
+
+

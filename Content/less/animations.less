@@ -1,0 +1,100 @@
+//
+// Component animations
+// --------------------------------------------------
+
+
+// CUSTOM 
+//--------------------------------------------------------------------------------------------------
+@-webkit-keyframes bounceInDrop {
+    0% {
+        opacity: 0;
+        -webkit-transform: scale(.3);
+    }
+
+    70% {
+        -webkit-transform: scale(.9);
+    }
+
+    100% {
+        -webkit-transform: scale(1);
+    }
+}
+
+@-moz-keyframes bounceInDrop {
+    0% {
+        opacity: 0;
+        -moz-transform: scale(.3);
+    }
+
+    70% {
+        -moz-transform: scale(.9);
+    }
+
+    100% {
+        -moz-transform: scale(1);
+    }
+}
+
+@-o-keyframes bounceInDrop {
+    0% {
+        opacity: 0;
+        -o-transform: scale(.3);
+    }
+
+    70% {
+        -o-transform: scale(.9);
+    }
+
+    100% {
+        -o-transform: scale(1);
+    }
+}
+
+@keyframes bounceInDrop {
+    0% {
+        opacity: 0;
+        transform: scale(.3);
+    }
+
+    70% {
+        transform: scale(.9);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+.bounceInWii {
+    -webkit-animation-name: bounceInDrop;
+    -moz-animation-name: bounceInDrop;
+    -o-animation-name: bounceInDrop;
+    animation-name: bounceInDrop;
+}
+
+/* Styling for the ngProgress itself */
+#ngProgress {
+    margin: 0;
+    padding: 0;
+    z-index: 8888;
+    box-shadow: 0 0 10px 0; /* Inherits the font color */
+    height: 2px;
+    opacity: 0;
+
+    /* Add CSS3 styles for transition smoothing */
+    -webkit-transition: all 0.5s ease-in-out;
+    -moz-transition: all 0.5s ease-in-out;
+    -o-transition: all 0.5s ease-in-out;
+    transition: all 0.5s ease-in-out;
+}
+
+/* Styling for the ngProgress-container */
+#ngProgress-container {
+    position: fixed;
+    margin: 0;
+    padding: 0;
+    top: 53px;
+    left: 0;
+    right: 0;
+    z-index: 8888;
+}

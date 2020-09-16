@@ -1,0 +1,128 @@
+﻿<div class="smart-table-wrapper">
+    <div class="row" data-cg-busy="loadItemsPromise">
+        <table data-st-table-struct='[{"stTableValue" : "items"}, {"stPipeValue" : "callServer"}, {"widthValues" : "[4, 10, 8, 7, 7, 7, 8, 8, 8, 7, 7, 7, 7, 6]"}, {"stPaginationValue" : "pageSize"}]'>
+            <thead data-st-head="2200px">
+                <tr>
+                    <th data-st-sort="Id" data-st-sort-default="reverse">ID</th>
+                    <th data-st-sort="PaymentTransactionNumber">Payment Number</th>
+                    <th data-st-sort="PayeeName">Payee</th>
+                    <th data-st-sort="PaymentSubtotal">Payment Subtotal</th>
+                    <th data-st-sort="PaymentSalesTax">Sales Tax</th>
+                    <th data-st-sort="PaymentSubtotal">Payment Total</th>
+                    <th data-st-sort="WorkerName">Worker</th>
+                    <th data-st-sort="WorkerProfileTypeId">Profile</th>
+                    <th data-st-sort="PaymentTransactionPayeeName">Client</th>
+                    <th data-st-sort="StartDate">From</th>
+                    <th data-st-sort="EndDate">To</th>
+                    <th data-st-sort="Units">Units</th>
+                    <th data-st-sort="PaymentTransactionStatusId">Status</th>
+                    <th data-st-pen-name="Action" title="Action">Action</th>
+                </tr>
+                <tr>
+                    <th>
+                        <input data-st-advanced-search="{property: 'Id', ignoreQuotes: true}" placeholder=""
+                               class="input-sm form-control numberType" data-safe-restrict-input="[^0123456789]" />
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="'PaymentTransactionNumber'" placeholder=""
+                               class="input-sm form-control" type="search" />
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="'PayeeName'" placeholder=""
+                               class="input-sm form-control" type="search" />
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="{property: 'PaymentSubtotal', ignoreQuotes: true}" placeholder=""
+                               class="input-sm form-control numberType" data-safe-restrict-input="[^0123456789]" />
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="{property: 'PaymentSalesTax', ignoreQuotes: true}" placeholder=""
+                               class="input-sm form-control numberType" data-safe-restrict-input="[^0123456789]" />
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="{property: 'PaymentSubtotal', ignoreQuotes: true}" placeholder=""
+                               class="input-sm form-control numberType" data-safe-restrict-input="[^0123456789]" />
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="'WorkerName'" placeholder=""
+                               class="input-sm form-control" type="search" />
+                    </th>
+                    <th>
+                        <select data-st-advanced-search="{property: 'WorkerProfileTypeId', ignoreQuotes: true}" class="input-sm form-control">
+                            <option value="1">Organizational</option>
+                            <option value="2">Internal</option>
+                            <option value="3">Temp</option>
+                            <option value="4">Canadian SP</option>
+                            <option value="5">Canadian Inc</option>
+                            <option value="6">Sub Vendor</option>
+                            <option value="7">W2 Worker</option>
+                            <option value="8">LLC Worker</option>
+                            <option value="99">System</option>
+                        </select>
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="'PaymentTransactionPayeeName'" placeholder=""
+                               class="input-sm form-control" type="search" />
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="'StartDate'"
+                               data-st-as-operator-override="'ge'"
+                               close-on-date-selection="false" show-button-bar="false" show-weeks="false" class="input-sm form-control"
+                               data-st-as-lazy-attributes="{'uib-datepicker' : ApplicationConstants.formatDate}"
+                               data-st-as-height-override="400"
+                               data-st-as-width-override="315" />
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="'EndDate'"
+                               data-st-as-operator-override="'le'"
+                               close-on-date-selection="false" show-button-bar="false" show-weeks="false" class="input-sm form-control"
+                               data-st-as-lazy-attributes="{'uib-datepicker' : ApplicationConstants.formatDate}"
+                               data-st-as-height-override="400"
+                               data-st-as-width-override="315" />
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="{property: 'Units', ignoreQuotes: true}" placeholder=""
+                               class="input-sm form-control numberType" data-safe-restrict-input="[^0123456789]" />
+                    </th>
+                    <th>
+                        <select data-st-advanced-search="{property: 'PaymentTransactionStatusId', ignoreQuotes: true}" class="input-sm form-control"
+                                data-st-as-options-override="list.paymentTransactionStatuses"></select>
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr data-ng-repeat="item in items" class="documentReleaseRow">
+                    <td title="{{item.Id}}">{{item.Id}}</td>
+                    <td title="{{item.PaymentTransactionNumber}}">{{item.PaymentTransactionNumber}}</td>
+                    <td title="{{item.PayeeName}}">{{item.PayeeName}}</td>
+                    <td title="{{item.PaymentSubtotal | currency: item.CurrencyCode + " $"}}">{{item.PaymentSubtotal | currency: item.CurrencyCode + " $"}}</td>
+                    <td title="{{item.PaymentSalesTax | currency: item.CurrencyCode + " $"}}">{{item.PaymentSalesTax | currency: item.CurrencyCode + " $"}}</td>
+                    <td title="{{item.PaymentSubtotal + item.PaymentSalesTax | currency: item.CurrencyCode + " $"}}">{{item.PaymentSubtotal + item.PaymentSalesTax | currency: item.CurrencyCode + " $"}}</td>
+                    <td title="{{item.WorkerName}}">{{item.WorkerName}}</td>
+                    <td title="{{item.WorkerProfileType}}">{{item.WorkerProfileType}}</td>
+                    <td title="{{item.PaymentTransactionPayeeName}}">{>{{item.PaymentTransactionPayeeName}}</td>
+                    <td title="{{item.StartDate | date:ApplicationConstants.formatDate}}">{{item.StartDate | date:ApplicationConstants.formatDate}}</td>
+                    <td title="{{item.EndDate | date:ApplicationConstants.formatDate}}">{{item.EndDate | date:ApplicationConstants.formatDate}}</td>
+                    <td title="{{item.Units ? item.Units + item.RateUnit : ''}}">{{item.Units ? item.Units + item.RateUnit : ''}}</td>
+                    <td title="{{item.PaymentTransactionStatusId | lookup:list.paymentTransactionStatuses}}">{{item.PaymentTransactionStatusId | lookup:list.paymentTransactionStatuses}}</td>
+                    <td>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-xs btn-clouds btn-row-action" data-ng-click="showReport(item)" data-action="view" title="View Report"><i class="fontello-icon-eye-1"></i></button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="9">
+                        <span>Total Count: {{totalItemCount || 0}}; Items Loaded: {{ items ? items.length : 0}}</span>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>
+<div class="payment-report" data-ng-class="{ out: !$state.is('payment.search.report'), in: $state.is('payment.search.report')}">
+    <div ui-view="reportView"></div>
+</div>

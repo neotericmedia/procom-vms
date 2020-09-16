@@ -1,0 +1,57 @@
+<div [ngSwitch]="field.ExpenseCategoryFieldUIControlTypeId">
+  <div *ngSwitchCase="1">
+    <!-- List -->
+    <phx-form-control name="ExpenseCategoryFieldDefinitionId" [labelText]="fieldLabel" [layoutType]="controlLayoutType" [editable]="editable"
+      viewModeText="{{field?.ExpenseCategoryFieldFinalValue}}">
+      <app-phx-select-box #listSelectBox [items]="field.ListValues" textField="ListValue" valueField="Id" placeholder="Choose {{field?.ExpenseCategoryFieldDefinitionTitle}}"
+        [value]="field.ExpenseCategoryFieldListValueId" (valueChanged)="updateProp(listSelectBox.value)"></app-phx-select-box>
+    </phx-form-control>
+  </div>
+  <div *ngSwitchCase="2">
+    <!-- OpenText -->
+    <phx-form-control name="ExpenseCategoryFieldDefinitionId" [labelText]="fieldLabel" [layoutType]="controlLayoutType" [editable]="editable"
+      viewModeText="{{field?.ExpenseCategoryFieldFinalValue}}">
+      <dx-text-box *ngIf="editable" [ngModel]="field.ExpenseCategoryFieldTextValue" placeholder="Enter {{field?.ExpenseCategoryFieldDefinitionTitle}}"
+        [phxDebounce]="500" (onDebounce)="updateProp($event)" valueChangeEvent="keyup"></dx-text-box>
+    </phx-form-control>
+  </div>
+  <div *ngSwitchCase="3">
+    <!-- Currency -->
+    <phx-form-control name="ExpenseCategoryFieldDefinitionId" [labelText]="fieldLabel" [layoutType]="controlLayoutType" [editable]="editable"
+      class="text-align-right" viewModeText="{{field?.ExpenseCategoryFieldFinalValue| number : '1.2-2'}}">
+      <dx-number-box #currencyNumberBox *ngIf="editable" [value]="field.ExpenseCategoryFieldTextValue" [min]="0" [max]="9999999999999998"
+        (onValueChanged)="updateProp(currencyNumberBox.value)" format="#,##0.00" valueChangeEvent="keyup" [step]="0"></dx-number-box>
+    </phx-form-control>
+  </div>
+  <div *ngSwitchCase="4">
+    <!-- Radio -->
+    <phx-form-control name="ExpenseCategoryFieldDefinitionId" [labelText]="fieldLabel" [layoutType]="controlLayoutType" [editable]="editable"
+      viewModeText="{{field?.ExpenseCategoryFieldFinalValue}}">
+      <dx-radio-group #radioGroup [items]="field.ListValues" displayExpr="ListValue" valueExpr="Id" [value]="field.ExpenseCategoryFieldListValueId"
+        (onValueChanged)="updateProp(radioGroup.value)">
+      </dx-radio-group>
+    </phx-form-control>
+  </div>
+  <div *ngSwitchCase="5">
+    <!-- Integer -->
+    <phx-form-control name="ExpenseCategoryFieldDefinitionId" [labelText]="fieldLabel" [layoutType]="controlLayoutType" [editable]="editable"
+      viewModeText="{{field?.ExpenseCategoryFieldFinalValue| number : '1.0-0'}}">
+      <dx-number-box #integerNumberBox *ngIf="editable" [value]="field.ExpenseCategoryFieldTextValue" [min]="0"
+        (onValueChanged)="updateProp(integerNumberBox.value)" valueChangeEvent="keyup" [step]="0"></dx-number-box>
+    </phx-form-control>
+
+  </div>
+  <div *ngSwitchCase="6">
+    <!-- Decimal -->
+    <phx-form-control name="ExpenseCategoryFieldDefinitionId" [labelText]="fieldLabel" [layoutType]="controlLayoutType" [editable]="editable"
+      class="text-align-right" viewModeText="{{field?.ExpenseCategoryFieldFinalValue| number : '1.2-2'}}">
+      <dx-number-box #decimalNumberBox *ngIf="editable" [value]="field.ExpenseCategoryFieldTextValue" [min]="0" [max]="9999999999999998"
+        (onValueChanged)="updateProp(decimalNumberBox.value)" format="#,##0.00" valueChangeEvent="keyup" [step]="0"></dx-number-box>
+    </phx-form-control>
+  </div>
+  <div *ngSwitchDefault>
+    <phx-form-control name="ExpenseCategoryFieldDefinitionId" [labelText]="fieldLabel" [layoutType]="controlLayoutType" [editable]="false"
+      viewModeText="Not Impelmented Field Type">
+    </phx-form-control>
+  </div>
+</div>

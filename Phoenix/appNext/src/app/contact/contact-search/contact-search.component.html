@@ -1,0 +1,20 @@
+
+<div class="btn-group ">
+	<button type="button" class="btn btn-clouds dropdown-toggle" data-toggle="dropdown">
+		New <span class="caret ml"></span>
+	</button>
+	<ul class="dropdown-menu bordered">
+		<li *ngFor="let option of newOptions"><a (click)="option.onClick()">{{option.displayName}}</a></li>
+	</ul>
+</div>
+<app-phx-data-table [columns]="columns" [configuration]="dataTableConfiguration" [dataSourceUrl]="dataSourceUrl" [dataSourceParams]='oDataParams'
+					[componentName]="dataGridComponentName" exportFileName="ContactSearch" [summary]="summary" (rowClick)="onRowClick($event)" (contextMenuOpenTab)="onContextMenuOpenTab($event)">
+	<div *dxTemplate="let d of 'commaDelimitedLookupCellTemplate'">
+		{{ d.value }}
+	</div>
+	<div *dxTemplate="let d of 'viewContactDetailTemplate'">
+		<div class="btn-group">
+			<button type="button" class="btn btn-xs btn-clouds btn-row-action no-padding-bottom-right" title="View" (click)="viewContactDetail(d.data)"><i class="fontello-icon-eye-1"></i>&nbsp;</button>
+		</div>
+	</div>
+</app-phx-data-table>

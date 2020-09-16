@@ -1,0 +1,63 @@
+<div class="row">
+  <div class="col-xs-12" style="margin-left: 10px;">
+    <h4>{{html.roleDisplayName}} Role</h4>
+  </div>
+</div>
+
+<form [formGroup]="inputFormGroup" *ngIf="inputFormGroup">
+
+  <div class="row">
+    <div>
+      <button type="button" class="btn btn-default" style="margin-left: 20px;" *ngIf="inputFormGroup.controls.Id.value===0"
+        (click)="onClickDeleteOrganizationRole()">Cancel {{html.roleDisplayName}} Role</button>
+    </div>
+  </div>
+
+  <div class="content-group" *ngIf="inputFormGroup.controls.Id.value !== 0">
+    <div class="conent-left pull-left eqCols">
+      <app-phx-panel headerTitle="Role Details">
+        <phx-form-control [control]="inputFormGroup.controls.OrganizationRoleStatusId" [editable]="readOnlyStorage.IsEditable && rootModel.IsOriginal"
+          labelText="Role Status" viewModeText="{{inputFormGroup.controls.OrganizationRoleStatusId.value | CodeValue:codeValueGroups.OrganizationRoleStatusType }}">
+          <app-phx-select-box [formControl]="inputFormGroup.controls.OrganizationRoleStatusId" [items]="html.codeValueLists.listOrganizationRoleStatusType"
+            textField="text" valueField="id">
+          </app-phx-select-box>
+        </phx-form-control>
+      </app-phx-panel>
+    </div>
+    <div class="conent-right pull-right eqCols">
+      <app-phx-panel headerTitle="Application Date">
+        <div class="form-group">
+          <label for="ApplicationDate" class="col-lg-3 control-label label-to-right req-lab-right-valid">Current Application Date</label>
+          <div class="col-lg-4 fieldViewMode form-control-static ng-binding">
+            {{ inputFormGroup.value.ApplicationDate | date:'MMM dd yyyy'}}</div>
+          <button *ngIf="html.access.canRollover" type="button" class="btn btn-default" (click)="onRollover($event)">Rollover</button>
+        </div>
+      </app-phx-panel>
+    </div>
+  </div>
+
+  <app-organization-role-internal-org-images *ngIf="inputFormGroup.controls.Id.value !== 0" (outputEvent)="onOutputEvent()"
+    [inputFormGroup]="inputFormGroup" [workflowPendingTaskId]="rootModel.WorkflowPendingTaskId" [readOnlyStorage]="readOnlyStorage"
+    [allowEditing]="html.modifyInternalRoleDetails">
+  </app-organization-role-internal-org-images>
+
+  <app-phx-panel headerTitle="Employer Accruals and Liabilities">
+    <phx-form-control [control]="inputFormGroup.controls.IsAccrueEmployerHealthTaxLiability" [editable]="html.modifyInternalRoleDetails"
+      labelText="Accrue Employer Health Tax Liability for Canadian SP" viewModeText="{{ inputFormGroup.controls.IsAccrueEmployerHealthTaxLiability.value | boolToYesNo }}">
+      <label class="radio-inline">
+        <input class="form-check-input" type="radio" [value]="true" (change)="onOutputEvent()" formControlName="IsAccrueEmployerHealthTaxLiability">Yes</label>
+      <label class="radio-inline">
+        <input class="form-check-input" type="radio" [value]="false" (change)="onOutputEvent()" formControlName="IsAccrueEmployerHealthTaxLiability">No</label>
+    </phx-form-control>
+  </app-phx-panel>
+
+  <app-organization-sales-taxes [readOnlyStorage]="readOnlyStorage" 
+    [inputFormGroup]="salesTaxInputFormGroup" [currentUserRole]="currentUserRole"
+    (outputEvent)="onOutputEvent($event)">
+  </app-organization-sales-taxes>
+
+  <app-organization-role-bank-accounts (outputEvent)="onOutputEvent()" [canPrimaryAccountButtonEnabled]="html.modifyBankAccount"
+    [isEditable]="html.modifyInternalRoleDetails && html.modifyBankAccount" [inputFormGroup]="inputFormGroup" [readOnlyStorage]="readOnlyStorage">
+  </app-organization-role-bank-accounts>
+
+</form>

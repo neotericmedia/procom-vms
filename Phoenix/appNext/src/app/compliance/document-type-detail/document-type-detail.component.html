@@ -1,0 +1,42 @@
+<div class="row">
+  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-8 col-xxl-6">
+    <div class="form-horizontal">
+      <form [formGroup]="form">
+
+        <phx-form-control [control]="form.controls['Name']" labelText="Name" [editable]="editable" viewModeText="{{documentType?.Name}}">
+          <input type="text" class="form-control" maxlength="127" formControlName="Name" />
+        </phx-form-control>
+
+
+        <phx-form-control [control]="form.controls['Description']" labelText="Description" [editable]="editable" viewModeText="{{documentType?.Description}}">
+          <input type="text" class="form-control" maxlength="256" formControlName="Description" />
+        </phx-form-control>
+
+      </form>
+    </div>
+  </div>
+</div>
+<div class="row ">
+  <br/>
+</div>
+<div class="row">
+  <app-phx-validation-messages [messages]="validationMessages"></app-phx-validation-messages>
+</div>
+
+<div class="row panel-footer ">
+  <div class="btn-toolbar button-bar">
+    <div class="btn-group">
+      <button type="button" class="btn btn-default action-button" *ngIf="deactiveButtonEnable && !editable" (click)="deactivate()">
+        Deactivate </button>
+      <button type="button" class="btn btn-default btn-primary action-button" *ngIf="activeButtonEnable && !editable" (click)="activate()">
+        Activate </button>
+      <button type="button" class="btn btn-default action-button" *ngIf="discardButtonEnable && editable" (click)="discard()">
+        Cancel and Discard</button>
+      <button type="button" class="btn btn-default action-button" *ngIf="saveButtonEnable && editable" (click)="save()"> Save </button>
+      <button type="button" class="btn btn-default btn-primary action-button" *ngIf="editButtonEnable && !editable" (click)="edit()">
+        Edit </button>
+      <button type="button" class="btn btn-default btn-primary action-button" [disabled]="form && !form.valid" *ngIf="submitButtonEnable && editable"
+        (click)="submit()"> Submit </button>
+    </div>
+  </div>
+</div>

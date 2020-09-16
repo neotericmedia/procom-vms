@@ -1,0 +1,83 @@
+<!--<div class="smart-table-wrapper col-lg-12" data-ng-init="files.initialize(document)">
+    <div class="row">
+        <table data-st-table-struct='[{"stTableValue" : "files.items"}, {"stPipeValue" : "files.callServer"}, {"widthValues" : "[25, 20, 20, 20, 15]"}, {"stPaginationValue" : "files.pageSize"}]'>
+            <thead data-st-head="1300px">
+                <tr>
+                    <th data-st-sort="FileName" data-st-sort-default="reverse">File Name</th>
+                    <th data-st-sort="UploadDate">Upload Date</th>
+                    <th data-st-sort="UploadedBy">Uploaded By</th>
+                    <th data-st-sort="DocumentTypeId">File Type</th>
+                    <th st-pen-name="ImportType">Import Type</th>
+                </tr>
+                <tr>
+                    <th>
+                        <input data-st-advanced-search="'FileName'" placeholder="" class="input-sm form-control" type="search" />
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="'UploadDate'"
+                               data-st-as-operator-override="'le'"
+                               close-on-date-selection="false" show-button-bar="false" show-weeks="false" class="input-sm form-control"
+                               data-st-as-lazy-attributes="{'uib-datepicker' : ApplicationConstants.formatDate}"
+                               data-st-as-height-override="400"
+                               data-st-as-width-override="315" />
+                    </th>
+                    <th>
+                        <input data-st-advanced-search="'UploadedBy'" placeholder="" class="input-sm form-control" type="search" />
+                    </th>
+                    <th>
+                        <select data-st-advanced-search="{property: 'DocumentTypeId', ignoreQuotes: true}" class="input-sm form-control"
+                                data-st-as-options-override="files.documentTypes"></select>
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr data-ng-repeat="item in files.items" style="cursor:pointer;">
+                    <td><a href="javascript:void(0);" data-ng-href="{{files.getCsvStreamByPublicId(item.PublicId)}} _blank">{{::item.FileName}}</a></td>
+                    <td ng-bind="::item.UploadDate | date:ApplicationConstants.formatDateComma"></td>
+                    <td ng-bind="::item.UploadedBy"></td>
+                    <td ng-bind="::item.DocumentTypeId | lookup: files.documentTypes"></td>
+                    <td>Discount</td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="8">
+                        <span>Total Count: {{files.totalItemCount || 0}}; Items Loaded: {{ files.items ? files.items.length : 0}}</span>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>-->
+<div class="col-lg-12" data-ng-init="files.initialize(document)">
+    <div class="row">
+        <div class="panel panel-internal panel-contact">
+            <div class="contact-name">
+                <h4>Processed Files</h4>
+                <table class="table">
+                    <thead class="my-thead">
+                        <tr>
+                            <th>File Name</th>
+                            <th>Import Type</th>
+                            <th>File Type</th>
+                            <th>Upload Date</th>
+                            <th>Uploaded By</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr data-ng-repeat="item in files.items" style="cursor:pointer">
+                            <td><a href="javascript:void(0);" data-ng-href="{{files.getCsvStreamByPublicId(item.PublicId)}} _blank">{{::item.FileName}}</a></td>
+                            <td>Discount</td>
+                            <td ng-bind="::item.DocumentTypeId | lookup: files.documentTypes"></td>
+                            <td ng-bind="::item.UploadDate | date: ApplicationConstants.formatDateComma"></td>
+                            <td ng-bind="::item.UploadedBy"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+

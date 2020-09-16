@@ -1,0 +1,160 @@
+﻿<div class="file-upload" data-ng-form="formFileUpload">
+    <div class="file-upload-modal-backdrop" data-ng-click="fileUploadClose()"></div>
+    <div class="file-upload-modal-frontdrop">
+        <div class="col-lg-12 header" style="padding-top: 10px; height: 50px;">
+            <div class="btn btn-material btn-borderless pull-right" data-ng-click="fileUploadClose()"><i class="material-icons">close</i></div>
+        </div>
+        <div class="body">
+            <form id="fileupload" class="container centered" method="POST" enctype="multipart/form-data" data-file-upload="options" data-ng-controller="fileUploadController"
+                data-ng-class="{'fileupload-processing': processing() || loadingFiles}">
+                <div class="row message-header" data-ng-show="headerText.length > 0">
+                    <span>{{headerText}}</span>
+                </div>
+                <div class="row fileupload-buttonbar">
+                    <span ng-hide="isUploading" class="btn btn-default fileinput-button" data-ng-class="{disabled: disabled}" data-ng-show="queue.length < options.limitMultiFileUploads">
+                        <span>Add</span>
+                    <input type="file" name="files[]" data-ng-disabled="disabled" accept="{{filePickerTypes}}" multiple class="fileUploadInputElement"
+                    />
+                    </span>
+                    <button type="button" class="btn btn-primary start" data-ng-click="specialSubmit(this, submit)" data-ng-disabled="!formFileUpload.$valid || isUploading || queue.length === 0">
+                        <span>Start Upload</span>
+                    </button>
+                    <!-- The global file processing state -->
+                    <span class="fileupload-process"></span>
+                </div>
+                <div class="row message-text">
+                    <div>{{contentText1}}</div>
+                    <div>{{contentText2}}</div>
+                </div>
+                <div class="row fade" data-ng-class="{in: active()}">
+                    <!-- The global progress bar -->
+                    <div class="progress progress-striped active" data-file-upload-progress="progress()">
+                        <div class="progress-bar progress-bar-success" data-ng-style="{width: num + '%'}"></div>
+                    </div>
+                    <!-- The extended global progress state -->
+                    <div class="progress-extended">&nbsp;</div>
+                </div>
+                <div class="row" data-ng-if="queue.length >= options.limitMultiFileUploads">
+                    <strong class="error text-danger ">Only {{options.limitMultiFileUploads}} file(s) can be uploaded at a time</strong>
+                </div>
+                <div class="row" data-ng-repeat="message in validationMessages">
+                    <strong class="error text-danger ">{{message}}</strong>
+                </div>
+
+                <table class="table table-filelist" id="fileUploadTable">
+                    <thead>
+                        <tr>
+                            <th data-ng-if="config.enableImageResize"></th>
+                            <th class="col-md-11">Name</th>
+                            <th class="col-md-1">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat-start="file in queue" data-ng-class="{'processing': file.$processing()}">
+                            <td data-ng-switch data-on="!!file.thumbnailUrl" data-ng-if="config.enableImageResize">
+                                <div class="preview" data-ng-switch-when="true">
+                                    <a data-ng-href="{{file.url}}" title="{{file.name}}" download="{{file.name}}" data-gallery>
+                                    <img data-ng-src="{{file.thumbnailUrl}}" alt="" />
+                                </a>
+                                </div>
+                                <div class="preview" data-ng-switch-default data-file-upload-preview="file"></div>
+                            </td>
+                            <td>
+                                <div class="col-lg-9">
+                                    <i class="material-icons file-icon">insert_drive_file</i>
+                                    <div class="file-name" data-ng-switch data-on="!!file.url">
+                                        <span data-ng-switch-when="true" data-ng-switch data-on="!!file.thumbnailUrl">
+                                            <a data-ng-switch-when="true" data-ng-href="{{file.url}}" title="{{file.name}}" download="{{file.name}}" data-gallery>{{file.name}}</a>
+                                            <a data-ng-switch-default data-ng-href="{{file.url}}" title="{{file.name}}" download="{{file.name}}">{{file.name}}</a>
+                                        </span>
+                                        <span data-ng-switch-default>{{file.name}}</span>
+                                        <span class="file-size">({{file.size | formatFileSize}})</span>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-3">
+                                    <div data-ng-show="!file.error" class="progress progress-striped active fade" data-ng-class="{ pending: 'in' }[file.$state()]"
+                                        data-file-upload-progress="file.$progress()">
+                                        <div class="progress-bar progress-bar-success" data-ng-style="{width: num + '%'}"></div>
+                                    </div>
+                                    <div class="form-group" data-ng-show="file.error" data-ng-class="{'col-lg-12': file.error}">
+                                        <strong data-ng-show="file.error" class="error text-danger">{{file.error}}</strong>
+                                    </div>
+                                </div>
+                            </td>
+                            <td td nowrap>
+                                <button type="button" class="btn btn-default btn-borderless btn-material" data-ng-click="file.$cancel();onCancel();" data-ng-hide="isUploading || !file.$cancel"
+                                    title="Remove">
+                                    <i class="material-icons">delete</i>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr ng-repeat-end>
+                            <td colspan="2">
+                                <div class="row">
+                                    <div class="col-xs-12 col-lg-6">
+                                        <div class="form-group" data-ng-show="!file.error">
+                                            <label class="col-lg-3 control-label bold">Description: </label>
+                                            <div class="col-lg-9">
+                                                <input type="text" class="form-control" data-ng-model="file.Description" data-ng-if="config.showDescriptionInput" data-ng-maxlength="200"
+                                                    maxlength="200" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-12 col-lg-5">
+                                        <div data-ng-if="config.documentTypeIdSingle>0">
+                                            <div class="form-group">
+                                                <label class="col-lg-3 control-label bold">Type: </label>
+                                                <div class="col-lg-9 form-control-static">
+                                                    {{config.documentTypeIdSingle | lookup: lists.documentTypeList:'id':'text'}}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group" data-ng-if="config.documentTypeIdSingle==null">
+                                            <div class="col-lg-12">
+                                                <ui-select data-ng-model="file.DocumentTypeId" theme="select2" class="form-control" required data-ng-if="!file.error" data-ng-disabled="isUploading">
+                                                    <ui-select-match placeholder="-- Select one --">{{$select.selected.text}}</ui-select-match>
+                                                    <ui-select-choices repeat="item.id as item in lists.documentTypeList | uiSelectChoicesFilter: $select.search: 'text'">
+                                                        <span data-ng-bind-html="item.text | highlight: $select.search"></span>
+                                                    </ui-select-choices>
+                                                </ui-select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row" data-ng-if="config.objectExpiryDate">
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label for-property="objectExpiryDate" for="objectExpiryDate" class="col-lg-3 control-label" title="" data-ng-class="config.objectExpiryDate.isRequared?'req-lab-right ng-invalid ng-invalid-required':'label-to-right'"
+                                                data-model-property="config.objectExpiryDate.value" data-watch-property="config.objectExpiryDate.value"
+                                                data-original-title="">{{config.objectExpiryDate.label}}</label>
+                                            <div class="col-lg-9 datePickerDiv">
+                                                <pt-date-picker data-ng-model="config.objectExpiryDate.value" name="objectExpiryDate" data-ng-required="config.objectExpiryDate.isRequared"
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row" data-ng-if="config.objectComment">
+                                    <div class="col-lg-9">
+                                        <div class="form-group">
+                                            <label for-property="objectComment" for="objectComment" class="col-lg-2 control-label label-to-right" title="" data-ng-class="config.objectComment.isRequared?'req-lab-right ng-invalid ng-invalid-required':''"
+                                                data-model-property="config.objectComment.value" data-watch-property="config.objectComment.value"
+                                                data-original-title="">{{config.objectComment.label}}</label>
+                                            <div class="col-lg-10">
+                                                <textarea style="width:100%;height:100px;" class="form-control" name="objectComment" maxlength="{{config.objectComment.maxlength}}"
+                                                    data-ng-minlength="{{config.objectComment.minlength}}" data-ng-maxlength="{{config.objectComment.maxlength}}"
+                                                    data-ng-required="config.objectComment.isRequared" data-ng-model="config.objectComment.value"></textarea>
+                                                <span class="help-block">{{config.objectComment.helpBlock}}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </form>
+        </div>
+    </div>
+</div>

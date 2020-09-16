@@ -1,0 +1,102 @@
+<form #rvpForm="ngForm">
+    <div class="panel-container">
+        <div class="row">
+            <div class="col-sm-12 col-md-8 col-lg-10">
+                <h4>Work Order Info</h4>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-6 col-md-12 section">
+                <div class="row form-group">
+                    <div class="col-xs-6">
+                        <label class="control-label col-xs-12 ">Work Order</label>
+                    </div>
+                    <div class="col-xs-6">
+                        <span class="col-xs-12 text-field">{{model?.AssignmentId}}.{{model?.WorkOrderNumber}}</span>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-xs-6">
+                        <label class="control-label col-xs-12 ">Worker</label>
+                    </div>
+                    <div class="col-xs-6">
+                        <span class="col-xs-12 text-field">{{model?.WorkerFirstName}} {{model?.WorkerLastName}}</span>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-xs-6">
+                        <label class="control-label col-xs-12 ">Internal Company</label>
+                    </div>
+                    <div class="col-xs-6">
+                        <span class="col-xs-12 text-field">{{model?.OrganizationInternalCode}}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-12 section">
+
+                <div class="row form-group">
+                    <div class="col-xs-6">
+                        <label class="control-label col-xs-12 ">Total Vacation Earned</label>
+                    </div>
+                    <div class="col-xs-6">
+                        <span class="col-xs-12 money-field" *ngIf="model">$ {{model?.TotalVacationEarned | pxCurrency}} </span>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-xs-6">
+                        <label class="control-label col-xs-12 ">Total Vacation Accrued</label>
+                    </div>
+                    <div class="col-xs-6">
+                        <span [ngClass]="{ 'error': cantRelease() }" class="col-xs-12 money-field" *ngIf="model">$ {{model?.TotalVacationAccrued | pxCurrency}} </span>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-xs-6">
+                        <label class="control-label col-xs-12 ">Total Vacation Paid</label>
+                    </div>
+                    <div class="col-xs-6">
+                        <span class="col-xs-12 money-field" *ngIf="model">$ {{model?.TotalVacationPaid | pxCurrency}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6 col-md-12">
+                <div class="row form-group">
+                    <div class="col-xs-5">
+                        <label class="control-label col-xs-12 ">Vacation Pay to release</label>
+                    </div>
+                    <div class="col-xs-7 ">
+                            <div class="input-group pull-right">
+                                <input type="text" [ngClass]="{'invalid':checkInValidPayAmount(payAmount)}" name="releaseAmount" maxlength="10" class="form-control"
+                                    placeholder="" pattern="^[\s\d,\.]*$" style="width:140px;" [(ngModel)]="payAmount" phxCurrencyFormatter
+                                    required>
+
+                                <button class="btn btn-success" (click)="setFullAccruedVacationPay()" style="margin-left:4px;" [disabled]="cantRelease()">  
+                                                <span class="glyphicon glyphicon-triangle-left"></span> 
+                                                <b>$ {{model?.TotalVacationAccrued | pxCurrency}}</b>
+                                            </button>
+                            </div>
+
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="row panel-footer">
+        <div class="btn-group pull-right">
+            <div>
+                <button class="btn btn-default " (click)="cancelClick()">Cancel</button>
+                <button class="btn btn-primary" (click)="releaseVacationPay()" [disabled]="cantRelease() || checkInValidPayAmount(payAmount) || !rvpForm.valid || noAccess">Release Vacation Pay</button>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <app-phx-validation-messages [messages]="validationMessages"></app-phx-validation-messages>
+    </div>
+
+</form>

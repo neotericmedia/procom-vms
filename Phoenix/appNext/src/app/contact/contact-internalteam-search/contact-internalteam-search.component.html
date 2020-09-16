@@ -1,0 +1,19 @@
+<div class="row page-control">
+    <div class="page-control-bar col-lg-12">
+        <div class="btn-toolbar">
+            <a href="javascript:;" type="button" class="btn btn-clouds" (click)="createInternalTeam()">New</a>
+        </div>
+    </div>
+</div>
+<app-phx-data-table [columns]="columns" [configuration]="dataTableConfiguration" 
+    [dataSourceUrl]="'contact/getAllInternalTeams'" 
+    [dataSourceParams]='oDataParams' 
+    componentName="ContactInternalTeamSearch"
+    exportFileName="ContactInternalTeamSearch"
+    [summary]="summary" (rowClick)="onRowClick($event)">
+    <div *dxTemplate="let d of 'viewInternalTeamsDetailTemplate'">
+        <div class="btn-group">
+            <button type="button" class="btn btn-xs btn-clouds btn-row-action no-padding-bottom-right" title="View" (click)="viewInternalTeamDetail(d.data)"><i class="fontello-icon-eye-1"></i>&nbsp;</button>
+        </div>
+    </div>
+</app-phx-data-table>

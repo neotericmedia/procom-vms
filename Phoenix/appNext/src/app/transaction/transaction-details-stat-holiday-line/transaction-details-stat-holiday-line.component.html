@@ -1,0 +1,104 @@
+<form [formGroup]="inputFormGroup">
+  <div class="panel-body">
+    <div class="col-lg-12">
+      <div class="col-lg-6">
+        <p class="h4 center">Stat Holiday Line</p>
+      </div>
+    </div>
+  </div>
+  <div class="panel-body">
+    <div class="col-lg-12">
+      <div class="form-group trn-manual-rate">
+        <label class="col-lg-2 control-label">Rate Type</label>
+        <div class="col-lg-10">
+          <div class="text-lg-left text-md-left text-sm-left" style="padding-top: 6px;">
+            Stat
+          </div>
+        </div>
+
+      </div>
+      <div class="col-lg-4"></div>
+    </div>
+    <div class="col-lg-12">
+      <div class="form-group">
+        <label class="col-lg-2 control-label">Description</label>
+        <div class="col-lg-10">
+          <div class="text-lg-left text-md-left text-sm-left" style="padding-top: 6px;">
+            {{inputFormGroup.controls.Description.value }}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-12">
+      <div class="form-group">
+        <label class="col-lg-2 control-label">Stat Date</label>
+        <div class="col-lg-10">
+          <div class="text-lg-left text-md-left text-sm-left" style="padding-top: 6px;">
+            {{inputFormGroup.controls.Date.value| date: phxConstants.DateFormat.mediumDate}}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-12">
+      <div class="col-lg-4">
+        <div class="form-group">
+          <label class="col-lg-6 control-label" title="">Calculated Units</label>
+          <div class="col-lg-6">
+            <div class="text-lg-left text-md-left text-sm-left" style="padding-top: 6px;">
+              {{inputFormGroup.controls.Units.value || '0.0'}}
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <phx-form-control [control]="inputFormGroup.controls.UnitsOverwrite" labelText="Units" viewModeText="{{inputFormGroup.controls.UnitsOverwrite.value}}">
+            <input class="form-control ng-scope" type="text" formControlName="UnitsOverwrite" phxFloatBetweenInput='{"from":0, "to":9999999.99, "decimalplaces":2}'
+              [inputTextLimitWithDecimals]="unitsOverwriteFilter" />
+          </phx-form-control>
+        </div>
+      </div>
+      <div class="col-lg-8">
+        <div class="col-lg-3">
+          <div class="form-group">
+            <div class="text-lg-right text-md-left text-sm-left">
+              <label class="control-label" data-original-title="" title="">Rate</label>
+            </div>
+            <div style="padding-top:15px;">
+              <div class="text-lg-right text-md-left text-sm-left">
+                {{inputFormGroup.controls.Rate.value | currency}}&nbsp;/&nbsp;
+                {{inputFormGroup.controls.RateUnitId.value |
+                lookupNoCache: html.lists.rateUnitList : 'id':'text'
+                }}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-9">
+          <div class="col-lg-3">
+            <div class="control-label form-group">
+              <div class="text-lg-right text-md-left text-sm-left">
+                <label>Pre-Tax</label>
+              </div>
+              <div class="row" style="min-height: 9px"></div>
+              <div class="text-lg-right text-md-left text-sm-left">
+                {{inputFormGroup.controls.Total.value|currency}}
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-3">
+          </div>
+          <div class="col-lg-3">
+            <div class="control-label form-group">
+              <div class="text-lg-right text-md-left text-sm-left">
+                <label>Total</label>
+              </div>
+              <div class="row" style="min-height: 9px"></div>
+              <div class="text-lg-right text-md-left text-sm-left">
+                {{inputFormGroup.controls.Total.value|currency}}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

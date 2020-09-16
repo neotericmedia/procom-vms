@@ -1,0 +1,70 @@
+﻿<div class="row" data-ng-init="vmsBatchUnitedStatesSourceDeductionDetails.initialize(vmsBatchUnitedStatesSourceDeduction)">
+    <div class="col-lg-12">
+        <div class="panel panel-internal panel-contact">
+            <div class="contact-name">
+                <h4>VMS Processed Record</h4>
+                <table class="table">
+                    <thead class="my-thead">
+                        <tr>
+                            <th>ID</th>
+                            <th>Transaction #</th>
+                            <th>Last Name</th>
+                            <th>Date</th>
+                            <th>Gross</th>
+                            <th>Medicare</th>
+                            <th>SocSec</th>
+                            <th>Fudi</th>
+                            <th>Sui</th>
+                            <th>Reason</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style="cursor:pointer" data-ui-sref-tr="vms-ussourcededuction.document.details({internalOrganizationId: vmsBatchUnitedStatesSourceDeductionDetails.vmsBatchUnitedStatesSourceDeduction.processedRecordDetails.OrganizationIdInternal, documentId: vmsBatchUnitedStatesSourceDeductionDetails.vmsBatchUnitedStatesSourceDeduction.processedRecordDetails.DocumentId})">
+                            <td>{{::vmsBatchUnitedStatesSourceDeductionDetails.vmsBatchUnitedStatesSourceDeduction.processedRecordDetails.Id}}</td>
+                            <td>{{::vmsBatchUnitedStatesSourceDeductionDetails.vmsBatchUnitedStatesSourceDeduction.processedRecordDetails.PaymentTransactionNumber}}</td>
+                            <td>{{::vmsBatchUnitedStatesSourceDeductionDetails.vmsBatchUnitedStatesSourceDeduction.processedRecordDetails.LastName}}</td>
+                            <td>{{::vmsBatchUnitedStatesSourceDeductionDetails.vmsBatchUnitedStatesSourceDeduction.processedRecordDetails.Date | date:ApplicationConstants.formatDateComma}}</td>
+                            <td class="text-right">${{::vmsBatchUnitedStatesSourceDeductionDetails.vmsBatchUnitedStatesSourceDeduction.processedRecordDetails.GrossAmount  | number: 2}}</td>
+                            <td class="text-right">${{::vmsBatchUnitedStatesSourceDeductionDetails.vmsBatchUnitedStatesSourceDeduction.processedRecordDetails.MedicareAmount  | number: 2}}</td>
+                            <td class="text-right">${{::vmsBatchUnitedStatesSourceDeductionDetails.vmsBatchUnitedStatesSourceDeduction.processedRecordDetails.SocialSecurityAmount  | number: 2}}</td>
+                            <td class="text-right">${{::vmsBatchUnitedStatesSourceDeductionDetails.vmsBatchUnitedStatesSourceDeduction.processedRecordDetails.FudiAmount  | number: 2}}</td>
+                            <td class="text-right">${{::vmsBatchUnitedStatesSourceDeductionDetails.vmsBatchUnitedStatesSourceDeduction.processedRecordDetails.SuiAmount  | number: 2}}</td>
+                            <td ng-bind-html="::vmsBatchUnitedStatesSourceDeductionDetails.vmsBatchUnitedStatesSourceDeduction.processedRecordDetails.Reason || 'N/A'"></td>
+                            <td>{{::vmsBatchUnitedStatesSourceDeductionDetails.vmsBatchUnitedStatesSourceDeduction.processedRecordDetails.VmsUnitedStatesSourceDeductionImportedRecordTypeId | lookup : vmsBatchUnitedStatesSourceDeduction.vmsRecordStatus}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-12" ng-if="vmsBatchUnitedStatesSourceDeductionDetails.vmsBatchUnitedStatesSourceDeduction.processedRecordDetails.PaymentTransaction">
+        <div class="panel panel-internal panel-contact">
+            <div class="contact-name">
+                <h4>Transaction</h4>
+                <table class="table">
+                    <thead class="my-thead">
+                        <tr>
+                            <th>Work Order</th>
+                            <th>Transaction No</th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style="cursor:pointer" data-ui-sref-tr="transaction.view.summary({transactionHeaderId: vmsBatchUnitedStatesSourceDeductionDetails.vmsBatchUnitedStatesSourceDeduction.processedRecordDetails.PaymentTransaction.TransactionHeaderId})">
+                            <td>{{::vmsBatchUnitedStatesSourceDeductionDetails.vmsBatchUnitedStatesSourceDeduction.processedRecordDetails.PaymentTransaction.WorkOrderNumber}}</td>
+                            <td>{{::vmsBatchUnitedStatesSourceDeductionDetails.vmsBatchUnitedStatesSourceDeduction.processedRecordDetails.PaymentTransaction.PaymentTransactionNumber}}</td>
+                            <td>{{::vmsBatchUnitedStatesSourceDeductionDetails.vmsBatchUnitedStatesSourceDeduction.processedRecordDetails.PaymentTransaction.FirstName}}</td>
+                            <td>{{::vmsBatchUnitedStatesSourceDeductionDetails.vmsBatchUnitedStatesSourceDeduction.processedRecordDetails.PaymentTransaction.LastName}}</td>
+                            <td>{{::vmsBatchUnitedStatesSourceDeductionDetails.vmsBatchUnitedStatesSourceDeduction.processedRecordDetails.PaymentTransaction.StartDate| date: ApplicationConstants.formatDate}}</td>
+                            <td>{{::vmsBatchUnitedStatesSourceDeductionDetails.vmsBatchUnitedStatesSourceDeduction.processedRecordDetails.PaymentTransaction.EndDate| date: ApplicationConstants.formatDate}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,39 @@
+﻿<div class="modal-content" data-ng-form="formPaymentMethodBatchDialog">
+    <div class="modal-content">
+        <div class="modal-header-ptrn">
+            <span class="modal-title">Transaction Payment Methods not changed</span>
+            <div class="btn pull-right paymentBatchClose" data-ng-click="cancel()"><i class="fontello-icon-cancel-circle"></i></div>
+        </div>
+        <div class="modal-body">
+            <div class="row trn-method">
+                <div class="row trn-t">
+                    <div class="col-lg-1"></div>
+                    <div class="col-lg-10">
+                        The following transaction payment methods have not been changed as 
+                        <i class="text-danger">{{paymentMethod}}</i> details have not been entered.
+                    </div>
+                    <div class="col-lg-1"></div>
+                </div>
+                <div class="col-lg-12 trn-h">
+                    <div class="col-lg-12">
+                        <div class="col-lg-1"></div>
+                        <div class="col-lg-6 text-uppercase">Transaction Number</div>
+                        <div class="col-lg-5 text-uppercase">Worker Name</div>
+                    </div>
+                </div>
+                <div class="col-lg-12"></div>
+                <div class="row col-lg-12" data-ng-repeat="groupedPaymentTransaction in data.GroupedPaymentTransactionsList">                                   
+                    <div class="col-lg-12 text-danger" data-ng-repeat="pw in groupedPaymentTransaction.PaymentTransactionWorkers">
+                        <div class="col-lg-1"></div>
+                        <div class="col-lg-6">{{pw.PaymentTransactionNumber}}</div>
+                        <div class="col-lg-5">{{pw.WorkerName}}</div>
+                        <div class="col-lg-12"></div> 
+                    </div>                   
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" ng-click="cancel()">Ok</button>
+        </div>
+    </div>
+</div>

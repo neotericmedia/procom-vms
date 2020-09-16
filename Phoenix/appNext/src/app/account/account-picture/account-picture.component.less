@@ -1,0 +1,102 @@
+.pp-outer-container {
+    display: block;
+    display: -webkit-box;
+    display: -moz-box;
+    display: -webkit-flex;
+    justify-content: center;
+}
+
+.pp-container {
+    outline: 1px dashed #92b0b3;
+    outline-offset: -10px;
+    transition: outline-offset .15s ease-in-out, background-color .15s linear;
+    padding: 13px;
+}
+
+.pp-empty-img-container {
+    height: 250px;
+    width: 250px;
+}
+
+.pp-empty-img {
+    width: 100%;
+    display: flex;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: cadetblue;
+    font-size: 20px;
+}
+
+.docs-preview {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.img-preview {
+    float: left;
+    margin: 0 5px 5px 0;
+    overflow: hidden;
+}
+
+.img-preview-empty,
+.img-empty>div {
+    display: none !important;
+}
+
+.img-empty-img-btn {
+    display: block;
+}
+
+.preview-lg {
+    border-radius: 40px;
+    width: 80px;
+    height: 80px;
+}
+
+.preview-md {
+    border-radius: 25px;
+    width: 50px;
+    height: 50px;
+}
+
+.preview-sm {
+    border-radius: 18px;
+    width: 36px;
+    height: 36px;
+}
+
+.btn-grp-container {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0 5px 0 18px;
+    justify-content: center;
+}
+
+.btn-group {
+    margin-top: 10px;
+    .btn:not(:first-child) {
+        margin-left: 2px;
+    }
+}
+
+.btn-row {
+    border-top: 2px solid #ccc;
+    margin-top: 20px;
+    button.btn {
+        float: right;
+        margin-top: 10px;
+        margin-right: 5px;
+        padding: 6px 22px;
+    }
+}
+
+@media (min-width:768px) {
+    .btn-grp-container {
+        padding: 0 8px 0 18px;
+        justify-content: center;
+    }
+}

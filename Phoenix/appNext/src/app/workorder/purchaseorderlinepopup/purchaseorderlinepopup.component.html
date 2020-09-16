@@ -1,0 +1,263 @@
+<form [formGroup]="purchaseorderForm" *ngIf="purchaseorderForm">
+    <div class="slider-content">
+        <div class="slider-header">
+            <div class="panel">
+                <div class="panel-heading headstone">
+                    <div class="row keystone-row">
+                        <div class="col-lg-2">
+                            <span class="text-gray ">PO Number</span>
+                        </div>
+                        <div class="col-lg-2">
+                            <span class="text-gray ">PO Line</span>
+                        </div>
+                        <div class="col-lg-2">
+                            <span class="text-gray ">Total Funds</span>
+                        </div>
+                        <div class="col-lg-2">
+                            <span class="text-gray ">Funds Committed</span>
+                        </div>
+                        <div class="col-lg-2">
+                            <span class="text-gray ">Funds Spent</span>
+                        </div>
+                        <div class="col-lg-2">
+                            <span class="text-gray ">Status</span>
+                        </div>
+                    </div>
+                    <div class="row keystone-row">
+                        <div class="col-lg-2">
+                            <a>{{poNumber}}</a>
+                        </div>
+                        <div class="col-lg-2">
+                            <span>{{poLineNum}}</span>
+                        </div>
+                        <div class="col-lg-2">
+                            <span>{{purchaseorderForm.get('Amount').value | number : '1.2-2'}} {{purchaseorderForm.get('CurrencyId').value
+                                | lookup:listCurrency:'id':'code'}} </span>
+                        </div>
+                        <div class="col-lg-2">
+                            <span>{{totalamountCommited | number : '1.2-2'}} {{purchaseorderForm.get('CurrencyId').value | lookup:listCurrency:'id':'code'}}</span>
+                        </div>
+                        <div class="col-lg-2">
+                            <span>{{totalamountSpent | number : '1.2-2'}} {{purchaseorderForm.get('CurrencyId').value | lookup:listCurrency:'id':'code'}}</span>
+                        </div>
+                        <div class="col-lg-2">
+                            <span>{{purchaseorderForm.get('StatusId').value | lookup:purchaseOrderStatuses:'id':'code'}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="slider-body">
+            <div class="content-group form-horizontal">
+                <div class="form-group">
+                    <div class="form-group">
+                        <phx-form-control [control]="purchaseorderForm.controls.PurchaseOrderLineReference" [editable]="true" labelText="PO Line Reference"
+                            viewModeText="{{purchaseorderForm.controls.PurchaseOrderLineReference}}" class="col-lg-6">
+                            <div>
+                                <input formControlName="PurchaseOrderLineReference" type="text" class="form-control" />
+                            </div>
+                        </phx-form-control>
+
+                        <phx-form-control [control]="purchaseorderForm.controls.Description" [editable]="true" labelText="Description" viewModeText="{{purchaseorderForm.controls.Description}}"
+                            class="col-lg-6">
+                            <div>
+                                <input formControlName="Description" type="text" class="form-control" />
+                            </div>
+                        </phx-form-control>
+                    </div>
+                    <div class="form-group">
+                        <phx-form-control labelText="Depletion Option" [editable]="true" [control]="purchaseorderForm.controls.DepletionOptionId"
+                            viewModeText="{{purchaseorderForm.controls.DepletionOptionId}}" class="col-lg-6">
+                            <div>
+                                <app-phx-select-box [items]="listDepletionOption" textField="text" valueField="id" [formControl]="purchaseorderForm.controls.DepletionOptionId">
+                                </app-phx-select-box>
+                            </div>
+                        </phx-form-control>
+
+                        <phx-form-control labelText="Currency" [editable]="true" [control]="purchaseorderForm.controls.CurrencyId" viewModeText="{{purchaseorderForm.controls.CurrencyId}}"
+                            class="col-lg-6">
+                            <div>
+                                <app-phx-select-box [items]="listCurrency" textField="text" valueField="id" [formControl]="purchaseorderForm.controls.CurrencyId">
+                                </app-phx-select-box>
+                            </div>
+                        </phx-form-control>
+
+
+                    </div>
+                    <div class="form-group">
+                        <phx-form-control [control]="purchaseorderForm.controls.Amount" [editable]="true" labelText="Total Funds" viewModeText="{{purchaseorderForm.controls.Amount}}"
+                            class="col-lg-6">
+                            <div class="col-md-7 padding-0">
+                                <input formControlName="Amount" type="text" class="form-control" phxFloatBetweenInput='{"from":0, "to":999999999.99, "decimalplaces":2}'
+                                />
+                            </div>
+                        </phx-form-control>
+
+                        <phx-form-control [control]="purchaseorderForm.controls.IsTaxIncluded" [editable]="true" labelText="Tax Included?" viewModeText="{{purchaseorderForm.controls.IsTaxIncluded}}"
+                            class="col-lg-6">
+                            <label class="radio-inline">
+                                <input class="form-check-input" type="radio" [value]="true" [checked]="purchaseorderForm.controls.IsTaxIncluded.value" formControlName="IsTaxIncluded">Yes</label>
+                            <label class="radio-inline">
+                                <input class="form-check-input" type="radio" [value]="false" [checked]="!purchaseorderForm.controls.IsTaxIncluded.value"
+                                    formControlName="IsTaxIncluded">No</label>
+                        </phx-form-control>
+                    </div>
+
+                    <div class="form-group">
+                        <phx-form-control labelText="Depletion Group" [editable]="true" [control]="purchaseorderForm.controls.DepletionGroupId" viewModeText="{{purchaseorderForm.controls.DepletionGroupId}}"
+                            class="col-lg-6">
+                            <div>
+                                <app-phx-select-box [items]="listDepletionGroup" textField="text" valueField="id" [formControl]="purchaseorderForm.controls.DepletionGroupId">
+                                </app-phx-select-box>
+                            </div>
+                        </phx-form-control>
+                    </div>
+
+                </div>
+                <div class="form-group">
+                    <label class="col-lg-2 h4 bold">PO Line Stats</label>
+                </div>
+                <div class="form-group without-margin-bottom">
+                    <div class="col-lg-6 with-background">
+                        <label class="col-lg-4 control-label">Total Funds</label>
+                        <div class="col-lg-8">
+                            <p class="form-control-static">{{purchaseorderForm.get('Amount').value|currency:""}}</p>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 with-background">
+                        <label class="col-lg-4 control-label">Funds Spent</label>
+                        <div class="col-lg-8">
+                            <p class="form-control-static">{{totalamountSpent|currency:""}}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group without-margin-bottom">
+                    <div class="col-lg-6 with-background">
+                        <label class="col-lg-4 control-label">Funds Committed</label>
+                        <div class="col-lg-8">
+                            <p class="form-control-static">{{totalamountCommited|currency:""}}</p>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 with-background">
+                        <label class="col-lg-4 control-label">Funds Reserved</label>
+                        <div class="col-lg-8">
+                            <p class="form-control-static">{{totalamountReserved|currency:""}}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-lg-6 with-background">
+                        <label class="col-lg-4 control-label">Funds Available</label>
+                        <div class="col-lg-8">
+                            <p class="form-control-static">{{purchaseorderForm.get('Amount').value-totalamountCommited|currency:""}}</p>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 with-background">
+                        <label class="col-lg-4 control-label">Funds Remaining</label>
+                        <div class="col-lg-8">
+                            <p class="form-control-static">{{totalamountCommited-totalamountSpent|currency:""}}</p>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="form-group">
+                        <label class="col-lg-2 h4 bold">Work Orders</label>
+                    </div>
+
+                    <div class="panel-internal row table-responsive">
+                        <table class="table table-striped table-content table-hover">
+                            <thead>
+                                <tr>
+                                    <th scope="col">
+                                        Work
+                                        <br /> Order
+                                    </th>
+                                    <th scope="col" class="text-right">
+                                        Funds
+                                        <br /> Committed
+                                    </th>
+                                    <th scope="col" class="text-right">
+                                        Funds
+                                        <br /> Reserved
+                                    </th>
+                                    <th scope="col" class="text-right">
+                                        Funds
+                                        <br /> Spent
+                                    </th>
+                                    <th scope="col" class="text-right">
+                                        Funds
+                                        <br /> Remaining
+                                    </th>
+                                    <th scope="col" class="text-right">
+                                        Work Units
+                                        <br /> Remaining
+                                    </th>
+                                    <th scope="col">
+                                        Allocation
+                                        <br /> Note
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody formArrayName="WorkOrderPurchaseOrderLines">
+                                <tr *ngFor="let item of purchaseorderForm.get('WorkOrderPurchaseOrderLines').controls; let i = index" [formGroupName]="i">
+                                    <td style="vertical-align: middle;" class="col-lg-2">
+                                        <a class="form-control-static">
+                                            {{item.controls.AssignmentId.value }}.{{ item.controls.WorkOrderNumber.value }} 
+                                        </a>
+                                    </td>
+                                    <td class="col-lg-2">
+                                        <div class="input-group">
+                                            <input type="text" formControlName="AmountCommited" class="form-control ng-scope input-align-right" (input)="CommitChange(purchaseorderForm.get('WorkOrderPurchaseOrderLines').controls)">
+                                        </div>
+                                    </td>
+                                    <td class="col-lg-2" *ngIf="lineNew.DepletionOptionId==2">-</td>
+                                    <td class="col-lg-2">
+                                        <p class="form-control-static pull-right"> {{item.controls.AmountReserved.value|currency:""}}</p>
+                                    </td>
+                                    <td class="col-lg-2">
+                                        <p class="form-control-static pull-right"> {{item.controls.AmountSpent.value|currency:""}}</p>
+                                    </td>
+                                    <td class="col-lg-2">
+                                        <p class="form-control-static pull-right"> {{item.controls.AmountCommited.value - item.controls.AmountReserved.value - item.controls.AmountSpent.value
+                                            |currency:""}}</p>
+                                    </td>
+                                    <td class="col-lg-2">
+                                        <p class="form-control-static pull-right">
+                                            {{(rate>0) ? (((item.controls.AmountCommited.value-item.controls.AmountReserved.value-item.controls.AmountSpent.value)/rate)
+                                            | number : '1.2-2') : "--" }} {{workunit}} </p>
+                                    </td>
+                                    <td class="col-lg-2" *ngIf="lineNew.DepletionOptionId==2">-</td>
+                                    <td class="col-lg-3">
+                                        <input type="text" formControlName="AllocationNote" maxlength="128" class="form-control ng-scope" />
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="panel-body">
+                    <div *ngIf="validationMessages.length > 0" class="alert alert-danger alert-dismissable error-box">
+                        <div *ngFor="let msg of validationMessages">
+                            <div>
+                                {{msg}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="slider-footer">
+
+            <div class="row">
+                <div class="pull-right">
+                    <button type="button" class="btn btn-default" (click)="onClickCancel()"[disabled]="hasPendingRequests">Cancel</button>
+                    <button type="button" class="btn btn-primary" (click)="onClickSubmit()" [disabled]="hasPendingRequests || !purchaseorderForm.valid">Ok</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</form>

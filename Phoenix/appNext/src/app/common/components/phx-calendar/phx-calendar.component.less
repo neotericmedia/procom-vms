@@ -1,0 +1,48 @@
+// :host {
+//   dx-calendar {
+//     margin-top: 5px;
+//     /deep/ .dx-calendar {
+//       .has-filter {
+//         color: #ff0000;
+//       }
+
+//       .dx-calendar-body {
+//         top: 100px !important;
+//       }
+
+//       .dx-widget table tr {
+//         display: block;
+//       }
+
+//       .dx-widget table tbody {
+//         padding-top: 10px;
+//       }
+
+//       .dx-calendar-body .dx-calendar-views-wrapper .dx-widget table.fixed-columns th,
+//       table.fixed-columns tbody td.dx-calender-cell {
+//         width: 14% !important;
+//       }
+//     }
+//   }
+// }
+
+:host {
+  dx-calendar {
+    margin-top: 5px;
+    /deep/ .dx-calendar {
+      .has-filter {
+        color: #ff0000;
+      }
+      .dx-calendar-body {
+        top: 100px;
+      }
+    }
+  }
+}
+.active{
+  background-color: #337ab7;
+  padding: 6px 8px;
+  border-radius: 5px;
+  color: #fff;
+  font-weight: normal;
+}

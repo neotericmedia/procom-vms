@@ -1,0 +1,96 @@
+<app-phx-panel [ngStyle]="{ 'padding' : '0px' }" headerTitle="Details">
+    <form [formGroup]="inputFormGroup" *ngIf="readOnlyStorage && inputFormGroup">
+
+        <phx-form-control [control]="inputFormGroup.controls.LegalName" [editable]="readOnlyStorage.IsEditable"
+            labelText="Legal Name" viewModeText="{{inputFormGroup.controls.LegalName.value}}">
+            <input formControlName="LegalName" type="text" class="form-control" />
+            <div class="alert alert-danger ng-scope" *ngIf="inputFormGroup.controls.LegalName.hasError('uniqueLegalName')">
+                This organization legal name is not unique
+            </div>
+        </phx-form-control>
+
+
+        <phx-form-control [control]="inputFormGroup.controls.Code" [editable]="readOnlyStorage.IsEditable" labelText="Code"
+            viewModeText="{{inputFormGroup.controls.Code.value}}">
+            <input formControlName="Code" type="text" class="form-control" maxlength="6" />
+            <div class="alert alert-danger ng-scope" *ngIf="inputFormGroup.controls.Code.hasError('uniqueCode')">
+                This organization code is not unique
+            </div>
+        </phx-form-control>
+
+        <phx-form-control [control]="inputFormGroup.controls.DisplayName" [editable]="readOnlyStorage.IsEditable"
+            labelText="Display Name" viewModeText="{{inputFormGroup.controls.DisplayName.value}}">
+            <input formControlName="DisplayName" type="text" class="form-control" />
+        </phx-form-control>
+
+        <div *ngIf="html.parentOrganizationNameFromText">
+            <phx-form-control [control]="inputFormGroup.controls.ParentOrganization" labelText="Parent Organization"
+                [editable]="readOnlyStorage.IsEditable" viewModeText="{{inputFormGroup.controls.parentOrganizationName.value}} {{' - ' + inputFormGroup.controls.ParentOrganizationId.value}}">
+                <input formControlName="parentOrganizationName" type="text" class="form-control" />
+                <p class="help-block" (click)="onClickSwitchParentOrganizationNameFromList()" *ngIf="readOnlyStorage.IsEditable"
+                    style="cursor: pointer;">
+                    <a href="javascript:;">Or select an existing parent organization</a>
+                </p>
+            </phx-form-control>
+        </div>
+
+        <div *ngIf="!html.parentOrganizationNameFromText">
+            <phx-form-control [control]="inputFormGroup.controls.ParentOrganization" labelText="Parent Organization"
+                [editable]="readOnlyStorage.IsEditable" viewModeText="{{inputFormGroup.controls.parentOrganizationName.value}} {{' - ' + inputFormGroup.controls.ParentOrganizationId.value}}">
+                <app-phx-select-box #parentOrgDropdown [formControl]="inputFormGroup.controls.ParentOrganizationId"
+                    [items]="html.commonLists.listParentOrganizations" textField="Name" valueField="Id">
+                </app-phx-select-box>
+                <p class="help-block" (click)="onClickSwitchParentOrganizationNameFromList()" *ngIf="readOnlyStorage.IsEditable"
+                    style="cursor: pointer;">
+                    <a href="javascript:;">Or enter a new parent organization</a>
+                </p>
+            </phx-form-control>
+        </div>
+
+        <!-- <div >
+            Legal Name: {{ inputFormGroup.controls.LegalName.valid | json }}
+            <br/>
+            Code : {{ inputFormGroup.controls.Code.valid | json }}
+            <br/>
+        </div> -->
+
+        <phx-form-control [control]="inputFormGroup.controls.SectorTypeId" labelText="Sector" [editable]="readOnlyStorage.IsEditable"
+            viewModeText="{{inputFormGroup.controls.SectorTypeId.value | CodeValue:codeValueGroups.SectorType }}">
+            <app-phx-select-box [formControl]="inputFormGroup.controls.SectorTypeId" [items]="html.codeValueLists.listSectorType"
+                textField="text" valueField="id">
+            </app-phx-select-box>
+        </phx-form-control>
+
+        <phx-form-control [control]="inputFormGroup.controls.IndustryTypeId" labelText="Industry" [editable]="readOnlyStorage.IsEditable"
+            viewModeText="{{inputFormGroup.controls.IndustryTypeId.value | CodeValue:codeValueGroups.IndustryType }}">
+            <app-phx-select-box [formControl]="inputFormGroup.controls.IndustryTypeId" [items]="html.codeValueLists.listIndustryType"
+                textField="text" valueField="id">
+            </app-phx-select-box>
+        </phx-form-control>
+
+        <phx-form-control [control]="inputFormGroup.controls.CountryId" labelText="Country" [editable]="readOnlyStorage.IsEditable"
+            viewModeText="{{inputFormGroup.controls.CountryId.value | CodeValue:codeValueGroups.Country }}">
+            <app-phx-select-box [formControl]="inputFormGroup.controls.CountryId" [items]="html.codeValueLists.listCountry"
+                textField="text" valueField="id">
+            </app-phx-select-box>
+        </phx-form-control>
+
+        <phx-form-control [control]="inputFormGroup.controls.DefaultTaxSubdivisionId" labelText="Default Tax Province/State"
+            [editable]="readOnlyStorage.IsEditable" viewModeText="{{inputFormGroup.controls.DefaultTaxSubdivisionId.value | CodeValue:codeValueGroups.Subdivision }}">
+            <app-phx-select-box [formControl]="inputFormGroup.controls.DefaultTaxSubdivisionId" [items]="html.codeValueLists.listTaxSubdivision"
+                textField="text" valueField="id">
+            </app-phx-select-box>
+        </phx-form-control>
+    </form>
+</app-phx-panel>
+<div *ngIf="rootModel">
+    <app-phx-panel *ngIf="rootModel.OrganizationClientRoles.length > 0 && html.isSendInviteVisible" headerTitle="Send Invite">
+        <div class="form-group">
+            <label class="col-lg-4 control-label label-to-right lab-right">Invite&nbsp;All Associated Consultants</label>
+            <div class="col-lg-8">
+                <button class="btn btn-default btn-profile-invite" (click)="invite()" [disabled]="html.isInvited">Send
+                    Invitation</button>
+            </div>
+        </div>
+    </app-phx-panel>
+</div>

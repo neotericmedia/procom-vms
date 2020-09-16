@@ -1,0 +1,54 @@
+<div class="container-fluid" *ngIf="invoice">
+  <div class="row" *ngIf="forceEdit === false" >
+<!--     
+    <app-phx-workflow-buttons (callWorkflowCommand)="clickWorkflowAction($event)" [workflowAvailableActions]="workflowActions"
+      [isButtonBar]="false"></app-phx-workflow-buttons>
+
+    ---
+-->
+    <app-phx-state-action-buttons [stateActions]="stateActions" [availableStateActions]="invoice.AvailableStateActions" [displayType]="'DROPDOWN'"></app-phx-state-action-buttons>
+  </div>
+
+
+  <div class="row">
+    <div class="col-xs-12">
+      <app-invoice-header [invoice]="invoice"></app-invoice-header>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-xs-12">
+      <app-phx-navigation-bar [navigationBarContent]="tabList" [url]="currentUrl"></app-phx-navigation-bar>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-xs-12">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+
+  <div class="row">
+    <app-phx-validation-messages [messages]="validationMessages"></app-phx-validation-messages>
+  </div>
+<!-- 
+  <div class="panel-footer">
+    <div class="row" *ngIf="forceEdit === false">
+      <app-phx-workflow-buttons (callWorkflowCommand)="executeWorkflowAction($event)" [workflowAvailableActions]="workflowActions"
+        [isButtonBar]="true" [getActionButtonCssClass]="getActionCssClass"></app-phx-workflow-buttons>
+    </div>
+    <div class="row" *ngIf="forceEdit === true">
+      <div class="btn-toolbar pull-right">
+        <button type="button" class="btn btn-default" (click)="cancelEdit()">{{phoenixCommonModuleResourceKeys.generic.cancel| phxTranslate}}
+        </button>
+      <button type="button" class="btn btn-primary" (click)="submit()">{{phoenixCommonModuleResourceKeys.generic.submit| phxTranslate}}
+        </button>
+      </div>
+    </div>
+  </div>
+-->
+  <div class="panel-footer">
+    <app-phx-state-action-buttons [stateActions]="stateActions" [availableStateActions]="invoice.AvailableStateActions"></app-phx-state-action-buttons>
+  </div>
+
+</div>

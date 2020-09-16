@@ -1,0 +1,64 @@
+﻿<div class="row" data-ng-init="vmsBatchExpenseDetails.initialize(vmsBatchExpense)">
+    <div class="col-lg-12">
+        <div class="panel panel-internal panel-contact">
+            <div class="contact-name">
+                <h4>VMS Processed Record</h4>
+                <table class="table">
+                    <thead class="my-thead">
+                        <tr>
+                            <th>Import Date</th>
+                            <th>VMS Worker ID</th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th class="text-right">Expense Amount</th>
+                            <th>From Date</th>
+                            <th>To Date</th>
+                            <th>Reason</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style="cursor:pointer" data-ui-sref="vms-expense.document.details({internalOrganizationId: vmsBatchExpenseDetails.vmsBatchExpense.processedRecordDetails.OrganizationIdInternal, documentId: vmsBatchExpenseDetails.vmsBatchExpense.processedRecordDetails.DocumentId})">
+                            <td>{{::vmsBatchExpenseDetails.vmsBatchExpense.processedRecordDetails.ImportDate | date:ApplicationConstants.formatDateComma}}</td>
+                            <td>{{::vmsBatchExpenseDetails.vmsBatchExpense.processedRecordDetails.WorkOrderReference}}</td>
+                            <td>{{::vmsBatchExpenseDetails.vmsBatchExpense.processedRecordDetails.FirstName}}</td>
+                            <td>{{::vmsBatchExpenseDetails.vmsBatchExpense.processedRecordDetails.LastName}}</td>
+                            <td class="text-right">{{::vmsBatchExpenseDetails.vmsBatchExpense.processedRecordDetails.AmountBillable | number: 2 | currency: '$'}}</td>
+                            <td>{{::vmsBatchExpenseDetails.vmsBatchExpense.processedRecordDetails.StartDate | date:ApplicationConstants.formatDateComma}}</td>
+                            <td>{{::vmsBatchExpenseDetails.vmsBatchExpense.processedRecordDetails.EndDate | date:ApplicationConstants.formatDateComma}}</td>
+                            <td ng-bind-html="::vmsBatchExpenseDetails.vmsBatchExpense.processedRecordDetails.Reason || 'N/A'"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>        
+    <div class="col-lg-12" ng-if="vmsBatchExpenseDetails.vmsBatchExpense.processedRecordDetails.BillingTransaction">
+        <div class="panel panel-internal panel-contact">
+            <div class="contact-name">
+                <h4>Transaction</h4>
+                <table class="table">
+                    <thead class="my-thead">
+                        <tr>
+                            <th>Work Order</th>
+                            <th>Transaction No</th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style="cursor:pointer" data-ui-sref-tr="transaction.view.summary({transactionHeaderId: vmsBatchExpenseDetails.vmsBatchExpense.processedRecordDetails.TransactionHeaderId})">
+                            <td>{{::vmsBatchExpenseDetails.vmsBatchExpense.processedRecordDetails.BillingTransaction.AssignmentId}}.{{::vmsBatchExpenseDetails.vmsBatchExpense.processedRecordDetails.BillingTransaction.WorkOrderNumber}}</td>
+                            <td>{{::vmsBatchExpenseDetails.vmsBatchExpense.processedRecordDetails.BillingTransaction.BillingTransactionNumber}}</td>
+                            <td>{{::vmsBatchExpenseDetails.vmsBatchExpense.processedRecordDetails.BillingTransaction.FirstName}}</td>
+                            <td>{{::vmsBatchExpenseDetails.vmsBatchExpense.processedRecordDetails.BillingTransaction.LastName}}</td>
+                            <td>{{::vmsBatchExpenseDetails.vmsBatchExpense.processedRecordDetails.BillingTransaction.StartDate| date: ApplicationConstants.formatDate}}</td>
+                            <td>{{::vmsBatchExpenseDetails.vmsBatchExpense.processedRecordDetails.BillingTransaction.EndDate| date: ApplicationConstants.formatDate}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

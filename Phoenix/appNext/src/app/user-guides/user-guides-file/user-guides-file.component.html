@@ -1,0 +1,17 @@
+<div>
+    <div class="col-md-8">
+        <h4 class="col-md-offset-1">{{userGuidesFile.Title}} <small *ngIf="showAdministrationView && permissionLabel.length > 0">({{permissionLabel}})
+            </small><a target="_blank" [href]="userGuidesFile.link">{{userGuidesFile.Extension}}</a>
+            <div *ngIf="showAdministrationView" class="btn pull-right  btn-default btn-material btn-borderless add-restriction-close"
+                (click)="deleteFile()">
+                <i class="material-icons">delete</i>
+            </div>
+        </h4>
+        <small class="col-md-offset-1">{{userGuidesFile.UploadedByFullName}} --
+            {{userGuidesFile.UploadedDatetime|date:'MMM dd yyyy
+            HH:mm:ss'}}</small>
+    </div>
+    <div class="col-md-8">
+        <small class="col-md-offset-1">{{userGuidesFile.Description}}</small>
+    </div>
+</div>

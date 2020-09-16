@@ -1,0 +1,15 @@
+﻿<div class="modal-content">
+    <div class="modal-header">
+        <span class="modal-title">Add Work Order</span>
+        <div class="btn pull-right btn-dlg-close" data-ng-click="cancel()"><i class="fontello-icon-cancel-circle"></i></div>
+    </div>
+    <div class="modal-body">
+        <commission-add-work-order [selected-workorders]="SelectedWorkorders" [organization-id-internal]="SelectedOrganizationIdInternal"
+                                   [client-organization-id]="SelectedClientOrganizationId" (workorder-selection-changed)="onWorkorderSelectionChanged($event)">
+        </commission-add-work-order>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-primary" ng-click="select()" data-ng-disabled="SelectedWorkorders.length ===0">Select</button>
+        <button type="button" class="btn btn-default" ng-click="cancel()">Cancel</button>
+    </div>
+</div>

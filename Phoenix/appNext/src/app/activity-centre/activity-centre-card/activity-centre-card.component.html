@@ -1,0 +1,105 @@
+<div class="row card-row" *ngIf="card" [ngClass]="{'selected': card?.selected, 'selectable': selectable, 'test-card': card?.isTest}">
+    <div class="col-xs-2 col-sm-1 text-right action-wrap" (click)="onClickIcon($event)">
+        <div class="action-btn" [ngClass]="{'img-border' : showProfilePicture}">
+            <i class="material-icons">{{ card?.selected ? 'check' : 'check_box_outline_blank' }}</i>
+            <div *ngIf="showProfilePicture;else entityAbbreviation" class="profile-picture">
+                <app-phx-profile-picture [profileId]="card.userProfileIdWorker"></app-phx-profile-picture>
+            </div>
+            <ng-template #entityAbbreviation>
+                <span class="entityAbbreviation">{{card.entityAbbreviation}}</span>
+            </ng-template>
+        </div>
+    </div>
+    <a class="cardLink" [attr.href]="card.actionLink" (click)="addData()" >
+        <div class="col-xs-10 col-sm-11">
+            <div class="data-primary">
+                <app-activity-centre-card-field [cardField]="getField(card, 0)"></app-activity-centre-card-field>
+                <span class="sub">
+                    <app-activity-centre-card-field [cardField]="getField(card, 1)"></app-activity-centre-card-field>
+                </span>
+            </div>
+            <div class="row ">
+                <div class="col-xs-6 col-sm-5 col-md-5">
+                    <div class="row">
+                        <div class="col-xl-6 ellipsis">
+                            <app-activity-centre-card-field [cardField]="getField(card, 2)"></app-activity-centre-card-field>
+                            <span class="sub">
+                                <app-activity-centre-card-field [cardField]="getField(card, 3)"></app-activity-centre-card-field>
+                            </span>
+                        </div>
+                        <div class="col-xl-6">
+                            <app-activity-centre-card-field [cardField]="getField(card, 4)"></app-activity-centre-card-field>
+                            <span class="sub">
+                                <app-activity-centre-card-field [cardField]="getField(card, 5)"></app-activity-centre-card-field>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xl-6">
+                            <app-activity-centre-card-field [cardField]="getField(card, 6)"></app-activity-centre-card-field>
+                            <span class="sub">
+                                <app-activity-centre-card-field [cardField]="getField(card, 7)"></app-activity-centre-card-field>
+                            </span>
+                        </div>
+                        <div class="col-xl-6">
+                            <app-activity-centre-card-field [cardField]="getField(card, 8)"></app-activity-centre-card-field>
+                            <span class="sub">
+                                <app-activity-centre-card-field [cardField]="getField(card, 9)"></app-activity-centre-card-field>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-6 col-sm-7 col-md-7 dynamic-align">
+                    <div class="row min-height">
+                        <div class="col-md-4">
+                            <span>
+                                <app-activity-centre-card-field [cardField]="getField(card, 10)"></app-activity-centre-card-field>
+                            </span>
+                            <span class="sub">
+                                <app-activity-centre-card-field [cardField]="getField(card, 11)"></app-activity-centre-card-field>
+                            </span>
+                        </div>
+                        <div class="col-md-4">
+                            <span class="data-tertiary">
+                                <app-activity-centre-card-field [cardField]="getField(card, 12)"></app-activity-centre-card-field>
+                            </span>
+                            <span class="sub">
+                                <app-activity-centre-card-field [cardField]="getField(card, 13)"></app-activity-centre-card-field>
+                            </span>
+                        </div>
+                        <div class="col-md-4">
+                            <app-activity-centre-card-field [cardField]="getField(card, 14)"></app-activity-centre-card-field>
+                            <span class="sub">
+                                <app-activity-centre-card-field [cardField]="getField(card, 15)"></app-activity-centre-card-field>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <span>
+                                <app-activity-centre-card-field [cardField]="getField(card, 16)"></app-activity-centre-card-field>
+                            </span>
+                            <span class="sub">
+                                <app-activity-centre-card-field [cardField]="getField(card, 17)"></app-activity-centre-card-field>
+                            </span>
+                        </div>
+                        <div class="col-md-4">
+                            <span class="data-tertiary">
+                                <app-activity-centre-card-field [cardField]="getField(card, 18)"></app-activity-centre-card-field>
+                            </span>
+                            <span class="sub">
+                                <app-activity-centre-card-field [cardField]="getField(card, 19)"></app-activity-centre-card-field>
+                            </span>
+                        </div>
+                        <div class="col-md-4">
+                            <app-activity-centre-card-field [cardField]="getField(card, 20)"></app-activity-centre-card-field>
+                            <span class="sub">
+                                <app-activity-centre-card-field [cardField]="getField(card, 21)"></app-activity-centre-card-field>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </a>
+</div>

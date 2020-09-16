@@ -1,0 +1,14 @@
+<dx-tag-box #tagBox 
+    [items]="items" 
+    [dataSource]="dataSource" 
+    [displayExpr]="displayExpr" 
+    [valueExpr]="valueExpr" 
+    [value]="value"
+    [placeholder]="placeholder"
+    [showSelectionControls]="showSelectionControls" 
+    [applyValueMode]="applyValueMode"
+    [searchEnabled] = "searchEnabled"
+    [maxDisplayedTags] ="maxDisplayedTags"
+    (onValueChanged) = "onValueChanged($event)"
+    >
+</dx-tag-box>

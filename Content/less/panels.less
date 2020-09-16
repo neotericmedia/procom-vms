@@ -1,0 +1,211 @@
+// Core variables and mixins
+@import "variables.less";
+@import "mixins.less";
+//
+// Panels
+// --------------------------------------------------
+
+.panel-group.panel-sections {
+    .panel:not(:last-child) {
+        border-bottom: 1px solid #c9c9c9;
+    }
+}
+
+.panel-tabbable {
+    padding: 0;
+    border-color: none;
+    border-radius: 0;
+
+    .panel {
+        margin-bottom: 0;
+		border: none;
+    }
+
+    ul.nav {
+        background-color: #f6f6f6;
+    }
+}
+
+.panel {
+    .panel-row {
+        padding: 9px 0;
+        border-top: 1px solid #ffffff;
+        border-bottom: 1px solid #c9c9c9;
+
+        &:first-child {
+            padding-top: 0;
+            border-top: none;
+        }
+
+        &:last-child {
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+    }
+
+    .panel-row-no-border {
+        padding: 9px 0;
+    }
+    .panel-body {
+        .col-lg-12.panel-internal {
+            margin: 10px 0 0px 0;
+            h4 {
+                font-size: 18px;
+                margin-bottom: 10px;
+                
+    padding-left: 3px;
+            }
+        }
+    }
+}
+
+.panel-internal-no-top-bottom-margin {
+    margin: 0px 10px;
+    padding: 0;
+    background-color: #FAFAFA;
+    border-radius: 0;
+}
+
+.panel-internal {
+    padding: 0;
+    /*border-color: @nav-tabs-border-color;*/
+    background-color: #FAFAFA;
+    border-radius: 0;
+    margin: 10px;
+
+
+    .panel {
+        margin-bottom: 0;
+    }
+
+    .panel-heading {
+        border-top-right-radius: 3px;
+        border-top-left-radius: 3px;
+        padding-bottom: 0px;
+    }
+    
+    h4 {
+        margin-top: 20px;
+        font-weight: 600;
+    }
+    .form-control-static a {
+        word-break: break-word;
+    }
+}
+
+.content-group {
+    .content-left, .content-right {
+        .panel-internal:not(:first-child) {
+            margin-top: 15px !important;
+        }
+    }
+    .panel-internal.panel-full {
+        margin: 0 !important;
+        padding: 0 10px 10px;
+    }
+}
+
+.panel-heading{
+    .btn-clouds{
+        margin-top: -6px;
+    }
+}
+
+.panel-margin-bottom {
+    margin-bottom: 10px;
+}
+
+.headstone {
+    border-top: none !important;
+    border-bottom: 4px solid @headstone-border-color !important;
+    border-left: none !important;
+    border-right: none !important;
+
+    .btn-clouds {
+        margin-top: -6px;
+    }
+
+    .control-label {
+        color: #333;
+        font-weight: 600;
+        text-align: left
+    }
+
+    span {
+        color: #333;
+        word-break: break-all;
+    }
+
+    a {
+        color: #333;
+    }
+
+    .bottom-center-header {
+        text-align: center;
+        margin: 10px 0 -10px 0;
+        .bottom-center-text {
+            background-color: @headstone-border-color;
+            padding: 5px 30px;
+            border-radius: 5px 5px 0 0;
+            color: #ffffff;
+            font-size: 20px;
+            font-weight: 600;
+            span {
+                color: #ffffff;
+            }
+        }
+    }
+
+    &.header-red {
+        border-bottom-color: red !important;
+        .bottom-center-header {
+            .bottom-center-text {
+                background-color: red;
+            }
+        }
+    }
+}
+
+.version-panel {
+    margin-top: 35px;
+    padding-left: 6px;
+    padding-right: 6px;
+    padding-top: 3px;
+
+    .panel-default {
+        border: none;
+    }
+
+    .notes-panel {
+        cursor: pointer;
+        text-decoration: none;
+        color: black;
+        font-weight: bold;
+        display: inline-block;
+        margin: 6px 0;
+        padding-left: 0;
+    }
+
+    .assignment-workorders .assignment-workorder-item {
+        border: none;
+        padding: 10px;
+    }
+
+    .assignment-workorders .assignment-workorders-header {
+        display: block;
+        padding-top: 50px;
+        padding-left: 0;
+        text-transform: uppercase;
+        margin-bottom: 25px;
+    }
+}
+
+@media (max-width: 1200px) {
+    .panel {
+        .panel-body {
+            .col-lg-12.panel-internal {
+                margin-bottom: 10px;
+            }
+        }
+    }
+}
